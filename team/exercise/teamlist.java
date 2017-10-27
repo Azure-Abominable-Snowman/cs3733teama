@@ -8,5 +8,6 @@ public class teamlist {
         System.out.println("Alissa");
         System.out.println("Alex");
         System.out.println("Kent");
+        System.out.println("Ray");
     }
 }
