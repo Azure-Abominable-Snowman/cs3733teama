@@ -11,5 +11,6 @@ public class teamlist {
         System.out.println("Ray");
         System.out.println("Meghan");
         System.out.println("Ruyue");
+        System.out.println("Yuanda(Danny)");
     }
 }
