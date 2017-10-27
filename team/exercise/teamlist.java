@@ -16,6 +16,5 @@ public class teamlist {
         System.out.println("Jake Pardue");
         System.out.println("Qingyuan (Leo)");
         System.out.println("Yizhen");
-
     }
 }
