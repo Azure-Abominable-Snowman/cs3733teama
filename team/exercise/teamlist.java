@@ -10,5 +10,6 @@ public class teamlist {
         System.out.println("Kent");
         System.out.println("Ray");
         System.out.println("Meghan");
+        System.out.println("Ruyue");
     }
 }
