@@ -13,6 +13,8 @@ public class teamlist {
         System.out.println("Ruyue");
         System.out.println("Yuanda(Danny)");
         System.out.println("Jerry");
+        System.out.println("Jake Pardue");
         System.out.println("Qingyuan (Leo)");
+
     }
 }
