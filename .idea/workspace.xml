@@ -108,8 +108,8 @@
       <file leaf-file-name="build.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="605">
-              <caret line="192" column="11" lean-forward="true" selection-start-line="192" selection-start-column="11" selection-end-line="192" selection-end-column="11" />
+            <state relative-caret-position="372">
+              <caret line="95" column="47" lean-forward="true" selection-start-line="95" selection-start-column="47" selection-end-line="95" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -133,6 +133,8 @@
       <find>compile.module.cs3733teama.tests</find>
       <find>c</find>
       <find>.production</find>
+      <find>javac2.home</find>
+      <find>com.intellij.ant.Javac2</find>
     </findStrings>
   </component>
   <component name="FindManager">
@@ -471,7 +473,7 @@
       <option name="presentableId" value="Default" />
       <updated>1359379246138</updated>
       <workItem from="1359379250712" duration="1302000" />
-      <workItem from="1509756511890" duration="4781000" />
+      <workItem from="1509756511890" duration="5229000" />
     </task>
     <task id="LOCAL-00001" summary="Commit with new repo for Project C and TravisCI">
       <created>1509760031992</created>
@@ -494,7 +496,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509760546295</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Ant tests inserted">
+      <created>1509761309603</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1509761309603</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -512,7 +521,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6083000" />
+    <option name="totallyTimeSpent" value="6531000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -573,7 +582,8 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <MESSAGE value="Commit with new repo for Project C and TravisCI" />
     <MESSAGE value="Ant filename change" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ant filename change" />
+    <MESSAGE value="Ant tests inserted" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ant tests inserted" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -743,8 +753,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="605">
-          <caret line="192" column="11" lean-forward="true" selection-start-line="192" selection-start-column="11" selection-end-line="192" selection-end-column="11" />
+        <state relative-caret-position="372">
+          <caret line="95" column="47" lean-forward="true" selection-start-line="95" selection-start-column="47" selection-end-line="95" selection-end-column="47" />
           <folding />
         </state>
       </provider>

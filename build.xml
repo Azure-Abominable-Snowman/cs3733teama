@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="cs3733teama" default="all">
-  
-  
+
+
+
   <property file="cs3733teama.properties"/>
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
@@ -87,6 +88,7 @@
   <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
   <!-- Register Custom Compiler Taskdefs -->
   <property name="javac2.home" value="${idea.home}/lib"/>
+  <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
   <path id="javac2.classpath">
     <pathelement location="${javac2.home}/javac2.jar"/>
     <pathelement location="${javac2.home}/jdom.jar"/>
