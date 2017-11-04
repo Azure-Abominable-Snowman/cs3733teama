@@ -14,6 +14,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cs3733teama.iml" afterPath="$PROJECT_DIR$/cs3733teama.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cs3733teama.properties" afterPath="$PROJECT_DIR$/cs3733teama.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/teama/Controller.java" afterPath="$PROJECT_DIR$/src/teama/Controller.java" />
@@ -98,7 +99,7 @@
         <entry file="file://$PROJECT_DIR$/.travis.yml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
-              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -107,8 +108,8 @@
       <file leaf-file-name="build.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="211" column="55" lean-forward="false" selection-start-line="211" selection-start-column="55" selection-end-line="211" selection-end-column="55" />
+            <state relative-caret-position="605">
+              <caret line="192" column="11" lean-forward="true" selection-start-line="192" selection-start-column="11" selection-end-line="192" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -123,6 +124,16 @@
         <option value="JUnit5 Test Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>classpath</find>
+      <find>src</find>
+      <find>ant.file</find>
+      <find>compile.module.cs3733teama.tests</find>
+      <find>c</find>
+      <find>.production</find>
+    </findStrings>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -145,8 +156,8 @@
         <option value="$PROJECT_DIR$/src/sample/TestTestTest.java" />
         <option value="$PROJECT_DIR$/src/sample/MainTest.java" />
         <option value="$PROJECT_DIR$/src/tests/MainTest.java" />
-        <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/build.xml" />
       </list>
     </option>
   </component>
@@ -195,6 +206,17 @@
             <path>
               <item name="cs3733teama" type="b2602c69:ProjectViewProjectNode" />
               <item name="cs3733teama" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cs3733teama" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cs3733teama" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cs3733teama" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cs3733teama" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="teama" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -449,7 +471,7 @@
       <option name="presentableId" value="Default" />
       <updated>1359379246138</updated>
       <workItem from="1359379250712" duration="1302000" />
-      <workItem from="1509756511890" duration="4025000" />
+      <workItem from="1509756511890" duration="4781000" />
     </task>
     <task id="LOCAL-00001" summary="Commit with new repo for Project C and TravisCI">
       <created>1509760031992</created>
@@ -465,7 +487,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509760297346</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Ant filename change">
+      <created>1509760546295</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1509760546295</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -483,7 +512,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5327000" />
+    <option name="totallyTimeSpent" value="6083000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -554,21 +583,6 @@
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="true" />
     <buildFile url="file://$PROJECT_DIR$/build.xml">
-      <targetFilters>
-        <filter targetName="register.custom.compilers" isVisible="false" />
-        <filter targetName="compile.module.cs3733teama" isVisible="true" />
-        <filter targetName="compile.module.cs3733teama.production" isVisible="true" />
-        <filter targetName="compile.module.cs3733teama.tests" isVisible="true" />
-        <filter targetName="clean.module.cs3733teama" isVisible="true" />
-        <filter targetName="init" isVisible="true" />
-        <filter targetName="clean" isVisible="true" />
-        <filter targetName="build.modules" isVisible="true" />
-        <filter targetName="init.artifacts" isVisible="false" />
-        <filter targetName="clean.artifact.javafxapp" isVisible="true" />
-        <filter targetName="artifact.javafxapp" isVisible="true" />
-        <filter targetName="build.all.artifacts" isVisible="true" />
-        <filter targetName="all" isVisible="true" />
-      </targetFilters>
       <expanded value="true" />
     </buildFile>
   </component>
@@ -695,14 +709,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cs3733teama.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="39" lean-forward="false" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cs3733teama.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
@@ -722,15 +728,23 @@
     <entry file="file://$PROJECT_DIR$/.travis.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cs3733teama.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="39" lean-forward="false" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="211" column="55" lean-forward="false" selection-start-line="211" selection-start-column="55" selection-end-line="211" selection-end-column="55" />
+        <state relative-caret-position="605">
+          <caret line="192" column="11" lean-forward="true" selection-start-line="192" selection-start-column="11" selection-end-line="192" selection-end-column="11" />
           <folding />
         </state>
       </provider>
