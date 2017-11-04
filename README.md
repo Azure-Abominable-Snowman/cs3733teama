@@ -1,6 +1,5 @@
-# cs3733teama
-Repo for Team A
-test change
+# Team A CS3733 Repo
 
-Test
-test&test
+Currently on Project C
+
+Basic Implementation of B&W Application
