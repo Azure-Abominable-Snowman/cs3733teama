@@ -173,7 +173,7 @@
   </path>
   
   
-  <target name="compile.module.cs3733teama" depends="compile.module.cs3733teama.production,compile.module.cs3733teama.tests" description="Compile module cs3733teama"/>
+  <target name="compile.module.cs3733teama" depends="compile.module.cs3733teama.production,test" description="Compile module cs3733teama"/>
   
   <target name="compile.module.cs3733teama.production" depends="register.custom.compilers" description="Compile module cs3733teama; production classes">
     <mkdir dir="${cs3733teama.output.dir}"/>
@@ -193,7 +193,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.cs3733teama.tests" depends="register.custom.compilers,compile.module.cs3733teama.production" description="compile module cs3733teama; test classes" unless="skip.tests"/>
+  <target name="test" depends="register.custom.compilers,compile.module.cs3733teama.production" description="compile module cs3733teama; test classes" unless="skip.tests"/>
   
   <target name="clean.module.cs3733teama" description="cleanup module">
     <delete dir="${cs3733teama.output.dir}"/>
@@ -256,6 +256,6 @@
     <!-- Delete temporary files -->
     <delete dir="${artifacts.temp.dir}"/>
   </target>
-  
+
   <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 </project>
