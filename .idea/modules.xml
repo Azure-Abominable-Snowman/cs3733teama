@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/cs3733teama.iml" filepath="$PROJECT_DIR$/cs3733teama.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bwhospital-kiosk.iml" filepath="$PROJECT_DIR$/.idea/modules/bwhospital-kiosk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bwhospital-kiosk_main.iml" filepath="$PROJECT_DIR$/.idea/modules/bwhospital-kiosk_main.iml" group="bwhospital-kiosk" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bwhospital-kiosk_test.iml" filepath="$PROJECT_DIR$/.idea/modules/bwhospital-kiosk_test.iml" group="bwhospital-kiosk" />
     </modules>
   </component>
 </project>
