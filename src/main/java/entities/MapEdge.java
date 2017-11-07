@@ -9,6 +9,7 @@ public class MapEdge {
         this.start = start;
         this.end = end;
         this.weight = weight;
+        this.id = id;
     }
 
     public MapNode getStart() {
@@ -40,6 +41,6 @@ public class MapEdge {
     }
 
     public String toCSV() {
-        return String.format("'id','%s','%s'", start.getId(), end.getId());
+        return String.format("'%s','%s','%s'", getId(), start.getId(), end.getId());
     }
 }
