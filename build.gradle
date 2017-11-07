@@ -15,6 +15,6 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'controllers.Main'
+        attributes 'Main-Class': 'entities.Main'
     }
 }
