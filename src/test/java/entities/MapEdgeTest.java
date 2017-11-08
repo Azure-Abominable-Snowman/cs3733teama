@@ -57,7 +57,12 @@ public class MapEdgeTest {
 
     @Test
     public void toCSV() throws Exception {
-        assert testEdge.toCSV().equals("'TestEdge','WHALL00203','WHALL00302'");
+        assert testEdge.toCSV().equals("\"TestEdge\",\"WHALL00203\",\"WHALL00302\"");
+    }
+
+    @Test
+    public void toSQLVals() throws Exception {
+        assert testEdge.toSQLVals().equals("'TestEdge','WHALL00203','WHALL00302'");
     }
 
 }
