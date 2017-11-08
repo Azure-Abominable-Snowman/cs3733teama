@@ -11,8 +11,9 @@ public class Main {
     public static void main(String[] args) {
         // Create a JavaDB data source and populate with the values from the CSV files (CSV data source)
         MapDataSource dbSource = new JavaDatabaseSource("jdbc:derby://localhost:1527/testdb", "TEST_NODES", "TEST_EDGES");
-        MapDataSource csvDataSource =  new CSVDatabaseSource("C:\\Users\\raysc\\Documents\\CS3733\\cs3733teama\\csvdata\\MapAnodes.csv",
-                                                             "C:\\Users\\raysc\\Documents\\CS3733\\cs3733teama\\csvdata\\MapAedges.csv");
+        String dir = System.getProperty("user.dir");
+        MapDataSource csvDataSource =  new CSVDatabaseSource(dir + "\\csvdata\\MapAnodes.csv",
+                                                             dir + "\\csvdata\\MapAedges.csv");
         // add all nodes to the database
         ArrayList<String> nodeIds = csvDataSource.getNodeIds();
         for(String id : nodeIds) {
@@ -28,7 +29,7 @@ public class Main {
         // Also, every time an edit is made in the CSV data source it is reflected in the CSV file on the disk,
         // so there is no need to generate it specially
 
-        // Edit it so that all nodes swap their short and long description
+        // Edit it so that all nodes swap their short and long descriptionA_EDGES
         // Reflect these changes in the CSVDataSource and JavaDBDataSource
         for(String id : nodeIds) {
             MapNode n = dbSource.getNode(id);
@@ -49,5 +50,6 @@ public class Main {
             dbSource.addEdge(e);
             csvDataSource.addEdge(e);
         }
+
     }
 }
