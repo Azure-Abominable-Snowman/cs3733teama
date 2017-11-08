@@ -8,8 +8,8 @@ public class MapNode {
     private Enum<NodeType> nodeType;
     private ArrayList<MapEdge> edges;
 
-    public MapNode(String id, Location coordinate, Enum<NodeType> nodeType, String shortDescription,
-                   String longDescription, String teamAssignment, ArrayList<MapEdge> edges) {
+    public MapNode(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
+                   String shortDescription, String teamAssignment, ArrayList<MapEdge> edges) {
         this.coordinate = coordinate;
         this.id = id;
         this.nodeType = nodeType;
@@ -60,7 +60,12 @@ public class MapNode {
     }
 
     public String toCSV() {
-        return "\'"+id+"\',"+coordinate.getxCoord()+","+coordinate.getyCoord()+",\'"+coordinate.getLevel()+"\',\'"+
-                coordinate.getBuilding()+"\',\'"+nodeType.name()+"\',\'"+longDescription+"\',\'"+shortDescription+"\',\'"+teamAssignment+"\'";
+        return "\""+id+"\","+coordinate.getxCoord()+","+coordinate.getyCoord()+",\""+coordinate.getLevel()+"\",\""+
+                coordinate.getBuilding()+"\",\""+nodeType.name()+"\",\""+longDescription+"\",\""+shortDescription+"\",\""+teamAssignment+"\"";
+    }
+
+    public String toSQLVals() {
+        return "'"+id+"',"+coordinate.getxCoord()+","+coordinate.getyCoord()+",'"+coordinate.getLevel()+"','"+
+                coordinate.getBuilding()+"','"+nodeType.name()+"','"+longDescription+"','"+shortDescription+"','"+teamAssignment+"'";
     }
 }

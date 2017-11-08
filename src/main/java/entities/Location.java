@@ -2,7 +2,8 @@ package entities;
 
 public class Location {
     private int xCoord, yCoord;
-    private String level, building;
+    private String building;
+    private String level;
 
     public Location(int xCoord, int yCoord, String level, String building) {
         this.xCoord = xCoord;
