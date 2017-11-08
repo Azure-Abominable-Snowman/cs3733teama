@@ -5,6 +5,7 @@ import java.util.*;
 
 public class CSVDatabaseSource implements MapDataSource {
 
+    // Hashmaps that store all of the node and edge id keys and object values in memory
     private HashMap<String, MapNode> nodeMap = new HashMap<>();
     private HashMap<String, MapEdge> edgeMap = new HashMap<>();
     private String nodeFilename, edgeFilename;
@@ -31,7 +32,7 @@ public class CSVDatabaseSource implements MapDataSource {
     }
 
     /**
-     * Returns an array of CSV data lines
+     * Returns an array of CSV data lines parsed from a given filename
      * @param filename
      * @return
      */
@@ -62,6 +63,12 @@ public class CSVDatabaseSource implements MapDataSource {
         return data;
     }
 
+    /**
+     * Splits a given CSV line into an array of its components
+     * Doesn't detect types, assumes all CSV values are strings.
+     * @param line
+     * @return
+     */
     private List<String> splitCSVLine(String line) {
         // Add a new parsed CSV line to the list
         String[] sep = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
@@ -77,14 +84,25 @@ public class CSVDatabaseSource implements MapDataSource {
         return Arrays.asList(sep);
     }
 
+    /**
+     * Converts a node CSV row into an object
+     * Edges are null because they are not specified in node CSV lines
+     * @param row
+     * @return
+     */
     private MapNode nodeListToObj(List<String> row) {
         return new MapNode(row.get(0),
                 new Location(Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)),
-                        row.get(3), row.get(4)), NodeType.valueOf(row.get(5)), row.get(7), row.get(6), row.get(8), null);
+                        row.get(3), row.get(4)), NodeType.valueOf(row.get(5)), row.get(6), row.get(7), row.get(8), null);
     }
 
+    /**
+     * Converts an edge CSV row into an object
+     * @param row
+     * @return
+     */
     private MapEdge edgeListToObj(List<String> row) {
-        return new MapEdge(row.get(0), nodeMap.get(row.get(1)), nodeMap.get(row.get(2)), 0);
+        return new MapEdge(row.get(0), nodeMap.get(row.get(1)), nodeMap.get(row.get(2)));
     }
 
     @Override
@@ -93,13 +111,27 @@ public class CSVDatabaseSource implements MapDataSource {
     }
 
     @Override
-    public MapEdge getAdjacentEdges(String id) {
-        return null;
+    public ArrayList<MapEdge> getAdjacentEdges(String id) {
+        return getAdjacentEdges(getNode(id));
     }
 
     @Override
-    public MapEdge getAdjacentNodes(String id) {
-        return null;
+    public ArrayList<MapNode> getAdjacentNodes(String id) {
+        return getAdjacentNodes(getNode(id));
+    }
+
+    @Override
+    public ArrayList<MapEdge> getAdjacentEdges(MapNode node) {
+        return node.getEdges();
+    }
+
+    @Override
+    public ArrayList<MapNode> getAdjacentNodes(MapNode node) {
+        ArrayList<MapNode> nodes = new ArrayList<>();
+        for(MapEdge n : getAdjacentEdges(node)) {
+            nodes.add(n.getEnd());
+        }
+        return nodes;
     }
 
     @Override
@@ -131,6 +163,16 @@ public class CSVDatabaseSource implements MapDataSource {
         writeEdge(edge, false);
     }
 
+    @Override
+    public ArrayList<String> getNodeIds() {
+        return new ArrayList<String>(nodeMap.keySet());
+    }
+
+    @Override
+    public ArrayList<String> getEdgeIds() {
+        return new ArrayList<String>(edgeMap.keySet());
+    }
+
     private void writeNode(MapNode node, boolean delete) throws IOException {
         // Create whole new CSV file with every edit
         try {
@@ -149,50 +191,6 @@ public class CSVDatabaseSource implements MapDataSource {
         } catch(IOException e) {
             e.printStackTrace();
         }
-        /* Random access file and replace single line, try this again later
-        try {
-            File file = new File(nodeFilename);
-            if(!file.exists()) {
-                // If the file doesn't exist something must have gone wrong
-                throw new IOException();
-            }
-            // Open the file and find the line number to replace or remove
-            RandomAccessFile fileReader = new RandomAccessFile(nodeFilename, "rw");
-            String currLine = fileReader.readLine();
-            int numLines = 1;
-            while(currLine != null && !splitCSVLine(currLine).get(0).equals(node.getId())) {
-                currLine = fileReader.readLine();
-                numLines++;
-            }
-            // At this point the file pointer is at the end of the line we want to change
-
-            if(currLine != null) { // exists in the file, need to replace the line
-                StringBuilder newLine = new StringBuilder(node.toCSV());
-                for (int i = 0; i < currLine.length() - node.toCSV().length(); i++) {
-                    newLine.append(" ");
-                }
-                System.out.println("NEW LINE: " + newLine.toString() + "|");
-
-                System.out.println(numLines);
-                fileReader.seek(0);
-                for(int i = 0; i < numLines-1; i++) {
-                    fileReader.readLine();
-                }
-                for(byte b : "55".getBytes()) {
-                    fileReader.writeByte(b);
-                }
-            } else { // Doesn't exist in the file, append to the end
-
-            }
-
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-        for(MapNode n : nodeMap.values()) {
-            System.out.println(n.toCSV());
-        }
-        */
     }
 
     private void writeEdge(MapEdge edge, boolean delete) {
@@ -213,5 +211,10 @@ public class CSVDatabaseSource implements MapDataSource {
         } catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public MapEdge getEdge(String id) {
+        return edgeMap.get(id);
     }
 }

@@ -1,5 +1,8 @@
 package entities;
 
+/**
+ * Defines a node type
+ */
 public enum NodeType {
     HALL("Hallway"), REST("Restroom"), ELEV("Elevator"),
     STAI("Staircase"), DEPT("Medical Department"), LABS("Labs"),

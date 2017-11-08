@@ -1,6 +1,7 @@
 package entities;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -50,7 +51,7 @@ public class JavaDatabaseSource implements MapDataSource {
                             "building VARCHAR(10) NOT NULL," +
                             "nodeType VARCHAR(4) NOT NULL," +
                             "longName VARCHAR(130)," +
-                            "shortName VARCHAR(15) NOT NULL," +
+                            "shortName VARCHAR(130) NOT NULL," +
                             "teamAssigned VARCHAR(6) NOT NULL" +
                             ")"
             );
@@ -113,24 +114,28 @@ public class JavaDatabaseSource implements MapDataSource {
         return null;
     }
 
-    /**
-     * Gets all of the node's edges
-     * @param id
-     * @return
-     */
     @Override
-    public MapEdge getAdjacentEdges(String id) {
-        return null;
+    public ArrayList<MapEdge> getAdjacentEdges(String id) {
+        return getAdjacentEdges(getNode(id));
     }
 
-    /**
-     * Gets all adjacent nodes (connected to its edges)
-     * @param id
-     * @return
-     */
     @Override
-    public MapEdge getAdjacentNodes(String id) {
-        return null;
+    public ArrayList<MapEdge> getAdjacentEdges(MapNode node) {
+        return node.getEdges();
+    }
+
+    @Override
+    public ArrayList<MapNode> getAdjacentNodes(String id) {
+        return getAdjacentNodes(getNode(id));
+    }
+
+    @Override
+    public ArrayList<MapNode> getAdjacentNodes(MapNode node) {
+        ArrayList<MapNode> nodes = new ArrayList<>();
+        for(MapEdge n : getAdjacentEdges(node)) {
+            nodes.add(n.getEnd());
+        }
+        return nodes;
     }
 
     /**
@@ -141,12 +146,11 @@ public class JavaDatabaseSource implements MapDataSource {
     public void addNode(MapNode node) {
         try {
             stmt = conn.createStatement();
-            stmt.execute("INSERT INTO " + nodeTable + " VALUES ("+node.toCSV()+")");
+            stmt.execute("INSERT INTO " + nodeTable + " VALUES ("+node.toSQLVals()+")");
             stmt.close();
         }
         catch (SQLException sqlExcept) {
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {
-                System.out.println("Updating row");
                 try {
                     stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet result = stmt.executeQuery("SELECT * FROM "+nodeTable+" WHERE NODEID = '"+node.getId()+"'");
@@ -179,12 +183,11 @@ public class JavaDatabaseSource implements MapDataSource {
     public void addEdge(MapEdge edge) {
         try {
             stmt = conn.createStatement();
-            stmt.execute("INSERT INTO " + edgeTable + " VALUES ("+edge.toCSV()+")");
+            stmt.execute("INSERT INTO " + edgeTable + " VALUES ("+edge.toSQLVals()+")");
             stmt.close();
         }
         catch (SQLException sqlExcept) {
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {
-                System.out.println("Updating row");
                 try {
                     stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+edge.getId()+"'");
@@ -209,6 +212,54 @@ public class JavaDatabaseSource implements MapDataSource {
      */
     @Override
     public void removeNode(String id) {
+        // TODO: Implement
+    }
 
+    private ArrayList<String> getIdsFromDB(String idCol, String dbName) {
+        ArrayList<String> ids = new ArrayList<>();
+        try
+        {
+            stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT "+idCol+" FROM "+dbName);
+            while(result.next()) {
+                ids.add(result.getString(1));
+            }
+            result.close();
+            stmt.close();
+            return ids;
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<String> getNodeIds() {
+        return getIdsFromDB("NODEID", nodeTable);
+    }
+
+    @Override
+    public ArrayList<String> getEdgeIds() {
+        return getIdsFromDB("EDGEID", edgeTable);
+    }
+
+    @Override
+    public MapEdge getEdge(String id) {
+        try {
+            stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+id+"'");
+            result.next();
+            MapNode start = getNode(result.getString(2));
+            MapNode end = getNode(result.getString(3));
+            MapEdge retrievedEdge = new MapEdge(result.getString(1), start, end);
+            result.close();
+            stmt.close();
+            return retrievedEdge;
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+        return null;
     }
 }
