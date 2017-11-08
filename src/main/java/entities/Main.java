@@ -18,5 +18,6 @@ public class Main {
                                                   "C:\\Users\\raysc\\Documents\\CS3733\\cs3733teama\\csvdata\\MapWedges.csv");
         csv.addNode(testNode);
         System.out.println("T: "+csv.getNode("WELEV00H01").toCSV());
+        csv.addEdge(new MapEdge("Test_Edge", testNode, testNode, 0));
     }
 }

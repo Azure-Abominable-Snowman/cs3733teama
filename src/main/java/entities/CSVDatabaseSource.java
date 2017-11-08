@@ -69,6 +69,10 @@ public class CSVDatabaseSource implements MapDataSource {
         // TODO: Be able to parse multi-layer quotes, only remove the outer layer.
         for(int i = 0; i < sep.length; i++) {
             sep[i] = sep[i].replace("\"", "");
+            // Check to see if it is bordered by single quotes, if it is remove them.
+            if(sep[i].charAt(0) == '\'' && sep[i].charAt(sep[i].length()-1) == '\'') {
+                sep[i] = sep[i].substring(1, sep[i].length()-1);
+            }
         }
         return Arrays.asList(sep);
     }
@@ -76,7 +80,7 @@ public class CSVDatabaseSource implements MapDataSource {
     private MapNode nodeListToObj(List<String> row) {
         return new MapNode(row.get(0),
                 new Location(Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)),
-                        row.get(3), row.get(4)), NodeType.valueOf(row.get(5)), row.get(6), row.get(7), row.get(8), null);
+                        row.get(3), row.get(4)), NodeType.valueOf(row.get(5)), row.get(7), row.get(6), row.get(8), null);
     }
 
     private MapEdge edgeListToObj(List<String> row) {
@@ -128,10 +132,28 @@ public class CSVDatabaseSource implements MapDataSource {
     }
 
     private void writeNode(MapNode node, boolean delete) throws IOException {
+        // Create whole new CSV file with every edit
         try {
             File file = new File(nodeFilename);
             if(!file.exists()) {
-                // If the file exists something must of been changed
+                // If the file doesn't exist something must have gone wrong
+                throw new IOException();
+            }
+            FileWriter fw = new FileWriter(nodeFilename);
+            BufferedWriter writer = new BufferedWriter(fw);
+            writer.write("nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n");
+            for(MapNode n : nodeMap.values()) {
+                writer.write(n.toCSV()+"\n");
+            }
+            writer.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        /* Random access file and replace single line, try this again later
+        try {
+            File file = new File(nodeFilename);
+            if(!file.exists()) {
+                // If the file doesn't exist something must have gone wrong
                 throw new IOException();
             }
             // Open the file and find the line number to replace or remove
@@ -170,11 +192,26 @@ public class CSVDatabaseSource implements MapDataSource {
         for(MapNode n : nodeMap.values()) {
             System.out.println(n.toCSV());
         }
+        */
     }
 
     private void writeEdge(MapEdge edge, boolean delete) {
-        /*for(MapEdge e : edgeMap.values()) {
-            System.out.println(e.toCSV());
-        }*/
+        // Create whole new CSV file with every edit
+        try {
+            File file = new File(edgeFilename);
+            if(!file.exists()) {
+                // If the file doesn't exist something must have gone wrong
+                throw new IOException();
+            }
+            FileWriter fw = new FileWriter(edgeFilename);
+            BufferedWriter writer = new BufferedWriter(fw);
+            writer.write("edgeID,startNode,endNode\n");
+            for(MapEdge n : edgeMap.values()) {
+                writer.write(n.toCSV()+"\n");
+            }
+            writer.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }
