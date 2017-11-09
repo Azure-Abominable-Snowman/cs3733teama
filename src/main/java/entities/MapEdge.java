@@ -53,6 +53,12 @@ public class MapEdge {
         this.end = end;
     }
 
+    public MapNode getAdjacentNode(MapNode origionalNode)
+    {
+        if (origionalNode==this.start) return this.end;
+        else return this.start;
+    }
+
     public double getWeight() {
         return weight;
     }
