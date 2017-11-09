@@ -18,7 +18,7 @@ public class JavaDatabaseSource implements MapDataSource {
         this.edgeTable = edgeTable;
 
         try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
             // Get a connection
             conn = DriverManager.getConnection(dbURL);
         }
@@ -89,6 +89,28 @@ public class JavaDatabaseSource implements MapDataSource {
     }
 
     /**
+     * Only gets a node, doesn't set the edges property
+     * @param id
+     * @return
+     */
+    private MapNode retrieveNode(String id) {
+        try {
+            stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT * FROM " + nodeTable + " WHERE NODEID = '" + id + "'");
+            result.next();
+            MapNode retrievedNode = new MapNode(result.getString(1),
+                    new Location(result.getInt(2), result.getInt(3), result.getString(4), result.getString(5)),
+                    NodeType.valueOf(result.getString(6)), result.getString(7), result.getString(8), result.getString(9));
+            result.close();
+            stmt.close();
+            return retrievedNode;
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Returns a node using an ID from the database
      * @param id
      * @return
@@ -98,44 +120,21 @@ public class JavaDatabaseSource implements MapDataSource {
         try
         {
             stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM "+nodeTable+" WHERE NODEID = '"+id+"'");
-            ResultSetMetaData rsmd = result.getMetaData();
-            result.next();
-            MapNode retrievedNode = new MapNode(result.getString(1),
-                    new Location(result.getInt(2), result.getInt(3), result.getString(4), result.getString(5)),
-                    NodeType.valueOf(result.getString(6)), result.getString(7), result.getString(8), result.getString(9), null);
-            result.close();
-            stmt.close();
+            ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE STARTNODE='"+id+"' OR ENDNODE='"+id+"'");
+            MapNode retrievedNode = retrieveNode(id);
+            if(retrievedNode == null) {
+                System.out.println("Requested node doesn't exist in the database");
+                return null;
+            }
+            while(result.next()) {
+                retrievedNode.addEdge(new MapEdge(result.getString(1), retrieveNode(result.getString(2)), retrieveNode(result.getString(3))));
+            }
             return retrievedNode;
         }
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public ArrayList<MapEdge> getAdjacentEdges(String id) {
-        return getAdjacentEdges(getNode(id));
-    }
-
-    @Override
-    public ArrayList<MapEdge> getAdjacentEdges(MapNode node) {
-        return node.getEdges();
-    }
-
-    @Override
-    public ArrayList<MapNode> getAdjacentNodes(String id) {
-        return getAdjacentNodes(getNode(id));
-    }
-
-    @Override
-    public ArrayList<MapNode> getAdjacentNodes(MapNode node) {
-        ArrayList<MapNode> nodes = new ArrayList<>();
-        for(MapEdge n : getAdjacentEdges(node)) {
-            nodes.add(n.getEnd());
-        }
-        return nodes;
     }
 
     /**
