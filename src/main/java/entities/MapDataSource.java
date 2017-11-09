@@ -13,30 +13,6 @@ public interface MapDataSource {
     }
 
     /**
-     * Gets the adjacent edges to the node id specified
-     * @param id
-     * @return
-     */
-    default ArrayList<MapEdge> getAdjacentEdges(String id) {
-        return null;
-    }
-
-    default ArrayList<MapEdge> getAdjacentEdges(MapNode node) {
-        return null;
-    }
-
-    /**
-     * Gets the adjacent nodes to the specified node id
-     * @param id
-     * @return
-     */
-    default ArrayList<MapNode> getAdjacentNodes(String id) {
-        return null;
-    }
-
-    default ArrayList<MapNode> getAdjacentNodes(MapNode node) { return null; }
-
-    /**
      * Adds a node to the data source
      * @param node
      */

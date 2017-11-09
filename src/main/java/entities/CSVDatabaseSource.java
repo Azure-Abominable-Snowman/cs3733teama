@@ -27,6 +27,9 @@ public class CSVDatabaseSource implements MapDataSource {
             // for each one and put it into the hashmap
             // Look up corresponding edges in the node hashmap
             MapEdge e = edgeListToObj(row);
+            // Add this edge to the node objects that are associated with it
+            nodeMap.get(e.getStart().getId()).addEdge(e);
+            nodeMap.get(e.getEnd().getId()).addEdge(e);
             edgeMap.put(row.get(0), e);
         }
     }
@@ -93,7 +96,7 @@ public class CSVDatabaseSource implements MapDataSource {
     private MapNode nodeListToObj(List<String> row) {
         return new MapNode(row.get(0),
                 new Location(Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)),
-                        row.get(3), row.get(4)), NodeType.valueOf(row.get(5)), row.get(6), row.get(7), row.get(8), null);
+                        row.get(3), row.get(4)), NodeType.valueOf(row.get(5)), row.get(6), row.get(7), row.get(8));
     }
 
     /**
@@ -108,30 +111,6 @@ public class CSVDatabaseSource implements MapDataSource {
     @Override
     public MapNode getNode(String id) {
         return nodeMap.get(id);
-    }
-
-    @Override
-    public ArrayList<MapEdge> getAdjacentEdges(String id) {
-        return getAdjacentEdges(getNode(id));
-    }
-
-    @Override
-    public ArrayList<MapNode> getAdjacentNodes(String id) {
-        return getAdjacentNodes(getNode(id));
-    }
-
-    @Override
-    public ArrayList<MapEdge> getAdjacentEdges(MapNode node) {
-        return node.getEdges();
-    }
-
-    @Override
-    public ArrayList<MapNode> getAdjacentNodes(MapNode node) {
-        ArrayList<MapNode> nodes = new ArrayList<>();
-        for(MapEdge n : getAdjacentEdges(node)) {
-            nodes.add(n.getEnd());
-        }
-        return nodes;
     }
 
     @Override
@@ -176,15 +155,14 @@ public class CSVDatabaseSource implements MapDataSource {
     private void writeNode(MapNode node, boolean delete) throws IOException {
         // Create whole new CSV file with every edit
         try {
-            String modified = nodeFilename.split("[.]")[0] + "Modified.csv";
-            File file = new File(modified);
+            File file = new File(nodeFilename);
             if(!file.exists()) {
                 if (!(file.createNewFile())) {
                     // If the file doesn't exist something must have gone wrong
                     throw new IOException();
                 }
             }
-            FileWriter fw = new FileWriter(modified);
+            FileWriter fw = new FileWriter(nodeFilename);
             BufferedWriter writer = new BufferedWriter(fw);
             writer.write("nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n");
             for(MapNode n : nodeMap.values()) {
@@ -199,8 +177,7 @@ public class CSVDatabaseSource implements MapDataSource {
     private void writeEdge(MapEdge edge, boolean delete) {
         // Create whole new CSV file with every edit
         try {
-            String modified = edgeFilename.split("[.]")[0] + "Modified.csv";
-            File file = new File(modified);
+            File file = new File(edgeFilename);
 
             if(!file.exists()) {
                 if (!(file.createNewFile())) {
@@ -208,7 +185,7 @@ public class CSVDatabaseSource implements MapDataSource {
                     throw new IOException();
                 }
             }
-            FileWriter fw = new FileWriter(modified);
+            FileWriter fw = new FileWriter(edgeFilename);
             BufferedWriter writer = new BufferedWriter(fw);
             writer.write("edgeID,startNode,endNode\n");
             for(MapEdge n : edgeMap.values()) {
