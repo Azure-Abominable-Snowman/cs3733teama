@@ -18,7 +18,7 @@ public class JavaDatabaseSource implements MapDataSource {
         this.edgeTable = edgeTable;
 
         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             // Get a connection
             conn = DriverManager.getConnection(dbURL);
         }
@@ -261,5 +261,14 @@ public class JavaDatabaseSource implements MapDataSource {
             sqlExcept.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void close() {
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,9 +10,10 @@ public class Main {
      */
     public static void main(String[] args) {
         // Create a JavaDB data source and populate with the values from the CSV files (CSV data source)
-        MapDataSource dbSource = new JavaDatabaseSource("jdbc:derby://localhost:1527/testdb", "TEST_NODES", "TEST_EDGES");
-        MapDataSource csvDataSource =  new CSVDatabaseSource("C:\\Users\\raysc\\Documents\\CS3733\\cs3733teama\\csvdata\\MapAnodes.csv",
-                                                             "C:\\Users\\raysc\\Documents\\CS3733\\cs3733teama\\csvdata\\MapAedges.csv");
+        String path = System.getProperty("user.dir");
+        MapDataSource dbSource = new JavaDatabaseSource("jdbc:derby://localhost:1527/"+path+"\\projectcdb;create=true", "TEST_NODES", "TEST_EDGES");
+        MapDataSource csvDataSource =  new CSVDatabaseSource(path+"\\csvdata\\MapAnodes.csv",
+                                                             path+"\\csvdata\\MapAedges.csv");
         // add all nodes to the database
         ArrayList<String> nodeIds = csvDataSource.getNodeIds();
         for(String id : nodeIds) {
@@ -49,5 +50,8 @@ public class Main {
             dbSource.addEdge(e);
             csvDataSource.addEdge(e);
         }
+
+        dbSource.close();
+        csvDataSource.close();
     }
 }

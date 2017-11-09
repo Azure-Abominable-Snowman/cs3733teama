@@ -82,4 +82,8 @@ public interface MapDataSource {
      * @return
      */
     default MapEdge getEdge(String id) { return null; }
+
+    default void close() {
+
+    }
 }
