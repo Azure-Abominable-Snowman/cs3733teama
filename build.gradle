@@ -1,5 +1,4 @@
-group 'HospitalProject'
-version '1.0-SNAPSHOT'
+group 'bwhospital-kiosk'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -10,7 +9,7 @@ version = '1.0'
 
 task makeJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': "HospitalProject-Iteration1",
+        attributes 'Implementation-Title': "BWHospitalKiosk-Iteration1",
                 'Implementation-Version': version,
                 'Main-Class': 'entities.Main'
     }
@@ -27,7 +26,6 @@ repositories {
 }
 
 dependencies {
-    //TODO: Find a better way to organize these dependencies!
     compile(
             [group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'],
             [group: 'org.apache.derby', name: 'derbyclient', version: '10.11.1.1'],
