@@ -176,12 +176,15 @@ public class CSVDatabaseSource implements MapDataSource {
     private void writeNode(MapNode node, boolean delete) throws IOException {
         // Create whole new CSV file with every edit
         try {
-            File file = new File(nodeFilename);
+            String modified = nodeFilename.split("[.]")[0] + "Modified.csv";
+            File file = new File(modified);
             if(!file.exists()) {
-                // If the file doesn't exist something must have gone wrong
-                throw new IOException();
+                if (!(file.createNewFile())) {
+                    // If the file doesn't exist something must have gone wrong
+                    throw new IOException();
+                }
             }
-            FileWriter fw = new FileWriter(nodeFilename);
+            FileWriter fw = new FileWriter(modified);
             BufferedWriter writer = new BufferedWriter(fw);
             writer.write("nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n");
             for(MapNode n : nodeMap.values()) {
@@ -196,12 +199,16 @@ public class CSVDatabaseSource implements MapDataSource {
     private void writeEdge(MapEdge edge, boolean delete) {
         // Create whole new CSV file with every edit
         try {
-            File file = new File(edgeFilename);
+            String modified = edgeFilename.split("[.]")[0] + "Modified.csv";
+            File file = new File(modified);
+
             if(!file.exists()) {
-                // If the file doesn't exist something must have gone wrong
-                throw new IOException();
+                if (!(file.createNewFile())) {
+                    // If the file doesn't exist something must have gone wrong
+                    throw new IOException();
+                }
             }
-            FileWriter fw = new FileWriter(edgeFilename);
+            FileWriter fw = new FileWriter(modified);
             BufferedWriter writer = new BufferedWriter(fw);
             writer.write("edgeID,startNode,endNode\n");
             for(MapEdge n : edgeMap.values()) {
