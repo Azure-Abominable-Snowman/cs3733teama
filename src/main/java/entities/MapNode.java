@@ -9,6 +9,11 @@ public class MapNode {
     private ArrayList<MapEdge> edges;
 
     public MapNode(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
+                   String shortDescription, String teamAssignment) {
+        this(id, coordinate, nodeType, longDescription, shortDescription, teamAssignment, new ArrayList<>());
+    }
+
+    public MapNode(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
                    String shortDescription, String teamAssignment, ArrayList<MapEdge> edges) {
         this.coordinate = coordinate;
         this.id = id;
@@ -37,6 +42,10 @@ public class MapNode {
 
     public void setEdges(ArrayList<MapEdge> edges) {
         this.edges = edges;
+    }
+
+    public void addEdge(MapEdge edge) {
+        this.edges.add(edge);
     }
 
     public String getShortDescription() {
