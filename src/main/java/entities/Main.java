@@ -3,11 +3,7 @@ package entities;
 import java.util.ArrayList;
 
 public class Main {
-    /*
-     * Write a program that demonstrates reading from the CSV files and creating the JavaDB tables from them.
-     * The read data from the tables will be turned into Java objects. Finally, modify values in the Java objects
-     * update the JavaDB database and generate updated CSV files.
-     */
+
     public static void main(String[] args) {
         // Create a JavaDB data source and populate with the values from the CSV files (CSV data source)
         String dir = System.getProperty("user.dir");
@@ -24,12 +20,27 @@ public class Main {
             dbSource.addEdge(csvDataSource.getEdge(id));
         }
 
+        // At this point the database is completely loaded with edges and nodes
+
+        for(String id : dbSource.getNodeIds()) {
+            for(MapEdge e : dbSource.getNode(id).getEdges()) {
+                System.out.print(e.toCSV() + " ");
+            }
+            System.out.println("");
+            for(MapEdge e : csvDataSource.getNode(id).getEdges()) {
+                System.out.print(e.toCSV() + " ");
+            }
+            System.out.println("");
+            System.out.println("");
+        }
+
+        /*
         // at this point all of the data is in the database tables, now we are going to make some edits the data
         // and reupload it to the database
         // Also, every time an edit is made in the CSV data source it is reflected in the CSV file on the disk,
         // so there is no need to generate it specially
 
-        // Edit it so that all nodes swap their short and long descriptionA_EDGES
+        // Edit it so that all nodes swap their short and long description
         // Reflect these changes in the CSVDataSource and JavaDBDataSource
         for(String id : nodeIds) {
             MapNode n = dbSource.getNode(id);
@@ -50,6 +61,7 @@ public class Main {
             dbSource.addEdge(e);
             csvDataSource.addEdge(e);
         }
+        */
 
         dbSource.close();
         csvDataSource.close();
