@@ -1,8 +1,17 @@
 package entities;
 
+import boundaries.MainScreenController;
+import controllers.SceneEngine;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class Main {
+public class Main extends Application{
 
     public static void main(String[] args) {
         // Create a JavaDB data source and populate with the values from the CSV files (CSV data source)
@@ -65,5 +74,22 @@ public class Main {
 
         dbSource.close();
         csvDataSource.close();
+        launch(args);
+    }
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainScreenController.class.getResource("MainScreen.fxml"));
+            Parent root = loader.load();
+            primaryStage.setTitle("Kill me");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+            SceneEngine.setPrimaryStage(primaryStage);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
