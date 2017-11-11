@@ -34,9 +34,12 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             stmt = conn.createStatement();
             stmt.execute(
                     " CREATE TABLE "+staffTable+" (" +
-                            "staffID VARCHAR(10) PRIMARY KEY NOT NULL," +
-                            "staffType VARCHAR(30) NOT NULL," +
-                            "available BOOLEAN NOT NULL" +
+                            "STAFFID VARCHAR(10) PRIMARY KEY NOT NULL," +
+                            "FIRSTNAME VARCHAR(30) NOT NULL, " +
+                            "LASTNAME VARCHAR(30) NOT NULL, " +
+                            "PHONENUMBER VARCHAR(20) NOT NULL, " +
+                            "STAFFTYPE VARCHAR(30) NOT NULL," +
+                            "AVAILABLE BOOLEAN NOT NULL" +
                             ")"
             );
             stmt.close();
@@ -46,8 +49,8 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             stmt = conn.createStatement();
             stmt.execute(
                     " CREATE TABLE "+staffTableLanguages+" (" +
-                            "staffID VARCHAR(20) NOT NULL," +
-                            "language VARCHAR(30) NOT NULL" +
+                            "STAFFID VARCHAR(20) NOT NULL," +
+                            "LANGUAGE VARCHAR(30) NOT NULL" +
                             ")"
             );
             stmt.close();
@@ -103,7 +106,13 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             // Retrieves all info on the found staff member
             result = stmt.executeQuery("SELECT * FROM "+staffTable+" AS T1, "+staffTableLanguages+" AS T2 WHERE T1.STAFFID='"+foundId+"' AND T2.STAFFID='"+foundId+"'");
 
+            // Add all of the stuff in the first row
+            result.next();
+            String firstName = result.getString("FIRSTNAME");
+            String lastName = result.getString("LASTNAME");
+            String phone =  result.getString("PHONENUMBER");
             Set<Language> lanArray = new HashSet<>();
+            lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
             while(result.next() && (result.getString("STAFFID").equals(foundId))) {
                 // Load up all of the array attributes
                 lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
@@ -111,18 +120,19 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             log.info(lanArray.toString());
             switch(attrib.getType().toString()) {
                 case("SECURITY"):
-                    foundStaff = new SecurityStaff(foundId, StaffType.SECURITY, lanArray, true);
+                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.SECURITY, lanArray, true);
                     break;
                 case("TRANSPORT"):
-                    foundStaff = new TransportStaff(foundId, StaffType.TRANSPORT, lanArray, true);
+                    foundStaff = new TransportStaff(foundId, firstName, lastName, phone, StaffType.TRANSPORT, lanArray, true);
                     break;
                 case("INTERPRETER"):
-                    foundStaff = new SecurityStaff(foundId, StaffType.INTERPRETER, lanArray, true);
+                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.INTERPRETER, lanArray, true);
                     break;
                 default:
                     System.out.println("Invalid staff member requested");
                     return null;
             }
+            result.close();
             stmt.close();
             return foundStaff;
         } catch(SQLException e) {

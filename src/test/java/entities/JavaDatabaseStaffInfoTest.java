@@ -26,10 +26,10 @@ public class JavaDatabaseStaffInfoTest {
             Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
             // Get a connection
             stmt = conn.createStatement();
-            stmt.execute("INSERT INTO TEST_STAFF VALUES('staffOne', 'SECURITY', 'TRUE')");
-            stmt.execute("INSERT INTO TEST_STAFF VALUES('staffTwo', 'TRANSPORT', 'TRUE')");
-            stmt.execute("INSERT INTO TEST_STAFF VALUES('staffThree', 'INTERPRETER', 'TRUE')");
-            stmt.execute("INSERT INTO TEST_STAFF VALUES('staffFour', 'TRANSPORT', 'FALSE')");
+            stmt.execute("INSERT INTO TEST_STAFF VALUES('staffOne', 'Test', 'One', '111-123-1234', 'SECURITY', 'TRUE')");
+            stmt.execute("INSERT INTO TEST_STAFF VALUES('staffTwo', 'TestT', 'Two', '111-321-1234', 'TRANSPORT', 'TRUE')");
+            stmt.execute("INSERT INTO TEST_STAFF VALUES('staffThree', 'TestTh', 'Three', '111-231-4321', 'INTERPRETER', 'TRUE')");
+            stmt.execute("INSERT INTO TEST_STAFF VALUES('staffFour', 'TestFo', 'Four', '222-123-7642', 'TRANSPORT', 'FALSE')");
             // Add languages into TEST_STAFF_LANGUAGES db
             stmt.execute("INSERT INTO TEST_STAFF_LANGUAGES VALUES('staffOne', 'English')");
             stmt.execute("INSERT INTO TEST_STAFF_LANGUAGES VALUES('staffOne', 'German')");
@@ -108,6 +108,10 @@ public class JavaDatabaseStaffInfoTest {
         exp.add(Language.Russian);
         exp.add(Language.Luxembourgish);
         assertEquals(exp, found.getLanguages());
+        // see if staffThree's other attributes match
+        assertEquals("TestTh", found.getFirstName());
+        assertEquals("Three", found.getLastName());
+        assertEquals("111-231-4321", found.getPhoneNumber());
 
         // Only find the available transport, which should be 'staffTwo'
         attrib = new StaffAttrib(StaffType.TRANSPORT, null, false);
