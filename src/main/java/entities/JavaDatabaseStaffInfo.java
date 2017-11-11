@@ -35,7 +35,8 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             stmt.execute(
                     " CREATE TABLE "+staffTable+" (" +
                             "staffID VARCHAR(10) PRIMARY KEY NOT NULL," +
-                            "staffType VARCHAR(30) NOT NULL" +
+                            "staffType VARCHAR(30) NOT NULL," +
+                            "available BOOLEAN NOT NULL" +
                             ")"
             );
             stmt.close();
@@ -46,7 +47,7 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             stmt.execute(
                     " CREATE TABLE "+staffTableLanguages+" (" +
                             "staffID VARCHAR(20) NOT NULL," +
-                            "language VARCHAR(10) NOT NULL" +
+                            "language VARCHAR(30) NOT NULL" +
                             ")"
             );
             stmt.close();
@@ -70,10 +71,16 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             } if(languageIterator == null || !languageIterator.hasNext()) { // if there is no language specified
                 query.append("SELECT T1.STAFFID FROM " + staffTable + " AS T1" +
                         " WHERE T1.STAFFTYPE='" + attrib.getType() + "'");
+                if(attrib.getAvailability()) {
+                    query.append(" AND T1.AVAILABLE='TRUE'");
+                }
             } else {
                 while (languageIterator.hasNext()) { // generates intersect query
                     query.append("SELECT T1.STAFFID FROM " + staffTable + " AS T1, " + staffTableLanguages +
                             " AS T2 WHERE T1.STAFFID=T2.STAFFID AND T1.STAFFTYPE='" + attrib.getType() + "' AND T2.LANGUAGE='" + languageIterator.next() + "'");
+                    if(attrib.getAvailability()) {
+                        query.append(" AND T1.AVAILABLE='TRUE'");
+                    }
                     if (languageIterator.hasNext()) {
                         query.append(" INTERSECT ");
                     }
