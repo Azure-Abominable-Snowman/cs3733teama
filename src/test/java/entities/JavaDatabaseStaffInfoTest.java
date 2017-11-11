@@ -63,12 +63,12 @@ public class JavaDatabaseStaffInfoTest {
     @Test
     public void findQualified() throws Exception {
         // Find a security guard that speaks any language
-        StaffAttrib attrib = new StaffAttrib(StaffType.SECURITY, new HashSet<>(), false);
+        StaffAttrib attrib = new StaffAttrib(StaffType.SECURITY, new HashSet<>());
         StaffType type = db.findQualified(attrib).getStaffType();
         assertEquals(StaffType.SECURITY, type);
 
         // Find an interpreter that speaks any language
-        attrib = new StaffAttrib(StaffType.INTERPRETER, new HashSet<>(), false);
+        attrib = new StaffAttrib(StaffType.INTERPRETER, new HashSet<>());
         type = db.findQualified(attrib).getStaffType();
         assertEquals(StaffType.INTERPRETER, type);
 
@@ -77,7 +77,7 @@ public class JavaDatabaseStaffInfoTest {
         lan.add(Language.Russian);
         lan.add(Language.English);
         lan.add(Language.Luxembourgish);
-        attrib = new StaffAttrib(StaffType.INTERPRETER, lan, false);
+        attrib = new StaffAttrib(StaffType.INTERPRETER, lan);
         ServiceStaff found = db.findQualified(attrib);
         assertEquals(StaffType.INTERPRETER, found.getStaffType());
         assertEquals(lan, found.getLanguages());
@@ -87,20 +87,20 @@ public class JavaDatabaseStaffInfoTest {
         lan = new HashSet<>();
         lan.add(Language.Russian);
         lan.add(Language.German);
-        attrib = new StaffAttrib(StaffType.INTERPRETER, lan, false);
+        attrib = new StaffAttrib(StaffType.INTERPRETER, lan);
         assertEquals(null, db.findQualified(attrib));
 
         // Find an Transport that speaks English
         lan = new HashSet<>();
         lan.add(Language.English);
-        attrib = new StaffAttrib(StaffType.TRANSPORT, lan, false);
+        attrib = new StaffAttrib(StaffType.TRANSPORT, lan);
         found = db.findQualified(attrib);
         assertEquals(StaffType.TRANSPORT, found.getStaffType());
         assertEquals(true, found.getLanguages().containsAll(lan));
 
         // Find staffThree and see if he speaks all the languages defined above
         // English, Russian and Luxembourgish (staffThree is an interpreter)
-        attrib = new StaffAttrib(StaffType.INTERPRETER, null, false);
+        attrib = new StaffAttrib(StaffType.INTERPRETER, null);
         found = db.findQualified(attrib);
         assertEquals(StaffType.INTERPRETER, found.getStaffType());
         Set<Language> exp = new HashSet<>();
@@ -114,7 +114,7 @@ public class JavaDatabaseStaffInfoTest {
         assertEquals("111-231-4321", found.getPhoneNumber());
 
         // Only find the available transport, which should be 'staffTwo'
-        attrib = new StaffAttrib(StaffType.TRANSPORT, null, false);
+        attrib = new StaffAttrib(StaffType.TRANSPORT, null);
         found = db.findQualified(attrib);
         assertEquals(StaffType.TRANSPORT, found.getStaffType());
         assertEquals("staffTwo", found.getStaffId());

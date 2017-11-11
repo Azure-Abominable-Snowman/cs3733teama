@@ -14,7 +14,7 @@ public class StaffAttrib {
     private StaffType type;
     private boolean available;
 
-    public StaffAttrib(StaffType type, Set<Language> spokenLanguages, boolean available) {
+    public StaffAttrib(StaffType type, Set<Language> spokenLanguages) {
         this.spokenLanguage = spokenLanguages;
         this.type = type;
         this.available = available;
@@ -26,9 +26,5 @@ public class StaffAttrib {
 
     public Set<Language> getSpokenLanguages() {
         return spokenLanguage;
-    }
-
-    public boolean getAvailability() {
-        return available;
     }
 }
