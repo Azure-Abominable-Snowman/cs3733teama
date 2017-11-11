@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Defines the attributes for a staff, including languages spoken
@@ -8,10 +8,10 @@ import java.util.ArrayList;
  * requested attributes
  */
 public class StaffAttrib {
-    private ArrayList<Language> spokenLanguage;
+    private Set<Language> spokenLanguage;
     private StaffType type;
 
-    public StaffAttrib(StaffType type, ArrayList<Language> spokenLanguages) {
+    public StaffAttrib(StaffType type, Set<Language> spokenLanguages) {
         this.spokenLanguage = spokenLanguages;
         this.type = type;
 
@@ -21,7 +21,7 @@ public class StaffAttrib {
         return type;
     }
 
-    public ArrayList<Language> getSpokenLanguage() {
+    public Set<Language> getSpokenLanguages() {
         return spokenLanguage;
     }
 }

@@ -1,5 +1,5 @@
 package entities;
 
 public enum Language {
-    English, Spanish, French;
+    English, Spanish, French, German, Russian, Ukranian;
 }
