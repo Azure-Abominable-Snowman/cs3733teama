@@ -34,7 +34,7 @@ public class Main {
             System.out.println("");
         }
 
-        /*
+
         // at this point all of the data is in the database tables, now we are going to make some edits the data
         // and reupload it to the database
         // Also, every time an edit is made in the CSV data source it is reflected in the CSV file on the disk,
@@ -61,7 +61,7 @@ public class Main {
             dbSource.addEdge(e);
             csvDataSource.addEdge(e);
         }
-        */
+
 
         dbSource.close();
         csvDataSource.close();
