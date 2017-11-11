@@ -15,7 +15,7 @@ public class Main extends Application{
 
     public static void main(String[] args) {
         // Create a JavaDB data source and populate with the values from the CSV files (CSV data source)
-        String dir = System.getProperty("user.dir");
+        /*String dir = System.getProperty("user.dir");
         MapDataSource dbSource = new JavaDatabaseSource("jdbc:derby://localhost:1527/testdb;create=true", "TEST_NODES", "TEST_EDGES");
         MapDataSource csvDataSource =  new CSVDatabaseSource(dir + "\\csvdata\\MapAnodes.csv",
                                                              dir + "\\csvdata\\MapAedges.csv");
@@ -41,7 +41,7 @@ public class Main extends Application{
             }
             System.out.println("");
             System.out.println("");
-        }
+        }*/
 
         /*
         // at this point all of the data is in the database tables, now we are going to make some edits the data
@@ -71,16 +71,16 @@ public class Main extends Application{
             csvDataSource.addEdge(e);
         }
         */
-
+/*
         dbSource.close();
-        csvDataSource.close();
+        csvDataSource.close();*/
         launch(args);
     }
     @Override
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainScreenController.class.getResource("MainScreen.fxml"));
+            loader.setLocation(getClass().getResource("../MainScreen.fxml"));
             Parent root = loader.load();
             primaryStage.setTitle("Kill me");
             primaryStage.setScene(new Scene(root));

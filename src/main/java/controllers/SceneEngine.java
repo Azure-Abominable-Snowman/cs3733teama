@@ -20,7 +20,7 @@ public final class SceneEngine{
         return primaryStage;
     }
 
-    private void initRootLayout(){
+    public static void displayMainScreen(){
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainScreenController.class.getResource("MainScreenController.fxml"));
@@ -32,6 +32,18 @@ public final class SceneEngine{
         }catch(IOException e){
             System.out.println("couldn't load screen");
         }
+    }
+    public static void displayLoginScreen(){
+
+    }
+    public static void displayMapEditor(){
+
+    }
+    public static void displayRequestScreen(){
+
+    }
+    public static void displayFulfillRequest(){
+
     }
 
 }
