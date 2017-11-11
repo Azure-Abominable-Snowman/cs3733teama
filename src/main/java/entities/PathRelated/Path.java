@@ -3,6 +3,7 @@ package entities.PathRelated;
 import entities.MapEdge;
 import entities.MapNode;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Path {
     private ArrayList<MapNode> nodes;
@@ -10,9 +11,15 @@ public class Path {
     private MapNode startNode;
     private MapNode endNode;
 
+    Path ()
+    {
+        nodes = new ArrayList<MapNode>();
+        connectors = new ArrayList<MapEdge>();
+    }
+
     public boolean addNode(MapNode node)
     {
-        if (nodes.contains(node)) {
+        if (!nodes.contains(node)) {
             nodes.add(node);
             return true;
         }
