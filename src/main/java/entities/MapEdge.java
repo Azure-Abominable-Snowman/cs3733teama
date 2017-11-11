@@ -12,22 +12,33 @@ public class MapEdge {
      * @param end
      */
     public MapEdge(String id, MapNode start, MapNode end) {
-        this(id, start, end,
-                Math.sqrt(Math.pow(end.getCoordinate().getxCoord()-start.getCoordinate().getxCoord(), 2)+
-                Math.pow(end.getCoordinate().getyCoord()-start.getCoordinate().getyCoord(), 2)));
+        setStart(start);
+        setEnd(end);
+        this.id = id;
+        this.weight = calculateWeight();
     }
 
+    /**
+     * Creates an edge using a defined weight
+     * @param id
+     * @param start
+     * @param end
+     * @param weight
+     */
     public MapEdge(String id, MapNode start, MapNode end, double weight) {
-        if(start == null) {
-            System.out.println("Tried to set a null start");
-        }
-        if(end == null) {
-            System.out.println("Tried to set a null end");
-        }
-        this.start = start;
-        this.end = end;
-        this.weight = weight;
+        setStart(start);
+        setEnd(end);
         this.id = id;
+        this.weight = weight;
+    }
+
+    /**
+     * Calculates the weight of the edge using the distance formula
+     * @return
+     */
+    private double calculateWeight() {
+        return Math.sqrt(Math.pow(end.getCoordinate().getxCoord()-start.getCoordinate().getxCoord(), 2)+
+                Math.pow(end.getCoordinate().getyCoord()-start.getCoordinate().getyCoord(), 2));
     }
 
     public MapNode getStart() {
@@ -37,20 +48,27 @@ public class MapEdge {
     public void setStart(MapNode start) {
         if(start == null) {
             System.out.println("Tried to set a null start");
+            return;
         }
         this.start = start;
+        if(end != null) {
+            weight = calculateWeight();
+        }
     }
 
     public MapNode getEnd() {
-
         return end;
     }
 
     public void setEnd(MapNode end) {
         if(end == null) {
             System.out.println("Tried to set a null end");
+            return;
         }
         this.end = end;
+        if(start != null) {
+            weight = calculateWeight();
+        }
     }
 
     public double getWeight() {
