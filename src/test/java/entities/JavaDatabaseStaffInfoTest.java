@@ -12,7 +12,7 @@ import java.util.Set;
 import static junit.framework.TestCase.assertEquals;
 
 public class JavaDatabaseStaffInfoTest {
-
+    String dbURL = "jdbc:derby:testdb;create=true";
     JavaDatabaseStaffInfo db;
     private Connection conn = null;
     private Statement stmt = null;
@@ -21,7 +21,7 @@ public class JavaDatabaseStaffInfoTest {
     public void connectToDB() {
         testDatabaseConnection();
         // Create the database testdb with the table TEST_STAFF
-        db = new JavaDatabaseStaffInfo("jdbc:derby://localhost:1527/testdb;create=true", "TEST_STAFF");
+        db = new JavaDatabaseStaffInfo(dbURL, "TEST_STAFF");
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
             // Get a connection
@@ -50,7 +50,7 @@ public class JavaDatabaseStaffInfoTest {
     public void testDatabaseConnection() {
         // Drop the tables from before
         try {
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/testdb;create=true");
+            conn = DriverManager.getConnection(dbURL);
             stmt = conn.createStatement();
             stmt.execute("DROP TABLE APP.TEST_STAFF");
             stmt.execute("DROP TABLE APP.TEST_STAFF_LANGUAGES");
