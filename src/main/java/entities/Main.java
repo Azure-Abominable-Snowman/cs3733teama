@@ -22,9 +22,13 @@ public class Main {
 
         // At this point the database is completely loaded with edges and nodes
 
-        for(String id : dbSource.getNodeIds()) {
+        // Connect to the staff info table
+
+
+        /*for(String id : dbSource.getNodeIds()) {
             for(MapEdge e : dbSource.getNode(id).getEdges()) {
                 System.out.print(e.toCSV() + " ");
+                System.out.print(e.getWeight() + " ");
             }
             System.out.println("");
             for(MapEdge e : csvDataSource.getNode(id).getEdges()) {
@@ -32,36 +36,9 @@ public class Main {
             }
             System.out.println("");
             System.out.println("");
-        }
+        }*/
 
-        /*
-        // at this point all of the data is in the database tables, now we are going to make some edits the data
-        // and reupload it to the database
-        // Also, every time an edit is made in the CSV data source it is reflected in the CSV file on the disk,
-        // so there is no need to generate it specially
 
-        // Edit it so that all nodes swap their short and long description
-        // Reflect these changes in the CSVDataSource and JavaDBDataSource
-        for(String id : nodeIds) {
-            MapNode n = dbSource.getNode(id);
-            String shortDes = n.getShortDescription();
-            n.setShortDescription(n.getLongDescription());
-            n.setLongDescription(shortDes);
-            dbSource.addNode(n);
-            csvDataSource.addNode(n);
-        }
-
-        // Edit it so that all edges swap their start and end points
-        // Reflect these changes in the CSVDataSource and JavaDBDataSource
-        for(String id : csvDataSource.getEdgeIds()) {
-            MapEdge e = csvDataSource.getEdge(id);
-            MapNode s = e.getStart();
-            e.setStart(e.getEnd());
-            e.setEnd(s);
-            dbSource.addEdge(e);
-            csvDataSource.addEdge(e);
-        }
-        */
 
         dbSource.close();
         csvDataSource.close();
