@@ -35,12 +35,12 @@ public class Main extends Application{
 
         for(String id : dbSource.getNodeIds()) {
             for(MapEdge e : dbSource.getNode(id).getEdges()) {
-                System.out.print(e.toCSV() + " ");
+                System.out.print(e.toSQLValues() + " ");
                 System.out.print(e.getWeight() + " ");
             }
             System.out.println("");
             for(MapEdge e : csvDataSource.getNode(id).getEdges()) {
-                System.out.print(e.toCSV() + " ");
+                System.out.print(e.toSQLValues() + " ");
             }
             System.out.println("");
             System.out.println("");
