@@ -88,7 +88,7 @@ public class CSVDatabaseSource implements MapDataSource {
         return new ArrayList<String>(edgeMap.keySet());
     }
 
-    // writes all nodes and edges to a csv file 
+    // writes all nodes and edges to a csv file
     public void close() {
         try {
             writeNodes();

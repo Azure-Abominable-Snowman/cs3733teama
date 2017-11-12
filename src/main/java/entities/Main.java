@@ -2,6 +2,9 @@ package entities;
 
 import java.util.ArrayList;
 
+import static entities.AccessType.ADMIN;
+import static entities.AccessType.STAFF;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -19,6 +22,7 @@ public class Main {
         for(String id : csvDataSource.getEdgeIds()) {
             dbSource.addEdge(csvDataSource.getEdge(id));
         }
+
 
         // At this point the database is completely loaded with edges and nodes
 
