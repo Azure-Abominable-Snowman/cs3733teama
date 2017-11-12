@@ -6,13 +6,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.util.ArrayList;
 
 import java.io.IOException;
 
 public class Main extends Application{
 
     public static void main(String[] args) {
+        /* Project C
         // Create a JavaDB data source and populate with the values from the CSV files (CSV data source)
         String dir = System.getProperty("user.dir");
         MapDataSource dbSource = new JavaDatabaseSource("jdbc:derby://localhost:1527/testdb;create=true", "TEST_NODES", "TEST_EDGES");
@@ -33,7 +33,7 @@ public class Main extends Application{
         // Connect to the staff info table
 
 
-        /*for(String id : dbSource.getNodeIds()) {
+        for(String id : dbSource.getNodeIds()) {
             for(MapEdge e : dbSource.getNode(id).getEdges()) {
                 System.out.print(e.toCSV() + " ");
                 System.out.print(e.getWeight() + " ");
@@ -44,12 +44,12 @@ public class Main extends Application{
             }
             System.out.println("");
             System.out.println("");
-        }*/
+        }
 
 
 
         dbSource.close();
-        csvDataSource.close();
+        csvDataSource.close();*/
         launch(args);
     }
     @Override

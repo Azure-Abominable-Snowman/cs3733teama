@@ -1,5 +1,9 @@
-package entities;
+package entities.db;
 
+import entities.staff.Language;
+import entities.staff.ServiceStaff;
+import entities.staff.StaffAttrib;
+import entities.staff.StaffType;
 import org.junit.Before;
 import org.junit.Test;
 
