@@ -3,6 +3,7 @@ package boundaries;
 import controllers.SceneEngine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 
@@ -14,6 +15,8 @@ public class MainScreenController {
     Button request;
     @FXML
     Button editMap;
+    @FXML
+    Button LogIn;
 
     @FXML
     private void requestClick(ActionEvent event){
@@ -26,5 +29,9 @@ public class MainScreenController {
     @FXML
     private void goClick(ActionEvent event){
         SceneEngine.displayDirectionsScreen();
+    }
+    @FXML
+    private void logInClick(ActionEvent event){
+        SceneEngine.displayLoginScreen();
     }
 }
