@@ -7,7 +7,13 @@ import javafx.scene.control.Button;
 
 
 
-public class MainScreenController {
+public class MainScreenController implements Controller {
+
+    @Override
+    public String getFXMLFileName() {
+        return "MainScreen.fxml";
+    }
+
     @FXML
     Button go;
     @FXML
@@ -17,14 +23,14 @@ public class MainScreenController {
 
     @FXML
     private void requestClick(ActionEvent event){
-        SceneEngine.displayRequestScreen();
+        SceneEngine.display(RequestScreenController.class);
     }
     @FXML
     private void editMapClick(ActionEvent event){
-        SceneEngine.displayMapEditor();
+        SceneEngine.display(MapEditorController.class);
     }
     @FXML
     private void goClick(ActionEvent event){
-        SceneEngine.displayDirectionsScreen();
+        SceneEngine.display(DirectionsController.class);
     }
 }
