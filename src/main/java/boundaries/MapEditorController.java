@@ -5,17 +5,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-/**
- * Created by aliss on 11/12/2017.
- */
-public class MapEditorController {
+public class MapEditorController implements Controller {
 
-        private Button back;
-
-        @FXML
-        private void onBackClick(ActionEvent e){
-            SceneEngine.displayMainScreen();
-        }
+    @Override
+    public String getFXMLFileName() {
+        return "MapEditor.fxml";
     }
+
+    @FXML
+    private Button back;
+
+    @FXML
+    private void onBackClick(ActionEvent e) {
+        SceneEngine.display(MainScreenController.class);
+
+    }
+}
 
 
