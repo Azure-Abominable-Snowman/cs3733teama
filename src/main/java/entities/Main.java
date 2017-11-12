@@ -17,7 +17,6 @@ import static entities.AccessType.STAFF;
 import java.io.IOException;
 
 public class Main extends Application{
->>>>>>> 8cdc3783a2d9a3767ea1d04d9f45ae93bd7b4fd8
 
     public static void main(String[] args) {
         // Create a JavaDB data source and populate with the values from the CSV files (CSV data source)

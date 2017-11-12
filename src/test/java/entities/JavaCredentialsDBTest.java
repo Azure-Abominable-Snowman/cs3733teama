@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  * Created by aliss on 11/11/2017.
  */
 public class JavaCredentialsDBTest {
-    JavaCredentialsDB db = new JavaCredentialsDB("jdbc:derby://localhost:1527/testdb;create=true", "LOGIN_CREDS");
+    JavaCredentialsDB db = new JavaCredentialsDB("jdbc:derby:testdb;create=true", "LOGIN_CREDS");
     PrivelegedUser a = new PrivelegedUser("user1", "randompw", STAFF);
     PrivelegedUser b = new PrivelegedUser("aostapenko", "notmypw", ADMIN);
     PrivelegedUser c = new PrivelegedUser("supersecure", "hello", ADMIN);
