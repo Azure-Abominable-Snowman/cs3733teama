@@ -1,17 +1,20 @@
 package entities.PathRelated;
 import entities.MapEdge;
 import entities.MapNode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 
 public class AStar implements  PathGenerator{
-    HashMap<MapNode,KnownPoint> checkedPoints;
-    PriorityQueue<KnownPoint> queue;
-    MapNode start, end;
+    private HashMap<MapNode,KnownPoint> checkedPoints;
+    private PriorityQueue<KnownPoint> queue;
+    private MapNode start, end;
 
+    
 
     @Override
     public boolean verifyLocations() {
@@ -22,16 +25,22 @@ public class AStar implements  PathGenerator{
     public Path generatePath(MapNode start, MapNode end) {
         this.start=start;
         this.end=end;
+        checkedPoints= new HashMap<>();
+        queue=new PriorityQueue<>();
+
         KnownPoint checking ; // create a temp variable to keep track of which node are we on.
 
         //Generate Path
         for(checking = new KnownPoint(start,null,0,calDistance(start,end));
             checking.getNode()==end;   // reached end
-            checking=queue.poll()) // move forward one step
+            checking=queue.poll() // move forward one step
+            )
         {
             putNodesIntoQueue(checking); // put adjacent node into queue.
             checkedPoints.put(checking.getNode(),checking);
-            if(queue.peek()==null) { ;} // @TODO need to return an error, since queue is empty but still not got the path
+            if(queue.peek()==null) {
+                throw new java.lang.RuntimeException("Cannot generate a route from the given start and end.");}
+                // @TODO double check if this is good enough for errors.
         }
         // Done generating, output the path
         // make it into the format of outputting.
@@ -50,9 +59,9 @@ public class AStar implements  PathGenerator{
      */
     private int calDistance(MapNode n1, MapNode n2)
     {
-        int x = abs(n1.getCoordinate().getxCoord() - n2.getCoordinate().getxCoord());
-        int y = abs(n1.getCoordinate().getyCoord() - n2.getCoordinate().getxCoord());
-        return x+y; //@TODO need to improve this method of estimation.
+        double x = (double) abs(n1.getCoordinate().getxCoord() - n2.getCoordinate().getxCoord());
+        double y = (double) abs(n1.getCoordinate().getyCoord() - n2.getCoordinate().getxCoord());
+        return (int) sqrt ( x*x+y*y ) ;
     }
 
     /**
@@ -123,7 +132,7 @@ public class AStar implements  PathGenerator{
      * @param finalPath the reversed path generated from ending location.
      * @return the formatted Path object.
      */
-    private Path formatOutput (ArrayList<KnownPoint> finalPath)
+    private Path formatOutput (ArrayList<KnownPoint> finalPath) // @TODO make startNode endNode
     {
         Path output = new Path();
         MapNode currentNode = finalPath.get(finalPath.size()-1).getNode(); // extract the first Node of the list.
