@@ -4,6 +4,8 @@ import boundaries.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,6 +38,8 @@ public final class SceneEngine{
             loader.setLocation(MainScreenController.class.getResource("../MainScreen.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
+            //ImageView maps = new Image()
+
             primaryStage.setScene(scene);
             primaryStage.show();
 

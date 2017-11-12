@@ -5,8 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-
-import javax.swing.text.html.ImageView;
+import javafx.scene.image.ImageView;
 
 
 public class MainScreenController {
@@ -37,4 +36,5 @@ public class MainScreenController {
     private void logInClick(ActionEvent event){
         SceneEngine.displayLoginScreen();
     }
+
 }
