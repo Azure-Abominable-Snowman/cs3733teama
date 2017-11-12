@@ -8,7 +8,7 @@ import java.util.Map;
 public class Path {
     private ArrayList<MapNode> nodes;
     private ArrayList<MapEdge> connectors;
-    private MapNode startNode;
+    private MapNode startNode; // @TODO do we need this? since the start of Arraylist could be start node. 
     private MapNode endNode;
 
     Path ()

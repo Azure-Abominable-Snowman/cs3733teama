@@ -8,38 +8,29 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
 public class PathTest {
     // Testing objects
-    MapNode[][] testNodes = new MapNode[3][3];
+    MapNode[][] testNodes = new MapNode[10][20];
     Path testPath = new Path();
 
 
     @Before
 
     public void createMap(){
-
-        // setup temp variable for generating 3x3 nodes
-        String str  = new String();
-        Location tempLoc = new Location(1,1,"1","a");
-        for(int i = 0;i< 3;i++){
-            for (int j = 0; j < 3; j++)
-            {
-                tempLoc.setxCoord(i);
-                tempLoc.setyCoord(j);
-                str=str.format("C%dR%d",i,j);
-                testNodes[i][j]= new MapNode(str,tempLoc,NodeType.HALL,str
-                        ,str,"A");
-            }
-        }
-
+        GenerateMap mapG1 = new GenerateMap();
+        testNodes = new MapNode[10][20];
+       testNodes=  mapG1.GenerateNewMap(10,20,1);
     }
 
 
     @Test
     public void addNode() throws Exception{
+
+
         //test if the node is added successfully
         testPath.addNode(testNodes[2][1]);
         assertEquals(testNodes[2][1], testPath.getNodes().get(0));
