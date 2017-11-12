@@ -1,14 +1,14 @@
-package entities;
+package entities.db;
 
+import entities.auth.PrivelegedUser;
 import org.junit.Test;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
-import static entities.AccessType.ADMIN;
-import static entities.AccessType.STAFF;
+import static entities.auth.AccessType.ADMIN;
+import static entities.auth.AccessType.STAFF;
 import static org.junit.Assert.*;
 
 /**

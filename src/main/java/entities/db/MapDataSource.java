@@ -1,4 +1,7 @@
-package entities;
+package entities.db;
+
+import entities.MapEdge;
+import entities.MapNode;
 
 import java.util.ArrayList;
 
