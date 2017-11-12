@@ -10,11 +10,12 @@ import java.io.IOException;
 
 public final class SceneEngine {
 
-    static private Stage primaryStage, popOutStage;
+    static private Stage primaryStage, popOutStage, loginStage;
 
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;
         popOutStage = new Stage();
+        loginStage = new Stage();
     }
 
     public static Stage getPrimaryStage() {
@@ -25,9 +26,18 @@ public final class SceneEngine {
         return popOutStage;
     }
 
+    public static Stage getLoginScene() {
+        return loginStage;
+    }
+
     public static void closePopOut(){
         popOutStage.close();
     }
+
+    public static void closeLogin() {
+        loginStage.close();
+    }
+
 
     public static void display(Class<? extends Controller> newController, Stage stage) {
         try {
