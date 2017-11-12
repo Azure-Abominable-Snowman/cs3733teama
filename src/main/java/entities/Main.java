@@ -7,6 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
+import static entities.AccessType.ADMIN;
+import static entities.AccessType.STAFF;
+
+
+
 import java.io.IOException;
 
 public class Main extends Application{
@@ -27,6 +33,7 @@ public class Main extends Application{
         for(String id : csvDataSource.getEdgeIds()) {
             dbSource.addEdge(csvDataSource.getEdge(id));
         }
+
 
         // At this point the database is completely loaded with edges and nodes
 
