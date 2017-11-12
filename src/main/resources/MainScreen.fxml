@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MainScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MainScreenController">
    <children>
       <SplitPane dividerPositions="0.2613065326633166" layoutX="156.0" layoutY="46.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -19,6 +19,7 @@
                   <Text layoutX="45.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End" />
                   <TextField layoutX="98.0" layoutY="44.0" prefHeight="27.0" prefWidth="395.0" />
                   <Text layoutX="42.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start" />
+                  <Button fx:id="LogIn" layoutX="13.0" layoutY="14.0" mnemonicParsing="false" onAction="#logInClick" text="Log in" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="309.0" prefWidth="598.0">
@@ -28,8 +29,8 @@
                         <Image url="@Map_1.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="editMap" layoutX="535.0" layoutY="347.0" mnemonicParsing="false" onAction="#editMapClick" prefHeight="25.0" prefWidth="72.0" style="-fx-background-color: FFE804;" text="Edit map" textFill="#403737" />
-                  <Button fx:id="request" layoutX="535.0" layoutY="320.0" mnemonicParsing="false" onAction="#requestClick" prefHeight="27.0" prefWidth="72.0" style="-fx-background-color: #FF0027;" text="Request" textFill="WHITE" />
+                  <Button fx:id="editMap" layoutX="461.0" layoutY="347.0" mnemonicParsing="false" onAction="#editMapClick" prefHeight="27.0" prefWidth="146.0" style="-fx-background-color: FFE804;" text="Edit map" textFill="#403737" />
+                  <Button fx:id="request" layoutX="461.0" layoutY="320.0" mnemonicParsing="false" onAction="#requestClick" prefHeight="27.0" prefWidth="146.0" style="-fx-background-color: #FF0027;" text="Request Service" textFill="WHITE" />
                </children>
             </AnchorPane>
         </items>

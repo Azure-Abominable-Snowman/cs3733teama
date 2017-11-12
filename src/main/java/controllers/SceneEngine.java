@@ -10,11 +10,13 @@ import java.io.IOException;
 
 public final class SceneEngine{
 
-    static private Stage primaryStage, popOutStage;
+    static private Stage primaryStage, logInStage, popOutStage;
 
+    //this is also used to set up the other pop out windows
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;
         popOutStage=new Stage();
+        logInStage=new Stage();
     }
 
     public static Stage getPrimaryStage() {
@@ -23,6 +25,10 @@ public final class SceneEngine{
 
     public static void closePopOut(){
         popOutStage.close();
+    }
+
+    public static void closeLogin(){
+        logInStage.close();
     }
     public static void displayMainScreen(){
         try {
@@ -39,7 +45,17 @@ public final class SceneEngine{
     }
     //TODO add the login screen
     public static void displayLoginScreen(){
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MapEditorController.class.getResource("../StaffLogIn.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            logInStage.setScene(scene);
+            logInStage.show();
+        }
+        catch (IOException e){
+            System.out.println(e.getStackTrace());
+        }
     }
     public static void displayMapEditor(){
         try {
