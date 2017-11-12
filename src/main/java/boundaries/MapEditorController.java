@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+
 public class MapEditorController implements Controller {
 
     @Override
@@ -19,4 +20,5 @@ public class MapEditorController implements Controller {
     private void onBackClick(ActionEvent e){
         SceneEngine.display(MainScreenController.class);
     }
-}
+
+
