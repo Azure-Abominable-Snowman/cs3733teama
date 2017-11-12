@@ -1,4 +1,7 @@
-package entities;
+package entities.db;
+
+import entities.staff.ServiceStaff;
+import entities.staff.StaffAttrib;
 
 public interface StaffInfoDataSource {
 
