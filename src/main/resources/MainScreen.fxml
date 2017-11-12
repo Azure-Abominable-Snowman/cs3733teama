@@ -29,8 +29,8 @@
                         <Image url="@Map_1.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="editMap" layoutX="535.0" layoutY="347.0" mnemonicParsing="false" onAction="#editMapClick" prefHeight="25.0" prefWidth="72.0" style="-fx-background-color: FFE804;" text="Edit map" textFill="#403737" />
-                  <Button fx:id="request" layoutX="535.0" layoutY="320.0" mnemonicParsing="false" onAction="#requestClick" prefHeight="27.0" prefWidth="72.0" style="-fx-background-color: #FF0027;" text="Request" textFill="WHITE" />
+                  <Button fx:id="editMap" layoutX="461.0" layoutY="347.0" mnemonicParsing="false" onAction="#editMapClick" prefHeight="27.0" prefWidth="146.0" style="-fx-background-color: FFE804;" text="Edit map" textFill="#403737" />
+                  <Button fx:id="request" layoutX="461.0" layoutY="320.0" mnemonicParsing="false" onAction="#requestClick" prefHeight="27.0" prefWidth="146.0" style="-fx-background-color: #FF0027;" text="Request Service" textFill="WHITE" />
                </children>
             </AnchorPane>
         </items>
