@@ -21,9 +21,11 @@ public class PathTest {
     @Before
 
     public void createMap(){
-        GenerateMap mapG1 = new GenerateMap();
-        testNodes = new MapNode[10][20];
-       testNodes=  mapG1.GenerateNewMap(10,20,1);
+        GenerateMap generater = new GenerateMap();
+        testNodes = new MapNode[10][10];
+       testNodes=  generater.GenerateNewMap(10,20,1);
+
+       generater.printMap(testNodes,10,10);
     }
 
 

@@ -5,7 +5,7 @@ import entities.MapEdge;
 import entities.MapNode;
 import entities.NodeType;
 
-public class GenerateMap {
+public class  GenerateMap  {
 
 
 
@@ -43,7 +43,7 @@ public class GenerateMap {
         }
 
         // Done creating the Nodes, Start making edges.
-        linkNodes(map[0][0], map[0][1],1); //@TODO what about 01 to 02 ?
+        linkNodes(map[0][0], map[0][1],1);
         linkNodes(map[0][2], map[0][3],5);
         linkNodes(map[0][4], map[0][5],3);
 
@@ -52,9 +52,11 @@ public class GenerateMap {
         linkNodes(map[1][1],map[2][1],4);
         linkNodes(map[2][1],map[3][1],8);
 
+        linkNodes(map[0][5],map[1][5],8);
+        linkNodes(map[1][5],map[2][5],8);
         for(int i=4;i<sizeX;++i) // create the map for whole 4th row
         {
-            linkNodes(map[4][i-1],map[4][i],5+(i/2));
+            linkNodes(map[4][i-1],map[4][i],5+((i/2)%10));
         }
 
         return map;
@@ -81,9 +83,44 @@ public class GenerateMap {
          node2.addEdge(edge);
     }
 
+    public void printMap (MapNode[][] map,int sizeX, int sizeY)
+    {
+        for(int i=0;i<sizeX;i++)
+        {
+
+        }
+        for(int j=0;j<sizeY-1;j++)
+        {
+            for(int i=0;i<sizeX-1;i++)
+            {
+                System.out.print("X  ");
+                if(findWeight(map[i][j],map[i+1][j])<0) System.out.print("   ");
+                else System.out.printf("%d  ",(int) findWeight(map[i][j],map[i+1][j]));
+            }
+            System.out.print("X\n");
+            for(int i=0;i<sizeX;i++)
+            {
+                if(findWeight(map[i][j],map[i][j+1])<0) System.out.print("      ");
+                else System.out.printf("%d     ",(int) findWeight(map[i][j],map[i][j+1]));
+            }
+            System.out.print("\n");
+        }
+        for(int i=0;i<sizeX-1;i++)
+        {
+            System.out.print("X  ");
+            if(findWeight(map[i][sizeY-1],map[i+1][sizeY-1])<0) System.out.print("   ");
+            else System.out.printf("%d  ",(int) findWeight(map[i][sizeY-1],map[i+1][sizeY-1]));
+        }
+    }
 
 
 
-
-
+    // helper
+    private double findWeight(MapNode n1,MapNode n2)
+    {
+        for (MapEdge edge: n1.getEdges()) {
+            if ( edge.getEnd()==n2 || edge.getStart() == n2 ) return edge.getWeight();
+        }
+        return -1;
+    }
 }
