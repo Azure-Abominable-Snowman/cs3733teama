@@ -8,12 +8,14 @@ import static org.junit.Assert.*;
 
 public class AStarTest {
     MapNode[][] map1 = new MapNode[20][20];
+    MapNode[][] mapd = new MapNode[30][30];
 
     @Before
     public void setUp() throws Exception {
         GenerateMap g = new GenerateMap();
         map1=g.GenerateNewMap(1);
-        g.printMap(map1,20,20);
+        mapd=g.GenerateNewMap('d');
+        g.printMap(mapd,20,20);
     }
 
     @Test
