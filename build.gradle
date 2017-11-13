@@ -19,7 +19,7 @@ task makeJar(type: Jar) {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven {
         url "https://maven.atlassian.com/3rdparty/"
     }

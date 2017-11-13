@@ -38,14 +38,15 @@ public class AStar implements  PathGenerator{
 
         //Generate Path
         for(checking = new KnownPoint(start,null,0,calDistance(start,end));
-            checking.getNode()!=end;   // reached end
+            !checking.getNode().getId().equals(end.getId());   // reached end
             checking=queue.poll() // move forward one step
             )
         {
             putNodesIntoQueue(checking); // put adjacent node into queue.
             checkedPoints.put(checking.getNode(),checking);
             if(queue.peek()==null) {
-                throw new java.lang.RuntimeException("Cannot generate a route from the given start and end.");}
+                throw new java.lang.RuntimeException("Cannot generate a route from the given start and end.");
+            }
                 // @TODO double check if this is good enough for errors.
         }
         // Done generating, output the path
@@ -78,7 +79,7 @@ public class AStar implements  PathGenerator{
      */
     private MapNode adjacentNode(MapEdge e , MapNode n )
     {
-        if(e.getStart()==n) return e.getEnd();
+        if(e.getStart().getId().equals(n.getId())) return e.getEnd();
         else return e.getStart();
     }
 
@@ -89,16 +90,14 @@ public class AStar implements  PathGenerator{
      */
     private void putNodesIntoQueue (KnownPoint checking)
     {
-        for(MapEdge e :checking.getEdge()) // putting the adjacentNodes into queue
+        for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
             MapNode nextNode= adjacentNode(e,checking.getNode());  // get the node to be calculated.
 
             if( !checkedPoints.containsKey(nextNode)) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
-                KnownPoint nextPoint = new KnownPoint(nextNode,
-                        checking,
-                        newPastCost,
+                KnownPoint nextPoint = new KnownPoint(nextNode, checking, newPastCost,
                         newPastCost + calDistance(nextNode, end)); // Generate a new Point from checking point to add into queue.
                 queue.add(nextPoint); // add into queue
             }
@@ -114,8 +113,9 @@ public class AStar implements  PathGenerator{
     private MapEdge getEdgeBetweenNodes(MapNode a, MapNode b)
     {
         for (MapEdge mapEdge : a.getEdges()) {
-            if ( mapEdge.getStart()==b | mapEdge.getEnd()==b)
+            if(mapEdge.getStart().getId().equals(b.getId()) || mapEdge.getEnd().getId().equals(b.getId())) {
                 return mapEdge;
+            }
         }
         return null;
     }
