@@ -26,7 +26,6 @@ public class PathTest {
     @Test
     public void addNode() throws Exception{
 
-
         //test if the node is added successfully
         testPath.addNode(testNodes[2][1]);
         assertEquals(testNodes[2][1], testPath.getNodes().get(0));

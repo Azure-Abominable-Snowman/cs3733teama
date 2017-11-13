@@ -11,6 +11,13 @@ public class KnownPoint implements  Comparable {
     private KnownPoint lastNode;
     private int pastCost,completeCost;
 
+    //constructor
+    public KnownPoint(MapNode node, KnownPoint lastNode, int pastCost, int completeCost) {
+        this.node = node;
+        this.lastNode = lastNode;
+        this.pastCost = pastCost;
+        this.completeCost = completeCost;
+    }
     /**
      * a little helper function
      * @return return the edges contained with stored node.
@@ -20,19 +27,20 @@ public class KnownPoint implements  Comparable {
         return node.getEdges();
     }
 
-    public KnownPoint(MapNode node, KnownPoint lastNode, int pastCost, int completeCost) {
-        this.node = node;
-        this.lastNode = lastNode;
-        this.pastCost = pastCost;
-        this.completeCost = completeCost;
-    }
 
 
-    @Override
     /**
      * compare nodes according to their total cost to destination
      * Helping to for the PriorityQueue
      */
+
+    /**
+     * Implemented to allow PriorityQueue to sort this.
+     * Compare based on the CompleteCost
+     * @param o KnownPoint to compare to itself
+     * @return 0 if equal. 1 if completeCost in this one is bigger, -1 if this one is smaller.
+     */
+    @Override
     public int compareTo(Object o) {
         KnownPoint node = (KnownPoint) o;
         if (this.completeCost>node.completeCost ) return 1;

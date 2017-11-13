@@ -7,9 +7,13 @@ import entities.NodeType;
 
 public class  GenerateMap  {
 
-
-
-
+    /**
+     * This function is to generate different map baesd on version number.
+     * Default map is 30*30 map.
+     * Version1 is 20*20 map.
+     * @param version
+     * @return This function returns the MapNode.
+     */
      public MapNode[][] GenerateNewMap(int version)
     {
         switch (version)
@@ -17,12 +21,12 @@ public class  GenerateMap  {
             case 1: return GenerateV1();    // a 20*20 map
             default: return GenerateVdefult(); // a 30*30 map
         }
-
-
     }
 
-
-    //Map1 at 20*20
+    /**
+     * This function is to generate version1 map (20*20).
+     * @return This function returns the 20*20 MapNode array.
+     */
     public MapNode[][] GenerateV1()  // Final version, do not change, make new map.
     {
         int sizeX=20, sizeY=20;
@@ -62,7 +66,10 @@ public class  GenerateMap  {
         return map;
     }
 
-    //Map2 at 30*30
+    /**
+     * This function is to generate default map(30*30).
+     * @return This function returns the 30*30 MapNode array.
+     */
     public MapNode[][] GenerateVdefult()  // need change.
     {
         int sizeX=30, sizeY=30;
@@ -102,14 +109,14 @@ public class  GenerateMap  {
     }
 
 
-
     ///////////helper////////////
 
     /**
-     * fill the Map up with simple node at type HallWay.
-     * @param map   the map to be filled
+     * This function is to fill Map up with simple node at type HallWay.
+     * @param map   is the map to be filled.
      * @param sizeX is the width of map (can be smaller, but no bigger then actual map)
      * @param sizeY is the height of map (can be smaller, but no bigger then actual map)
+     * @return This function returns void.
      */
     private void fillMap (MapNode[][] map,int sizeX,int sizeY)
     {
@@ -127,9 +134,8 @@ public class  GenerateMap  {
         }
     }
 
-
     /**
-     * This is the helper function to create the edge between two nodes and add the edge to two nodes.
+     * This is a helper function to create the edge between two nodes and add the edge to two nodes.
      * @param node1 is the first node.
      * @param node2 is the second node.
      * @param weight is the weight between two nodes.
@@ -143,8 +149,8 @@ public class  GenerateMap  {
     }
 
     /**
-     * This is a helper function that print the maps generated in this class onto commandline
-     * @param map   the map to be printed
+     * This is a helper function that print the maps generated in this class onto commandline.
+     * @param map   is the map to be printed.
      * @param sizeX is the width of map (can be smaller, but no bigger then actual map)
      * @param sizeY is the height of map (can be smaller, but no bigger then actual map)
      */
@@ -185,10 +191,10 @@ public class  GenerateMap  {
     }
 
     /**
-     *
-     * @param n1 node 1
-     * @param n2 node 2
-     * @return the weight of the edge connecting node 1 and node 2, return -1 when no edge.
+     *This is a helper function to find the weight of the edge between given two nodes.
+     * @param n1 is the node 1
+     * @param n2 is the node 2
+     * @return This function returns the weight of the edge connecting node 1 and node 2, return -1 when no edge.
      */
     private double findWeight(MapNode n1,MapNode n2)
     {
