@@ -19,12 +19,12 @@ public class RequestScreenController implements Controller {
 
     @FXML
     private void backClick(ActionEvent event){
-        SceneEngine.display(MainScreenController.class);
+        SceneEngine.display(MainScreenController.class, null);
     }
     @FXML
     //this handler is only connected to the first fulfill button
     //TODO create the prefabs for the fulfill sections
     private void fulfillClick(ActionEvent event){
-        SceneEngine.display(FulfillReqController.class, SceneEngine.getPopOutStage());
+        SceneEngine.display(FulfillReqController.class, SceneEngine.getPopOutStage(), null);
     }
 }

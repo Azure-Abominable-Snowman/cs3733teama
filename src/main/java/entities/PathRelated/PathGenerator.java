@@ -6,6 +6,4 @@ public interface PathGenerator {
 
     public boolean verifyLocations() ;
     public Path generatePath(MapNode start, MapNode end) ;
-
-
 }
