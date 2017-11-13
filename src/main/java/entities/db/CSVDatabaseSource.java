@@ -107,7 +107,7 @@ public class CSVDatabaseSource implements MapDataSource {
      * @return
      */
     private MapEdge edgeListToObj(List<String> row) {
-        return new MapEdge(row.get(0), nodeMap.get(row.get(1)), nodeMap.get(row.get(2)));
+        return new MapEdge(row.get(0), row.get(1), row.get(2));
     }
 
     @Override
