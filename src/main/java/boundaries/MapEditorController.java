@@ -5,24 +5,48 @@ import entities.HospitalMap;
 import entities.Location;
 import entities.MapEdge;
 import entities.MapNode;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapEditorController implements Controller {
-
-    @Override
-    public String getFXMLFileName() {
-        return "MapEditor.fxml";
-    }
+    @FXML
+    private Canvas canvas;
+    @FXML
+    private ImageView map;
+    @FXML
+    private TextField name, xCoord, yCoord;
 
     @FXML
-    private Button back;
+    private Button back,add, edit, remove;
+    @FXML
+    private ComboBox editorType;
+
+
+    public void initialize() {
+        ObservableList<String> options =
+                FXCollections.observableArrayList("Node", "Edge");
+        editorType.setItems(options);
+        canvas = new Canvas();
+        map = new ImageView();
+    }
+    @Override
+    public String getFXMLFileName() {
+        return "MapEditorV2.fxml";
+    }
+
+
 
     @FXML
     private void onBackClick(ActionEvent e) {
@@ -44,6 +68,10 @@ public class MapEditorController implements Controller {
 
         for (int i = 0; i<numNodes; i++) {
             Circle node = new Circle(); //draw each node on the screen
+            node.setCenterX(100);
+            node.setRadius(3);
+            node.setCenterY(30);
+            //canvas.getg
         }
         for (int i = 0; i<numEdges; i++) {
             Line line = new Line();
