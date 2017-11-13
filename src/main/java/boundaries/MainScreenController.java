@@ -9,9 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -33,19 +34,17 @@ public class MainScreenController implements Controller {
     @FXML
     private Button LogIn;
     @FXML
-    private ImageView map;
-    @FXML
     private Canvas mapCanvas;
     @FXML
-    private Pane mapPane;
+    private ScrollPane mapPane;
+    @FXML
+    private Slider floorSlider;
 
     private Stage stage;
 
     private ArrayList<MapNode> nodes;
 
     public void initialize() {
-        mapCanvas.toFront(); // render node dots and stuff in front of the image always
-
         // load in map node coordinates from DB
         HospitalMap map = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv");
         ArrayList<String> nodeIds = map.getMap().getNodeIds();
@@ -53,9 +52,32 @@ public class MainScreenController implements Controller {
         for(String id : nodeIds) {
             nodes.add(map.getMap().getNode(id));
         }
-    }
 
-    private Image bwImg = new Image("maps/00_thegroundfloor.png");
+        // Make slider change the floor
+        floorSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+                System.out.println("Changed Floor: "+floorSlider.getValue());
+                switch(newVal.intValue()) { // TODO: make an enum to get rid of this switch
+                    case 0:
+                        switchFloor("L2");
+                        break;
+                    case 1:
+                        switchFloor("L1");
+                        break;
+                    case 2:
+                        switchFloor("G");
+                        break;
+                    case 3:
+                        switchFloor("1");
+                        break;
+                    case 4:
+                        switchFloor("2");
+                        break;
+                    case 5:
+                        switchFloor("3");
+                        break;
+                }
+            });
+    }
 
     /**
      * Converts input coordinate system to output coordinate system
@@ -67,16 +89,51 @@ public class MainScreenController implements Controller {
     private int nodeDim = 3;
 
     public void renderMap(Canvas c, double width, double height) {
+        renderMap(c, width, height, curFloor);
+    }
+
+    private String curFloor = "G";
+    private Image bwImg = new Image("maps/G.png");
+    public void renderMap(Canvas c, double width, double height, String floor) {
+        if(!floor.equals(curFloor)) {
+            curFloor = floor;
+            bwImg = new Image("maps/"+floor+".png");
+        }
+        mapCanvas.setWidth(width);
+        mapCanvas.setHeight(height);
         GraphicsContext gc = c.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
         gc.drawImage(bwImg, 0,0, width, height);
         for(MapNode n : nodes) {
-            if(n.getCoordinate().getLevel().equals("G")) {
-                double nodeX = convUnits(n.getCoordinate().getxCoord(), 5000, width);
-                double nodeY = convUnits(n.getCoordinate().getyCoord()+80, 3500, height);
-                System.out.println(nodeX + " " + nodeY);
+            if(n.getCoordinate().getLevel().equals(floor)) {
+                double nodeX = convUnits(n.getCoordinate().getxCoord()-5, 5000, width);
+                double nodeY = convUnits(n.getCoordinate().getyCoord()+75, 3500, height);
+                //System.out.println(nodeX + " " + nodeY);
                 gc.fillOval(nodeX, nodeY, nodeDim, nodeDim);
             }
+        }
+    }
+
+    private double zoomUnit = 3;
+    private boolean zoomed = false;
+    private double curZoom = 1;
+
+    @FXML
+    public void zoomIntoMap(MouseEvent e) {
+        if(!zoomed) {
+            System.out.println(e.getX() + " " + e.getY());
+            //System.out.println("O: "+mapPane.getHvalue()+" "+mapPane.getVvalue());
+            renderMap(mapCanvas, mapPane.getWidth() * zoomUnit, mapPane.getHeight() * zoomUnit);
+            //System.out.println("A: "+mapPane.getHvalue()+" "+mapPane.getVvalue());
+            mapPane.setHvalue(e.getX()); // set so it's in the center of the screen
+            mapPane.setVvalue(e.getY());
+            //System.out.println("A2: "+mapPane.getHvalue()+" "+mapPane.getVvalue());
+            zoomed = true;
+            curZoom = 3;
+        } else {
+            renderMap(mapCanvas, mapPane.getWidth(), mapPane.getHeight());
+            zoomed = false;
+            curZoom = 1;
         }
     }
 
@@ -85,17 +142,19 @@ public class MainScreenController implements Controller {
         this.stage = stage;
         // On width resize of the stage
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+            // set min and max for the scrollview as well as render the map
             double width = mapPane.getWidth();
             double height = mapPane.getHeight();
-            System.out.println(mapPane.getWidth() + " " + mapPane.getHeight());
-            //map.setFitWidth(width);
-            //map.setFitHeight(height);
-            mapCanvas.setWidth(width);
-            mapCanvas.setHeight(height);
+            mapPane.setVmax(height);
+            mapPane.setHmax(width);
             renderMap(mapCanvas, width, height);
         };
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
+    }
+
+    private void switchFloor(String newFloor) {
+        renderMap(mapCanvas, mapPane.getWidth(), mapPane.getHeight(), newFloor);
     }
 
     @FXML
