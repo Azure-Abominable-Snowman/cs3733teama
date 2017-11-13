@@ -13,7 +13,7 @@ public class TranslateBundleTest {
     public static void testLang(String[] args) throws Exception {
 
 
-        TranslateBundle.
+       // TranslateBundle.
 
 
         //System.out.println(label1.getString("label1"));
