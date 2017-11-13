@@ -20,7 +20,10 @@ public class AStarTest {
     public void generatePath() throws Exception {
         AStar finder = new AStar();
         Path result =  finder.generatePath(map1[0][0],map1[12][1]);
-        result.getNodes();
+        assertTrue(result.getNodes().contains(map1[0][0])); // check the start
+        assertTrue(result.getNodes().contains(map1[12][1]));// check the end
+        assertTrue(result.getNodes().contains(map1[0][4])); // check some points in the path.
+        assertTrue(result.getNodes().contains(map1[11][4]));
     }
 
 }

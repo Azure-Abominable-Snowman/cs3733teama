@@ -137,6 +137,7 @@ public class AStar implements  PathGenerator{
     {
         Path output = new Path();
         MapNode currentNode = finalPath.get(finalPath.size()-1).getNode(); // extract the first Node of the list.
+        output.addNode(currentNode); // put the start node into it.
         MapNode nextNode;
         for(int i =finalPath.size()-2;i>-1;--i)
         {
