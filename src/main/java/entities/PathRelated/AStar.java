@@ -97,9 +97,7 @@ public class AStar implements  PathGenerator{
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
-                KnownPoint nextPoint = new KnownPoint(nextNode,
-                        checking,
-                        newPastCost,
+                KnownPoint nextPoint = new KnownPoint(nextNode, checking, newPastCost,
                         newPastCost + calDistance(nextNode, end)); // Generate a new Point from checking point to add into queue.
                 queue.add(nextPoint); // add into queue
             }
