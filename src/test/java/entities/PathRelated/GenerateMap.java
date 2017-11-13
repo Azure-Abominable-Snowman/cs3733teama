@@ -147,12 +147,15 @@ public class  GenerateMap  {
 
     public void printMap (MapNode[][] map,int sizeX, int sizeY)
     {
+        System.out.printf("    ");
         for(int i=0;i<sizeX;i++)
         {
-
+            System.out.printf("%d%d    ",i/10,i%10);
         }
-        for(int j=0;j<sizeY-1;j++)
+        System.out.println();
+        for(int j=0;j<sizeY-1;j++) // Start print the map.
         {
+            System.out.printf("%d%d  ",j/10,j%10);
             for(int i=0;i<sizeX-1;i++)
             {
                 System.out.print("X  ");
@@ -160,6 +163,7 @@ public class  GenerateMap  {
                 else System.out.printf("%h  ",(int) findWeight(map[i][j],map[i+1][j]));
             }
             System.out.print("X\n");
+            System.out.printf("    ");
             for(int i=0;i<sizeX;i++)
             {
                 if(findWeight(map[i][j],map[i][j+1])<0) System.out.print("      ");
@@ -167,6 +171,8 @@ public class  GenerateMap  {
             }
             System.out.print("\n");
         }
+
+        System.out.printf("%d%d  ",(sizeY-1)/10,(sizeY-1)%10);
         for(int i=0;i<sizeX-1;i++)
         {
             System.out.print("X  ");
