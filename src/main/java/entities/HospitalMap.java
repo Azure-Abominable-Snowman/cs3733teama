@@ -1,6 +1,10 @@
 package entities;
 
+import entities.PathRelated.PathGenerator;
+import entities.db.MapDataSource;
 import entities.db.CSVDatabaseSource;
+import entities.PathRelated.AStar;
+import entities.PathRelated.PathGenerator;
 import entities.db.JavaDatabaseSource;
 import entities.db.MapDataSource;
 
@@ -15,10 +19,12 @@ import java.util.Map;
 public class HospitalMap {
         static entities.HospitalMap instance = null;
         private MapDataSource rawData; // link to javaDB -- see MapDataSource interface to call functions that update DB
-        private MapDataSource mapObjects; // NOTE: see the MapDataSource interface on how access the MapNodes and MapEdges for map coordinate/pathfinding
+       // private MapDataSource mapObjects; // NOTE: see the MapDataSource interface on how access the MapNodes and MapEdges for map coordinate/pathfinding
+
         private int widthPixels = 5000;
         private int heightPixels = 3400;
-        //pathgenerator
+
+        private PathGenerator pathGenerator;
         //mapcoordinate
 
     // TODO: Make this update when the database is changed
@@ -42,9 +48,14 @@ public class HospitalMap {
         return nodesOnFloors.get(floor);
     }
 
-    private HospitalMap(String nodeFilename, String edgeFilename) {
+    public PathGenerator getPathGenerator() {
+        return pathGenerator;
+    }
+
+    private HospitalMap() {
             //mapObjects = new CSVDatabaseSource(nodeFilename, edgeFilename); //reads CSV file, creates MapNodes and MapEdges
             rawData = new JavaDatabaseSource("jdbc:derby://localhost:1527/testdb;create=true", "TEST_NODES", "TEST_EDGES");
+            pathGenerator = new AStar();
             /*for (String id : mapObjects.getNodeIds()) {
                 rawData.addNode(mapObjects.getNode(id));
             }
@@ -54,14 +65,16 @@ public class HospitalMap {
         }
 
 
+
         public static synchronized entities.HospitalMap getInstance(String nodeFilename, String edgeFilename)
+
         {
             if (instance==null)
-                instance = new entities.HospitalMap(nodeFilename, edgeFilename);
+                instance = new entities.HospitalMap();
             return instance;
         }
 
-
+/*
         // gives locations and names of nodes on given floor
         public HashMap<Location, String> getNodesonFloor(String floor) {
             HashMap<Location,String> nodeLocs = new HashMap<Location,String>();
@@ -81,6 +94,6 @@ public class HospitalMap {
             return edgeLocs;
         }
 
-
+*/
 
 }
