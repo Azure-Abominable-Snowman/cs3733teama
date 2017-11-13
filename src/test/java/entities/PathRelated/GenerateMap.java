@@ -21,8 +21,10 @@ public class GenerateMap {
 
     }
 
-    public MapNode[][] GenerateV1(int sizeX,int sizeY) // assume bigger then 20*20
+    public MapNode[][] GenerateV1(int sizeX,int sizeY)
     {
+        if(sizeX <5 ) sizeX=5;
+        if(sizeY<5 ) sizeY =5; // make sure no sizes are smaller then 5;
 
         MapNode[][] map = new MapNode[sizeX][sizeY]; // allocate new map
 
@@ -41,10 +43,19 @@ public class GenerateMap {
         }
 
         // Done creating the Nodes, Start making edges.
-        linkNodes(map[0][0], map[0][1],1);
-        linkNodes(map[0][2], map[0][3],2);
+        linkNodes(map[0][0], map[0][1],1); //@TODO what about 01 to 02 ?
+        linkNodes(map[0][2], map[0][3],5);
         linkNodes(map[0][4], map[0][5],3);
 
+        linkNodes(map[0][0],map[1][0],2);
+        linkNodes(map[1][0],map[1][1],1);
+        linkNodes(map[1][1],map[2][1],4);
+        linkNodes(map[2][1],map[3][1],8);
+
+        for(int i=4;i<sizeX;++i) // create the map for whole 4th row
+        {
+            linkNodes(map[4][i-1],map[4][i],5+(i/2));
+        }
 
         return map;
     }
@@ -54,8 +65,7 @@ public class GenerateMap {
         return null;
     }
 
-
-    //////helper
+    ///////////helper////////////
 
     /**
      * This is the helper function to create the edge between two nodes and add the edge to two nodes.
@@ -65,7 +75,8 @@ public class GenerateMap {
      * @return This function returns void.
      */
     public void linkNodes(MapNode node1, MapNode node2, double weight){
-        MapEdge edge = new MapEdge("e1", node1, node2, weight);
+        String temp = String.format("%s - %s",node1.getId(),node2.getId());
+        MapEdge edge = new MapEdge("e1", node1, node2, weight); //@TODO name need to be auto Generated, not always the same
          node1.addEdge(edge);
          node2.addEdge(edge);
     }
