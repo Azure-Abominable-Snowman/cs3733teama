@@ -45,20 +45,31 @@ public class  GenerateMap  {
 
         // Done creating the Nodes, Start making edges.
         linkNodes(map[0][0], map[0][1],1);
-        linkNodes(map[0][2], map[0][3],5);
+        linkNodes(map[0][1], map[0][2],2);
         linkNodes(map[0][4], map[0][5],3);
-
         linkNodes(map[0][0],map[1][0],2);
         linkNodes(map[1][0],map[1][1],1);
         linkNodes(map[1][1],map[2][1],4);
         linkNodes(map[2][1],map[3][1],8);
-
         linkNodes(map[0][5],map[1][5],8);
         linkNodes(map[1][5],map[2][5],8);
-        for(int i=4;i<sizeX;++i) // create the map for whole 4th row
-        {
-            linkNodes(map[4][i-1],map[4][i],5+((i/2)%10));
-        }
+        linkNodes(map[3][1],map[3][2],12);
+
+        for(int i=4 ,col=4;i<sizeX;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],3+(i%10));
+        for(int i=3 ,col=0;i<5;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],0+((i/2)%10));
+        for(int i=2 ,col=4;i<4;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],1);
+        for(int i=1 ,col=11;i<8;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],3+i%3*3%4);
+
+        for(int i=1;i<sizeX;++i) // create the map for part 5th row
+            linkNodes(map[i-1][4],map[i][4],2+((i/2)%3));
+        for(int i=2,row=2;i<13;++i) // create the map for part 3th row
+            linkNodes(map[i-1][row],map[i][row],6+((i/3)%3));
+        for(int i=4,row=1;i<15;++i) // create the map for part 1th row
+            linkNodes(map[i-1][row],map[i][row],1+((i*19)%7));
 
         return map;
     }
@@ -79,7 +90,7 @@ public class  GenerateMap  {
      */
     public void linkNodes(MapNode node1, MapNode node2, double weight){
         String temp = String.format("%s - %s",node1.getId(),node2.getId());
-        MapEdge edge = new MapEdge("e1", node1, node2, weight); //@TODO name need to be auto Generated, not always the same
+        MapEdge edge = new MapEdge(temp, node1, node2, weight);
          node1.addEdge(edge);
          node2.addEdge(edge);
     }
