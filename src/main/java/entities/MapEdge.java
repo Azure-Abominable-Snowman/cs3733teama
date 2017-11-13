@@ -20,7 +20,7 @@ public class MapEdge {
 
     public MapEdge(String id, MapNode start, MapNode end, double weight) {
         this(id, start, end);
-        this.weight = calculateWeight();
+        this.weight = weight;
     }
 
     public MapEdge(String id, MapNode start, MapNode end) {
