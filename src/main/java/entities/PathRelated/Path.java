@@ -26,11 +26,11 @@ public class Path {
     }
     public boolean addEdge(MapEdge edge)
     {
-        if (connectors.contains(edge)) {
+        if (!connectors.contains(edge)) {
             connectors.add(edge);
             return true;
         }
-        return false ;
+        return false;
     }
 
     public ArrayList<MapEdge> getConnectors() {

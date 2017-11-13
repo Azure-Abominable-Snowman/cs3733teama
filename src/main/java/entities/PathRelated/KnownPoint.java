@@ -50,9 +50,6 @@ public class KnownPoint implements  Comparable {
     }
 
 
-
-
-
     //////////// getter and setter
     public MapNode getNode() {
         return node;

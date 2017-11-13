@@ -5,6 +5,7 @@ import entities.HospitalMap;
 import entities.Location;
 import entities.MapEdge;
 import entities.MapNode;
+import entities.PathRelated.Path;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
@@ -40,7 +41,7 @@ public class DrawMap {
         this.imgW = imgW;
         this.mapPane = mapPane;
         bwImg = bwImgs.get("G");
-        map = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv");
+        map = HospitalMap.getInstance();
         ArrayList<String> nodeIds = map.getMap().getNodeIds();
         nodes = new ArrayList<>();
         for(String id : nodeIds) {
@@ -143,5 +144,12 @@ public class DrawMap {
 
     public String getCurFloor() {
         return curFloor;
+    }
+
+    public void drawPath(Path path) {
+        System.out.println(path.getConnectors().size());
+        for(MapEdge e : path.getConnectors()) {
+            drawEdge(c, e);
+        }
     }
 }

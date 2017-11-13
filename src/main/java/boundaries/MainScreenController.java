@@ -4,6 +4,7 @@ import controllers.SceneEngine;
 import entities.HospitalMap;
 import entities.MapEdge;
 import entities.MapNode;
+import entities.PathRelated.Path;
 import entities.drawing.DrawMap;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -54,7 +55,7 @@ public class MainScreenController implements Controller {
     public void initialize() {
         dMap = new DrawMap(mapPane, mapCanvas, -5, 75, 5000, 3500);
         // load in map node coordinates from DB
-        map = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv");
+        map = HospitalMap.getInstance();
 
         // Make slider change the floor
         floorSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -137,6 +138,16 @@ public class MainScreenController implements Controller {
         int nodeDim = dMap.getNodeDim();
         dMap.drawNode(start, nodeDim*3, Color.RED);
         dMap.drawNode(end, nodeDim*3, Color.RED);
+
+
+        Path shortestPath = map.getPathGenerator().generatePath(start, end);
+
+        for(MapNode n : shortestPath.getNodes()) {
+            System.out.println(n.getId());
+        }
+
+        // Draw the path between the two nodes
+        dMap.drawPath(shortestPath);
     }
 
     @FXML

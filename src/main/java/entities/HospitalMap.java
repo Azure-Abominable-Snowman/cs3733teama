@@ -1,5 +1,7 @@
 package entities;
 
+import entities.PathRelated.AStar;
+import entities.PathRelated.PathGenerator;
 import entities.db.JavaDatabaseSource;
 import entities.db.MapDataSource;
 
@@ -13,6 +15,7 @@ public class HospitalMap {
         static entities.HospitalMap instance = null;
         private MapDataSource rawData; // link to javaDB -- see MapDataSource interface to call functions that update DB
         private MapDataSource mapObjects; // NOTE: see the MapDataSource interface on how access the MapNodes and MapEdges for map coordinate/pathfinding
+        private PathGenerator pathGenerator;
         //pathgenerator
         //mapcoordinate
 
@@ -37,9 +40,14 @@ public class HospitalMap {
         return nodesOnFloors.get(floor);
     }
 
-    private HospitalMap(String nodeFilename, String edgeFilename) {
+    public PathGenerator getPathGenerator() {
+        return pathGenerator;
+    }
+
+    private HospitalMap() {
             //mapObjects = new CSVDatabaseSource(nodeFilename, edgeFilename); //reads CSV file, creates MapNodes and MapEdges
             rawData = new JavaDatabaseSource("jdbc:derby://localhost:1527/testdb;create=true", "TEST_NODES", "TEST_EDGES");
+            pathGenerator = new AStar();
             /*for (String id : mapObjects.getNodeIds()) {
                 rawData.addNode(mapObjects.getNode(id));
             }
@@ -48,10 +56,10 @@ public class HospitalMap {
             }*/
         }
 
-        public static synchronized entities.HospitalMap getInstance(String nodeFilename, String edgeFilename)
+        public static synchronized entities.HospitalMap getInstance()
         {
             if (instance==null)
-                instance = new entities.HospitalMap(nodeFilename, edgeFilename);
+                instance = new entities.HospitalMap();
             return instance;
         }
 }
