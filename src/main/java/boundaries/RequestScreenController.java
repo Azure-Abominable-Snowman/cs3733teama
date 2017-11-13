@@ -8,7 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
-public class RequestScreenController {
+public class RequestScreenController implements Controller {
+
+    @Override
+    public String getFXMLFileName() {
+        return "RequestScreen.fxml";
+    }
+
     @FXML
     private Button back;
     @FXML
@@ -35,13 +41,13 @@ public class RequestScreenController {
 
     @FXML
     private void backClick(ActionEvent event){
-        SceneEngine.displayMainScreen();
+        SceneEngine.display(MainScreenController.class);
     }
     @FXML
     //this handler is only connected to the first fulfill button
     //TODO create the prefabs for the fulfill sections
     private void fulfillClick(ActionEvent event){
-        SceneEngine.displayFulfillRequest();
+        SceneEngine.display(FulfillReqController.class, SceneEngine.getPopOutStage());
     }
 
 

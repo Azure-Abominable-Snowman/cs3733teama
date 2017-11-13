@@ -1,4 +1,6 @@
-package entities;
+package entities.db;
+
+import entities.auth.PrivelegedUser;
 
 /**
  * Created by aliss on 11/11/2017.

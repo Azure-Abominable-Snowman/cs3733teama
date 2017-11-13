@@ -1,4 +1,6 @@
-package entities;
+package entities.db;
+
+import entities.*;
 
 import java.sql.*;
 import java.util.ArrayList;

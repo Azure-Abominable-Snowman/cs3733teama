@@ -1,5 +1,9 @@
 package entities;
 
+import entities.db.CSVDatabaseSource;
+import entities.db.JavaDatabaseSource;
+import entities.db.MapDataSource;
+
 /**
  * Created by aliss on 11/11/2017.
  */

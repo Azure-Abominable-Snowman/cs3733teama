@@ -3,12 +3,16 @@ package boundaries;
 import controllers.SceneEngine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 
+public class MainScreenController implements Controller {
 
-public class MainScreenController {
+    @Override
+    public String getFXMLFileName() {
+        return "MainScreen.fxml";
+    }
+
     @FXML
     Button go;
     @FXML
@@ -20,18 +24,18 @@ public class MainScreenController {
 
     @FXML
     private void requestClick(ActionEvent event){
-        SceneEngine.displayRequestScreen();
+        SceneEngine.display(RequestScreenController.class);
     }
     @FXML
     private void editMapClick(ActionEvent event){
-        SceneEngine.displayMapEditor();
+        SceneEngine.display(MapEditorController.class);
     }
     @FXML
     private void goClick(ActionEvent event){
-        SceneEngine.displayDirectionsScreen();
+        SceneEngine.display(DirectionsController.class);
     }
     @FXML
     private void logInClick(ActionEvent event){
-        SceneEngine.displayLoginScreen();
+        SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene());
     }
 }
