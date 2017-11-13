@@ -16,6 +16,6 @@ public class DirectionsController implements Controller {
 
     @FXML
     private void backClick(ActionEvent e){
-        SceneEngine.display(MainScreenController.class);
+        SceneEngine.display(MainScreenController.class, null);
     }
 }

@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MapEditorController">
    <children>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <children>
@@ -45,10 +44,10 @@
                         <Font size="19.0" />
                      </font>
                   </Label>
-                  <TextField maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
-                  <TextField maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
-                  <TextField maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="83.0" prefWidth="122.0" text="Back" GridPane.rowSpan="2147483647" GridPane.vgrow="ALWAYS" />
+                  <TextField fx:id="name" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                  <TextField fx:id="yCoord" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+                  <TextField maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" fx:id="xCoord" />
+                  <Button fx:id="back" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="83.0" prefWidth="122.0" text="Back" GridPane.rowSpan="2147483647" GridPane.vgrow="ALWAYS" />
                </children>
             </GridPane>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" VBox.vgrow="ALWAYS">
@@ -65,15 +64,15 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-                        <ComboBox prefHeight="25.0" prefWidth="152.0" GridPane.columnIndex="1" />
+                        <Button fx:id="add" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="editorType" prefHeight="25.0" prefWidth="152.0" GridPane.columnIndex="1" />
                         <Label text="Editor Type: " GridPane.halignment="RIGHT">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </Label>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+                        <Button fx:id="edit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                        <Button fx:id="remove" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                   <Pane id="Put the map here" prefHeight="304.0" prefWidth="347.0" />

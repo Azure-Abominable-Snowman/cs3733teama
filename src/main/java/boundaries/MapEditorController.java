@@ -49,8 +49,9 @@ public class MapEditorController implements Controller {
 
 
     @FXML
-    private void onBackClick(ActionEvent e) {
-        SceneEngine.display(MainScreenController.class);
+
+    private void onBackClick(ActionEvent e){
+        SceneEngine.display(MainScreenController.class, null);
 
     }
     @FXML
@@ -61,8 +62,8 @@ public class MapEditorController implements Controller {
         //display all Nodes and Edges for given floor
         //Nodes to Display:
         int numNodes, numEdges;
-        HashMap<Location,String> nodes = HospitalMap.getInstance().getNodesonFloor(selectedFloor);
-        HashMap<Location,Location> edges = HospitalMap.getInstance().getEdgesonFloor(selectedFloor);
+        HashMap<Location,String> nodes = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv").getNodesonFloor(selectedFloor);
+        HashMap<Location,Location> edges = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv").getEdgesonFloor(selectedFloor);
         numNodes = nodes.keySet().size();
         numEdges = nodes.keySet().size();
 
@@ -85,8 +86,11 @@ public class MapEditorController implements Controller {
 
     @FXML
     private void onEdgeEditor(ActionEvent e) {
-
     }
+
+
+
+
 }
 
 
