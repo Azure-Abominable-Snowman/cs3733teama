@@ -1,67 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MainScreenController">
-   <children>
-      <BorderPane prefHeight="403.0" prefWidth="601.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+<SplitPane dividerPositions="0.265" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MainScreenController">
+  <items>
+      <HBox maxHeight="-Infinity" prefHeight="200.0">
+         <children>
+            <GridPane HBox.hgrow="ALWAYS">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <VBox prefHeight="80.0" prefWidth="534.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start" HBox.hgrow="NEVER" />
-                              <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="2.0" minWidth="16.0" prefHeight="31.0" prefWidth="402.0" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End" wrappingWidth="30.389347076416016" />
-                              <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="2.0" minWidth="16.0" prefHeight="38.0" prefWidth="386.0" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
-                     </children>
-                     <HBox.margin>
+                  <TextField GridPane.columnIndex="1">
+                     <opaqueInsets>
                         <Insets />
-                     </HBox.margin>
-                  </VBox>
-                  <Button fx:id="go1" mnemonicParsing="false" onAction="#goClick" prefHeight="66.0" prefWidth="191.0" style="-fx-background-color: #0078FF;" text="Go" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </HBox.margin>
+                     </opaqueInsets>
+                  </TextField>
+                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start" GridPane.halignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </GridPane>
+            <Button fx:id="go" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#goClick" prefHeight="203.0" prefWidth="135.0" text="Go" HBox.hgrow="ALWAYS">
+               <opaqueInsets>
+                  <Insets bottom="10.0" right="10.0" top="10.0" />
+               </opaqueInsets>
+            </Button>
+         </children>
+      </HBox>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane fx:id="mapPane" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <children>
+                  <Canvas fx:id="mapCanvas" height="200.0" width="300.0" />
+               </children>
+            </Pane>
+            <VBox prefHeight="200.0" prefWidth="114.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER">
+               <children>
+                  <Button fx:id="request" mnemonicParsing="false" onAction="#requestClick" text="Request">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="editMap" mnemonicParsing="false" onAction="#editMapClick" text="Edit Map">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
                   </Button>
                </children>
-               <BorderPane.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </BorderPane.margin>
-            </HBox>
-         </top>
-         <center>
-            <ImageView fx:id="maps" fitHeight="405.0" fitWidth="646.0" BorderPane.alignment="CENTER">
-               <image>
-                  <Image url="@Map_1.png" />
-               </image>
-            </ImageView>
-         </center>
-         <right>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="editMap" mnemonicParsing="false" onAction="#editMapClick" prefHeight="25.0" prefWidth="72.0" style="-fx-background-color: FFE804;" text="Edit map" textFill="#403737" />
-                  <Button fx:id="request" mnemonicParsing="false" onAction="#requestClick" prefHeight="27.0" prefWidth="72.0" style="-fx-background-color: #FF0027;" text="Request" textFill="WHITE" />
-               </children>
             </VBox>
-         </right>
-      </BorderPane>
-   </children>
-</AnchorPane>
+         </children>
+      </GridPane>
+  </items>
+</SplitPane>

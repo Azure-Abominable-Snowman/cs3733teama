@@ -1,6 +1,7 @@
 package controllers;
 
 import boundaries.Controller;
+import boundaries.ControllerInfo;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,12 +40,19 @@ public final class SceneEngine {
     }
 
 
-    public static void display(Class<? extends Controller> newController, Stage stage) {
+    public static void display(Class<? extends Controller> newController, Stage stage, ControllerInfo info) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(newController.getResource("../"+newController.newInstance().getFXMLFileName()));
             Parent root = loader.load();
             Scene scene = new Scene(root);
+            // Get newly created controller
+            Controller c = (Controller) loader.getController();
+            if(info != null) {
+                // Pass it data
+                c.setControllerInfo(info);
+            }
+            c.setStage(stage);
             stage.setScene(scene);
             stage.show();
 
@@ -57,8 +65,8 @@ public final class SceneEngine {
         }
     }
 
-    public static void display(Class<? extends Controller> newController) {
-        display(newController, getPrimaryStage());
+    public static void display(Class<? extends Controller> newController, ControllerInfo info) {
+        display(newController, getPrimaryStage(), info);
     }
 
 }
