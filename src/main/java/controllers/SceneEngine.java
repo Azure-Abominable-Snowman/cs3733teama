@@ -5,11 +5,16 @@ import boundaries.ControllerInfo;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class SceneEngine {
+
+    private static Map<String, Image> bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage;
 
@@ -38,6 +43,21 @@ public final class SceneEngine {
     public static void closeLogin() {
         loginStage.close();
     }
+
+    public static Map<String, Image> getHospitalImageMap() {
+        if(bwImgs == null) {
+            bwImgs = new HashMap<>();
+            // Populate image map
+            bwImgs.put("L2", new Image("maps/L2.png"));
+            bwImgs.put("L1", new Image("maps/L1.png"));
+            bwImgs.put("G", new Image("maps/G.png"));
+            bwImgs.put("1", new Image("maps/1.png"));
+            bwImgs.put("2", new Image("maps/2.png"));
+            bwImgs.put("3", new Image("maps/3.png"));
+        }
+
+        return bwImgs;
+    } // TODO: make floors an enum instead of a string
 
 
     public static void display(Class<? extends Controller> newController, Stage stage, ControllerInfo info) {

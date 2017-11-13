@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
@@ -16,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class MainScreenController implements Controller {
@@ -39,12 +41,18 @@ public class MainScreenController implements Controller {
     private ScrollPane mapPane;
     @FXML
     private Slider floorSlider;
+    @FXML
+    private Label floorLabel;
 
     private Stage stage;
 
     private ArrayList<MapNode> nodes;
 
+    private Map<String, Image> bwImgs = SceneEngine.getHospitalImageMap();
+    private Image bwImg;
+
     public void initialize() {
+        bwImg = bwImgs.get("G");
         // load in map node coordinates from DB
         HospitalMap map = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv");
         ArrayList<String> nodeIds = map.getMap().getNodeIds();
@@ -55,7 +63,6 @@ public class MainScreenController implements Controller {
 
         // Make slider change the floor
         floorSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
-                System.out.println("Changed Floor: "+floorSlider.getValue());
                 switch(newVal.intValue()) { // TODO: make an enum to get rid of this switch
                     case 0:
                         switchFloor("L2");
@@ -93,11 +100,10 @@ public class MainScreenController implements Controller {
     }
 
     private String curFloor = "G";
-    private Image bwImg = new Image("maps/G.png");
     public void renderMap(Canvas c, double width, double height, String floor) {
         if(!floor.equals(curFloor)) {
             curFloor = floor;
-            bwImg = new Image("maps/"+floor+".png");
+            bwImg = bwImgs.get(floor);
         }
         mapCanvas.setWidth(width);
         mapCanvas.setHeight(height);
@@ -106,6 +112,7 @@ public class MainScreenController implements Controller {
         gc.drawImage(bwImg, 0,0, width, height);
         for(MapNode n : nodes) {
             if(n.getCoordinate().getLevel().equals(floor)) {
+                // TODO: figure out why these fudge constants are necessary
                 double nodeX = convUnits(n.getCoordinate().getxCoord()-5, 5000, width);
                 double nodeY = convUnits(n.getCoordinate().getyCoord()+75, 3500, height);
                 //System.out.println(nodeX + " " + nodeY);
@@ -155,6 +162,7 @@ public class MainScreenController implements Controller {
 
     private void switchFloor(String newFloor) {
         renderMap(mapCanvas, mapPane.getWidth(), mapPane.getHeight(), newFloor);
+        floorLabel.setText(newFloor);
     }
 
     @FXML
