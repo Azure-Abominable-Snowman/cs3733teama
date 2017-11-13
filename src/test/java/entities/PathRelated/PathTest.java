@@ -1,14 +1,8 @@
 package entities.PathRelated;
 
-import com.sun.xml.internal.bind.v2.TODO;
-import entities.Location;
 import entities.MapNode;
-import entities.NodeType;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 

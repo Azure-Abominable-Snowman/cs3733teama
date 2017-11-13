@@ -133,7 +133,7 @@ public class AStar implements  PathGenerator{
      * @param finalPath the reversed path generated from ending location.
      * @return the formatted Path object.
      */
-    private Path formatOutput (ArrayList<KnownPoint> finalPath) // @TODO make startNode endNode
+    private Path formatOutput (ArrayList<KnownPoint> finalPath) //
     {
         Path output = new Path();
         MapNode currentNode = finalPath.get(finalPath.size()-1).getNode(); // extract the first Node of the list.

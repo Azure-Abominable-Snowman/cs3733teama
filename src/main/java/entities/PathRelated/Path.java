@@ -3,7 +3,6 @@ package entities.PathRelated;
 import entities.MapEdge;
 import entities.MapNode;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Path {
     private ArrayList<MapNode> nodes;
