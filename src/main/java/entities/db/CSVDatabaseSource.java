@@ -35,7 +35,28 @@ public class CSVDatabaseSource implements MapDataSource {
             edgeMap.put(row.get(0), e);
         }
     }
-
+    @Override
+    public ArrayList<MapNode> getNodesOnFloor(String floor) {
+        ArrayList<MapNode> allNodes = new ArrayList<MapNode>();
+        for (String id: nodeMap.keySet()) {
+            MapNode m = nodeMap.get(id);
+            if (m.getCoordinate().getLevel().equals(floor)) {
+                allNodes.add(m);
+            }
+        }
+        return allNodes;
+    }
+    @Override
+    public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
+        ArrayList<MapEdge> allEdges = new ArrayList<MapEdge>();
+        for (String id: edgeMap.keySet()) {
+            MapEdge e = edgeMap.get(id);
+            if (e.doesNotCrossFloors() && e.isOnFloor(floor)) {
+                allEdges.add(e);
+            }
+        }
+        return allEdges;
+    }
     /**
      * Returns an array of CSV data lines parsed from a given filename
      * @param filename

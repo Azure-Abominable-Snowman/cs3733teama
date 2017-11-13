@@ -3,10 +3,15 @@ package entities;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class MapEdgeTest {
+
+
+
     private MapEdge testEdge;
-    private MapNode nodeOne, nodeTwo, nodeThree;
+    private MapNode nodeOne, nodeTwo, nodeThree, nodeFour, nodeFive;
 
     public MapEdgeTest() {
         // Create a new edge with known values and nodes.
@@ -18,6 +23,12 @@ public class MapEdgeTest {
                 NodeType.HALL, "Hallway W0302", "Hallway Connector 3 Floor 2", "Team H", null);
         nodeThree = new MapNode("WHALL00302", new Location(2010, 700, "2", "45 Francis"),
                 NodeType.HALL, "Hallway W0303", "Hallway Connector 3 Floor 3", "Team Z", null);
+
+        nodeFour = new MapNode("WHALL00304", new Location(2010, 700, "2", "45 Francis"),
+                NodeType.HALL, "Hallway W0304", "Hallway Connector 3 Floor 4", "Team Z", null);
+        nodeFive = new MapNode("WELEV00W03", new Location(2080, 1280, "3", "45 Francis"),
+                NodeType.HALL, "Elevator W0203", "Elevator W Floor 3", "Team I", null);
+
         testEdge = new MapEdge("TestEdge", nodeOne, nodeTwo);
     }
 
@@ -80,4 +91,20 @@ public class MapEdgeTest {
         assert testEdge.toSQLVals().equals("'TestEdge','WHALL00203','WHALL00302'");
     }
 
+    @Test
+    public void doesNotCrossFloors() throws Exception {
+        MapEdge sameFloor = new MapEdge("WHALL00203_WELEV00W03", nodeOne, nodeFive);
+        MapEdge diffFloor = new MapEdge("WHALL00304_WELEV00W03", nodeFour,nodeFive);
+        assertTrue(sameFloor.doesNotCrossFloors());
+        assertFalse(diffFloor.doesNotCrossFloors());
+
+    }
+
+    @Test
+    public void isOnFloor() throws Exception {
+        MapEdge sameFloor = new MapEdge("WHALL00203_WELEV00W03", nodeOne, nodeFive);
+        assertTrue(sameFloor.isOnFloor("03"));
+        assertFalse(sameFloor.isOnFloor("0G"));
+
+    }
 }

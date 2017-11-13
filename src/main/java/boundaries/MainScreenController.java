@@ -1,6 +1,7 @@
 package boundaries;
 
 import controllers.SceneEngine;
+import entities.HospitalMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

@@ -1,5 +1,8 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapEdge {
     private MapNode start, end;
     private String id;
@@ -69,6 +72,29 @@ public class MapEdge {
         if(start != null) {
             weight = calculateWeight();
         }
+    }
+    // returns true  if edge is on input floor (either start or end node is on the floor)
+    public boolean isOnFloor(String floor) {
+        String[] connections = id.split("_");
+        String edgeStart = connections[0];
+        String edgeEnd = connections[1];
+
+
+        String floorStart = edgeStart.substring(edgeStart.length()-2, edgeStart.length());
+        String floorEnd = edgeEnd.substring(edgeEnd.length()-2, edgeEnd.length());
+        return (floorStart.equals(floor) || floorEnd.equals(floor));
+    }
+
+    public boolean doesNotCrossFloors() {
+        String[] connections = id.split("_");
+        String edgeStart = connections[0];
+        String edgeEnd = connections[1];
+
+
+        String floorStart = edgeStart.substring(edgeStart.length()-2, edgeStart.length());
+        String floorEnd = edgeEnd.substring(edgeEnd.length()-2, edgeEnd.length());
+
+        return floorStart.equals(floorEnd);
     }
 
     public double getWeight() {
