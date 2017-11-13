@@ -16,9 +16,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 public class MapEditorController implements Controller {
     @FXML
@@ -87,6 +89,7 @@ public class MapEditorController implements Controller {
 
     @FXML
     private void onEdgeEditor(ActionEvent e) {
+
     }
 
 
