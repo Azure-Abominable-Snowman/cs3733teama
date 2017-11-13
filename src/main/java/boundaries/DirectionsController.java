@@ -5,12 +5,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class DirectionsController {
+public class DirectionsController implements Controller {
+    @Override
+    public String getFXMLFileName() {
+        return "DirectionsScreen.fxml";
+    }
+
     @FXML
     Button back;
 
     @FXML
     private void backClick(ActionEvent e){
-        SceneEngine.displayMainScreen();
+        SceneEngine.display(MainScreenController.class);
     }
 }
