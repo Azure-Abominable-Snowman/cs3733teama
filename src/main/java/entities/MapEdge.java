@@ -18,6 +18,20 @@ public class MapEdge {
         this.id = id;
     }
 
+    public MapEdge(String id, MapNode start, MapNode end, double weight) {
+        this(id, start, end);
+        this.weight = calculateWeight();
+    }
+
+    public MapEdge(String id, MapNode start, MapNode end) {
+        this.startID = start.getId();
+        this.endID = end.getId();
+        this.start = start;
+        this.end = end;
+        this.id = id;
+    }
+
+
     /**
      * Creates an edge using a defined weight
      * @param id
