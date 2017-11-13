@@ -2,21 +2,23 @@ package boundaries;
 
 import controllers.SceneEngine;
 import entities.HospitalMap;
+import entities.Location;
+import entities.MapEdge;
 import entities.MapNode;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -43,10 +45,16 @@ public class MainScreenController implements Controller {
     private Slider floorSlider;
     @FXML
     private Label floorLabel;
+    @FXML
+    private TextField startBox;
+    @FXML
+    private TextField endBox;
+
 
     private Stage stage;
 
     private ArrayList<MapNode> nodes;
+    private Map<String, MapNode> nodesOnFloor;
 
     private Map<String, Image> bwImgs = SceneEngine.getHospitalImageMap();
     private Image bwImg;
@@ -99,6 +107,28 @@ public class MainScreenController implements Controller {
         renderMap(c, width, height, curFloor);
     }
 
+    /**
+     * Creates new location with the X and Y coordinates suitable for drawing on the map
+     * @param loc
+     * @return
+     */
+    private Location convNodeCoords(Location loc) {
+        Location newLoc = new Location(loc);
+        newLoc.setxCoord(loc.getxCoord()-5);
+        newLoc.setyCoord(loc.getyCoord()+75);
+        return newLoc;
+    }
+
+    private void drawNode(Canvas c, GraphicsContext gc, MapNode n, int size, Paint pointColor) {
+        double width = c.getWidth();
+        double height = c.getHeight();
+        Location drawLoc = convNodeCoords(n.getCoordinate());
+        double nodeX = convUnits(drawLoc.getxCoord(), 5000, width);
+        double nodeY = convUnits(drawLoc.getyCoord(), 3500, height);
+        gc.setFill(pointColor);
+        gc.fillOval(nodeX, nodeY, size, size);
+    }
+
     private String curFloor = "G";
     public void renderMap(Canvas c, double width, double height, String floor) {
         if(!floor.equals(curFloor)) {
@@ -110,13 +140,12 @@ public class MainScreenController implements Controller {
         GraphicsContext gc = c.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
         gc.drawImage(bwImg, 0,0, width, height);
+        nodesOnFloor = new HashMap<>();
         for(MapNode n : nodes) {
             if(n.getCoordinate().getLevel().equals(floor)) {
                 // TODO: figure out why these fudge constants are necessary
-                double nodeX = convUnits(n.getCoordinate().getxCoord()-5, 5000, width);
-                double nodeY = convUnits(n.getCoordinate().getyCoord()+75, 3500, height);
-                //System.out.println(nodeX + " " + nodeY);
-                gc.fillOval(nodeX, nodeY, nodeDim, nodeDim);
+                drawNode(c, gc, n, nodeDim, Color.BLACK);
+                nodesOnFloor.put(n.getId(), n);
             }
         }
     }
@@ -161,13 +190,34 @@ public class MainScreenController implements Controller {
     }
 
     private void switchFloor(String newFloor) {
-        renderMap(mapCanvas, mapPane.getWidth(), mapPane.getHeight(), newFloor);
+        renderMap(mapCanvas, mapPane.getWidth() * curZoom, mapPane.getHeight() * curZoom, newFloor);
         floorLabel.setText(newFloor);
+    }
+
+    private void drawEdge(Canvas c, MapEdge edge) {
+        double width = c.getWidth();
+        double height = c.getHeight();
+        GraphicsContext gc = c.getGraphicsContext2D();
+        Location start = convNodeCoords(edge.getStart().getCoordinate());
+        Location end = convNodeCoords(edge.getEnd().getCoordinate());
+        gc.strokeLine(
+                convUnits(start.getxCoord(), 5000, width),
+                convUnits(start.getyCoord(), 3500, height),
+                convUnits(end.getxCoord(), 5000, width),
+                convUnits(end.getyCoord(), 3500, height));
     }
 
     @FXML
     private void requestClick(ActionEvent event){
-        SceneEngine.display(RequestScreenController.class, null);
+        //SceneEngine.display(RequestScreenController.class, null);
+        for(MapNode n : nodesOnFloor.values()) {
+            System.out.print(n.getId()+" "+n.getShortDescription()+" ");
+            for(MapEdge e : n.getEdges()) {
+                System.out.print(e.getId()+" ");
+                drawEdge(mapCanvas, e);
+            }
+            System.out.println("");
+        }
     }
 
     @FXML
@@ -177,7 +227,19 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void goClick(ActionEvent event){
-        SceneEngine.display(DirectionsController.class, null);
+        //SceneEngine.display(DirectionsController.class, null);
+
+        // draw the start and end nodes in a different size and color
+        MapNode start = nodesOnFloor.get(startBox.getText());
+        MapNode end = nodesOnFloor.get(endBox.getText());
+
+        if(start == null || end == null) {
+            System.out.println("Invalid ID for start or end");
+            return;
+        }
+
+        drawNode(mapCanvas, mapCanvas.getGraphicsContext2D(), start, nodeDim*3, Color.RED);
+        drawNode(mapCanvas, mapCanvas.getGraphicsContext2D(), end, nodeDim*3, Color.RED);
     }
 
     @FXML

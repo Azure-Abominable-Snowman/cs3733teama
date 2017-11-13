@@ -30,12 +30,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField GridPane.columnIndex="1">
+                  <TextField fx:id="startBox" GridPane.columnIndex="1">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </TextField>
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="endBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start" GridPane.halignment="CENTER">
                      <font>
                         <Font size="20.0" />
