@@ -45,7 +45,7 @@ public class StaffLoginController implements Controller {
 
     @FXML
     private void onBackClick(ActionEvent event){
-        SceneEngine.display(MainScreenController.class);
+        SceneEngine.display(MainScreenController.class, null);
         SceneEngine.closeLogin();
     }
 }

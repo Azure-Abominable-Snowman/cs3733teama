@@ -131,8 +131,9 @@ public class JavaDatabaseSource implements MapDataSource {
                 return null;
             }
             while(result.next()) {
-                retrievedNode.addEdge(new MapEdge(result.getString("EDGEID"),
-                        retrieveNode(result.getString("STARTNODE")), retrieveNode(result.getString("ENDNODE"))));
+                //retrievedNode.addEdge(new MapEdge(result.getString("EDGEID"),
+                //        retrieveNode(result.getString("STARTNODE")), retrieveNode(result.getString("ENDNODE"))));
+                retrievedNode.addEdge(new MapEdge(result.getString("EDGEID"), result.getString("STARTNODE"), result.getString("ENDNODE")));
             }
             stmt.close();
             return retrievedNode;
@@ -262,9 +263,9 @@ public class JavaDatabaseSource implements MapDataSource {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+id+"'");
             result.next();
-            MapNode start = getNode(result.getString("STARTNODE"));
-            MapNode end = getNode(result.getString("ENDNODE"));
-            MapEdge retrievedEdge = new MapEdge(result.getString("EDGEID"), start, end);
+            //MapNode start = getNode(result.getString("STARTNODE"));
+            //MapNode end = getNode(result.getString("ENDNODE"));
+            MapEdge retrievedEdge = new MapEdge(result.getString("EDGEID"), result.getString("STARTNODE"), result.getString("ENDNODE"));
             result.close();
             stmt.close();
             return retrievedEdge;
