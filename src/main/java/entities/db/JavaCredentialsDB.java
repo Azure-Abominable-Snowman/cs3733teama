@@ -1,10 +1,12 @@
-package entities;
+package entities.db;
+
+import entities.auth.PrivelegedUser;
 
 import java.sql.*;
 import java.util.logging.Logger;
 
-import static entities.AccessType.ADMIN;
-import static entities.AccessType.STAFF;
+import static entities.auth.AccessType.ADMIN;
+import static entities.auth.AccessType.STAFF;
 
 /**
  * Created by aliss on 11/11/2017.
