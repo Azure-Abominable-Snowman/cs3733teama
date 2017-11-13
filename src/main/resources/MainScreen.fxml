@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.265" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MainScreenController">
+<SplitPane dividerPositions="0.265, 0.5" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MainScreenController">
   <items>
       <HBox maxHeight="100.0" minHeight="-Infinity" prefHeight="100.0">
          <children>
@@ -58,35 +58,18 @@
             </Button>
          </children>
       </HBox>
-      <GridPane>
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <ScrollPane fx:id="mapPane" hbarPolicy="NEVER" onMouseClicked="#zoomIntoMap" vbarPolicy="NEVER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-               <content>
-                  <Canvas fx:id="mapCanvas" height="200.0" width="300.0" />
-               </content>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </ScrollPane>
-            <ToolBar GridPane.rowIndex="1">
-               <items>
-                  <Button fx:id="request" mnemonicParsing="false" onAction="#requestClick" text="Request" />
-                  <Button fx:id="editMap" mnemonicParsing="false" onAction="#editMapClick" text="Edit Map" />
-                  <Slider fx:id="floorSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" nodeOrientation="LEFT_TO_RIGHT" showTickMarks="true" snapToTicks="true" value="2.0" />
-                  <Label fx:id="floorLabel" text="G" />
-               </items>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </ToolBar>
-         </children>
-      </GridPane>
+      <ScrollPane fx:id="mapPane" hbarPolicy="NEVER" onMouseClicked="#zoomIntoMap" vbarPolicy="NEVER">
+         <content>
+            <Canvas fx:id="mapCanvas" height="200.0" width="300.0" />
+         </content>
+      </ScrollPane>
+      <ToolBar>
+         <items>
+            <Button fx:id="request" mnemonicParsing="false" onAction="#requestClick" text="Request" />
+            <Button fx:id="editMap" mnemonicParsing="false" onAction="#editMapClick" text="Edit Map" />
+            <Slider fx:id="floorSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" nodeOrientation="LEFT_TO_RIGHT" showTickMarks="true" snapToTicks="true" value="2.0" />
+            <Label fx:id="floorLabel" text="G" />
+         </items>
+      </ToolBar>
   </items>
 </SplitPane>
