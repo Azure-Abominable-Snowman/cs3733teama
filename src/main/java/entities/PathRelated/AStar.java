@@ -11,7 +11,7 @@ import static java.lang.Math.sqrt;
 
 public class AStar implements  PathGenerator{
 
-    private HashMap<MapNode,KnownPoint> checkedPoints;
+    private HashMap<String,KnownPoint> checkedPoints;
     private PriorityQueue<KnownPoint> queue;
     private MapNode start, end;
 
@@ -43,7 +43,7 @@ public class AStar implements  PathGenerator{
             )
         {
             putNodesIntoQueue(checking); // put adjacent node into queue.
-            checkedPoints.put(checking.getNode(),checking);
+            checkedPoints.put(checking.getNode().getId(),checking);
             if(queue.peek()==null) {
                 throw new java.lang.RuntimeException("Cannot generate a route from the given start and end.");
             }
@@ -94,7 +94,7 @@ public class AStar implements  PathGenerator{
         {
             MapNode nextNode= adjacentNode(e,checking.getNode());  // get the node to be calculated.
 
-            if( !checkedPoints.containsKey(nextNode)) {  // prevent from going to points already been at.
+            if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
                 KnownPoint nextPoint = new KnownPoint(nextNode, checking, newPastCost,
