@@ -20,8 +20,9 @@ public class DrawMap {
     private Canvas c;
     private GraphicsContext gc;
     private int xOffset, yOffset, imgW, imgH;
+    private ImageStash stash;
+    private Map<String, String> bwImgs = SceneEngine.getHospitalImageMap();
     private Image bwImg;
-    private Map<String, Image> bwImgs = SceneEngine.getHospitalImageMap();
     private int nodeDim = 3;
     private double zoomUnit = 3;
     private boolean zoomed = false;
@@ -40,8 +41,11 @@ public class DrawMap {
         this.imgH = imgH;
         this.imgW = imgW;
         this.mapPane = mapPane;
-        bwImg = bwImgs.get("G");
-        map = HospitalMap.getInstance();
+        String filename = bwImgs.get("G");
+        stash = new ImageStash(filename);
+        bwImg = stash.getImage();
+        map = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv");
+
         ArrayList<String> nodeIds = map.getMap().getNodeIds();
         nodes = new ArrayList<>();
         for(String id : nodeIds) {
@@ -99,9 +103,12 @@ public class DrawMap {
     }
 
     public void renderMap(double width, double height, String floor) {
-        if(!floor.equals(curFloor)) {
+        if(!floor.equals(curFloor)) { //switching to a new image
             curFloor = floor;
-            bwImg = bwImgs.get(floor);
+            stash = null;
+            String filename = bwImgs.get(floor);
+            stash = new ImageStash(filename);
+            bwImg = stash.getImage();
         }
         c.setWidth(width);
         c.setHeight(height);
