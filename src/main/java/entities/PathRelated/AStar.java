@@ -32,7 +32,7 @@ public class AStar implements  PathGenerator{
 
         //Generate Path
         for(checking = new KnownPoint(start,null,0,calDistance(start,end));
-            checking.getNode()==end;   // reached end
+            checking.getNode()!=end;   // reached end
             checking=queue.poll() // move forward one step
             )
         {
@@ -120,11 +120,12 @@ public class AStar implements  PathGenerator{
     private ArrayList<KnownPoint> collectPath(KnownPoint lastPoint)
     {
         ArrayList<KnownPoint> finalPath = new ArrayList<>();
-        for (;lastPoint.getLastNode()==null;)
+        for (;lastPoint.getLastNode()!=null;)
         {
             finalPath.add(lastPoint);
             lastPoint=lastPoint.getLastNode();
         }
+        finalPath.add(lastPoint);
         return finalPath;
     }
 
