@@ -10,19 +10,20 @@ public class  GenerateMap  {
 
 
 
-     public MapNode[][] GenerateNewMap(int sizeX, int sizeY, int version)
+     public MapNode[][] GenerateNewMap(int version)
     {
         switch (version)
         {
-            case 1: return GenerateV1(sizeX,sizeY);
-            default: return GenerateVdefult(sizeX,sizeY);
+            case 1: return GenerateV1();
+            default: return GenerateVdefult();
         }
 
 
     }
 
-    public MapNode[][] GenerateV1(int sizeX,int sizeY)
+    public MapNode[][] GenerateV1()
     {
+        int sizeX=20, sizeY=20;
         if(sizeX <5 ) sizeX=5;
         if(sizeY<5 ) sizeY =5; // make sure no sizes are smaller then 5;
 
@@ -62,7 +63,7 @@ public class  GenerateMap  {
         return map;
     }
 
-    public MapNode[][] GenerateVdefult(int sizeX,int sizeY)
+    public MapNode[][] GenerateVdefult()
     {
         return null;
     }
@@ -95,13 +96,13 @@ public class  GenerateMap  {
             {
                 System.out.print("X  ");
                 if(findWeight(map[i][j],map[i+1][j])<0) System.out.print("   ");
-                else System.out.printf("%d  ",(int) findWeight(map[i][j],map[i+1][j]));
+                else System.out.printf("%h  ",(int) findWeight(map[i][j],map[i+1][j]));
             }
             System.out.print("X\n");
             for(int i=0;i<sizeX;i++)
             {
                 if(findWeight(map[i][j],map[i][j+1])<0) System.out.print("      ");
-                else System.out.printf("%d     ",(int) findWeight(map[i][j],map[i][j+1]));
+                else System.out.printf("%h     ",(int) findWeight(map[i][j],map[i][j+1]));
             }
             System.out.print("\n");
         }
@@ -109,7 +110,7 @@ public class  GenerateMap  {
         {
             System.out.print("X  ");
             if(findWeight(map[i][sizeY-1],map[i+1][sizeY-1])<0) System.out.print("   ");
-            else System.out.printf("%d  ",(int) findWeight(map[i][sizeY-1],map[i+1][sizeY-1]));
+            else System.out.printf("%h  ",(int) findWeight(map[i][sizeY-1],map[i+1][sizeY-1]));
         }
     }
 

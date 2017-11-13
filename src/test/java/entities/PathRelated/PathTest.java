@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 public class PathTest {
     // Testing objects
-    MapNode[][] testNodes = new MapNode[10][20];
+    MapNode[][] testNodes = new MapNode[20][20];
     Path testPath = new Path();
 
 
@@ -22,10 +22,10 @@ public class PathTest {
 
     public void createMap(){
         GenerateMap generater = new GenerateMap();
-        testNodes = new MapNode[10][10];
-       testNodes=  generater.GenerateNewMap(10,20,1);
+        testNodes = new MapNode[20][20];
+       testNodes=  generater.GenerateNewMap(1);
 
-       generater.printMap(testNodes,10,10);
+       generater.printMap(testNodes,20,20);
     }
 
 
