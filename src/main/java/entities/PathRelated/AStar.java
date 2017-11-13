@@ -96,9 +96,7 @@ public class AStar implements  PathGenerator{
             if( !checkedPoints.containsKey(nextNode)) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
-                KnownPoint nextPoint = new KnownPoint(nextNode,
-                        checking,
-                        newPastCost,
+                KnownPoint nextPoint = new KnownPoint(nextNode, checking, newPastCost,
                         newPastCost + calDistance(nextNode, end)); // Generate a new Point from checking point to add into queue.
                 queue.add(nextPoint); // add into queue
             }
@@ -113,8 +111,9 @@ public class AStar implements  PathGenerator{
      */
     private MapEdge getEdgeBetweenNodes(MapNode a, MapNode b)
     {
-        for (MapEdge mapEdge : a.getEdges()) {
-            if ( mapEdge.getStart()==b | mapEdge.getEnd()==b)
+        for (MapEdge mapEdge : a.getEdges())
+        {
+            if ( mapEdge.getStart()==b || mapEdge.getEnd()==b)
                 return mapEdge;
         }
         return null;
