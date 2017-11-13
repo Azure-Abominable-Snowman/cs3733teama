@@ -18,4 +18,21 @@ public class DirectionsController implements Controller {
     private void backClick(ActionEvent e){
         SceneEngine.display(MainScreenController.class);
     }
+
+    @FXML
+    Button request;
+
+    @FXML
+    Button editMap;
+
+    @FXML
+    private void requestClick(ActionEvent event){
+        SceneEngine.display(RequestScreenController.class);
+    }
+
+    @FXML
+    private void editMapClick(ActionEvent event){
+        SceneEngine.display(MapEditorController.class);
+    }
+
 }
