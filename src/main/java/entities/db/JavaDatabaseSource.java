@@ -1,12 +1,16 @@
-package entities;
+package entities.db;
+
+import entities.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 
 public class JavaDatabaseSource implements MapDataSource {
 
+    private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
     private String nodeTable, edgeTable;
     private Connection conn = null;
@@ -59,7 +63,7 @@ public class JavaDatabaseSource implements MapDataSource {
         }
         catch (SQLException sqlExcept)
         {
-            System.out.println("Does the node database table already exist?");
+            log.info("Does the node database table already exist?");
         }
 
         /* Create edge table if it doesn't already exist
@@ -84,7 +88,7 @@ public class JavaDatabaseSource implements MapDataSource {
         }
         catch (SQLException sqlExcept)
         {
-            System.out.println("Does the edge database table already exist?");
+            log.info("Does the edge database table already exist?");
         }
     }
 
@@ -98,9 +102,9 @@ public class JavaDatabaseSource implements MapDataSource {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM " + nodeTable + " WHERE NODEID = '" + id + "'");
             result.next();
-            MapNode retrievedNode = new MapNode(result.getString(1),
-                    new Location(result.getInt(2), result.getInt(3), result.getString(4), result.getString(5)),
-                    NodeType.valueOf(result.getString(6)), result.getString(7), result.getString(8), result.getString(9));
+            MapNode retrievedNode = new MapNode(result.getString("NODEID"),
+                    new Location(result.getInt("XCOORD"), result.getInt("YCOORD"), result.getString("FLOOR"), result.getString("BUILDING")),
+                    NodeType.valueOf(result.getString("NODETYPE")), result.getString("LONGNAME"), result.getString("SHORTNAME"), result.getString("TEAMASSIGNED"));
             result.close();
             stmt.close();
             return retrievedNode;
@@ -127,8 +131,10 @@ public class JavaDatabaseSource implements MapDataSource {
                 return null;
             }
             while(result.next()) {
-                retrievedNode.addEdge(new MapEdge(result.getString(1), retrieveNode(result.getString(2)), retrieveNode(result.getString(3))));
+                retrievedNode.addEdge(new MapEdge(result.getString("EDGEID"),
+                        retrieveNode(result.getString("STARTNODE")), retrieveNode(result.getString("ENDNODE"))));
             }
+            stmt.close();
             return retrievedNode;
         }
         catch (SQLException sqlExcept) {
@@ -154,15 +160,15 @@ public class JavaDatabaseSource implements MapDataSource {
                     stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet result = stmt.executeQuery("SELECT * FROM "+nodeTable+" WHERE NODEID = '"+node.getId()+"'");
                     result.absolute(1);
-                    result.updateString(1, node.getId());
-                    result.updateInt(2, node.getCoordinate().getxCoord());
-                    result.updateInt(3, node.getCoordinate().getyCoord());
-                    result.updateString(4, node.getCoordinate().getLevel());
-                    result.updateString(5, node.getCoordinate().getBuilding());
-                    result.updateString(6, node.getNodeType().name());
-                    result.updateString(7, node.getLongDescription());
-                    result.updateString(8, node.getShortDescription());
-                    result.updateString(9, node.getTeamAssignment());
+                    result.updateString("NODEID", node.getId());
+                    result.updateInt("XCOORD", node.getCoordinate().getxCoord());
+                    result.updateInt("YCOORD", node.getCoordinate().getyCoord());
+                    result.updateString("FLOOR", node.getCoordinate().getLevel());
+                    result.updateString("BUILDING", node.getCoordinate().getBuilding());
+                    result.updateString("NODETYPE", node.getNodeType().name());
+                    result.updateString("LONGNAME", node.getLongDescription());
+                    result.updateString("SHORTNAME", node.getShortDescription());
+                    result.updateString("TEAMASSIGNED", node.getTeamAssignment());
                     result.updateRow();
                     stmt.close();
                 } catch (SQLException e) {
@@ -191,9 +197,9 @@ public class JavaDatabaseSource implements MapDataSource {
                     stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+edge.getId()+"'");
                     result.absolute(1);
-                    result.updateString(1, edge.getId());
-                    result.updateString(2, edge.getStart().getId());
-                    result.updateString(3, edge.getEnd().getId());
+                    result.updateString("EDGEID", edge.getId());
+                    result.updateString("STARTNODE", edge.getStart().getId());
+                    result.updateString("ENDNODE", edge.getEnd().getId());
                     result.updateRow();
                     stmt.close();
                 } catch (SQLException e) {
@@ -211,7 +217,14 @@ public class JavaDatabaseSource implements MapDataSource {
      */
     @Override
     public void removeNode(String id) {
-        // TODO: Implement
+        try {
+            stmt = conn.createStatement();
+            stmt.execute("DELETE FROM " + nodeTable + " WHERE NODEID='"+id+"'");
+            stmt.close();
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
     }
 
     private ArrayList<String> getIdsFromDB(String idCol, String dbName) {
@@ -249,9 +262,9 @@ public class JavaDatabaseSource implements MapDataSource {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+id+"'");
             result.next();
-            MapNode start = getNode(result.getString(2));
-            MapNode end = getNode(result.getString(3));
-            MapEdge retrievedEdge = new MapEdge(result.getString(1), start, end);
+            MapNode start = getNode(result.getString("STARTNODE"));
+            MapNode end = getNode(result.getString("ENDNODE"));
+            MapEdge retrievedEdge = new MapEdge(result.getString("EDGEID"), start, end);
             result.close();
             stmt.close();
             return retrievedEdge;
