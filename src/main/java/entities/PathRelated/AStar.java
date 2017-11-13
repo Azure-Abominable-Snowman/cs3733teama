@@ -32,7 +32,7 @@ public class AStar implements  PathGenerator{
 
         //Generate Path
         for(checking = new KnownPoint(start,null,0,calDistance(start,end));
-            checking.getNode()==end;   // reached end
+            checking.getNode()!=end;   // reached end
             checking=queue.poll() // move forward one step
             )
         {
@@ -120,11 +120,12 @@ public class AStar implements  PathGenerator{
     private ArrayList<KnownPoint> collectPath(KnownPoint lastPoint)
     {
         ArrayList<KnownPoint> finalPath = new ArrayList<>();
-        for (;lastPoint.getLastNode()==null;)
+        for (;lastPoint.getLastNode()!=null;)
         {
             finalPath.add(lastPoint);
             lastPoint=lastPoint.getLastNode();
         }
+        finalPath.add(lastPoint);
         return finalPath;
     }
 
@@ -132,10 +133,11 @@ public class AStar implements  PathGenerator{
      * @param finalPath the reversed path generated from ending location.
      * @return the formatted Path object.
      */
-    private Path formatOutput (ArrayList<KnownPoint> finalPath) // @TODO make startNode endNode
+    private Path formatOutput (ArrayList<KnownPoint> finalPath) //
     {
         Path output = new Path();
         MapNode currentNode = finalPath.get(finalPath.size()-1).getNode(); // extract the first Node of the list.
+        output.addNode(currentNode); // put the start node into it.
         MapNode nextNode;
         for(int i =finalPath.size()-2;i>-1;--i)
         {

@@ -83,3 +83,5 @@ proguard/
 .gradle/
 build/
 bin/
+
+testdb/
