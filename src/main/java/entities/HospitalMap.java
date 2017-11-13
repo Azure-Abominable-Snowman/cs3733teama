@@ -3,6 +3,9 @@ package entities;
 import entities.db.JavaDatabaseSource;
 import entities.db.MapDataSource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by aliss on 11/11/2017.
  */
@@ -13,9 +16,25 @@ public class HospitalMap {
         //pathgenerator
         //mapcoordinate
 
+    // TODO: Make this update when the database is changed
+    private Map<String, Map<String, MapNode>> nodesOnFloors = new HashMap<>();
 
     public MapDataSource getMap() {
         return rawData;
+    }
+
+    public Map<String, MapNode> getFloorNodes(String floor) {
+        if(!nodesOnFloors.containsKey(floor)) {
+            Map<String, MapNode> nodesOnFloor = new HashMap<>();
+            for (String id : getMap().getNodeIds()) {
+                MapNode n = getMap().getNode(id);
+                if (n.getCoordinate().getLevel().equals(floor)) {
+                    nodesOnFloor.put(n.getId(), n);
+                }
+            }
+            nodesOnFloors.put(floor, nodesOnFloor);
+        }
+        return nodesOnFloors.get(floor);
     }
 
     private HospitalMap(String nodeFilename, String edgeFilename) {
