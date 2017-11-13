@@ -26,24 +26,25 @@ public class MapEditorController implements Controller {
     @FXML
     private ImageView map;
     @FXML
+    private ToggleButton nodeToggle, edgeToggle;
+    @FXML
     private TextField name, xCoord, yCoord;
 
     @FXML
     private Button back,add, edit, remove;
-    @FXML
-    private ComboBox editorType;
-
 
     public void initialize() {
+        /*
         ObservableList<String> options =
                 FXCollections.observableArrayList("Node", "Edge");
         editorType.setItems(options);
         canvas = new Canvas();
         map = new ImageView();
+        */
     }
     @Override
     public String getFXMLFileName() {
-        return "MapEditorV2.fxml";
+        return "MapEditorV2Test.fxml";
     }
 
 
@@ -87,7 +88,6 @@ public class MapEditorController implements Controller {
     @FXML
     private void onEdgeEditor(ActionEvent e) {
     }
-
 
 
 
