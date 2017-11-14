@@ -28,12 +28,12 @@ public class Main extends Application{
             dbSource.addEdge(csvDataSource.getEdge(id));
         }
 
-       // At this point the database is completely loaded with edges and nodes
+        // At this point the database is completely loaded with edges and nodes
 
-       // Connect to the staff info table
+        // Connect to the staff info table
 
 
-       for(String id : dbSource.getNodeIds()) {
+        for(String id : dbSource.getNodeIds()) {
             for(MapEdge e : dbSource.getNode(id).getEdges()) {
                 System.out.print(e.toCSV() + " ");
                 System.out.print(e.getWeight() + " ");
@@ -48,25 +48,24 @@ public class Main extends Application{
 
 
 
-
-       dbSource.close();
+        dbSource.close();
         csvDataSource.close();*/
         launch(args);
     }
     @Override
     public void start(Stage primaryStage) {
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("../MainScreen.fxml"));
-                Parent root = loader.load();
-                primaryStage.setTitle("Brigham Women's Hospital Kiosk");
-                primaryStage.setScene(new Scene(root));
-                primaryStage.show();
-                SceneEngine.setStages(primaryStage);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../MainScreen.fxml"));
+            Parent root = loader.load();
+            primaryStage.setTitle("Brigham Women's Hospital Kiosk");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+            SceneEngine.setStages(primaryStage);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
+}
