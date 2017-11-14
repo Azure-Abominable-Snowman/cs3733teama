@@ -15,7 +15,7 @@ public class AStarTest {
         GenerateMap g = new GenerateMap();
         map1=g.GenerateNewMap(1);
         mapd=g.GenerateNewMap('d');
-        g.printMap(mapd,20,20);
+        g.printMap(mapd,25,25);
     }
 
     @Test
