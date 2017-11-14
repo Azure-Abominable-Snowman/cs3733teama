@@ -1,4 +1,4 @@
-package entities;
+package entities.auth;
 
 /**
  * Created by aliss on 11/11/2017.

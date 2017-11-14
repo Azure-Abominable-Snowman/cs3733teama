@@ -9,7 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-public class StaffLoginController {
+public class StaffLoginController implements Controller {
+
+    @Override
+    public String getFXMLFileName() {
+        return "StaffLogIn.fxml";
+    }
 
     @FXML
     private AnchorPane loginPlane;
@@ -40,7 +45,7 @@ public class StaffLoginController {
 
     @FXML
     private void onBackClick(ActionEvent event){
-        SceneEngine.displayMainScreen();
+        SceneEngine.display(MainScreenController.class, null);
         SceneEngine.closeLogin();
     }
 }

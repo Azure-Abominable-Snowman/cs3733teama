@@ -1,4 +1,6 @@
-package entities;
+package entities.db;
+
+import entities.*;
 
 import java.io.*;
 import java.util.*;
@@ -33,7 +35,28 @@ public class CSVDatabaseSource implements MapDataSource {
             edgeMap.put(row.get(0), e);
         }
     }
-
+    @Override
+    public ArrayList<MapNode> getNodesOnFloor(String floor) {
+        ArrayList<MapNode> allNodes = new ArrayList<MapNode>();
+        for (String id: nodeMap.keySet()) {
+            MapNode m = nodeMap.get(id);
+            if (m.getCoordinate().getLevel().equals(floor)) {
+                allNodes.add(m);
+            }
+        }
+        return allNodes;
+    }
+    @Override
+    public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
+        ArrayList<MapEdge> allEdges = new ArrayList<MapEdge>();
+        for (String id: edgeMap.keySet()) {
+            MapEdge e = edgeMap.get(id);
+            if (e.doesNotCrossFloors() && e.isOnFloor(floor)) {
+                allEdges.add(e);
+            }
+        }
+        return allEdges;
+    }
     /**
      * Returns an array of CSV data lines parsed from a given filename
      * @param filename
@@ -105,7 +128,7 @@ public class CSVDatabaseSource implements MapDataSource {
      * @return
      */
     private MapEdge edgeListToObj(List<String> row) {
-        return new MapEdge(row.get(0), nodeMap.get(row.get(1)), nodeMap.get(row.get(2)));
+        return new MapEdge(row.get(0), row.get(1), row.get(2));
     }
 
     @Override

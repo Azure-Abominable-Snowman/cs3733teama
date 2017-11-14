@@ -5,6 +5,10 @@ public class Location {
     private String building;
     private String level;
 
+    public Location(Location loc) {
+        this(loc.getxCoord(), loc.getyCoord(), loc.getLevel(), loc.getBuilding());
+    }
+
     public Location(int xCoord, int yCoord, String level, String building) {
         this.xCoord = xCoord;
         this.yCoord = yCoord;

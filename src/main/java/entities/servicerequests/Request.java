@@ -8,6 +8,12 @@ public class Request {
     private PriorityLevel priority;
     private String note;
     private String id;
+    private boolean fulfilled = false;
+
+    public Request(String id, Location location, RequestType reqType, PriorityLevel priority, String note, boolean fulfilled) {
+        this(id, location, reqType, priority, note);
+        this.fulfilled = fulfilled;
+    }
 
     public Request(String id, Location location, RequestType reqType, PriorityLevel priority, String note) {
         this.id = id;
@@ -37,8 +43,16 @@ public class Request {
         return id;
     }
 
-    public String toCSV() {
+    public void setFulfilled() { fulfilled = true; }
+
+    public boolean isFulfilled() { return  fulfilled; }
+
+    public String toSQLValues() {
+        String f = "FALSE";
+        if(fulfilled) {
+            f = "TRUE";
+        }
         return "'"+getId()+"',"+location.getxCoord()+","+location.getyCoord()+",'"+location.getLevel()+"','"
-                +location.getBuilding()+"','"+getReqType()+"','"+getPriority()+"','"+getNote()+"'";
+                +location.getBuilding()+"','"+getReqType()+"','"+getPriority()+"','"+getNote()+"','"+f+"'";
     }
 }

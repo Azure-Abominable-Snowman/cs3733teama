@@ -77,4 +77,8 @@ public class MapNode {
         return "'"+id+"',"+coordinate.getxCoord()+","+coordinate.getyCoord()+",'"+coordinate.getLevel()+"','"+
                 coordinate.getBuilding()+"','"+nodeType.name()+"','"+longDescription+"','"+shortDescription+"','"+teamAssignment+"'";
     }
+
+    public String toString() {
+        return getShortDescription();
+    }
 }
