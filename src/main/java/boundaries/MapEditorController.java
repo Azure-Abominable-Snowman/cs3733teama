@@ -65,11 +65,11 @@ public class MapEditorController implements Controller {
         //display all Nodes and Edges for given floor
         //Nodes to Display:
         int numNodes, numEdges;
-        HashMap<Location,String> nodes = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv").getNodesonFloor(selectedFloor);
-        HashMap<Location,Location> edges = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv").getEdgesonFloor(selectedFloor);
-        numNodes = nodes.keySet().size();
-        numEdges = nodes.keySet().size();
-
+        //HashMap<Location,String> nodes = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv").getNodesonFloor(selectedFloor);
+        //HashMap<Location,Location> edges = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv").getEdgesonFloor(selectedFloor);
+        //numNodes = nodes.keySet().size();
+        //numEdges = nodes.keySet().size();
+/*
         for (int i = 0; i<numNodes; i++) {
             Circle node = new Circle(); //draw each node on the screen
             node.setCenterX(100);
@@ -79,7 +79,9 @@ public class MapEditorController implements Controller {
         }
         for (int i = 0; i<numEdges; i++) {
             Line line = new Line();
+
         }
+        */
     }
 
     @FXML

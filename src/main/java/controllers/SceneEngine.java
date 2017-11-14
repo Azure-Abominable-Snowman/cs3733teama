@@ -51,14 +51,7 @@ public final class SceneEngine {
         if(bwImgs == null) {
             bwImgs = new HashMap<>();
             // Populate image map
-            /*
-            bwImgs.put("L2", new Image("maps/L2.png"));
-            bwImgs.put("L1", new Image("svgmaps/L1.svg"));
-            bwImgs.put("G", new Image("svgmaps/G.svg"));
-            bwImgs.put("1", new Image("svgmaps/1.svg"));
-            bwImgs.put("2", new Image("svgmaps/2.svg"));
-            bwImgs.put("3", new Image("svgmaps/3.svg"));
-            */
+
 
             bwImgs.put("L2","maps/L2.png");
             bwImgs.put("L1","maps/L1.png");

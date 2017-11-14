@@ -60,7 +60,7 @@ public class MapEdge {
 
     public MapNode getStart() {
         if(start == null) {
-            start = HospitalMap.getInstance().getMap().getNode(startID);
+            start = HospitalMap.getInstance("\\resources\\csvdata\\MapAnodes.csv", "\\resources\\csvdata\\MapAedges.csv").getMap().getNode(startID);
         }
         return start;
     }
@@ -78,7 +78,7 @@ public class MapEdge {
 
     public MapNode getEnd() {
         if(end == null) {
-            end = HospitalMap.getInstance().getMap().getNode(endID);
+            end = HospitalMap.getInstance("\\resources\\csvdata\\MapAnodes.csv", "\\resources\\csvdata\\MapAedges.csv").getMap().getNode(endID);
         }
         return end;
     }
