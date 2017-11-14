@@ -47,4 +47,16 @@ public class Location {
     public void setBuilding(String building) {
         this.building = building;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Location){
+            Location l = (Location) obj;
+            if(this.xCoord == l.xCoord && this.yCoord == l.yCoord &&
+                    this.level.equals(l.level) && this.building.equals(l.building)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
