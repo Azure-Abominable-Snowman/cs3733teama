@@ -28,7 +28,7 @@ public class MainScreenController implements Controller {
     }
 
     @FXML
-    private Button go;
+    private Button go, login;
     @FXML
     private Button request;
     @FXML
