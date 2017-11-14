@@ -197,10 +197,10 @@
             <Text layoutX="130.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOCATION" textAlignment="CENTER" wrappingWidth="80.29036331176758" />
             <Text layoutX="130.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TYPE" textAlignment="CENTER" wrappingWidth="80.29036331176758" />
             <Text layoutX="132.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTE" textAlignment="CENTER" wrappingWidth="80.29036331176758" />
-            <TextArea layoutX="42.0" layoutY="235.0" prefHeight="42.0" prefWidth="259.0" text="Note goes here..." />
-            <TextField layoutX="18.0" layoutY="69.0" prefHeight="25.0" prefWidth="305.0" />
-            <ComboBox fx:id="combo" layoutX="65.0" layoutY="158.0" prefHeight="34.0" prefWidth="214.0" />
-            <Button fx:id="Comfirm" layoutX="142.0" layoutY="289.0" mnemonicParsing="false" text="Comfirm" />
+            <TextArea fx:id="noteField" layoutX="42.0" layoutY="235.0" prefHeight="42.0" prefWidth="259.0" text="Note goes here..." />
+            <TextField fx:id="locationField" layoutX="18.0" layoutY="69.0" prefHeight="25.0" prefWidth="305.0" />
+            <ComboBox fx:id="reqType" layoutX="65.0" layoutY="158.0" prefHeight="34.0" prefWidth="214.0" />
+            <Button fx:id="submit" layoutX="142.0" layoutY="289.0" mnemonicParsing="false" text="Submit" />
          </children>
       </AnchorPane>
    </children>

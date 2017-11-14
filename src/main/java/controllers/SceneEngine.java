@@ -16,12 +16,13 @@ public final class SceneEngine {
 
     private static Map<String, Image> bwImgs;
 
-    static private Stage primaryStage, popOutStage, loginStage;
+    static private Stage primaryStage, popOutStage, loginStage,comfirmStage;
 
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;
         popOutStage = new Stage();
         loginStage = new Stage();
+        comfirmStage = new Stage();
     }
 
     public static Stage getPrimaryStage() {
@@ -43,6 +44,11 @@ public final class SceneEngine {
     public static void closeLogin() {
         loginStage.close();
     }
+
+    public static void closeComfirm() {
+        comfirmStage.close();
+    }
+
 
     public static Map<String, Image> getHospitalImageMap() {
         if(bwImgs == null) {

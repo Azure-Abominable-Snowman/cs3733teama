@@ -30,7 +30,8 @@ public class RequestScreenController implements Controller {
 
 
     @FXML
-    private Button Comfirm;
+    private Button submit;
+
 
 
 
