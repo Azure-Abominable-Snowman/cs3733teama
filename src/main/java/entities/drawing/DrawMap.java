@@ -103,8 +103,25 @@ public class DrawMap {
     }
 
     public void renderMap(double width, double height, String floor) {
-        c.setWidth(width*curZoom);
+        // Keep the aspect ratio
         c.setHeight(height*curZoom);
+        if(bwImg != null) { // if it can be obtained, set the width and height using the aspect ratio
+            double aspectRatio = bwImg.getWidth()/bwImg.getHeight();
+            double scaledW, scaledH;
+            scaledH = (1 / ((1 / (width*curZoom)) * aspectRatio));
+            scaledW = ((height*curZoom)*aspectRatio);
+            if(scaledH > height) {
+                c.setHeight(height);
+                c.setWidth(scaledW);
+            } else {
+                c.setHeight(scaledH);
+                c.setWidth(width);
+            }
+
+            System.out.println(scaledW+" "+scaledH);
+        } else {
+            c.setWidth(height*curZoom);
+        }
         render(floor);
     }
 
