@@ -9,12 +9,15 @@ import javafx.scene.image.Image;
 public class ImageStash {
     private String filename;
     private Image currImg;
+
     public ImageStash(String filename) {
         this.filename = filename;
     }
+
     public void updateFile (String filename) {
         this.filename = filename;
     }
+
     public Image getImage() {
         if (currImg == null) {
             currImg = new Image(filename);
