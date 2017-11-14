@@ -113,12 +113,14 @@ public class DrawMap {
             if(scaledH > height) {
                 c.setHeight(height);
                 c.setWidth(scaledW);
+                c.setTranslateX((width-scaledW)/2);
+                c.setTranslateY(0);
             } else {
                 c.setHeight(scaledH);
                 c.setWidth(width);
+                c.setTranslateY((height-scaledH)/2);
+                c.setTranslateX(0);
             }
-
-            System.out.println(scaledW+" "+scaledH);
         } else {
             c.setWidth(height*curZoom);
         }
@@ -173,7 +175,7 @@ public class DrawMap {
 
     public void toggleZoom(double x, double y) {
         if(!zoomed) {
-            renderMap(mapPane.getWidth() * zoomUnit, mapPane.getHeight() * zoomUnit);
+            renderMap(c.getWidth() * zoomUnit, c.getHeight() * zoomUnit);
             mapPane.setHvalue(x); // set so it's in the center of the screen
             mapPane.setVvalue(y);
             zoomed = true;
