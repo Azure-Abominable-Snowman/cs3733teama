@@ -45,7 +45,6 @@ public final class SceneEngine {
         loginStage.close();
     }
 
-<<<<<<< HEAD
 
     public static void closeComfirm() {
         comfirmStage.close();
@@ -54,9 +53,8 @@ public final class SceneEngine {
 
 
     public static Map<String,  String> getHospitalImageMap() {
-=======
+
     public static Map<String, ImageStash> getHospitalImageMap() {
->>>>>>> cf8c175926478e78909217f4d965e4f1b6247bad
         if(bwImgs == null) {
             bwImgs = new HashMap<>();
             // Populate image map
