@@ -36,7 +36,7 @@ public class HospitalMap {
     public MapDataSource getMap() {
         return rawData;
     }
-    public MapNode addNode(Double xCoord, Double yCoord, String name, String curFloor) {
+    public MapNode createNode(Integer xCoord, Integer yCoord, String name, String curFloor) {
         if (curFloor.length() == 1) {
             String full = "0" + curFloor;
             curFloor = full;

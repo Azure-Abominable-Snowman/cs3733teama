@@ -53,7 +53,12 @@ public class DrawMap {
             nodes.add(map.getMap().getNode(id));
         }
     }
-
+    public int getImgWidth() {
+        return imgW;
+    }
+    public int getImgH() {
+        return imgH;
+    }
     /**
      * Converts input coordinate system to output coordinate system
      */

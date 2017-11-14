@@ -36,13 +36,13 @@ public class MapEditorController implements Controller {
     @FXML
     private ScrollPane mapPane;
     @FXML
-    private ToggleButton nodeToggle, edgeToggle;
+    private ToggleButton nodeToggle, edgeToggle, addToggle, editToggle, deleteToggle;
 
     @FXML
     private TextField name, xCoord, yCoord;
 
     @FXML
-    private Button back,add, edit, remove;
+    private Button back;
     @FXML
     private Spinner<Integer> floor;
     private SpinnerValueFactory.IntegerSpinnerValueFactory floorSelections;
@@ -50,17 +50,98 @@ public class MapEditorController implements Controller {
     //private SpinnerValueFactory.ListSpinnerValueFactory<String> floors;
     private SpinnerValueFactory.IntegerSpinnerValueFactory values;
     private ToggleGroup group = new ToggleGroup();
+    private ToggleGroup editorAction = new ToggleGroup();
     private DrawMap editorMap;
     private HospitalMap map;
+    private String defaultX = "Select a location on map.";
+    private String defaultY = "Select a location on map.";
+
+
+/*
+    // Mouse Event Handlers and Filters
+        EventHandler<MouseEvent> onAddMode = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            while (nodeToggle.isSelected()) {
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                Double xcoord = convertXCanvastoBWMap(event.getX());
+                Double ycoord = convertYCanvastoBWMap(event.getY());
+                //Double xScale = editorMap.getImgWidth() / canvas.getWidth();
+                //Double yScale = editorMap.getImgH() / canvas.getHeight();
+
+                xCoord.setText(xcoord.toString());
+                yCoord.setText(ycoord.toString());
+                System.out.println("Width: " + canvas.getHeight() + "Height: " + canvas.getWidth());
+
+                //xcoord *= xScale;
+                //ycoord *= yScale;
+                System.out.println("Node x: " + xcoord + " Node y: " + ycoord);
+                /// get node name
+                String defaultText = "Please enter a name for the node.";
+                while (!(name.getText().equals(defaultText))) {
+                    name.setText(defaultText);
+                }
+                String nodeName = name.getText();
+                MapNode newNode = HospitalMap.getInstance().createNode(xcoord, ycoord, nodeName, editorMap.getCurFloor());
+                editorMap.drawNode(newNode, 3, Color.RED);
+                xCoord.clear();
+                yCoord.clear();
+                name.clear();
+            }
+            while (edgeToggle.isSelected()) {
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                String startDefault = "First select a starting node.";
+                xCoord.setText(startDefault);
+                ;
+
+
+
+            }
+        }
+        // TODO: Incorp. confirm, make drawn thing black, incorporate dropdown and actually add the node to the database
+    };
+    */
+    EventHandler<MouseEvent> onMouseClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            Double xcoord = convertXCanvastoBWMap(event.getX());
+            Double ycoord = convertYCanvastoBWMap(event.getY());
+            //Double xScale = editorMap.getImgWidth() / canvas.getWidth();
+            //Double yScale = editorMap.getImgH() / canvas.getHeight();
+
+            xCoord.setText(xcoord.toString());
+            yCoord.setText(ycoord.toString());
+        }
+    };
+
+    private double convertXCanvastoBWMap(double xcoordinate) {
+        Double xScale = editorMap.getImgWidth() / canvas.getWidth();
+        return xcoordinate *xScale;
+    }
+    private double convertYCanvastoBWMap(double ycoordinate) {
+        Double yScale = editorMap.getImgH() / canvas.getHeight();
+        return ycoordinate *yScale;
+    }
+
     public void initialize() {
         editorMap = new DrawMap(mapPane, canvas, -3, -5, 5000, 3400);
         //editorMap.drawAllEdges(canvas);
         map = HospitalMap.getInstance();
+        xCoord.setText(defaultX);
+        yCoord.setText(defaultY);
         // set up the Toggles
         //nodeToggle.setUserData("Node");
         //edgeToggle.setUserData("Edge");
         nodeToggle.setToggleGroup(group);
         edgeToggle.setToggleGroup(group);
+        nodeToggle.setSelected(true); //default to node mode
+
+        addToggle.setToggleGroup(editorAction);
+        editToggle.setToggleGroup(editorAction);
+        deleteToggle.setToggleGroup(editorAction);
+
+
+/*
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
                 if (newValue != null) {
@@ -72,6 +153,7 @@ public class MapEditorController implements Controller {
                 }
             }
         });
+        */
 
         //set up the Spinner
         floorSelections = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, 2, 1);
@@ -130,43 +212,66 @@ public class MapEditorController implements Controller {
                     for(MapNode n : map.getFloorNodes(editorMap.getCurFloor()).values()) {
                         System.out.print(n.getId() + " " + n.getShortDescription() + " ");
                         for (MapEdge e : n.getEdges()) {
-                            System.out.print(e.getId() + " ");
                             editorMap.drawEdge(canvas, e);
                         }
                     }
 
                 });
-
+        // set up default Mouse Tracking behavior
+        //canvas.addEventFilter();
+        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, onMouseClick);
+        //canvas.getOnMouse
     }
+
+
+
+
     @FXML
-    private void onAdd(ActionEvent e) {
-        System.out.println("Adding a node");
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Double xcoord = event.getX();
-                Double ycoord = event.getY();
-                xcoord = editorMap.convUnits(xcoord, 430, 5000);
-                ycoord = editorMap.convUnits(ycoord, 200, 3400);
+    private void inAddMode(ActionEvent e) {
+        String defaultX = "Select a location on map.";
+        String defaultY = "Select a location on map.";
+        while (nodeToggle.isSelected()) {
+            GraphicsContext gc = canvas.getGraphicsContext2D();
 
+            System.out.println("Width: " + canvas.getHeight() + "Height: " + canvas.getWidth());
 
-                if (nodeToggle.isSelected()) {
-                    xCoord.setText(xcoord.toString());
-                    yCoord.setText(ycoord.toString());
-                    String nodeName = name.getText();
-                    if (nodeName != "") {
-                        MapNode newNode = HospitalMap.getInstance().addNode(xcoord, ycoord, nodeName, editorMap.getCurFloor());
-                        editorMap.drawNode(newNode, 3, Color.RED);
-                    }
-                }
-                else if (edgeToggle.isSelected()) {
-
-                }
-
+            //xcoord *= xScale;
+            //ycoord *= yScale;
+            //System.out.println("Node x: " + xcoord + " Node y: " + ycoord);
+            /// get node name
+            String defaultText = "Please enter a name for the node.";
+            while (!(name.getText().equals(defaultText))) {
+                name.setText(defaultText);
             }
-        });
+            String nodeName = name.getText();
+            Integer xcoord = Integer.parseInt(xCoord.getText());
+            Integer ycoord = Integer.parseInt(yCoord.getText());
+            MapNode newNode = HospitalMap.getInstance().createNode(xcoord, ycoord, nodeName, editorMap.getCurFloor());
+            editorMap.drawNode(newNode, 3, Color.RED);
+            xCoord.clear();
+            yCoord.clear();
+            name.clear();
+        }
+        while (edgeToggle.isSelected()) {
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            String startDefault = "First select a starting node.";
+            xCoord.setText(startDefault);
+            ;
+
+
+
+        }
     }
+    // TODO: Incorp. confirm, make drawn thing black, incorporate dropdown and actually add the node to the database
+
+
+    @FXML
+    private void onAddEdge(ActionEvent e) {
+
+    }
+
+
+
     @Override
     public String getFXMLFileName() {
         return "MapEditorV2.fxml";
