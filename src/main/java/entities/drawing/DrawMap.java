@@ -44,7 +44,7 @@ public class DrawMap {
         String filename = bwImgs.get("G");
         stash = new ImageStash(filename);
         bwImg = stash.getImage();
-        map = HospitalMap.getInstance("csvdata/MapAedges.csv", "csvdata/MapAnodes.csv");
+        map = HospitalMap.getInstance();
 
         ArrayList<String> nodeIds = map.getMap().getNodeIds();
         nodes = new ArrayList<>();

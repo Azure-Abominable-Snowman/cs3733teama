@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MapEditorController">
    <center>
       <ScrollPane prefHeight="268.0" prefWidth="470.0" BorderPane.alignment="CENTER">
          <content>
@@ -35,9 +35,9 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Add" />
-            <Button mnemonicParsing="false" text="Edit" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" text="Remove" GridPane.rowIndex="2" />
+            <Button fx:id="add" mnemonicParsing="false" text="Add" />
+            <Button fx:id="edit" mnemonicParsing="false" text="Edit" GridPane.rowIndex="1" />
+            <Button fx:id="remove" mnemonicParsing="false" text="Remove" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </left>
@@ -54,7 +54,7 @@
                       <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button mnemonicParsing="false" text="Back" />
+                        <Button fx:id="back" mnemonicParsing="false" text="Back" />
                      </children>
                   </GridPane>
                </children>
@@ -76,20 +76,29 @@
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
                         </Label>
                         <Label text="X-Coordinate:" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
                         </Label>
                         <Label text="Y-Coordinate:" GridPane.rowIndex="2">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
                         </Label>
-                        <TextField alignment="CENTER" maxWidth="-Infinity" prefHeight="25.0" prefWidth="320.0" GridPane.columnIndex="1" GridPane.valignment="CENTER" />
-                        <TextField alignment="CENTER" maxWidth="-Infinity" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField alignment="CENTER" maxWidth="-Infinity" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="name" alignment="CENTER" maxWidth="-Infinity" prefHeight="25.0" prefWidth="320.0" GridPane.columnIndex="1" GridPane.valignment="CENTER" />
+                        <TextField alignment="CENTER" maxWidth="-Infinity" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xCoord" />
+                        <TextField fx:id="yCoord" alignment="CENTER" maxWidth="-Infinity" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>
@@ -112,8 +121,8 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ToggleButton fx:id="edgeToggle" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Edge" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ToggleButton fx:id="nodeToggle" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Node" GridPane.rowIndex="1" />
+                        <ToggleButton fx:id="edgeToggle" mnemonicParsing="false" onAction="#onEditorSelect" prefHeight="25.0" prefWidth="87.0" text="Edge" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ToggleButton fx:id="nodeToggle" mnemonicParsing="false" onAction="#onEditorSelect" prefHeight="25.0" prefWidth="76.0" text="Node" GridPane.rowIndex="1" />
                         <Label text="Select Editor: " />
                      </children>
                   </GridPane>
@@ -130,7 +139,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Spinner prefHeight="25.0" prefWidth="161.0" GridPane.columnIndex="1" />
+                        <Spinner fx:id="floor" prefHeight="25.0" prefWidth="161.0" GridPane.columnIndex="1" />
                         <Label alignment="CENTER" text="Floor Level:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                      </children>
                   </GridPane>

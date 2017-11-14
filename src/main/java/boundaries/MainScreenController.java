@@ -58,7 +58,7 @@ public class MainScreenController implements Controller {
     public void initialize() {
         dMap = new DrawMap(mapPane, mapCanvas, -5, 75, 5000, 3500);
         // load in map node coordinates from DB
-        map = HospitalMap.getInstance("\\resources\\csvdata\\MapAnodes.csv", "\\resources\\csvdata\\MapAedges.csv");
+        map = HospitalMap.getInstance();
 
         // Make slider change the floor
         floorSlider.valueProperty().addListener((obs, oldVal, newVal) -> {

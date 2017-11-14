@@ -5,6 +5,8 @@ import entities.HospitalMap;
 import entities.Location;
 import entities.MapEdge;
 import entities.MapNode;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,9 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-
-
-import java.awt.*;
+import javafx.scene.canvas.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,28 +25,40 @@ import java.util.HashMap;
 public class MapEditorController implements Controller {
     @FXML
     private Canvas canvas;
-    @FXML
-    private ImageView map;
+
     @FXML
     private ToggleButton nodeToggle, edgeToggle;
+
     @FXML
     private TextField name, xCoord, yCoord;
 
     @FXML
     private Button back,add, edit, remove;
+    @FXML
+    private Spinner floor;
+    private ToggleGroup group = new ToggleGroup();
 
     public void initialize() {
-        /*
-        ObservableList<String> options =
-                FXCollections.observableArrayList("Node", "Edge");
-        editorType.setItems(options);
-        canvas = new Canvas();
-        map = new ImageView();
-        */
+
+        nodeToggle.setToggleGroup(group);
+        edgeToggle.setToggleGroup(group);
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (newValue != null) {
+                    System.out.println(group.getSelectedToggle().getUserData());
+                    if (nodeToggle.isSelected()) {
+                        edgeToggle.setSelected(false);
+                    } else if (edgeToggle.isSelected()) { //selected Edge editor
+                        nodeToggle.setSelected(false);
+                    }
+                }
+            }
+        });
+
     }
     @Override
     public String getFXMLFileName() {
-        return "MapEditorV2Test.fxml";
+        return "MapEditorV2-test.fxml";
     }
 
 
@@ -60,6 +72,9 @@ public class MapEditorController implements Controller {
     @FXML
     //When an editor is selected, display all the nodes and the edges to the screen
     private void onEditorSelect(ActionEvent e) {
+
+
+    /*
         // get floor (String) from user
         String selectedFloor = null;
         //display all Nodes and Edges for given floor

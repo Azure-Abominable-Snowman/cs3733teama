@@ -66,7 +66,7 @@ public class HospitalMap {
 
 
 
-        public static synchronized entities.HospitalMap getInstance(String nodeFilename, String edgeFilename)
+        public static synchronized entities.HospitalMap getInstance()
 
         {
             if (instance==null)

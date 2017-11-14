@@ -19,7 +19,8 @@ public final class SceneEngine {
 
     static private Stage primaryStage, popOutStage, loginStage;
 
-
+    private String nodefile ="/resources/csvdata/MapANodes.csv";
+    private String edgefile = "/resources/csvdata/MapAedges.csv";
 
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;
