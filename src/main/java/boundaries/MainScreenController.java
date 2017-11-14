@@ -28,7 +28,7 @@ public class MainScreenController implements Controller {
     }
 
     @FXML
-    private Button go;
+    private Button go, login;
     @FXML
     private Button request;
     @FXML
@@ -37,6 +37,7 @@ public class MainScreenController implements Controller {
     private Button LogIn;
     @FXML
     private Canvas mapCanvas;
+
     @FXML
     private ScrollPane mapPane;
     @FXML
@@ -163,8 +164,12 @@ public class MainScreenController implements Controller {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             dMap.updateSize();
         };
+        // If the stage is resized make the canvas fill
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
+        // If the pane is resized make the canvas fill
+        mapPane.heightProperty().addListener(stageSizeListener);
+        mapPane.widthProperty().addListener(stageSizeListener);
 
         this.stage = stage;
     }
@@ -200,8 +205,8 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void editMapClick(ActionEvent event) {
-        //SceneEngine.display(MapEditorController.class, null);
-        hideDirections();
+        SceneEngine.display(MapEditorController.class, null);
+        //hideDirections();
     }
 
     @FXML
