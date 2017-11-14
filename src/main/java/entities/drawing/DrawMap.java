@@ -12,6 +12,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -105,20 +107,47 @@ public class DrawMap {
         }
         c.setWidth(width);
         c.setHeight(height);
-        gc.clearRect(0, 0, width, height);
-        gc.drawImage(bwImg, 0,0, width, height);
+        render(floor);
+    }
+
+    public void reRender() {
+        render(curFloor);
+    }
+
+    /**
+     * Run when stuff will change in the canvas
+     */
+    private void render(String floor) {
+        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+        gc.drawImage(bwImg, 0,0, c.getWidth(), c.getHeight());
         for(MapNode n : map.getFloorNodes(floor).values()) {
+            //drawNodeAnnotation(n);
             drawNode(n, nodeDim, Color.BLACK);
         }
     }
 
+    private void drawNodeAnnotation(MapNode n) {
+        double width = c.getWidth(); // make sure the width and height are updated
+        double height = c.getHeight();
+        Location drawLoc = convNodeCoords(n.getCoordinate());
+        double nodeX = convUnits(drawLoc.getxCoord(), imgW, width);
+        double nodeY = convUnits(drawLoc.getyCoord(), imgH, height);
+        gc.setFont(Font.font("Monospaced", FontWeight.EXTRA_LIGHT, 9));
+        gc.strokeText(n.getShortDescription(), nodeX, nodeY);
+    }
+
+    /**
+     * Run when the size is updated
+     */
     public void updateSize() {
         double width = mapPane.getWidth();
         double height = mapPane.getHeight();
-        mapPane.setVmax(height);
+        mapPane.setVmax(height); // Switching these causes us to zoom out
         mapPane.setHmax(width);
+        curZoom = 1;
         renderMap(width, height);
     }
+
 
     public void toggleZoom(double x, double y) {
         if(!zoomed) {

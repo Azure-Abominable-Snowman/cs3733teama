@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -42,9 +43,13 @@ public class MainScreenController implements Controller {
     @FXML
     private Label floorLabel;
     @FXML
-    private TextField startBox;
+    private ComboBox<MapNode> startBox;
     @FXML
-    private TextField endBox;
+    private ComboBox<MapNode> endBox;
+    @FXML
+    private SplitPane directionsPane;
+
+    private GridPane directions;
 
     //private ArrayList<MapNode> nodes;
     //private Map<String, MapNode> nodesOnFloor;
@@ -53,9 +58,11 @@ public class MainScreenController implements Controller {
     private HospitalMap map;
 
     public void initialize() {
+        hideDirections();
         dMap = new DrawMap(mapPane, mapCanvas, -5, 75, 5000, 3500);
         // load in map node coordinates from DB
         map = HospitalMap.getInstance();
+        populateBoxes("G");
 
         // Make slider change the floor
         floorSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -82,7 +89,48 @@ public class MainScreenController implements Controller {
                 }
             dMap.switchFloor(floor);
             floorLabel.setText(floor);
+            populateBoxes(floor);
             });
+    }
+
+    private void populateBoxes(String floor) {
+        // Populate combo boxes
+        startBox.getItems().clear();
+        endBox.getItems().clear();
+        startBox.getItems().addAll(map.getFloorNodes(floor).values());
+        endBox.getItems().addAll(map.getFloorNodes(floor).values());
+    }
+
+    private void hideDirections() {
+        if(directionsPane.getItems().size() < 2) { // if there are too few, don't add
+            return;
+        }
+
+        directionsPane.getItems().remove(1);
+    }
+
+    private void showDirections() {
+        if(directionsPane.getItems().size() > 1) { // if there are directions already, don't add them
+            return;
+        }
+
+        ScrollPane directionScroll = new ScrollPane();
+        directions = new GridPane();
+        directionScroll.setContent(directions);
+        directionsPane.getItems().add(directionScroll);
+        directionsPane.setDividerPosition(0, 0.75);
+        // Lock it at 25%
+        directionScroll.maxWidthProperty().bind(directionsPane.widthProperty().multiply(0.25));
+        directionScroll.minWidthProperty().bind(directionsPane.widthProperty().multiply(0.25));
+
+        directions.setHgap(10);
+        directions.setVgap(10);
+    }
+
+    private void addDirection(String text) {
+        directions.add(new Label(text), 0, 0);
+        directions.add(new Label(text), 0, 1);
+        directions.add(new Label(text), 0, 2);
     }
 
     @FXML
@@ -117,17 +165,22 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void editMapClick(ActionEvent event){
-        SceneEngine.display(MapEditorController.class, null);
+        //SceneEngine.display(MapEditorController.class, null);
+        hideDirections();
     }
 
     @FXML
     private void goClick(ActionEvent event){
-        //SceneEngine.display(DirectionsController.class, null);
+        dMap.reRender();
+
+        showDirections();
+
+        addDirection("DIRECTION!"); // Dummy add direction method (just adds sample text)
 
         // draw the start and end nodes in a different size and color
         Map<String, MapNode> curFloorMap = map.getFloorNodes(dMap.getCurFloor());
-        MapNode start = curFloorMap.get(startBox.getText());
-        MapNode end = curFloorMap.get(endBox.getText());
+        MapNode start = curFloorMap.get(startBox.getValue().getId());
+        MapNode end = curFloorMap.get(endBox.getValue().getId());
 
         if(start == null || end == null) {
             System.out.println("Invalid ID for start or end");
