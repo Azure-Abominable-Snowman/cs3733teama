@@ -2,10 +2,10 @@ package controllers;
 
 import boundaries.Controller;
 import boundaries.ControllerInfo;
+import entities.drawing.ImageStash;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 public final class SceneEngine {
 
-    private static Map<String, Image> bwImgs;
+    private static Map<String, ImageStash> bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage;
 
@@ -44,18 +44,17 @@ public final class SceneEngine {
         loginStage.close();
     }
 
-    public static Map<String, Image> getHospitalImageMap() {
+    public static Map<String, ImageStash> getHospitalImageMap() {
         if(bwImgs == null) {
             bwImgs = new HashMap<>();
             // Populate image map
-            bwImgs.put("L2", new Image("maps/L2.png"));
-            bwImgs.put("L1", new Image("maps/L1.png"));
-            bwImgs.put("G", new Image("maps/G.png"));
-            bwImgs.put("1", new Image("maps/1.png"));
-            bwImgs.put("2", new Image("maps/2.png"));
-            bwImgs.put("3", new Image("maps/3.png"));
+            bwImgs.put("L2", new ImageStash("maps/L2.png"));
+            bwImgs.put("L1", new ImageStash("maps/L1.png"));
+            bwImgs.put("G", new ImageStash("maps/G.png"));
+            bwImgs.put("1", new ImageStash("maps/1.png"));
+            bwImgs.put("2", new ImageStash("maps/2.png"));
+            bwImgs.put("3", new ImageStash("maps/3.png"));
         }
-
         return bwImgs;
     } // TODO: make floors an enum instead of a string
 
@@ -72,7 +71,9 @@ public final class SceneEngine {
                 // Pass it data
                 c.setControllerInfo(info);
             }
+
             c.setStage(stage);
+            c.setScene(scene);
             stage.setScene(scene);
             stage.show();
 

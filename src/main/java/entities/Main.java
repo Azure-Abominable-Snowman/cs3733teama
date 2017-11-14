@@ -24,11 +24,12 @@ public class Main extends Application{
             Parent root = loader.load();
             Controller c = (Controller) loader.getController();
             c.setStage(primaryStage);
+            Scene scene = new Scene(root);
+            c.setScene(scene);
             primaryStage.setTitle("Brigham and Women's Hospital Kiosk");
-            primaryStage.setScene(new Scene(root));
+            primaryStage.setScene(scene);
             primaryStage.show();
             SceneEngine.setStages(primaryStage);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
