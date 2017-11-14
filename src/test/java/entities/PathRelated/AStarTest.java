@@ -4,6 +4,8 @@ import entities.MapNode;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.management.RuntimeErrorException;
+
 import static org.junit.Assert.*;
 
 public class AStarTest {
@@ -28,6 +30,17 @@ public class AStarTest {
         assertTrue(result.getNodes().contains(map1[11][4]));
 
         Path result2 = finder.generatePath(mapd[0][0],mapd[22][20]);
+        result2 = finder.generatePath(mapd[0][0],mapd[13][14]);
+
+
+        // give a impossible route. should throw the RuntimeException.
+        boolean thrown = false;
+        try {
+            result2 = finder.generatePath(mapd[0][0],mapd[6][12]);
+        }catch (RuntimeException e){
+            thrown=true;
+        }
+        assertTrue(thrown);
 
 
     }
