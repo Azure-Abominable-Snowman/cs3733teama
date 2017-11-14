@@ -2,6 +2,8 @@ package boundaries;
 
 import controllers.SceneEngine;
 import entities.HospitalMap;
+
+import entities.Location;
 import entities.MapEdge;
 import entities.MapNode;
 import entities.PathRelated.Path;
@@ -26,7 +28,7 @@ public class MainScreenController implements Controller {
     }
 
     @FXML
-    private Button go;
+    private Button go, login;
     @FXML
     private Button request;
     @FXML
@@ -35,6 +37,7 @@ public class MainScreenController implements Controller {
     private Button LogIn;
     @FXML
     private Canvas mapCanvas;
+
     @FXML
     private ScrollPane mapPane;
     @FXML

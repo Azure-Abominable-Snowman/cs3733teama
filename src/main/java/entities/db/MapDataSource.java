@@ -63,6 +63,13 @@ public interface MapDataSource {
     default MapEdge getEdge(String id) { return null; }
 
     default void close() {
+    }
 
+    default ArrayList<MapNode> getNodesOnFloor(String floor) {
+        return null;
+    }
+
+    default ArrayList<MapEdge> getEdgesOnFloor(String floor) {
+        return null;
     }
 }
