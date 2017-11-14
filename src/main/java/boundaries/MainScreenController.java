@@ -4,16 +4,17 @@ import controllers.SceneEngine;
 import entities.HospitalMap;
 import entities.MapEdge;
 import entities.MapNode;
+import entities.NodeType;
 import entities.PathRelated.Path;
 import entities.drawing.DrawMap;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Map;
@@ -51,15 +52,19 @@ public class MainScreenController implements Controller {
 
     private GridPane directions;
 
+    private boolean ctrlDown = false;
+
     //private ArrayList<MapNode> nodes;
     //private Map<String, MapNode> nodesOnFloor;
 
     private DrawMap dMap;
     private HospitalMap map;
 
+    private Stage stage;
+
     public void initialize() {
         hideDirections();
-        dMap = new DrawMap(mapPane, mapCanvas, -5, 75, 5000, 3500);
+        dMap = new DrawMap(mapPane, mapCanvas, -2, 75, 5000, 3500);
         // load in map node coordinates from DB
         map = HospitalMap.getInstance();
         populateBoxes("G");
@@ -97,8 +102,12 @@ public class MainScreenController implements Controller {
         // Populate combo boxes
         startBox.getItems().clear();
         endBox.getItems().clear();
-        startBox.getItems().addAll(map.getFloorNodes(floor).values());
-        endBox.getItems().addAll(map.getFloorNodes(floor).values());
+        for(MapNode n : map.getFloorNodes(floor).values()) {
+            if(!n.getNodeType().equals(NodeType.HALL)) {
+                startBox.getItems().add(n);
+                endBox.getItems().add(n);
+            }
+        }
     }
 
     private void hideDirections() {
@@ -125,6 +134,9 @@ public class MainScreenController implements Controller {
 
         directions.setHgap(10);
         directions.setVgap(10);
+
+        // make the window 25% larger in the x direction to compensate for the window cutting in
+        stage.setWidth(stage.getWidth()*1.25);
     }
 
     private void addDirection(String text) {
@@ -135,9 +147,15 @@ public class MainScreenController implements Controller {
 
     @FXML
     public void zoomIntoMap(MouseEvent e) {
-        dMap.toggleZoom(e.getX(), e.getY());
+        if(ctrlDown) {
+            dMap.toggleZoom(e.getX(), e.getY());
+        }
     }
 
+    /**
+     * Called when the stage is given to the controller, does initialization routines
+     * @param stage
+     */
     @Override
     public void setStage(Stage stage) {
         // On resize of the stage
@@ -146,6 +164,22 @@ public class MainScreenController implements Controller {
         };
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
+
+        this.stage = stage;
+    }
+
+    public void setScene(Scene scene) {
+        scene.setOnKeyPressed(ke -> {
+            if(ke.isControlDown()) { // When control down, flip a variable, otherwise flip it back
+                ctrlDown = true;
+            }
+        });
+
+        scene.setOnKeyReleased(ke -> {
+            if(!ke.isControlDown()) {
+                ctrlDown = false; // when it is released, set the variable to false
+            }
+        });
     }
 
     @FXML
@@ -171,36 +205,31 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void goClick(ActionEvent event){
-        dMap.reRender();
+            dMap.reRender();
 
-        showDirections();
+            showDirections();
 
-        addDirection("DIRECTION!"); // Dummy add direction method (just adds sample text)
+            addDirection("DIRECTION!"); // Dummy add direction method (just adds sample text)
 
-        // draw the start and end nodes in a different size and color
-        Map<String, MapNode> curFloorMap = map.getFloorNodes(dMap.getCurFloor());
-        MapNode start = curFloorMap.get(startBox.getValue().getId());
-        MapNode end = curFloorMap.get(endBox.getValue().getId());
+            // draw the start and end nodes in a different size and color
+            Map<String, MapNode> curFloorMap = map.getFloorNodes(dMap.getCurFloor());
+            MapNode start = curFloorMap.get(startBox.getValue().getId());
+            MapNode end = curFloorMap.get(endBox.getValue().getId());
 
-        if(start == null || end == null) {
-            System.out.println("Invalid ID for start or end");
-            return;
-        }
-
-
-        int nodeDim = dMap.getNodeDim();
-        dMap.drawNode(start, nodeDim*3, Color.RED);
-        dMap.drawNode(end, nodeDim*3, Color.RED);
+            if (start == null || end == null) {
+                System.out.println("Invalid ID for start or end");
+                return;
+            }
 
 
-        Path shortestPath = map.getPathGenerator().generatePath(start, end);
+            Path shortestPath = map.getPathGenerator().generatePath(start, end);
 
-        for(MapNode n : shortestPath.getNodes()) {
-            System.out.println(n.getId());
-        }
+            for (MapNode n : shortestPath.getNodes()) {
+                System.out.println(n.getId());
+            }
 
-        // Draw the path between the two nodes
-        dMap.drawPath(shortestPath);
+            // Draw the path between the two nodes
+            dMap.setPath(shortestPath);
     }
 
     @FXML

@@ -72,7 +72,9 @@ public final class SceneEngine {
                 // Pass it data
                 c.setControllerInfo(info);
             }
+
             c.setStage(stage);
+            c.setScene(scene);
             stage.setScene(scene);
             stage.show();
 
