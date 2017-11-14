@@ -69,6 +69,7 @@
             <Button fx:id="editMap" mnemonicParsing="false" onAction="#editMapClick" text="Edit Map" />
             <Slider fx:id="floorSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" nodeOrientation="LEFT_TO_RIGHT" showTickMarks="true" snapToTicks="true" value="2.0" />
             <Label fx:id="floorLabel" text="G" />
+            <Button fx:id="login" mnemonicParsing="false" text="Log In" />
          </items>
       </ToolBar>
   </items>

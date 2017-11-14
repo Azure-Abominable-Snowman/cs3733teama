@@ -2,6 +2,7 @@ package controllers;
 
 import boundaries.Controller;
 import boundaries.ControllerInfo;
+import entities.drawing.ImageStash;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,9 +15,12 @@ import java.util.Map;
 
 public final class SceneEngine {
 
-    private static Map<String, Image> bwImgs;
+    private static Map<String, String> bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage,comfirmStage;
+
+    private String nodefile ="/resources/csvdata/MapANodes.csv";
+    private String edgefile = "/resources/csvdata/MapAedges.csv";
 
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;
@@ -45,21 +49,25 @@ public final class SceneEngine {
         loginStage.close();
     }
 
+
     public static void closeComfirm() {
         comfirmStage.close();
     }
 
 
-    public static Map<String, Image> getHospitalImageMap() {
+
+    public static Map<String,  String> getHospitalImageMap() {
         if(bwImgs == null) {
             bwImgs = new HashMap<>();
             // Populate image map
-            bwImgs.put("L2", new Image("maps/L2.png"));
-            bwImgs.put("L1", new Image("maps/L1.png"));
-            bwImgs.put("G", new Image("maps/G.png"));
-            bwImgs.put("1", new Image("maps/1.png"));
-            bwImgs.put("2", new Image("maps/2.png"));
-            bwImgs.put("3", new Image("maps/3.png"));
+
+
+            bwImgs.put("L2","maps/L2.png");
+            bwImgs.put("L1","maps/L1.png");
+            bwImgs.put("G", "maps/G.png");
+            bwImgs.put("1", "maps/1.png");
+            bwImgs.put("2", "maps/2.png");
+            bwImgs.put("3", "maps/3.png");
         }
 
         return bwImgs;
