@@ -45,6 +45,7 @@ public final class SceneEngine {
         loginStage.close();
     }
 
+<<<<<<< HEAD
 
     public static void closeComfirm() {
         comfirmStage.close();
