@@ -30,6 +30,7 @@ public class DrawMap {
     private String curFloor = "G";
     private ArrayList<MapNode> nodes;
     private Map<String, MapNode> nodesOnFloor;
+    private Map<String, MapNode> edgesOnFloor;
     private ScrollPane mapPane;
     private HospitalMap map;
 
@@ -93,6 +94,8 @@ public class DrawMap {
                 convUnits(end.getxCoord(), imgW, width),
                 convUnits(end.getyCoord(), imgH, height));
     }
+
+
 
     public void switchFloor(String newFloor) {
         renderMap(mapPane.getWidth() * curZoom, mapPane.getHeight() * curZoom, newFloor);

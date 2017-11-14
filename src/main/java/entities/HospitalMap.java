@@ -7,6 +7,7 @@ import entities.PathRelated.AStar;
 import entities.PathRelated.PathGenerator;
 import entities.db.JavaDatabaseSource;
 import entities.db.MapDataSource;
+import entities.drawing.DrawMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class HospitalMap {
         static entities.HospitalMap instance = null;
         private MapDataSource rawData; // link to javaDB -- see MapDataSource interface to call functions that update DB
        // private MapDataSource mapObjects; // NOTE: see the MapDataSource interface on how access the MapNodes and MapEdges for map coordinate/pathfinding
-
+        private DrawMap dmap;
         private int widthPixels = 5000;
         private int heightPixels = 3400;
 
@@ -29,9 +30,20 @@ public class HospitalMap {
 
     // TODO: Make this update when the database is changed
     private Map<String, Map<String, MapNode>> nodesOnFloors = new HashMap<>();
+    private Map<String, ArrayList<MapEdge>> edgesOnFloor = new HashMap<>();
+
 
     public MapDataSource getMap() {
         return rawData;
+    }
+    public MapNode addNode(Double xCoord, Double yCoord, String name, String curFloor) {
+        if (curFloor.length() == 1) {
+            String full = "0" + curFloor;
+            curFloor = full;
+        }
+        String ID = "A"+"HALL" + "001" +curFloor;
+        MapNode m = new MapNode(ID, new Location(xCoord.intValue(), yCoord.intValue(), curFloor, "BMT"), NodeType.HALL, name, "", "A", null);
+        return m;
     }
 
     public Map<String, MapNode> getFloorNodes(String floor) {
@@ -47,6 +59,22 @@ public class HospitalMap {
         }
         return nodesOnFloors.get(floor);
     }
+    /*
+    public ArrayList<MapEdge> getFloorEdges(String floor) {
+        if (!edgesOnFloor.containsKey(floor)) {
+            ArrayList<MapEdge> edges = new ArrayList<MapEdge>();
+            for (String id: getMap().getEdgeIds()) {
+                MapEdge e = getMap().getEdge(id);
+                if (e.getStart().getCoordinate().getLevel().equals(e.getEnd().getCoordinate().getLevel())) {
+                    edges.add(e);
+                }
+            }
+            edgesOnFloor.put(floor, edges);
+        }
+        System.out.println(edgesOnFloor.get(floor).size());
+        return edgesOnFloor.get(floor);
+    }
+    */
 
     public PathGenerator getPathGenerator() {
         return pathGenerator;
