@@ -2,9 +2,16 @@ package entities;
 
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class MapEdgeTest {
-    MapEdge testEdge;
-    MapNode nodeOne, nodeTwo;
+
+
+
+    private MapEdge testEdge;
+    private MapNode nodeOne, nodeTwo, nodeThree, nodeFour, nodeFive;
 
     public MapEdgeTest() {
         // Create a new edge with known values and nodes.
@@ -12,9 +19,17 @@ public class MapEdgeTest {
         //'WHALL00302',2085,900,'2','45 Francis','HALL','Hallway Connector 3 Floor 2','Hallway W0302','Team H'
         nodeOne = new MapNode("WHALL00203", new Location(2080, 1280, "3", "45 Francis"),
                 NodeType.HALL, "Hallway W0203", "Hallway Connector 2 Floor 3", "Team I", null);
-        nodeTwo = new MapNode("WHALL00302", new Location(2080, 900, "2", "45 Francis"),
+        nodeTwo = new MapNode("WHALL00302", new Location(2070, 900, "2", "45 Francis"),
                 NodeType.HALL, "Hallway W0302", "Hallway Connector 3 Floor 2", "Team H", null);
-        testEdge = new MapEdge("TestEdge", nodeOne, nodeTwo, 0.5);
+        nodeThree = new MapNode("WHALL00302", new Location(2010, 700, "2", "45 Francis"),
+                NodeType.HALL, "Hallway W0303", "Hallway Connector 3 Floor 3", "Team Z", null);
+
+        nodeFour = new MapNode("WHALL00304", new Location(2010, 700, "2", "45 Francis"),
+                NodeType.HALL, "Hallway W0304", "Hallway Connector 3 Floor 4", "Team Z", null);
+        nodeFive = new MapNode("WELEV00W03", new Location(2080, 1280, "3", "45 Francis"),
+                NodeType.HALL, "Elevator W0203", "Elevator W Floor 3", "Team I", null);
+
+        testEdge = new MapEdge("TestEdge", nodeOne, nodeTwo);
     }
 
     @Test
@@ -43,11 +58,22 @@ public class MapEdgeTest {
 
     @Test
     public void getWeight() throws Exception {
-        assert testEdge.getWeight() == 0.5;
+        assertEquals(testEdge.getWeight(), 380.13, 0.1); // One to two
+        testEdge.setEnd(nodeThree);
+        assertEquals(testEdge.getWeight(), 584.208, 0.1); // One to three
+        testEdge.setEnd(nodeTwo);
+        assertEquals(testEdge.getWeight(), 380.13, 0.1); //  One to two
+        testEdge.setStart(nodeTwo);
+        assertEquals(testEdge.getWeight(), 0, 0); // Two to two
+        testEdge.setStart(nodeOne);
     }
 
     @Test
     public void setWeight() throws Exception {
+        testEdge.setWeight(5.0);
+        assertEquals(testEdge.getWeight(), 5.0);
+        testEdge.setStart(nodeOne);
+        assertEquals(testEdge.getWeight(),380.13, 0.1); // recalculate after node changes
     }
 
     @Test
@@ -65,4 +91,20 @@ public class MapEdgeTest {
         assert testEdge.toSQLVals().equals("'TestEdge','WHALL00203','WHALL00302'");
     }
 
+    @Test
+    public void doesNotCrossFloors() throws Exception {
+        MapEdge sameFloor = new MapEdge("WHALL00203_WELEV00W03", nodeOne, nodeFive);
+        MapEdge diffFloor = new MapEdge("WHALL00304_WELEV00W03", nodeFour,nodeFive);
+        assertTrue(sameFloor.doesNotCrossFloors());
+        assertFalse(diffFloor.doesNotCrossFloors());
+
+    }
+
+    @Test
+    public void isOnFloor() throws Exception {
+        MapEdge sameFloor = new MapEdge("WHALL00203_WELEV00W03", nodeOne, nodeFive);
+        assertTrue(sameFloor.isOnFloor("03"));
+        assertFalse(sameFloor.isOnFloor("0G"));
+
+    }
 }
