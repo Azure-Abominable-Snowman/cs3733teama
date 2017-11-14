@@ -1,15 +1,10 @@
 package entities;
 
-import entities.PathRelated.PathGenerator;
-import entities.db.MapDataSource;
-import entities.db.CSVDatabaseSource;
 import entities.PathRelated.AStar;
 import entities.PathRelated.PathGenerator;
 import entities.db.JavaDatabaseSource;
 import entities.db.MapDataSource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +18,9 @@ public class HospitalMap {
 
         private int widthPixels = 5000;
         private int heightPixels = 3400;
+
+    private String nodefile ="/resources/csvdata/MapANodes.csv";
+    private String edgefile = "/resources/csvdata/MapAedges.csv";
 
         private PathGenerator pathGenerator;
         //mapcoordinate

@@ -1,8 +1,5 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MapEdge {
     private MapNode start, end;
     private String startID, endID;
