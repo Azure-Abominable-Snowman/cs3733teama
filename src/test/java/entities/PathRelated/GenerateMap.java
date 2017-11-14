@@ -84,6 +84,21 @@ public class  GenerateMap  {
         linkNodes(map[10][1], map[11][1],2);
         linkNodes(map[12][1], map[11][1],1);
 
+        linkNodes(map[23][19], map[24][19],3);
+        linkNodes(map[23][17], map[24][17],3);
+        linkNodes(map[23][22], map[24][22],3);
+
+
+        linkNodes(map[22][22], map[22][23],3);
+        linkNodes(map[23][22], map[23][23],3);
+        linkNodes(map[22][23], map[22][24],3);
+        linkNodes(map[23][23], map[23][24],3);
+
+        linkNodes(map[20][23], map[20][24],3);
+        linkNodes(map[20][22], map[20][23],3);
+
+
+
         // add vertical edges.
         for(int i=2 ,col=10;i<9;++i) // create the map for part 10th col
             linkNodes(map[col][i-1],map[col][i],1+i*3%2);
