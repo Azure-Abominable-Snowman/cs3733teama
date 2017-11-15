@@ -1,22 +1,21 @@
 package boundaries;
 
-import com.sun.org.apache.regexp.internal.RE;
 import controllers.SceneEngine;
+import entities.HospitalMap;
 import entities.MapNode;
 import entities.NodeType;
+import entities.db.RequestTable;
+import entities.servicerequests.PriorityLevel;
+import entities.servicerequests.Request;
+import entities.servicerequests.RequestType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import entities.db.RequestTable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import entities.Location;
-import javafx.scene.control.TextField;
-import entities.servicerequests.*;
-import entities.HospitalMap;
-import java.util.Map;
+
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Map;
 
 public class RequestScreenController implements Controller {
     RequestTable requestTable = RequestTable.getInstance();
@@ -104,25 +103,29 @@ public class RequestScreenController implements Controller {
         //set Request Type
         if (reqType.getSelectionModel().isEmpty()) {
             return;
-        }
-        else {
-            RequestType rType = (RequestType)reqType.getItems().get(0);
-            switch (rType) {
-                case FOOD:
+        } else {
+            RequestType rType = (RequestType)reqType.getSelectionModel().getSelectedItem();
+            System.out.println(rType.name());
+            switch (rType.name()) {
+                case "FOOD":
                     requestType = RequestType.FOOD;
                     priorityLevel = PriorityLevel.LOW;
                     break;
-                case SEC:
+                case "SEC":
                     requestType = RequestType.SEC;
                     priorityLevel = PriorityLevel.HIGH;
                     break;
-                case TRANS:
+                case "TRANS":
                     requestType = RequestType.TRANS;
                     priorityLevel = PriorityLevel.MEDIUM;
                     break;
-                case INTR:
+                case "INTR":
                     requestType = RequestType.INTR;
                     priorityLevel = PriorityLevel.MEDIUM;
+                    break;
+                case "MAIN":
+                    requestType = RequestType.MAIN;
+                    priorityLevel = PriorityLevel.HIGH;
                     break;
             }
         }
