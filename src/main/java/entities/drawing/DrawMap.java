@@ -33,6 +33,7 @@ public class DrawMap {
     private Map<String, MapNode> edgesOnFloor;
     private ScrollPane mapPane;
     private HospitalMap map;
+    private int nodeTolerance = 3;
 
     public DrawMap(ScrollPane mapPane, Canvas c, int xOffset, int yOffset, int imgW, int imgH) {
         this.c = c;
@@ -88,11 +89,12 @@ public class DrawMap {
         gc.fillOval(nodeX, nodeY, size, size);
     }
 
-    public void drawEdge(Canvas c, MapEdge edge) {
+    public void drawEdge(Canvas c, MapEdge edge, Paint pointColor) {
         double width = c.getWidth(); // make sure the width and height are updated
         double height = c.getHeight();
         Location start = convNodeCoords(edge.getStart().getCoordinate());
         Location end = convNodeCoords(edge.getEnd().getCoordinate());
+        gc.setStroke(pointColor);
         gc.strokeLine(
                 convUnits(start.getxCoord(), imgW, width),
                 convUnits(start.getyCoord(), imgH, height),
@@ -164,7 +166,16 @@ public class DrawMap {
     public void drawPath(Path path) {
         System.out.println(path.getConnectors().size());
         for(MapEdge e : path.getConnectors()) {
-            drawEdge(c, e);
+            drawEdge(c, e, Color.BLACK);
         }
+    }
+    public boolean isNodeWithinRegion(Canvas c, MapNode m, Integer xcoord, Integer ycoord) {
+        Location nodeloc = m.getCoordinate();
+        // Convert the BW coordinates to the canvas coordinates
+        Double canvasX = convUnits(nodeloc.getxCoord(), imgW, c.getWidth());
+        Double canvasY = convUnits(nodeloc.getyCoord(), imgH, c.getHeight());
+        return ((xcoord <= canvasX+nodeTolerance && xcoord >= canvasX-nodeTolerance)&&
+                (ycoord <= canvasY+nodeTolerance && ycoord >= canvasY-nodeTolerance));
+
     }
 }

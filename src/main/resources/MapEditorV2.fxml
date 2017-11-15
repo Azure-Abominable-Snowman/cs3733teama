@@ -34,9 +34,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
          <children>
-            <ToggleButton fx:id="addToggle" mnemonicParsing="false" prefHeight="82.0" prefWidth="148.0" text="Add" />
-            <ToggleButton fx:id="editToggle" mnemonicParsing="false" prefHeight="75.0" prefWidth="152.0" text="Edit" GridPane.rowIndex="1" />
-            <ToggleButton fx:id="deleteToggle" mnemonicParsing="false" prefHeight="94.0" prefWidth="172.0" text="Delete" GridPane.rowIndex="2" />
+            <ToggleButton fx:id="addToggle" mnemonicParsing="false" prefHeight="82.0" prefWidth="148.0" text="Add Mode" />
+            <ToggleButton fx:id="editToggle" mnemonicParsing="false" prefHeight="75.0" prefWidth="152.0" text="Edit Mode" GridPane.rowIndex="1" />
+            <ToggleButton fx:id="deleteToggle" mnemonicParsing="false" prefHeight="94.0" prefWidth="172.0" text="Delete Mode" GridPane.rowIndex="2" />
          </children>
         </GridPane>
     </left>

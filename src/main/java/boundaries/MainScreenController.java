@@ -112,7 +112,7 @@ public class MainScreenController implements Controller {
             System.out.print(n.getId()+" "+n.getShortDescription()+" ");
             for(MapEdge e : n.getEdges()) {
                 System.out.print(e.getId()+" ");
-                dMap.drawEdge(mapCanvas, e);
+                dMap.drawEdge(mapCanvas, e, Color.BLACK);
             }
             System.out.println("");
         }
