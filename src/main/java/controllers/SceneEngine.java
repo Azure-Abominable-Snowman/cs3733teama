@@ -2,6 +2,7 @@ package controllers;
 
 import boundaries.Controller;
 import boundaries.ControllerInfo;
+import boundaries.MainScreenController;
 import entities.drawing.ImageStash;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -86,6 +87,9 @@ public final class SceneEngine {
             c.setScene(scene);
             stage.setScene(scene);
             stage.show();
+
+
+
 
         }catch(IOException e){
             e.printStackTrace();

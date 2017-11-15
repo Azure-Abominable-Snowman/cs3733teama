@@ -1,6 +1,7 @@
 package entities;
 
 import boundaries.Controller;
+import boundaries.MainScreenController;
 import controllers.SceneEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
