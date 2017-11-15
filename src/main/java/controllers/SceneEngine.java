@@ -45,14 +45,9 @@ public final class SceneEngine {
         loginStage.close();
     }
 
-
     public static void closeComfirm() {
         comfirmStage.close();
     }
-
-
-
-    public static Map<String,  String> getHospitalImageMap() {
 
     public static Map<String, ImageStash> getHospitalImageMap() {
         if(bwImgs == null) {

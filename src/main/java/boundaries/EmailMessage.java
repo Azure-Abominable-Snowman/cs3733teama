@@ -1,15 +1,14 @@
-package boundaries;
+    package boundaries;
+    import javax.mail.*;
+    import javax.mail.internet.AddressException;
+    import javax.mail.internet.InternetAddress;
+    import javax.mail.internet.MimeMessage;
+    import java.util.Properties;
 
-import javax.mail.*;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.Properties;
-
-/**
- * Created by jakepardue on 11/14/17.
- */
-public class EmailMessage {
+    /**
+     * Created by jakepardue on 11/14/17.
+     */
+    public class EmailMessage {
         String to;
         String from;
         String msg;
@@ -67,4 +66,4 @@ public class EmailMessage {
             }
 
         }
-}
+    }
