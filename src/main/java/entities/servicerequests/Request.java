@@ -5,9 +5,8 @@ import entities.MapNode;
 
 public class Request {
     private Location location;
-    private MapNode mapNode;
-    private RequestType reqType;
-    private PriorityLevel priority;
+    private Enum<RequestType> reqType;
+    private Enum<PriorityLevel> priority;
     private String note;
     private String id;
     private boolean fulfilled = false;
@@ -17,17 +16,9 @@ public class Request {
         this.fulfilled = fulfilled;
     }
 
-    public Request(String id, Location location, RequestType reqType, PriorityLevel priority, String note) {
+    public Request(String id, Location location, Enum<RequestType> reqType, Enum<PriorityLevel> priority, String note) {
         this.id = id;
         this.location = location;
-        this.reqType = reqType;
-        this.priority = priority;
-        this.note = note;
-    }
-
-    public Request(String id, MapNode mapNode, RequestType reqType, PriorityLevel priority, String note){
-        this.id = id;
-        this.mapNode = mapNode;
         this.reqType = reqType;
         this.priority = priority;
         this.note = note;
@@ -41,7 +32,7 @@ public class Request {
         this.location = location;
     };
 
-    public RequestType getReqType() {
+    public Enum<RequestType> getReqType() {
         return reqType;
     }
 
@@ -49,7 +40,7 @@ public class Request {
         this.reqType = reqType;
     }
 
-    public PriorityLevel getPriority() {
+    public Enum<PriorityLevel> getPriority() {
         return priority;
     }
 
