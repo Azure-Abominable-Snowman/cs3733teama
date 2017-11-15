@@ -2,6 +2,7 @@ package controllers;
 
 import boundaries.Controller;
 import boundaries.ControllerInfo;
+import boundaries.MainScreenController;
 import entities.drawing.ImageStash;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,9 +15,19 @@ import java.util.Map;
 
 public final class SceneEngine {
 
-    private static Map<String, ImageStash> bwImgs;
+    private static Map<String, ImageStash>  bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage;
+
+    private static boolean adminStatus = false;
+
+    public static boolean isAdminStatus() {
+        return adminStatus;
+    }
+
+    public static void setAdminStatus(boolean adminStatus) {
+        SceneEngine.adminStatus = adminStatus;
+    }
 
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;
@@ -76,6 +87,9 @@ public final class SceneEngine {
             c.setScene(scene);
             stage.setScene(scene);
             stage.show();
+
+
+
 
         }catch(IOException e){
             e.printStackTrace();
