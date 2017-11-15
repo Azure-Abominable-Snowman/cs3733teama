@@ -55,6 +55,11 @@ public class MapEdge {
                 Math.pow(getEnd().getCoordinate().getyCoord()-getStart().getCoordinate().getyCoord(), 2));
     }
 
+    /**
+     * Gets the starting node, this calls the HospitalMap static class, make sure this is what you want to do
+     * TODO: Make this less opaque
+     * @return
+     */
     public MapNode getStart() {
         if(start == null) {
             start = HospitalMap.getInstance().getMap().getNode(startID);
@@ -73,6 +78,11 @@ public class MapEdge {
         }
     }
 
+    /**
+     * Gets the ending node, this calls the HospitalMap static class, make sure this is what you want to do
+     * TODO: Make this less opaque
+     * @return
+     */
     public MapNode getEnd() {
         if(end == null) {
             end = HospitalMap.getInstance().getMap().getNode(endID);
@@ -121,6 +131,14 @@ public class MapEdge {
         return weight;
     }
 
+    public String getStartID() {
+        return startID;
+    }
+
+    public String getEndID() {
+        return endID;
+    }
+
     public void setWeight(double weight) {
         this.weight = weight;
     }
@@ -130,10 +148,10 @@ public class MapEdge {
     }
 
     public String toCSV() {
-        return String.format("\"%s\",\"%s\",\"%s\"", getId(), start.getId(), end.getId());
+        return String.format("\"%s\",\"%s\",\"%s\"", getId(), getStartID(), getEndID());
     }
 
     public String toSQLVals() {
-        return String.format("'%s','%s','%s'", getId(), start.getId(), end.getId());
+        return String.format("'%s','%s','%s'", getId(), getStartID(), getEndID());
     }
 }

@@ -1,9 +1,11 @@
 package entities.servicerequests;
 
 import entities.Location;
+import entities.MapNode;
 
 public class Request {
     private Location location;
+    private MapNode mapNode;
     private RequestType reqType;
     private PriorityLevel priority;
     private String note;
@@ -23,24 +25,52 @@ public class Request {
         this.note = note;
     }
 
+    public Request(String id, MapNode mapNode, RequestType reqType, PriorityLevel priority, String note){
+        this.id = id;
+        this.mapNode = mapNode;
+        this.reqType = reqType;
+        this.priority = priority;
+        this.note = note;
+    }
+
     public Location getLocation() {
         return location;
     }
 
+    public void setLocation(Location location){
+        this.location = location;
+    };
+
     public RequestType getReqType() {
         return reqType;
+    }
+
+    public void setReqType(RequestType reqType){
+        this.reqType = reqType;
     }
 
     public PriorityLevel getPriority() {
         return priority;
     }
 
+    public void setPriority(PriorityLevel priority){
+        this.priority = priority;
+    }
+
     public String getNote() {
         return note;
     }
 
+    public void setNote(String note){
+        this.note = note;
+    }
+
     public String getId() {
         return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 
     public void setFulfilled() { fulfilled = true; }
