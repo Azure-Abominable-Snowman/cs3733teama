@@ -3,10 +3,13 @@ package boundaries;
 import controllers.SceneEngine;
 import entities.Main;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -48,6 +51,7 @@ public class StaffLoginController implements Controller {
     @FXML
     private Label loginMessage;
 
+
     @FXML
     private void onBackClick(ActionEvent event){
         SceneEngine.display(MainScreenController.class, null);
@@ -58,11 +62,28 @@ public class StaffLoginController implements Controller {
     private String adminPassword = "adminPW";
     private String inputUserID, inputUserPassword;
 
+
+
     @FXML
     private void onLoginClick(ActionEvent event){
         inputUserID = IDfield.getText();
         inputUserPassword = passwordField.getText();
+        identify();
+    }
 
+    @FXML
+    private void onEnterPressed(KeyEvent ke){
+        if (ke.getCode().equals(KeyCode.ENTER))
+        {
+            inputUserID = IDfield.getText();
+            inputUserPassword = passwordField.getText();
+            identify();
+        }
+    }
+
+
+
+    private void identify(){
         if (inputUserID.equals(adminID) && inputUserPassword.equals(adminPassword)){
             System.out.println("succeed");
             SceneEngine.setAdminStatus(true);
@@ -73,13 +94,13 @@ public class StaffLoginController implements Controller {
             IDfield.setText("");
             passwordField.setText("");
         }
-
     }
     @FXML
     private void onResetClick(ActionEvent event){
         IDfield.setText("");
         passwordField.setText("");
     }
+
 
 
 
