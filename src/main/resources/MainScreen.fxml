@@ -67,7 +67,7 @@
          <items>
             <VBox>
                <children>
-                  <ScrollPane fx:id="mapPane" hbarPolicy="ALWAYS" onMouseClicked="#zoomIntoMap" pannable="true" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                  <ScrollPane fx:id="mapPane" hbarPolicy="NEVER" onMouseClicked="#zoomIntoMap" pannable="true" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                      <content>
                         <Canvas fx:id="mapCanvas" height="200.0" width="300.0" />
                      </content>
