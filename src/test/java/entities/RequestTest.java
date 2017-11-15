@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
  */
 public class RequestTest {
 
-    Request r1 = new Request(new Location(1,1, "1","Kent's Wing"),TypeOfRequest.FOOD, PriorityLevel.LOW, "kent is very hungry and he wants food now" );
+    Request r1 = new Request(1, new Location(1,1, "1","Kent's Wing"),TypeOfRequest.FOOD, PriorityLevel.LOW, "kent is very hungry and he wants food now" );
 
 
     @Test
