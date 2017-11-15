@@ -161,6 +161,7 @@ public class JavaDatabaseSource implements MapDataSource {
             stmt = conn.createStatement();
             stmt.execute("INSERT INTO " + nodeTable + " VALUES ("+node.toSQLVals()+")");
             stmt.close();
+            log.info("Adding node " + node.getLongDescription());
         }
         catch (SQLException sqlExcept) {
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {
@@ -199,6 +200,7 @@ public class JavaDatabaseSource implements MapDataSource {
             stmt = conn.createStatement();
             stmt.execute("INSERT INTO " + edgeTable + " VALUES ("+edge.toSQLVals()+")");
             stmt.close();
+            log.info("Adding a new edge with ID " + edge.getId());
         }
         catch (SQLException sqlExcept) {
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {
@@ -227,6 +229,8 @@ public class JavaDatabaseSource implements MapDataSource {
      */
     @Override
     public void removeNode(String id) {
+
+
         try {
             stmt = conn.createStatement();
             stmt.execute("DELETE FROM " + nodeTable + " WHERE NODEID='"+id+"'");
@@ -234,6 +238,22 @@ public class JavaDatabaseSource implements MapDataSource {
         }
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
+        }
+    }
+    public void removeEdge(String id) {
+        /*String[] ids = id.split("_");
+        String start = ids[0];
+        String end = ids[0];
+        String otherID = end + "_" + start;*/
+        try {
+            stmt = conn.createStatement();
+
+            stmt.execute("DELETE FROM " + edgeTable + " WHERE EDGEID='" + id + "'");
+            //stmt.execute("DELETE FROM " + edgeTable + " WHERE EDGEID='" + otherID + "'");
+            stmt.close();
+            log.info("Deleted edge with ID " + id);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

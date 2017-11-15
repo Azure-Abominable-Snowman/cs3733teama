@@ -167,9 +167,11 @@ public class CSVDatabaseSource implements MapDataSource {
 
     @Override
     public void addEdge(MapEdge edge) {
-        edgeMap.put(edge.getId(), edge);
-        // Open the edge file, and put the updated CSV into it
-        writeEdge(edge, false);
+        if (edge != null) {
+            edgeMap.put(edge.getId(), edge);
+            // Open the edge file, and put the updated CSV into it
+            writeEdge(edge, false);
+        }
     }
 
     @Override
@@ -184,46 +186,50 @@ public class CSVDatabaseSource implements MapDataSource {
 
     private void writeNode(MapNode node, boolean delete) throws IOException {
         // Create whole new CSV file with every edit
-        try {
-            File file = new File(nodeFilename);
-            if(!file.exists()) {
-                if (!(file.createNewFile())) {
-                    // If the file doesn't exist something must have gone wrong
-                    throw new IOException();
+        if (node != null) {
+            try {
+                File file = new File(nodeFilename);
+                if (!file.exists()) {
+                    if (!(file.createNewFile())) {
+                        // If the file doesn't exist something must have gone wrong
+                        throw new IOException();
+                    }
                 }
+                FileWriter fw = new FileWriter(nodeFilename);
+                BufferedWriter writer = new BufferedWriter(fw);
+                writer.write("nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n");
+                for (MapNode n : nodeMap.values()) {
+                    writer.write(n.toCSV() + "\n");
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            FileWriter fw = new FileWriter(nodeFilename);
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.write("nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n");
-            for(MapNode n : nodeMap.values()) {
-                writer.write(n.toCSV()+"\n");
-            }
-            writer.close();
-        } catch(IOException e) {
-            e.printStackTrace();
         }
     }
 
     private void writeEdge(MapEdge edge, boolean delete) {
         // Create whole new CSV file with every edit
-        try {
-            File file = new File(edgeFilename);
+        if (edge != null) {
+            try {
+                File file = new File(edgeFilename);
 
-            if(!file.exists()) {
-                if (!(file.createNewFile())) {
-                    // If the file doesn't exist something must have gone wrong
-                    throw new IOException();
+                if (!file.exists()) {
+                    if (!(file.createNewFile())) {
+                        // If the file doesn't exist something must have gone wrong
+                        throw new IOException();
+                    }
                 }
+                FileWriter fw = new FileWriter(edgeFilename);
+                BufferedWriter writer = new BufferedWriter(fw);
+                writer.write("edgeID,startNode,endNode\n");
+                for (MapEdge n : edgeMap.values()) {
+                    writer.write(n.toCSV() + "\n");
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            FileWriter fw = new FileWriter(edgeFilename);
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.write("edgeID,startNode,endNode\n");
-            for(MapEdge n : edgeMap.values()) {
-                writer.write(n.toCSV()+"\n");
-            }
-            writer.close();
-        } catch(IOException e) {
-            e.printStackTrace();
         }
     }
 
