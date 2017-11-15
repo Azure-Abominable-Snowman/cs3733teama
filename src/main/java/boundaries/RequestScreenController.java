@@ -1,9 +1,12 @@
 package boundaries;
 
 import controllers.SceneEngine;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 
 public class RequestScreenController implements Controller {
 
@@ -16,6 +19,26 @@ public class RequestScreenController implements Controller {
     private Button back;
     @FXML
     Button fulfillRequest;
+    @FXML
+    private ComboBox combo;
+    @FXML
+    private void Initialization(){
+        combo.setItems(list);
+    }
+    ObservableList<String> list = FXCollections.observableArrayList("Food","Security","Interpreter","Transportation");
+
+
+
+    @FXML
+    private Button submit;
+
+
+
+
+
+
+
+
 
     @FXML
     private void backClick(ActionEvent event){
@@ -27,4 +50,12 @@ public class RequestScreenController implements Controller {
     private void fulfillClick(ActionEvent event){
         SceneEngine.display(FulfillReqController.class, SceneEngine.getPopOutStage(), null);
     }
+
+
+
 }
+
+
+
+
+
