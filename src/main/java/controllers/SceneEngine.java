@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class SceneEngine {
-    private static String URL = "jdbc:derby://localhost:1527/testdb;create=true";
-    //private static String URL = "jdbc:derby:database;create=true";
+    //private static String URL = "jdbc:derby://localhost:1527/testdb;create=true";
+    private static String URL = "jdbc:derby:database;create=true";
 
     static public String getURL(){
         return URL;
