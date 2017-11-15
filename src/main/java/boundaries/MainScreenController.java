@@ -65,6 +65,7 @@ public class MainScreenController implements Controller {
 
     public void initialize() {
         hideDirections();
+
         dMap = new DrawMap(mapPane, mapCanvas, -2, 75, 5000, 3500);
         // load in map node coordinates from DB
         map = HospitalMap.getInstance();
@@ -96,7 +97,20 @@ public class MainScreenController implements Controller {
             dMap.switchFloor(floor);
             floorLabel.setText(floor);
             populateBoxes(floor);
+
+
         });
+        if (SceneEngine.isAdminStatus() == false){
+            request.setVisible(false);
+        }else{
+            request.setVisible(true);
+        }
+        if (SceneEngine.isAdminStatus() == false){
+            editMap.setVisible(false);
+        }else{
+            editMap.setVisible(true);
+        }
+
     }
 
     private void populateBoxes(String floor) {
@@ -172,6 +186,7 @@ public class MainScreenController implements Controller {
         mapPane.widthProperty().addListener(stageSizeListener);
 
         this.stage = stage;
+
     }
 
     public void setScene(Scene scene) {
@@ -238,4 +253,9 @@ public class MainScreenController implements Controller {
     private void logInClick(ActionEvent event) {
         SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
     }
+
+
+
+
+
 }
