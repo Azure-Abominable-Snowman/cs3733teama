@@ -16,8 +16,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.Map;
 
 
@@ -273,6 +275,23 @@ public class MainScreenController implements Controller {
             SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
         }
 
+    }
+
+    @FXML
+    void exportToCSV(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.*");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(stage);
+
+        if(file != null){
+            String path = file.getPath();
+            HospitalMap.getInstance().exportToCSV(path+"_nodes.csv", path+"_edges.csv");
+        }
     }
 
     private void showBtn(){

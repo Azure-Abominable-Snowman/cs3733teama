@@ -22,7 +22,7 @@ public class JavaDatabaseSource implements MapDataSource {
         this.edgeTable = edgeTable;
 
         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             // Get a connection
             conn = DriverManager.getConnection(dbURL);
         }
