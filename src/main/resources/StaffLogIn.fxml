@@ -39,7 +39,7 @@
                 </Text>
             <Label fx:id="loginMessage" prefHeight="17.0" prefWidth="404.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Button fx:id="reset" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onResetClick" prefHeight="53.0" prefWidth="68.0" style="-fx-background-color: #FA5555;" text="Reset" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <PasswordField fx:id="passwordField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <PasswordField fx:id="passwordField" onKeyPressed="#onEnterPressed" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </children>
