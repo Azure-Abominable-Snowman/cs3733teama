@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 
@@ -57,6 +56,8 @@ public class MapEditorController implements Controller {
     private MapNode startNode = null;
     private MapNode endNode = null;
 
+    private String currentFloor = "G";
+
 
 
     EventHandler<MouseEvent> onMouseClick = new EventHandler<MouseEvent>() {
@@ -88,6 +89,9 @@ public class MapEditorController implements Controller {
             }
 */
             MapNode m = findNodeAt(xCanvas.intValue(), yCanvas.intValue()); // check if node exists in database
+            if (m!= null) {
+                name.setText(m.getLongDescription());
+            }
             if (nodeToggle.isSelected()) {
                 if (m == null) {
                     if (addToggle.isSelected()) {
@@ -150,12 +154,17 @@ public class MapEditorController implements Controller {
     public void initialize() {
         editorMap = new DrawMap(mapPane, canvas, -3, -5, 5000, 3400);
         editorMap.setRenderHidden(true);
+        reDrawMap();
         //editorMap.drawAllEdges(canvas);
         map = HospitalMap.getInstance();
         xCoord.setText(defaultX);
         yCoord.setText(defaultY);
 
-        nodeType.getItems().addAll(NodeType.values());
+        for(NodeType n : NodeType.values()) {
+            if(!n.equalsName("Elevator")) {
+                nodeType.getItems().add(n);
+            }
+        }
 
 
         // set up the Toggles
@@ -282,15 +291,15 @@ public class MapEditorController implements Controller {
         floor.setValueFactory(floorSelections);
         //editorMap.switchFloor("G");
         floor.valueProperty().addListener((observable, oldValue, newValue) -> {
-
                     String currFloor = floor.getValueFactory().getConverter().toString(oldValue);
                     String newFloor = floor.getValueFactory().getConverter().toString(newValue);
                     if (!currFloor.equals(newFloor)) {
                         currFloor = newFloor;
                     }
                     //System.out.println(currFloor);
-                    editorMap.updateCurrFloor(currFloor);
-                    System.out.println(editorMap.getCurFloor());
+                    //editorMap.updateCurrFloor(currFloor);
+                    //System.out.println(editorMap.getCurFloor());
+                    currentFloor = currFloor;
                     refreshMap();
 
                 });
@@ -300,7 +309,7 @@ public class MapEditorController implements Controller {
     }
 
     private void reDrawMap() {
-        editorMap.switchFloor(editorMap.getCurFloor());
+        editorMap.switchFloor(currentFloor);
     }
 
 
@@ -393,16 +402,10 @@ public class MapEditorController implements Controller {
                 //String edgeID = startNode.getId() + "_" + endNode.getId();
                 //MapEdge edgeSelected = new MapEdge(edgeID, startNode, endNode);
                 //edgeSelected.setID(edgeID);
-                MapEdge edgeSelected = null;
-                for(MapEdge startEdge : startNode.getEdges()) {
-                    for(MapEdge endEdge : endNode.getEdges()) {
-                        if(startEdge.getId().equals(endEdge.getId())) {
-                            edgeSelected = endEdge;
-                            break;
-                        }
-                    }
-                }
                 if (addToggle.isSelected()) {
+                    String edgeID = startNode.getId() + "_" + endNode.getId();
+                    MapEdge edgeSelected = new MapEdge(edgeID, startNode, endNode);
+                    edgeSelected.setID(edgeID);
 
                     HospitalMap.getInstance().getMap().addEdge(edgeSelected);
                     reDrawMap();
@@ -414,6 +417,15 @@ public class MapEditorController implements Controller {
                     refreshMap();
                 }
                 else if (deleteToggle.isSelected()) {
+                    MapEdge edgeSelected = null;
+                    for(MapEdge startEdge : startNode.getEdges()) {
+                        for(MapEdge endEdge : endNode.getEdges()) {
+                            if(startEdge.getId().equals(endEdge.getId())) {
+                                edgeSelected = endEdge;
+                                break;
+                            }
+                        }
+                    }
                     HospitalMap.getInstance().getMap().removeEdge(edgeSelected.getId());
                     refreshMap();
                     deleteToggle.setSelected(false);
@@ -434,6 +446,10 @@ public class MapEditorController implements Controller {
                 }
             } else if (deleteToggle.isSelected()) {
                 MapNode toDelete = selectedNode;
+                // TODO: do this in the hospitalmap singleton
+                for(MapEdge edge : toDelete.getEdges()) {
+                    HospitalMap.getInstance().getMap().removeEdge(edge.getId());
+                }
                 HospitalMap.getInstance().getMap().removeNode(toDelete.getId());
                 refreshMap();
                 deleteToggle.setSelected(false);
