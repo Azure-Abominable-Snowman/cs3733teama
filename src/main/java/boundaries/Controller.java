@@ -1,5 +1,6 @@
 package boundaries;
 
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public interface Controller {
@@ -8,4 +9,6 @@ public interface Controller {
     default void setControllerInfo(ControllerInfo info) { }
 
     default void setStage(Stage stage) { }
+
+    default void setScene(Scene scene) { }
 }
