@@ -20,7 +20,7 @@ public class ImageStash {
 
     public Image getImage() {
         if (currImg == null) {
-            currImg = new Image(filename);
+            currImg = new Image(getClass().getResourceAsStream(filename));
         }
         return currImg;
     }
