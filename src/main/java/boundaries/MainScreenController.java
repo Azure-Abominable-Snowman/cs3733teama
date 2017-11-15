@@ -65,6 +65,7 @@ public class MainScreenController implements Controller {
 
     public void initialize() {
         hideDirections();
+
         dMap = new DrawMap(mapPane, mapCanvas, -2, 75, 5000, 3500);
         // load in map node coordinates from DB
         map = HospitalMap.getInstance();
@@ -96,7 +97,20 @@ public class MainScreenController implements Controller {
             dMap.switchFloor(floor);
             floorLabel.setText(floor);
             populateBoxes(floor);
+
+
         });
+        if (SceneEngine.isAdminStatus() == false){
+            request.setVisible(false);
+        }else{
+            request.setVisible(true);
+        }
+        if (SceneEngine.isAdminStatus() == false){
+            editMap.setVisible(false);
+        }else{
+            editMap.setVisible(true);
+        }
+
     }
 
     private void populateBoxes(String floor) {
@@ -162,7 +176,6 @@ public class MainScreenController implements Controller {
     public void setStage(Stage stage) {
         // On resize of the stage
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            System.out.println(oldValue);
             dMap.updateSize();
         };
         // If the stage is resized make the canvas fill
@@ -173,6 +186,7 @@ public class MainScreenController implements Controller {
         mapPane.widthProperty().addListener(stageSizeListener);
 
         this.stage = stage;
+
     }
 
     public void setScene(Scene scene) {
@@ -231,10 +245,6 @@ public class MainScreenController implements Controller {
 
         Path shortestPath = map.getPathGenerator().generatePath(start, end);
 
-        for (MapNode n : shortestPath.getNodes()) {
-            System.out.println(n.getId());
-        }
-
         // Draw the path between the two nodes
         dMap.setPath(shortestPath);
     }
@@ -243,4 +253,9 @@ public class MainScreenController implements Controller {
     private void logInClick(ActionEvent event) {
         SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
     }
+
+
+
+
+
 }
