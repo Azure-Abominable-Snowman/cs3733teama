@@ -12,6 +12,16 @@ import java.io.IOException;
 
 public class Main extends Application{
 
+    private boolean userType = false;
+
+    public Boolean getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Boolean userType) {
+        this.userType = userType;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

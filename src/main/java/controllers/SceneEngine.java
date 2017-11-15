@@ -14,9 +14,19 @@ import java.util.Map;
 
 public final class SceneEngine {
 
-    private static Map<String, ImageStash> bwImgs;
+    private static Map<String, ImageStash>  bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage;
+
+    private static boolean adminStatus = false;
+
+    public static boolean isAdminStatus() {
+        return adminStatus;
+    }
+
+    public static void setAdminStatus(boolean adminStatus) {
+        SceneEngine.adminStatus = adminStatus;
+    }
 
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;

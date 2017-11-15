@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -18,23 +20,26 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="408.0" minWidth="10.0" prefWidth="408.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="163.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="72.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="146.0" minHeight="10.0" prefHeight="144.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="163.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="146.0" minHeight="10.0" prefHeight="113.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Text fx:id="AdminID" strokeType="OUTSIDE" strokeWidth="0.0" text="Staff ID :" wrappingWidth="153.91748046875" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Text fx:id="passWord" strokeType="OUTSIDE" strokeWidth="0.0" text="password :" wrappingWidth="153.388671875" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="IDfield" prefHeight="27.0" prefWidth="384.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <TextField fx:id="passwordField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                <Button fx:id="login" mnemonicParsing="false" prefHeight="53.0" prefWidth="379.0" style="-fx-background-color: #55AAFA;" text="Login" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Button fx:id="login" mnemonicParsing="false" onAction="#onLoginClick" prefHeight="53.0" prefWidth="379.0" style="-fx-background-color: #55AAFA;" text="Login" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                 <Button fx:id="reset" mnemonicParsing="false" onAction="#onBackClick" prefHeight="27.0" prefWidth="72.0" style="-fx-background-color: #FA5555;" text="back" textFill="WHITE" />
                 <Text fx:id="admintext" strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Login" textAlignment="CENTER" wrappingWidth="439.21875" GridPane.columnIndex="1" GridPane.columnSpan="2">
                     <font>
                         <Font size="36.0" />
                     </font>
                 </Text>
+            <Label fx:id="loginMessage" prefHeight="17.0" prefWidth="404.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button fx:id="reset" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onResetClick" prefHeight="53.0" prefWidth="68.0" style="-fx-background-color: #FA5555;" text="Reset" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <PasswordField fx:id="passwordField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </children>
