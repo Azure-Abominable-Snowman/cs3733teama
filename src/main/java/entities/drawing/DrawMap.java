@@ -30,7 +30,7 @@ public class DrawMap {
     private String curFloor = "G";
     private ArrayList<MapNode> nodes;
 
-    private int nodeTolerance = 3;
+    //private int nodeTolerance = 3;
     private ScrollPane mapPane;
     private HospitalMap map;
     private Path curPath;
@@ -149,10 +149,15 @@ public class DrawMap {
         }
         render(floor);
     }
-
+    public void updateCurrFloor(String floor) {
+        curFloor = floor;
+    }
     public void reRender() {
         render(curFloor);
     }
+
+
+    private boolean renderHidden = false;
 
     private void render(String floor) {
         if(!floor.equals(curFloor) || bwImg == null) {
@@ -163,7 +168,7 @@ public class DrawMap {
         gc.drawImage(bwImg, 0,0, c.getWidth(), c.getHeight());
         for(MapNode n : map.getFloorNodes(floor).values()) {
             //drawNodeAnnotation(n);
-            if(!n.getNodeType().equals(NodeType.HALL)) { // Don't render hallway nodes
+            if(renderHidden || !n.getNodeType().equals(NodeType.HALL)) { // Don't render hallway nodes
                 drawNode(n, nodeDim, Color.BLACK);
             }
         }
@@ -171,6 +176,10 @@ public class DrawMap {
         if(curPath != null) {
             drawPath(curPath);
         }
+    }
+
+    public void setRenderHidden(boolean renderHidden) {
+        this.renderHidden = renderHidden;
     }
 
     private double oldWidth, oldHeight;
@@ -270,6 +279,7 @@ public class DrawMap {
         curPath = null;
     }
     public boolean isNodeWithinRegion(Canvas c, MapNode m, Integer xcoord, Integer ycoord) {
+        int nodeTolerance = 4;
         Location nodeloc = m.getCoordinate();
         // Convert the BW coordinates to the canvas coordinates
         Double canvasX = convUnits(nodeloc.getxCoord(), imgW, c.getWidth());

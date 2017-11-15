@@ -2,6 +2,7 @@ package boundaries;
 
 import controllers.SceneEngine;
 import entities.*;
+import entities.db.DatabaseUUID;
 import entities.drawing.DrawMap;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -48,6 +49,7 @@ public class MapEditorController implements Controller {
     private String defaultX = "Select a location on the map.";
     private String defaultY = "Select a location on the map.";
     private String currName;
+    private Location selectedLocation = null;
     private MapNode selectedNode = null;
     private MapEdge selectedEdge = null;
     private Boolean existingNodeSelected = false;
@@ -57,51 +59,6 @@ public class MapEditorController implements Controller {
 
 
 
-/*
-    // Mouse Event Handlers and Filters
-        EventHandler<MouseEvent> onAddMode = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            while (nodeToggle.isSelected()) {
-                GraphicsContext gc = canvas.getGraphicsContext2D();
-                Double xcoord = convertXCanvastoBWMap(event.getX());
-                Double ycoord = convertYCanvastoBWMap(event.getY());
-                //Double xScale = editorMap.getImgWidth() / canvas.getWidth();
-                //Double yScale = editorMap.getImgH() / canvas.getHeight();
-
-                xCoord.setText(xcoord.toString());
-                yCoord.setText(ycoord.toString());
-                System.out.println("Width: " + canvas.getHeight() + "Height: " + canvas.getWidth());
-
-                //xcoord *= xScale;
-                //ycoord *= yScale;
-                System.out.println("Node x: " + xcoord + " Node y: " + ycoord);
-                /// get node name
-                String defaultText = "Please enter a name for the node.";
-                while (!(name.getText().equals(defaultText))) {
-                    name.setText(defaultText);
-                }
-                String nodeName = name.getText();
-                MapNode newNode = HospitalMap.getInstance().createNode(xcoord, ycoord, nodeName, editorMap.getCurFloor());
-                editorMap.drawNode(newNode, 3, Color.RED);
-                xCoord.clear();
-                yCoord.clear();
-                name.clear();
-            }
-            while (edgeToggle.isSelected()) {
-                GraphicsContext gc = canvas.getGraphicsContext2D();
-                String startDefault = "First select a starting node.";
-                xCoord.setText(startDefault);
-                ;
-
-
-
-            }
-        }
-        // TODO: Incorp. confirm, make drawn thing black, incorporate dropdown and actually add the node to the database
-    };
-    */
-
     EventHandler<MouseEvent> onMouseClick = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
@@ -109,49 +66,75 @@ public class MapEditorController implements Controller {
             if (ctrlDown) {
                 editorMap.toggleZoom(event.getX(), event.getY());
             }
-
+            name.clear();
             Double xCanvas = event.getX();
             Double yCanvas = event.getY();
             Integer xBWcoord = convertCanvastoBWMap(xCanvas, editorMap.getImgWidth(), canvas.getWidth());
             Integer yBWcoord = convertCanvastoBWMap(yCanvas, editorMap.getImgH(), canvas.getHeight());
+            refreshMap();
+
             xCoord.setText(xBWcoord.toString());
             yCoord.setText(yBWcoord.toString());
-
-            if ((editorAction.getSelectedToggle() != null && editorAction.getSelectedToggle()!= editToggle) ||
-                    (editToggle.isSelected() && (startNode == null))) { // clear the canvas
-                reDrawMap();
+            /*
+            if (edgeToggle.isSelected() && startNode != null) { // redraw the saved start node
+                Paint color = Color.AZURE;
+                if (addToggle.isSelected()) {
+                    color = Color.GREEN;
+                }
+                else if (deleteToggle.isSelected()) {
+                    color = Color.RED;
+                }
+                editorMap.drawNode(startNode, 4, color);
             }
-
+*/
             MapNode m = findNodeAt(xCanvas.intValue(), yCanvas.intValue()); // check if node exists in database
-            if (m == null) {// unregistered location
-
-                if (editorAction.getSelectedToggle() != null) {
-                    Paint color;
+            if (nodeToggle.isSelected()) {
+                if (m == null) {
                     if (addToggle.isSelected()) {
                         String defaultText = "Please enter a name for the new location.";
                         name.setText(defaultText);
-                        color = Color.GREEN;
+                        //color = Color.GREEN;
                         MapNode newNode = new MapNode("", new Location(xBWcoord, yBWcoord, editorMap.getCurFloor(), "BTM"), null, "", "", "Team A", null);
-                        editorMap.drawNode(newNode, 3, color);
+                        editorMap.drawNode(newNode, 4, Color.GREEN);
                         selectedNode = newNode;
-                    } else if (deleteToggle.isSelected() || editToggle.isSelected()) {
-                        String defaultText = "Please select an existing node.";
-                        name.setText(defaultText);
+                    }
+                    else if (deleteToggle.isSelected() || editToggle.isSelected()) {
+                            String defaultText = "Please select an existing node.";
+                            name.setText(defaultText);
                     }
                 }
-            } else { // found a node
-                name.setText(m.getLongDescription());
-                selectedNode = m;
-                if (editorAction.getSelectedToggle() != null && editorAction.getSelectedToggle()!= addToggle) {
-                    Paint color = Color.BLACK;
-                    if (editToggle.isSelected()) {
+                else {
+                    selectedNode = m;
+                    name.setText(m.getLongDescription());
+                    if (deleteToggle.isSelected()) {
+                        editorMap.drawNode(m, 4, Color.RED);
+                    }
+                }
+            }
 
-                        color = Color.AZURE;
+            else if (edgeToggle.isSelected() && editorAction.getSelectedToggle()!=null) {
+                    Paint color = Color.BLACK;
+                    if (addToggle.isSelected()) {
+                        color = Color.GREEN;
                     } else if (deleteToggle.isSelected()) {
                         color = Color.RED;
                     }
-                    editorMap.drawNode(m, 3, color);
-                }
+                    if (startNode != null) {
+                        editorMap.drawNode(startNode, 4, color);
+                    }
+                    if (m == null) {// unregistered location
+                        String defaultText = "Please select an existing node.";
+                        name.setText(defaultText);
+
+                    } else { // found a node
+                        name.setText(m.getLongDescription());
+                        nodeType.setValue((NodeType) m.getNodeType());
+                        selectedNode = m;
+
+                        editorMap.drawNode(m, 4, color);
+
+                    }
+
 
             }
         }
@@ -166,6 +149,7 @@ public class MapEditorController implements Controller {
 
     public void initialize() {
         editorMap = new DrawMap(mapPane, canvas, -3, -5, 5000, 3400);
+        editorMap.setRenderHidden(true);
         //editorMap.drawAllEdges(canvas);
         map = HospitalMap.getInstance();
         xCoord.setText(defaultX);
@@ -186,60 +170,67 @@ public class MapEditorController implements Controller {
         deleteToggle.setToggleGroup(editorAction);
 
         addToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != newValue && newValue == true) {
+            if (oldValue != newValue && addToggle.isSelected()) {
                 refreshMap();
                 if (nodeToggle.isSelected()) {
                     xCoord.setText("Select a new map location.");
                     yCoord.setText("Select a new map location.");
                 }
                 else if (edgeToggle.isSelected()) {
-                    name.setText("Select a starting node");
+                    startNode = null;
+                    endNode = null;
+                    name.setText("Select the start node of the edge to add, then Confirm..");
                 }
             }
         });
         editToggle.selectedProperty().addListener((observable, oldValue, newValue)-> {
-            if (oldValue != newValue && newValue == true) {
+            if (oldValue != newValue && editToggle.isSelected()) {
                 refreshMap();
                 if (nodeToggle.isSelected()) {
                     name.setText("Select the node to edit.");
                 }
-                else if (edgeToggle.isSelected()) {
-                    name.setText("Select the start node of the edge to edit.");
-                }
+
                 //ineditmode()
             }
         });
         deleteToggle.selectedProperty().addListener((observable, oldValue, newValue)-> {
-            if (oldValue != newValue && newValue == true) {
+            if (oldValue != newValue && deleteToggle.isSelected()) {
                 refreshMap();
                 if (nodeToggle.isSelected()) {
                     name.setText("Select the existing node to delete.");
                 }
                 else if (edgeToggle.isSelected()) {
-                    name.setText("Select the start node of the edge to delete.");
+                    startNode = null;
+                    endNode = null;
+                    name.setText("Select the start node of the edge to delete, then Confirm.");
                 }
                 //indeletemode();
             }
         });
         nodeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != newValue && newValue == true) {
+            if (oldValue != newValue && nodeToggle.isSelected()) {
                 refreshMap();
+                editToggle.setVisible(true);
                 if (editorAction.getSelectedToggle()!=null) {
                     if (editToggle.isSelected()) {
                         name.setText("Select the node to edit.");
-                    } else if (addToggle.isSelected()) {
-                        xCoord.setText("Select a new map location.");
-                        yCoord.setText("Select a new map location.");
-                    } else if (deleteToggle.isSelected()) {
-                        name.setText("Select the existing node to delete.");
+                    }else if (deleteToggle.isSelected()) {
+                        name.setText("Select the existing node to delete, then Confirm.");
                     }
+                }
+                else {
+                    xCoord.setText("Select a new map location.");
+                    yCoord.setText("Select a new map location.");
                 }
             }
         });
         edgeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != newValue && newValue == true) {
+            if (oldValue != newValue && edgeToggle.isSelected()) {
                 refreshMap();
-                name.setText("Select the starting node, then hit Confirm.");
+                startNode = null;
+                endNode = null;
+                editToggle.setVisible(false);
+                name.setText("Select Mode (Add or Delete)");
             }
         });
         //set up the Spinner
@@ -289,7 +280,7 @@ public class MapEditorController implements Controller {
         floorSelections.setWrapAround(true);
         floorSelections.setValue(g);
         floor.setValueFactory(floorSelections);
-        editorMap.switchFloor("G");
+        //editorMap.switchFloor("G");
         floor.valueProperty().addListener((observable, oldValue, newValue) -> {
 
                     String currFloor = floor.getValueFactory().getConverter().toString(oldValue);
@@ -297,7 +288,10 @@ public class MapEditorController implements Controller {
                     if (!currFloor.equals(newFloor)) {
                         currFloor = newFloor;
                     }
-                    editorMap.switchFloor(currFloor);
+                    //System.out.println(currFloor);
+                    editorMap.updateCurrFloor(currFloor);
+                    System.out.println(editorMap.getCurFloor());
+                    refreshMap();
 
                 });
         // set up default Mouse Tracking behavior
@@ -313,10 +307,19 @@ public class MapEditorController implements Controller {
     private void refreshMap() {
         selectedNode = null;
         selectedEdge = null;
+
         reDrawMap();
         xCoord.clear();
         yCoord.clear();
         name.clear();
+        if (edgeToggle.isSelected()) {
+            for (MapNode n : map.getFloorNodes(editorMap.getCurFloor()).values()) {
+                for (MapEdge e : n.getEdges()) {
+                    editorMap.drawEdge(canvas, e, Color.GREY);
+
+                }
+            }
+        }
 
     }
 
@@ -345,11 +348,14 @@ public class MapEditorController implements Controller {
         name.setText("No such edge found.");
         return null;
     }
+    //fills in user-inputted values to the node to be added/edited
     private MapNode makeNewNode() {
         MapNode newNode = selectedNode;
         String nodeName = name.getText();
         newNode.setLongDescription(nodeName);
+        newNode.setShortDescription(nodeName);
         newNode.setType(nodeType.getValue());
+        newNode.setID(DatabaseUUID.generateID(newNode.getNodeType(), newNode.getCoordinate().getLevel()));
         return newNode;
 
     }
@@ -358,92 +364,83 @@ public class MapEditorController implements Controller {
         if (edgeToggle.isSelected()) {
             if (startNode == null) {
                 startNode = selectedNode;
+                System.out.println("The start node is "+ startNode.getLongDescription());
                 name.clear();
                 xCoord.clear();
                 yCoord.clear();
                 name.setText("Now select an existing ending node, and Confirm.");
             } else if (endNode == null) {
+                System.out.println("The start node is "+ startNode.getLongDescription());
+
                 endNode = selectedNode;
+                System.out.println("The end node is "+ endNode.getLongDescription());
+
                 String edgeID = startNode.getId() + "_" + endNode.getId();
-                MapEdge newEdge = new MapEdge("", startNode, endNode);
+                MapEdge newEdge = new MapEdge(edgeID, startNode, endNode);
                 selectedEdge = newEdge;
-                editorMap.drawEdge(canvas, newEdge, Color.YELLOW);
+                editorMap.drawEdge(canvas, newEdge, Color.YELLOWGREEN);
                 name.clear();
                 xCoord.clear();
                 yCoord.clear();
-                name.setText("Click Confirm to add edge.");
+                if (addToggle.isSelected()) {
+                    name.setText("Click Confirm to add edge.");
+                }
+                else if (deleteToggle.isSelected()) {
+                    name.setText("Click Confirm to delete edge.");
+                }
             }
-            else if (startNode != null && endNode != null) { // got the start and end nodes
-                if (addToggle.isSelected() ||edgeToggle.isSelected()) {
-                    MapEdge edgeToAdd = selectedEdge;
-                    String edgeID = startNode.getId() + "_" + endNode.getId();
-                    edgeToAdd.setID(edgeID);
-                    HospitalMap.getInstance().getMap().addEdge(edgeToAdd);
+            else if (startNode != null && endNode != null) { // got the start and end nodes, so edge is selected
+                //String edgeID = startNode.getId() + "_" + endNode.getId();
+                //MapEdge edgeSelected = new MapEdge(edgeID, startNode, endNode);
+                //edgeSelected.setID(edgeID);
+                MapEdge edgeSelected = null;
+                for(MapEdge startEdge : startNode.getEdges()) {
+                    for(MapEdge endEdge : endNode.getEdges()) {
+                        if(startEdge.getId().equals(endEdge.getId())) {
+                            edgeSelected = endEdge;
+                            break;
+                        }
+                    }
+                }
+                if (addToggle.isSelected()) {
+
+                    HospitalMap.getInstance().getMap().addEdge(edgeSelected);
                     reDrawMap();
-                    editorMap.drawEdge(canvas, edgeToAdd, Color.GRAY);
+                    editorMap.drawEdge(canvas, edgeSelected, Color.GRAY);
+                    System.out.println("The ID of the new Edge is " + edgeSelected.getId());
                     if (addToggle.isSelected()) {
                         addToggle.setSelected(false);
                     }
-                    else if (edgeToggle.isSelected()) {
-                        edgeToggle.setSelected(false);
-                    }
+                    refreshMap();
                 }
                 else if (deleteToggle.isSelected()) {
-
-                    //HospitalMap.getInstance().getMap().
+                    HospitalMap.getInstance().getMap().removeEdge(edgeSelected.getId());
+                    refreshMap();
+                    deleteToggle.setSelected(false);
                 }
             }
         }
-        if (addToggle.isSelected()){
-            if (nodeToggle.isSelected()) {
+        if (nodeToggle.isSelected()) {
+            if (addToggle.isSelected() || editToggle.isSelected()) {
                 MapNode newNode = makeNewNode();
                 //reDrawMap();
                 //editorMap.drawNode(newNode, 3, Color.BLACK);
                 HospitalMap.getInstance().getMap().addNode(newNode);
                 refreshMap();
-                addToggle.setSelected(false);
-
-            }
-            else if (edgeToggle.isSelected()) {
-                if (startNode == null) {
-                    startNode = selectedNode;
-                    name.clear();
-                    xCoord.clear();
-                    yCoord.clear();
-                    name.setText("Now select an existing ending node, and Confirm.");
-                }
-                else if (endNode == null) {
-                    endNode = selectedNode;
-                    String edgeID = startNode.getId() + "_" + endNode.getId();
-                    MapEdge newEdge = new MapEdge("", startNode, endNode);
-                    selectedEdge = newEdge;
-                    editorMap.drawEdge(canvas, newEdge, Color.YELLOW);
-                    name.setText("Click Confirm to add edge.");
-
-                }
-                else {
-                    MapEdge edgeToAdd = selectedEdge;
-                    String edgeID = startNode.getId() + "_" + endNode.getId();
-                    MapEdge newEdge = new MapEdge(edgeID, startNode, endNode);
-                    reDrawMap();
-                    editorMap.drawEdge(canvas, newEdge, Color.GRAY);
-                    HospitalMap.getInstance().getMap().addEdge(newEdge);
+                if (addToggle.isSelected()) {
                     addToggle.setSelected(false);
+                } else if (editToggle.isSelected()) {
+                    editToggle.setSelected(false);
                 }
-            }
-
-        }
-        else if (editToggle.isSelected()) {
-            if (nodeToggle.isSelected()) {
-                MapNode updated = makeNewNode();
-                HospitalMap.getInstance().getMap().addNode(updated);
+            } else if (deleteToggle.isSelected()) {
+                MapNode toDelete = selectedNode;
+                HospitalMap.getInstance().getMap().removeNode(toDelete.getId());
                 refreshMap();
-                editToggle.setSelected(false);
+                deleteToggle.setSelected(false);
             }
         }
-        else if (deleteToggle.isSelected()) {
 
-        }
+
 
     }
 
