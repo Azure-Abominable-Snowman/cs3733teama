@@ -89,6 +89,9 @@ public class MapEditorController implements Controller {
             }
 */
             MapNode m = findNodeAt(xCanvas.intValue(), yCanvas.intValue()); // check if node exists in database
+            if (m!= null) {
+                name.setText(m.getLongDescription());
+            }
             if (nodeToggle.isSelected()) {
                 if (m == null) {
                     if (addToggle.isSelected()) {
@@ -443,6 +446,10 @@ public class MapEditorController implements Controller {
                 }
             } else if (deleteToggle.isSelected()) {
                 MapNode toDelete = selectedNode;
+                // TODO: do this in the hospitalmap singleton
+                for(MapEdge edge : toDelete.getEdges()) {
+                    HospitalMap.getInstance().getMap().removeEdge(edge.getId());
+                }
                 HospitalMap.getInstance().getMap().removeNode(toDelete.getId());
                 refreshMap();
                 deleteToggle.setSelected(false);
