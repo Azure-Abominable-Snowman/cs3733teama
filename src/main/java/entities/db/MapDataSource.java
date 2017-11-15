@@ -38,6 +38,9 @@ public interface MapDataSource {
     default void addEdge(MapEdge edge) {
 
     }
+    default void removeEdge(String id) {
+
+    }
 
     /**
      * Gets an array of all the node id strings

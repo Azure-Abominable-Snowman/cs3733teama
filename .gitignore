@@ -93,4 +93,5 @@ lib/javax.servlet.jar
 lib/javax.servlet.jsp.jar
 lib/javax.servlet.jsp.jstl.jar
 lib/javax.transaction.jar
-derby.log
+
+database/

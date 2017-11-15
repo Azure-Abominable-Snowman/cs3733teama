@@ -89,7 +89,7 @@
                         <Font size="13.0" />
                      </font>
                   </TextField>
-                        <Button fx:id="back" mnemonicParsing="false" prefHeight="176.0" prefWidth="149.0" text="Back" GridPane.rowSpan="2147483647">
+                        <Button fx:id="back" mnemonicParsing="false" onAction="#onBackClick" prefHeight="176.0" prefWidth="149.0" text="Back" GridPane.rowSpan="2147483647">
                             <font>
                                 <Font size="19.0" />
                             </font>
