@@ -67,6 +67,7 @@ public class StaffLoginController implements Controller {
             System.out.println("succeed");
             SceneEngine.setAdminStatus(true);
             SceneEngine.display(MainScreenController.class, null);
+            SceneEngine.closeLogin();
         } else{
             System.out.println("failed");
             loginMessage.setText("Incorrect user or pw.");
