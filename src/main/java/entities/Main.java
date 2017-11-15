@@ -1,6 +1,7 @@
 package entities;
 
 import boundaries.Controller;
+import boundaries.MainScreenController;
 import controllers.SceneEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,16 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application{
+
+    private boolean userType = false;
+
+    public Boolean getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Boolean userType) {
+        this.userType = userType;
+    }
 
     public static void main(String[] args) {
         launch(args);

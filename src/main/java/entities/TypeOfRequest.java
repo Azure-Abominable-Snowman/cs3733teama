@@ -15,6 +15,4 @@ public enum TypeOfRequest {
     public boolean equalsTypeOfRequest(String str){
         return this.typeOfRequest.equals(str);
     }
-
-
 }
