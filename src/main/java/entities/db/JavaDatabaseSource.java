@@ -161,6 +161,7 @@ public class JavaDatabaseSource implements MapDataSource {
             stmt = conn.createStatement();
             stmt.execute("INSERT INTO " + nodeTable + " VALUES ("+node.toSQLVals()+")");
             stmt.close();
+            log.info("Adding node " + node.getLongDescription());
         }
         catch (SQLException sqlExcept) {
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {
@@ -199,6 +200,7 @@ public class JavaDatabaseSource implements MapDataSource {
             stmt = conn.createStatement();
             stmt.execute("INSERT INTO " + edgeTable + " VALUES ("+edge.toSQLVals()+")");
             stmt.close();
+            log.info("Adding a new edge with ID " + edge.getId());
         }
         catch (SQLException sqlExcept) {
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {

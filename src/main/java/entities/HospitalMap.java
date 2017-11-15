@@ -37,15 +37,8 @@ public class HospitalMap {
     public void exportToCSV() {
         csvSource.addAll(javaDBSource);
     }
-    public MapNode createNode(Integer xCoord, Integer yCoord, String name, String curFloor) {
-        if (curFloor.length() == 1) {
-            String full = "0" + curFloor;
-            curFloor = full;
-        }
-        String ID = "A"+"HALL" + "001" +curFloor;
-        MapNode m = new MapNode(ID, new Location(xCoord.intValue(), yCoord.intValue(), curFloor, "BMT"), NodeType.HALL, name, "", "A", null);
-        return m;
-    }
+
+
 
     public Map<String, MapNode> getFloorNodes(String floor) {
         ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor);

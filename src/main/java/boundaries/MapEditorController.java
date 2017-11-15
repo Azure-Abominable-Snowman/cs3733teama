@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 
@@ -28,7 +29,7 @@ public class MapEditorController implements Controller {
     @FXML
     private ToggleButton nodeToggle, edgeToggle, addToggle, editToggle, deleteToggle;
     @FXML
-    private ComboBox nodeType;
+    private ComboBox<NodeType> nodeType;
     @FXML
     private TextField name, xCoord, yCoord;
 
@@ -130,7 +131,7 @@ public class MapEditorController implements Controller {
                         String defaultText = "Please enter a name for the new location.";
                         name.setText(defaultText);
                         color = Color.GREEN;
-                        MapNode newNode = new MapNode("", new Location(xBWcoord, yBWcoord, editorMap.getCurFloor(), "BTM"), null, "", "", "A", null);
+                        MapNode newNode = new MapNode("", new Location(xBWcoord, yBWcoord, editorMap.getCurFloor(), "BTM"), null, "", "", "Team A", null);
                         editorMap.drawNode(newNode, 3, color);
                         selectedNode = newNode;
                     } else if (deleteToggle.isSelected() || editToggle.isSelected()) {
@@ -144,16 +145,7 @@ public class MapEditorController implements Controller {
                 if (editorAction.getSelectedToggle() != null && editorAction.getSelectedToggle()!= addToggle) {
                     Paint color = Color.BLACK;
                     if (editToggle.isSelected()) {
-                        /*
-                        if (startNode == null) {
-                            startNode = selectedNode;
-                            xCoord.clear();
-                            yCoord.clear();
-                            name.setText("Now select an ending location.");
-                        } else {
-                            endNode = selectedNode;
-                        }
-                        */
+
                         color = Color.AZURE;
                     } else if (deleteToggle.isSelected()) {
                         color = Color.RED;
@@ -179,14 +171,7 @@ public class MapEditorController implements Controller {
         xCoord.setText(defaultX);
         yCoord.setText(defaultY);
 
-        ArrayList<MenuItem> items = new ArrayList<MenuItem>();
-        //nodeType.getItems().addAll(NodeType.values());
-
-        for (NodeType type: NodeType.values()) {
-            MenuItem item = new MenuItem(type.toString());
-            nodeType.getItems().add(item);
-
-        }
+        nodeType.getItems().addAll(NodeType.values());
 
 
         // set up the Toggles
@@ -238,7 +223,7 @@ public class MapEditorController implements Controller {
         });
         nodeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != newValue && newValue == true) {
-                reDrawMap();
+                refreshMap();
                 if (editorAction.getSelectedToggle()!=null) {
                     if (editToggle.isSelected()) {
                         name.setText("Select the node to edit.");
@@ -253,7 +238,7 @@ public class MapEditorController implements Controller {
         });
         edgeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != newValue && newValue == true) {
-                reDrawMap();
+                refreshMap();
                 name.setText("Select the starting node, then hit Confirm.");
             }
         });
@@ -313,12 +298,6 @@ public class MapEditorController implements Controller {
                         currFloor = newFloor;
                     }
                     editorMap.switchFloor(currFloor);
-                    for(MapNode n : map.getFloorNodes(editorMap.getCurFloor()).values()) {
-                        System.out.print(n.getId() + " " + n.getShortDescription() + " ");
-                        for (MapEdge e : n.getEdges()) {
-                            editorMap.drawEdge(canvas, e, Color.GRAY);
-                        }
-                    }
 
                 });
         // set up default Mouse Tracking behavior
@@ -328,16 +307,9 @@ public class MapEditorController implements Controller {
 
     private void reDrawMap() {
         editorMap.switchFloor(editorMap.getCurFloor());
-        for(MapNode n : map.getFloorNodes(editorMap.getCurFloor()).values()) {
-            System.out.print(n.getId() + " " + n.getShortDescription() + " ");
-            for (MapEdge e : n.getEdges()) {
-                editorMap.drawEdge(canvas, e, Color.GRAY);
-            }
-        }
     }
 
 
-@FXML
     private void refreshMap() {
         selectedNode = null;
         selectedEdge = null;
@@ -347,14 +319,7 @@ public class MapEditorController implements Controller {
         name.clear();
 
     }
-    // TODO: Incorp. confirm, make drawn thing black, incorporate dropdown and actually add the node to the database
-    private void inAddEdgeMode() {
-        reDrawMap();
-        xCoord.clear();
-        yCoord.clear();
-        name.clear();
 
-    }
 
     // takes UNscaled x and y coordinate from user click and searches through existing nodes on floor to see if a matching node is found
     private MapNode findNodeAt(Integer xcoord, Integer ycoord) {
@@ -380,17 +345,64 @@ public class MapEditorController implements Controller {
         name.setText("No such edge found.");
         return null;
     }
+    private MapNode makeNewNode() {
+        MapNode newNode = selectedNode;
+        String nodeName = name.getText();
+        newNode.setLongDescription(nodeName);
+        newNode.setType(nodeType.getValue());
+        return newNode;
 
+    }
     @FXML
     private void onConfirm(ActionEvent e) {
+        if (edgeToggle.isSelected()) {
+            if (startNode == null) {
+                startNode = selectedNode;
+                name.clear();
+                xCoord.clear();
+                yCoord.clear();
+                name.setText("Now select an existing ending node, and Confirm.");
+            } else if (endNode == null) {
+                endNode = selectedNode;
+                String edgeID = startNode.getId() + "_" + endNode.getId();
+                MapEdge newEdge = new MapEdge("", startNode, endNode);
+                selectedEdge = newEdge;
+                editorMap.drawEdge(canvas, newEdge, Color.YELLOW);
+                name.clear();
+                xCoord.clear();
+                yCoord.clear();
+                name.setText("Click Confirm to add edge.");
+            }
+            else if (startNode != null && endNode != null) { // got the start and end nodes
+                if (addToggle.isSelected() ||edgeToggle.isSelected()) {
+                    MapEdge edgeToAdd = selectedEdge;
+                    String edgeID = startNode.getId() + "_" + endNode.getId();
+                    edgeToAdd.setID(edgeID);
+                    HospitalMap.getInstance().getMap().addEdge(edgeToAdd);
+                    reDrawMap();
+                    editorMap.drawEdge(canvas, edgeToAdd, Color.GRAY);
+                    if (addToggle.isSelected()) {
+                        addToggle.setSelected(false);
+                    }
+                    else if (edgeToggle.isSelected()) {
+                        edgeToggle.setSelected(false);
+                    }
+                }
+                else if (deleteToggle.isSelected()) {
 
+                    //HospitalMap.getInstance().getMap().
+                }
+            }
+        }
         if (addToggle.isSelected()){
             if (nodeToggle.isSelected()) {
-                MapNode newNode = selectedNode;
-                String nodeName = name.getText();
-                newNode.setLongDescription(nodeName);
-                //newNode.setType
-                
+                MapNode newNode = makeNewNode();
+                //reDrawMap();
+                //editorMap.drawNode(newNode, 3, Color.BLACK);
+                HospitalMap.getInstance().getMap().addNode(newNode);
+                refreshMap();
+                addToggle.setSelected(false);
+
             }
             else if (edgeToggle.isSelected()) {
                 if (startNode == null) {
@@ -398,22 +410,36 @@ public class MapEditorController implements Controller {
                     name.clear();
                     xCoord.clear();
                     yCoord.clear();
-                    name.setText("Now select an existing ending node.");
+                    name.setText("Now select an existing ending node, and Confirm.");
+                }
+                else if (endNode == null) {
+                    endNode = selectedNode;
+                    String edgeID = startNode.getId() + "_" + endNode.getId();
+                    MapEdge newEdge = new MapEdge("", startNode, endNode);
+                    selectedEdge = newEdge;
+                    editorMap.drawEdge(canvas, newEdge, Color.YELLOW);
+                    name.setText("Click Confirm to add edge.");
+
                 }
                 else {
-                    endNode = selectedNode;
-
+                    MapEdge edgeToAdd = selectedEdge;
+                    String edgeID = startNode.getId() + "_" + endNode.getId();
+                    MapEdge newEdge = new MapEdge(edgeID, startNode, endNode);
+                    reDrawMap();
+                    editorMap.drawEdge(canvas, newEdge, Color.GRAY);
+                    HospitalMap.getInstance().getMap().addEdge(newEdge);
+                    addToggle.setSelected(false);
                 }
-                String edgeID = startNode.getId() + "_" + endNode.getId();
-                MapEdge newEdge = new MapEdge(edgeID, startNode, endNode);
-                editorMap.drawEdge(canvas, newEdge, Color.YELLOW);
-
-
             }
 
         }
         else if (editToggle.isSelected()) {
-
+            if (nodeToggle.isSelected()) {
+                MapNode updated = makeNewNode();
+                HospitalMap.getInstance().getMap().addNode(updated);
+                refreshMap();
+                editToggle.setSelected(false);
+            }
         }
         else if (deleteToggle.isSelected()) {
 
