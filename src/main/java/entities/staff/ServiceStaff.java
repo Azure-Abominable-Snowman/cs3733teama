@@ -48,4 +48,6 @@ public abstract class ServiceStaff {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    public Enum<Provider> getProvider(){ return provider; }
 }

@@ -42,7 +42,7 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
                             "LASTNAME VARCHAR(30) NOT NULL, " +
                             "PHONENUMBER VARCHAR(20) NOT NULL, " +
                             "STAFFTYPE VARCHAR(30) NOT NULL," +
-                            "PHONEPROVIDER VARCHAR(10) NOT NULL ,"+
+                            "PHONEPROVIDER VARCHAR(10) NOT NULL,"+
                             "AVAILABLE BOOLEAN NOT NULL" +
                             ")"
             );
@@ -111,13 +111,14 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             String firstName = result.getString("FIRSTNAME");
             String lastName = result.getString("LASTNAME");
             String phone =  result.getString("PHONENUMBER");
+            Provider provider = Provider.valueOf(result.getString("PHONEPROVIDER").toUpperCase());
             Set<Language> lanArray = new HashSet<>();
             lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
             while(result.next() && (result.getString("STAFFID").equals(foundId))) {
                 // Load up all of the array attributes
                 lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
             }
-            Enum<Provider> provider = Provider.valueOf(result.getString("PhoneProvider"));
+
             log.info(lanArray.toString());
             switch(attrib.getType().toString()) {
                 case("SECURITY"):
