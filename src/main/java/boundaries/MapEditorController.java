@@ -58,7 +58,7 @@ public class MapEditorController implements Controller {
     }
     @Override
     public String getFXMLFileName() {
-        return "MapEditorV2.fxml";
+        return "MapEditorV2-test.fxml";
     }
 
 

@@ -17,7 +17,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <SplitPane dividerPositions="0.265" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boundaries.MainScreenController">
   <items>
       <HBox maxHeight="100.0" minHeight="-Infinity" prefHeight="100.0">
@@ -68,7 +67,7 @@
          <items>
             <VBox>
                <children>
-                  <ScrollPane fx:id="mapPane" hbarPolicy="NEVER" onMouseClicked="#zoomIntoMap" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                  <ScrollPane fx:id="mapPane" hbarPolicy="NEVER" onMouseClicked="#zoomIntoMap" pannable="true" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                      <content>
                         <Canvas fx:id="mapCanvas" height="200.0" width="300.0" />
                      </content>
@@ -77,6 +76,7 @@
                      <items>
                         <Button fx:id="request" mnemonicParsing="false" onAction="#requestClick" text="Request" />
                         <Button fx:id="editMap" mnemonicParsing="false" onAction="#editMapClick" text="Edit Map" />
+                        <Button mnemonicParsing="false" onAction="#logInClick" text="Log In" />
                         <Slider fx:id="floorSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" nodeOrientation="LEFT_TO_RIGHT" showTickMarks="true" snapToTicks="true" value="2.0" />
                         <Label fx:id="floorLabel" text="G" />
                      </items>
