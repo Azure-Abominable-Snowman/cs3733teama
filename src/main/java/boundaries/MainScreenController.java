@@ -162,6 +162,7 @@ public class MainScreenController implements Controller {
     public void setStage(Stage stage) {
         // On resize of the stage
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+            System.out.println(oldValue);
             dMap.updateSize();
         };
         // If the stage is resized make the canvas fill
