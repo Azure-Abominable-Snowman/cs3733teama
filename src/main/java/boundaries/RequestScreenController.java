@@ -103,23 +103,24 @@ public class RequestScreenController implements Controller {
 
         //set Request Type
         if (reqType.getSelectionModel().isEmpty()) {
+            return;
         }
         else {
-            String rType = reqType.getItems().toString();
+            RequestType rType = (RequestType)reqType.getItems().get(0);
             switch (rType) {
-                case "Food":
+                case FOOD:
                     requestType = RequestType.FOOD;
                     priorityLevel = PriorityLevel.LOW;
                     break;
-                case "Security":
+                case SEC:
                     requestType = RequestType.SEC;
                     priorityLevel = PriorityLevel.HIGH;
                     break;
-                case "Transportation":
+                case TRANS:
                     requestType = RequestType.TRANS;
                     priorityLevel = PriorityLevel.MEDIUM;
                     break;
-                case "INTR":
+                case INTR:
                     requestType = RequestType.INTR;
                     priorityLevel = PriorityLevel.MEDIUM;
                     break;

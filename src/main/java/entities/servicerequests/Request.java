@@ -74,6 +74,6 @@ public class Request {
             f = "TRUE";
         }
         return "'"+getId()+"',"+location.getxCoord()+","+location.getyCoord()+",'"+location.getLevel()+"','"
-                +location.getBuilding()+"','"+getReqType()+"','"+getPriority()+"','"+getNote()+"','"+f+"'";
+                +location.getBuilding()+"','"+getReqType().name()+"','"+getPriority()+"','"+getNote()+"','"+f+"'";
     }
 }
