@@ -23,7 +23,12 @@ public class MapNode {
         this.longDescription = longDescription;
         this.teamAssignment = teamAssignment;
     }
-
+    public void setID(String id) {
+        this.id = id;
+    }
+    public void setType(NodeType n) {
+        nodeType = n;
+    }
     public Location getCoordinate() {
         return coordinate;
     }
