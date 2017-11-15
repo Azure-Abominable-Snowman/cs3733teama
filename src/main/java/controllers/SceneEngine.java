@@ -2,7 +2,6 @@ package controllers;
 
 import boundaries.Controller;
 import boundaries.ControllerInfo;
-import boundaries.MainScreenController;
 import entities.drawing.ImageStash;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,8 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class SceneEngine {
-
-    private static Map<String, ImageStash>  bwImgs;
+    static String URL = "jdbc:derby://localhost:1527/testdb;create=true";
+    static public String getURL(){
+        return URL;
+    }
+    private static Map<String, ImageStash> bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage;
 
@@ -59,12 +61,12 @@ public final class SceneEngine {
         if(bwImgs == null) {
             bwImgs = new HashMap<>();
             // Populate image map
-            bwImgs.put("L2", new ImageStash("maps/L2.png"));
-            bwImgs.put("L1", new ImageStash("maps/L1.png"));
-            bwImgs.put("G", new ImageStash("maps/G.png"));
-            bwImgs.put("1", new ImageStash("maps/1.png"));
-            bwImgs.put("2", new ImageStash("maps/2.png"));
-            bwImgs.put("3", new ImageStash("maps/3.png"));
+            bwImgs.put("L2", new ImageStash("/maps/L2.png"));
+            bwImgs.put("L1", new ImageStash("/maps/L1.png"));
+            bwImgs.put("G", new ImageStash("/maps/G.png"));
+            bwImgs.put("1", new ImageStash("/maps/1.png"));
+            bwImgs.put("2", new ImageStash("/maps/2.png"));
+            bwImgs.put("3", new ImageStash("/maps/3.png"));
         }
         return bwImgs;
     } // TODO: make floors an enum instead of a string
@@ -73,7 +75,7 @@ public final class SceneEngine {
     public static void display(Class<? extends Controller> newController, Stage stage, ControllerInfo info) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(newController.getResource("../"+newController.newInstance().getFXMLFileName()));
+            loader.setLocation(System.class.getResource("/"+newController.newInstance().getFXMLFileName()));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             // Get newly created controller
@@ -88,9 +90,6 @@ public final class SceneEngine {
             stage.setScene(scene);
             stage.show();
 
-
-
-
         }catch(IOException e){
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -103,5 +102,7 @@ public final class SceneEngine {
     public static void display(Class<? extends Controller> newController, ControllerInfo info) {
         display(newController, getPrimaryStage(), info);
     }
+
+
 
 }

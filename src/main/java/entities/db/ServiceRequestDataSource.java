@@ -2,6 +2,8 @@ package entities.db;
 
 import entities.servicerequests.Request;
 
+import java.util.ArrayList;
+
 public interface ServiceRequestDataSource {
 
     default void submitRequest(Request request) {  }
@@ -26,7 +28,11 @@ public interface ServiceRequestDataSource {
 
     default Request getRequest(String id) { return null; }
 
+    default ArrayList<Request> getRequest(){ return null; }
+
     default boolean fulfillRequest(String id) { return false; }
 
     default void close() { };
+
+    default int getNextId() { return 0; }
 }
