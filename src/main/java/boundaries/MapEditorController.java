@@ -28,7 +28,7 @@ public class MapEditorController implements Controller {
     @FXML
     private ToggleButton nodeToggle, edgeToggle, addToggle, editToggle, deleteToggle;
     @FXML
-    private MenuButton nodeType;
+    private ComboBox nodeType;
     @FXML
     private TextField name, xCoord, yCoord;
 
