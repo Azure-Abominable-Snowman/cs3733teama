@@ -162,7 +162,6 @@ public class MainScreenController implements Controller {
     public void setStage(Stage stage) {
         // On resize of the stage
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            System.out.println(oldValue);
             dMap.updateSize();
         };
         // If the stage is resized make the canvas fill
@@ -230,10 +229,6 @@ public class MainScreenController implements Controller {
 
 
         Path shortestPath = map.getPathGenerator().generatePath(start, end);
-
-        for (MapNode n : shortestPath.getNodes()) {
-            System.out.println(n.getId());
-        }
 
         // Draw the path between the two nodes
         dMap.setPath(shortestPath);
