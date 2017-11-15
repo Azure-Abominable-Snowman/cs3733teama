@@ -87,6 +87,7 @@ public class StaffLoginController implements Controller {
         if (inputUserID.equals(adminID) && inputUserPassword.equals(adminPassword)){
             System.out.println("succeed");
             SceneEngine.setAdminStatus(true);
+            SceneEngine.closeLogin();
             SceneEngine.display(MainScreenController.class, null);
         } else{
             System.out.println("failed");
