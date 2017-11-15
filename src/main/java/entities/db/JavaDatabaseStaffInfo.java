@@ -1,5 +1,6 @@
 package entities.db;
 
+import boundaries.Provider;
 import entities.staff.*;
 
 import java.sql.*;
@@ -41,6 +42,7 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
                             "LASTNAME VARCHAR(30) NOT NULL, " +
                             "PHONENUMBER VARCHAR(20) NOT NULL, " +
                             "STAFFTYPE VARCHAR(30) NOT NULL," +
+                            "PHONEPROVIDER VARCHAR(10) NOT NULL ,"+
                             "AVAILABLE BOOLEAN NOT NULL" +
                             ")"
             );
@@ -115,16 +117,17 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
                 // Load up all of the array attributes
                 lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
             }
+            Enum<Provider> provider = Provider.valueOf(result.getString("PhoneProvider"));
             log.info(lanArray.toString());
             switch(attrib.getType().toString()) {
                 case("SECURITY"):
-                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.SECURITY, lanArray, true);
+                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.SECURITY,lanArray, provider, true);
                     break;
                 case("TRANSPORT"):
-                    foundStaff = new TransportStaff(foundId, firstName, lastName, phone, StaffType.TRANSPORT, lanArray, true);
+                    foundStaff = new TransportStaff(foundId, firstName, lastName, phone, StaffType.TRANSPORT, lanArray, provider, true);
                     break;
                 case("INTERPRETER"):
-                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.INTERPRETER, lanArray, true);
+                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.INTERPRETER, lanArray, provider,true);
                     break;
                 default:
                     System.out.println("Invalid staff member requested");

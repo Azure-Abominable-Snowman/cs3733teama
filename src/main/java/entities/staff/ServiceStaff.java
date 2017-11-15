@@ -1,5 +1,7 @@
 package entities.staff;
 
+import boundaries.Provider;
+
 import java.util.Set;
 
 public abstract class ServiceStaff {
@@ -7,8 +9,10 @@ public abstract class ServiceStaff {
     private boolean available;
     private StaffType type;
     private String staffId, firstName, lastName, phoneNumber;
+    public Enum<Provider> provider;
 
-    public ServiceStaff(String staffId, String firstName, String lastName, String phoneNumber, StaffType type, Set<Language> languages, boolean available) {
+    public ServiceStaff(String staffId, String firstName, String lastName, String phoneNumber, StaffType type,
+                        Set<Language> languages, Enum<Provider> provider, boolean available) {
         this.available = available;
         this.languages = languages;
         this.type = type;
@@ -16,6 +20,7 @@ public abstract class ServiceStaff {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.provider = provider;
     }
 
     public Set<Language> getLanguages() {
