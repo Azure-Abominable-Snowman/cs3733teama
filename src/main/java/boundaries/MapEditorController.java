@@ -121,7 +121,8 @@ public class MapEditorController implements Controller {
             xCoord.setText(xBWcoord.toString());
             yCoord.setText(yBWcoord.toString());
 
-            if ((editorAction.getSelectedToggle() != null) || (editToggle.isSelected() && (startNode == null))) { // clear the canvas
+            if ((editorAction.getSelectedToggle() != null && editorAction.getSelectedToggle()!= editToggle) ||
+                    (editToggle.isSelected() && (startNode == null))) { // clear the canvas
                 reDrawMap();
             }
 
@@ -145,9 +146,10 @@ public class MapEditorController implements Controller {
             } else { // found a node
                 name.setText(m.getLongDescription());
                 selectedNode = m;
-                if (editorAction.getSelectedToggle() != null) {
+                if (editorAction.getSelectedToggle() != null && editorAction.getSelectedToggle()!= addToggle) {
                     Paint color = Color.BLACK;
                     if (editToggle.isSelected()) {
+                        /*
                         if (startNode == null) {
                             startNode = selectedNode;
                             xCoord.clear();
@@ -156,6 +158,7 @@ public class MapEditorController implements Controller {
                         } else {
                             endNode = selectedNode;
                         }
+                        */
                         color = Color.AZURE;
                     } else if (deleteToggle.isSelected()) {
                         color = Color.RED;
@@ -165,7 +168,6 @@ public class MapEditorController implements Controller {
 
             }
         }
-
     };
 
     private Integer convertCanvastoBWMap(double coordinate, double bwDim, double canvasDim) {
@@ -197,16 +199,7 @@ public class MapEditorController implements Controller {
         nodeToggle.setToggleGroup(group);
         edgeToggle.setToggleGroup(group);
         nodeToggle.setSelected(true); //default to node mode
-        nodeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != newValue && newValue == true) {
-                reDrawMap();
-            }
-        });
-        edgeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != newValue && newValue == true) {
-                reDrawMap();
-            }
-        });
+
 
         addToggle.setToggleGroup(editorAction);
         editToggle.setToggleGroup(editorAction);
@@ -246,6 +239,27 @@ public class MapEditorController implements Controller {
                     name.setText("Select the start node of the edge to delete.");
                 }
                 //indeletemode();
+            }
+        });
+        nodeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != newValue && newValue == true) {
+                reDrawMap();
+                if (editorAction.getSelectedToggle()!=null) {
+                    if (editToggle.isSelected()) {
+                        name.setText("Select the node to edit.");
+                    } else if (addToggle.isSelected()) {
+                        xCoord.setText("Select a new map location.");
+                        yCoord.setText("Select a new map location.");
+                    } else if (deleteToggle.isSelected()) {
+                        name.setText("Select the existing node to delete.");
+                    }
+                }
+            }
+        });
+        edgeToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != newValue && newValue == true) {
+                reDrawMap();
+                name.setText("Select the starting node, then hit Confirm.");
             }
         });
         //set up the Spinner
@@ -370,13 +384,37 @@ public class MapEditorController implements Controller {
         yCoord.clear();
         name.setText("No such edge found.");
         return null;
-
     }
+
     @FXML
     private void onConfirm(ActionEvent e) {
 
         if (addToggle.isSelected()){
+            if (nodeToggle.isSelected()) {
+                MapNode newNode = selectedNode;
+                String nodeName = name.getText();
+                newNode.setLongDescription(nodeName);
+                //newNode.setType
+                
+            }
+            else if (edgeToggle.isSelected()) {
+                if (startNode == null) {
+                    startNode = selectedNode;
+                    name.clear();
+                    xCoord.clear();
+                    yCoord.clear();
+                    name.setText("Now select an existing ending node.");
+                }
+                else {
+                    endNode = selectedNode;
 
+                }
+                String edgeID = startNode.getId() + "_" + endNode.getId();
+                MapEdge newEdge = new MapEdge(edgeID, startNode, endNode);
+                editorMap.drawEdge(canvas, newEdge, Color.YELLOW);
+
+
+            }
 
         }
         else if (editToggle.isSelected()) {
