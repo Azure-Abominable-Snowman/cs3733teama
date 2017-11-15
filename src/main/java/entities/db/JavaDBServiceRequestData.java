@@ -6,6 +6,7 @@ import entities.servicerequests.Request;
 import entities.servicerequests.RequestType;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class JavaDBServiceRequestData implements ServiceRequestDataSource {
@@ -111,6 +112,33 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
     }
 
     @Override
+    public ArrayList<Request> getRequest(){
+        ArrayList<Request> requestList = new ArrayList<>();
+        try {
+            stmt = conn.createStatement();
+            ResultSet set = stmt.executeQuery(
+                    "SELECT * FROM "+requestTable
+            );
+            while(set.next()) {
+
+                Request r = new Request(set.getString("REQUESTID"),
+                        new Location(set.getInt("XCOORD"), set.getInt("YCOORD"),
+                                set.getString("LEVEL"), set.getString("BUILDING")),
+                        RequestType.valueOf(set.getString("REQTYPE")),
+                        PriorityLevel.valueOf(set.getString("PRIORITY")),
+                        set.getString("NOTE"),
+                        set.getBoolean("FULFILLED")
+                );
+                requestList.add(r);
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return requestList;
+    }
+
+    @Override
     public boolean fulfillRequest(String id) {
         try {
             stmt = conn.createStatement();
@@ -143,7 +171,7 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
         try {
             stmt = conn.createStatement();
             ResultSet set = stmt.executeQuery(
-                    "SELECT MAX(REQUESTID) FROM "+requestTable
+                    "SELECT MAX(CAST(REQUESTID AS INT)) FROM "+requestTable
             );
             set.next();
             return set.getInt(1);
@@ -153,8 +181,25 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
         return 1;
     }
 
-    public int getNextId() {
+    /*public int getNextId() {
         curId++;
         return curId;
+    }*/
+
+    public int getNextId() {
+        try{
+            stmt = conn.createStatement();
+            ResultSet set = stmt.executeQuery(
+                    "SELECT MAX(CAST(REQUESTID AS INT)) FROM "+requestTable
+            );
+            set.next();
+           // int i = Integer.parseInt(set.getString(1)) + 1;
+            int i = set.getInt(1)+1;
+            System.out.println(i);
+            return i;
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 }

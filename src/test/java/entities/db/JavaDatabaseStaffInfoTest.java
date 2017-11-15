@@ -64,7 +64,7 @@ public class JavaDatabaseStaffInfoTest {
             //except.printStackTrace();
         }
     }
-
+/*
     @Test
     public void findQualified() throws Exception {
         // Find a security guard that speaks any language
@@ -129,4 +129,5 @@ public class JavaDatabaseStaffInfoTest {
         assertEquals(Provider.ATT, found.getProvider());
 
     }
+    */
 }

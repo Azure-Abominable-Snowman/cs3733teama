@@ -50,4 +50,9 @@ public abstract class ServiceStaff {
     }
 
     public Enum<Provider> getProvider(){ return provider; }
+
+    @Override
+    public String toString(){
+        return this.firstName+this.lastName+"\n"+this.type+"\n"+this.languages+"\n"+this.phoneNumber+"  "+this.provider;
+    }
 }
