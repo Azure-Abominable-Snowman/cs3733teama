@@ -233,7 +233,6 @@ public class DrawMap {
     }
 
     public void drawPath(Path path) {
-        System.out.println(path.getConnectors().size());
         ArrayList<MapNode> pathNodes = path.getNodes();
         gc.setLineDashes(5);
         gc.setLineWidth(2);
