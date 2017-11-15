@@ -29,6 +29,8 @@ public class DrawMap {
     private double curZoom = 1;
     private String curFloor = "G";
     private ArrayList<MapNode> nodes;
+
+    private int nodeTolerance = 3;
     private ScrollPane mapPane;
     private HospitalMap map;
     private Path curPath;
@@ -50,7 +52,12 @@ public class DrawMap {
             nodes.add(map.getMap().getNode(id));
         }
     }
-
+    public int getImgWidth() {
+        return imgW;
+    }
+    public int getImgH() {
+        return imgH;
+    }
     /**
      * Converts input coordinate system to output coordinate system
      */
@@ -80,17 +87,20 @@ public class DrawMap {
         gc.fillOval(nodeX, nodeY, size, size);
     }
 
-    public void drawEdge(Canvas c, MapEdge edge) {
+    public void drawEdge(Canvas c, MapEdge edge, Paint pointColor) {
         double width = c.getWidth(); // make sure the width and height are updated
         double height = c.getHeight();
         Location start = convNodeCoords(edge.getStart().getCoordinate());
         Location end = convNodeCoords(edge.getEnd().getCoordinate());
+        gc.setStroke(pointColor);
         gc.strokeLine(
                 convUnits(start.getxCoord(), imgW, width),
                 convUnits(start.getyCoord(), imgH, height),
                 convUnits(end.getxCoord(), imgW, width),
                 convUnits(end.getyCoord(), imgH, height));
     }
+
+
 
     public void switchFloor(String newFloor) {
         //renderMap(mapPane.getWidth() * curZoom, mapPane.getHeight() * curZoom, newFloor);
@@ -239,7 +249,7 @@ public class DrawMap {
         gc.setLineWidth(2);
         gc.setLineCap(StrokeLineCap.BUTT);
         for(MapEdge e : path.getConnectors()) {
-            drawEdge(c, e);
+            drawEdge(c, e, Color.BLACK);
         }
         // Draw the start and end nodes bigger
         MapNode start = pathNodes.get(0);
@@ -259,5 +269,14 @@ public class DrawMap {
 
     public void clearPath() {
         curPath = null;
+    }
+    public boolean isNodeWithinRegion(Canvas c, MapNode m, Integer xcoord, Integer ycoord) {
+        Location nodeloc = m.getCoordinate();
+        // Convert the BW coordinates to the canvas coordinates
+        Double canvasX = convUnits(nodeloc.getxCoord(), imgW, c.getWidth());
+        Double canvasY = convUnits(nodeloc.getyCoord(), imgH, c.getHeight());
+        return ((xcoord <= canvasX+nodeTolerance && xcoord >= canvasX-nodeTolerance)&&
+                (ycoord <= canvasY+nodeTolerance && ycoord >= canvasY-nodeTolerance));
+
     }
 }
