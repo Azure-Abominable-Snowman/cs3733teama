@@ -78,15 +78,18 @@
                         <TextField fx:id="name" alignment="TOP_LEFT" maxWidth="600.0" prefHeight="16.0" prefWidth="152.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="13.0" />
-                     </font></TextField>
+                     </font>
+                  </TextField>
                         <TextField alignment="TOP_LEFT" maxWidth="600.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" fx:id="xCoord">
                      <font>
                         <Font size="13.0" />
-                     </font></TextField>
+                     </font>
+                  </TextField>
                         <TextField fx:id="yCoord" alignment="TOP_LEFT" maxWidth="600.0" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="13.0" />
-                     </font></TextField>
+                     </font>
+                  </TextField>
                         <Button fx:id="back" mnemonicParsing="false" prefHeight="176.0" prefWidth="149.0" text="Back" GridPane.rowSpan="2147483647">
                             <font>
                                 <Font size="19.0" />
@@ -115,8 +118,17 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Spinner fx:id="floor" prefHeight="25.0" prefWidth="161.0" GridPane.columnIndex="2" />
-                <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" text="Floor Level:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" text="Floor Level:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <graphic>
+                      <Spinner fx:id="floor" prefHeight="25.0" prefWidth="161.0" />
+               </graphic>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets right="15.0" />
+               </GridPane.margin>
+            </Label>
                 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="56.0" prefWidth="152.0" GridPane.hgrow="NEVER">
                     <columnConstraints>
                         <ColumnConstraints maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="74.5" />
@@ -135,11 +147,11 @@
             </children>
         </GridPane>
     </bottom>
-   <right>
-        <ScrollPane fx:id="mapPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="268.0" prefWidth="470.0" BorderPane.alignment="CENTER">
+   <center>
+        <ScrollPane fx:id="mapPane" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="268.0" prefWidth="470.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
             <Canvas fx:id="canvas" height="200.0" width="200.0" />
          </content>
         </ScrollPane>
-   </right>
+   </center>
 </BorderPane>

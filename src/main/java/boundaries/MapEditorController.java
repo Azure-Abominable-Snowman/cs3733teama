@@ -3,14 +3,17 @@ package boundaries;
 import controllers.SceneEngine;
 import entities.*;
 import entities.drawing.DrawMap;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
@@ -101,6 +104,11 @@ public class MapEditorController implements Controller {
     EventHandler<MouseEvent> onMouseClick = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
+
+            if (ctrlDown) {
+                editorMap.toggleZoom(event.getX(), event.getY());
+            }
+
             Double xCanvas = event.getX();
             Double yCanvas = event.getY();
             Integer xBWcoord = convertCanvastoBWMap(xCanvas, editorMap.getImgWidth(), canvas.getWidth());
@@ -392,7 +400,39 @@ public class MapEditorController implements Controller {
     }
 
 
+    private boolean ctrlDown = false;
 
+    /**
+     * Resizes the map when needed
+     * @param stage
+     */
+    @Override
+    public void setStage(Stage stage) {
+        // On resize of the stage
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+            editorMap.updateSize();
+        };
+        // If the stage is resized make the canvas fill
+        stage.widthProperty().addListener(stageSizeListener);
+        stage.heightProperty().addListener(stageSizeListener);
+        // If the pane is resized make the canvas fill
+        mapPane.heightProperty().addListener(stageSizeListener);
+        mapPane.widthProperty().addListener(stageSizeListener);
+    }
+
+    public void setScene(Scene scene) {
+        scene.setOnKeyPressed(ke -> {
+            if (ke.isControlDown()) { // When control down, flip a variable, otherwise flip it back
+                ctrlDown = true;
+            }
+        });
+
+        scene.setOnKeyReleased(ke -> {
+            if (!ke.isControlDown()) {
+                ctrlDown = false; // when it is released, set the variable to false
+            }
+        });
+    }
 
 }
 
