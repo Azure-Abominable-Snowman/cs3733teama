@@ -34,9 +34,14 @@ public class MainScreenController implements Controller {
     @FXML
     private Button editMap;
     @FXML
-    private Button LogIn;
+    private Button loginBtn;
+    @FXML
+    private Button logoutBtn;
     @FXML
     private Canvas mapCanvas;
+
+    @FXML
+    private Label alreadyLoginMsg;
 
     @FXML
     private ScrollPane mapPane;
@@ -101,15 +106,13 @@ public class MainScreenController implements Controller {
 
         });
         if (SceneEngine.isAdminStatus() == false){
-            request.setVisible(false);
+            hideBtn();
         }else{
-            request.setVisible(true);
+            showBtn();
+
         }
-        if (SceneEngine.isAdminStatus() == false){
-            editMap.setVisible(false);
-        }else{
-            editMap.setVisible(true);
-        }
+
+
 
     }
 
@@ -250,10 +253,37 @@ public class MainScreenController implements Controller {
     }
 
     @FXML
-    private void logInClick(ActionEvent event) {
-        SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
+    private void onLogoutClick(ActionEvent event){
+        SceneEngine.setAdminStatus(false);
+        hideBtn();
+
     }
 
+    @FXML
+    private void logInClick(ActionEvent event) {
+        if(SceneEngine.isAdminStatus() == true){
+            alreadyLoginMsg.setText("Already login");
+
+        }else{
+            SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
+        }
+
+    }
+
+
+    private void showBtn(){
+            request.setVisible(true);
+            editMap.setVisible(true);
+            logoutBtn.setVisible(true);
+            loginBtn.setVisible(false);
+    }
+    private void hideBtn(){
+            request.setVisible(false);
+            editMap.setVisible(false);
+            logoutBtn.setVisible(false);
+            loginBtn.setVisible(true);
+
+    }
 
 
 
