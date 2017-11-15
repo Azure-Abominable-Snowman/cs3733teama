@@ -113,9 +113,9 @@
                               <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="324.0" text="LOCATION" textAlignment="CENTER" />
                               <HBox maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="318.0">
                                  <children>
-                                    <ComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="BUILDING..." HBox.hgrow="ALWAYS" />
-                                    <ComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="FLOOR..." HBox.hgrow="ALWAYS" />
-                                    <ComboBox fx:id="longName" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="LONGNAME..." HBox.hgrow="ALWAYS" />
+                                    <ComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="49.0" promptText="BUILDING..." HBox.hgrow="ALWAYS" />
+                                    <ComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="37.0" promptText="FLOOR..." HBox.hgrow="ALWAYS" />
+                                    <ComboBox fx:id="longName" maxWidth="1.7976931348623157E308" onMouseClicked="#setNodeData" prefWidth="150.0" promptText="LONGNAME..." HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="324.0" text="TYPE" textAlignment="CENTER" />

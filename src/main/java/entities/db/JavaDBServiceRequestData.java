@@ -15,6 +15,7 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
     private String requestTable;
     private Connection conn = null;
     private Statement stmt = null;
+    private int curId;
 
     public JavaDBServiceRequestData(String dbURL, String requestTable) {
         this.requestTable = requestTable;
@@ -50,6 +51,9 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
         catch (SQLException sqlExcept) {
             log.info("Does the service request database already exist?");
         }
+
+        // Get the latest ID number from the database
+        curId = getLatestId();
     }
 
     @Override
@@ -133,5 +137,24 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private int getLatestId() {
+        try {
+            stmt = conn.createStatement();
+            ResultSet set = stmt.executeQuery(
+                    "SELECT MAX(REQUESTID) FROM "+requestTable
+            );
+            set.next();
+            return set.getInt(1);
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public int getNextId() {
+        curId++;
+        return curId;
     }
 }

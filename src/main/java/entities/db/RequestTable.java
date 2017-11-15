@@ -25,7 +25,10 @@ public class RequestTable {
     }
     //TODO add method for getting ArrayList<Request> from the request database
 
+    public ServiceRequestDataSource getReqTable() {
+        return reqData;
+    }
     public void submitRequest(Request request) {
-
+        reqData.submitRequest(request);
     }
 }
