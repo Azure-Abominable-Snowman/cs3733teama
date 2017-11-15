@@ -5,7 +5,6 @@ import entities.PathRelated.PathGenerator;
 import entities.db.CSVDatabaseSource;
 import entities.db.JavaDatabaseSource;
 import entities.db.MapDataSource;
-import entities.drawing.DrawMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +24,8 @@ public class HospitalMap {
     private int heightPixels = 3400;
 
     private String javaDBURL = "jdbc:derby://localhost:1527/testdb;create=true";
-    private String nodefile = "csvdata/MapAnodes.csv";
-    private String edgefile = "csvdata/MapAedges.csv";
+    private String nodefile = "/csvdata/MapAnodes.csv";
+    private String edgefile = "/csvdata/MapAedges.csv";
 
     private PathGenerator pathGenerator;
 

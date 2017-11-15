@@ -266,7 +266,7 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void logInClick(ActionEvent event) {
-        if(SceneEngine.isAdminStatus() == true){
+        if(SceneEngine.isAdminStatus()){
             alreadyLoginMsg.setText("Already login");
 
         }else{
@@ -274,7 +274,6 @@ public class MainScreenController implements Controller {
         }
 
     }
-
 
     private void showBtn(){
             request.setVisible(true);
@@ -287,10 +286,5 @@ public class MainScreenController implements Controller {
             editMap.setVisible(false);
             logoutBtn.setVisible(false);
             loginBtn.setVisible(true);
-
     }
-
-
-
-
 }

@@ -66,11 +66,11 @@ public class CSVDatabaseSource implements MapDataSource {
     private ArrayList<List<String>> parseCSVFile(String filename) {
         BufferedReader nodeReader;
         try {
-            FileReader fileReader = new FileReader(filename);
+            //FileReader fileReader = new FileReader(filename);
+            InputStreamReader fileReader = new InputStreamReader(getClass().getResourceAsStream(filename), "UTF-8");
             nodeReader =  new BufferedReader(fileReader);
 
-        }
-        catch(FileNotFoundException ex) {
+        } catch (UnsupportedEncodingException e) {
             System.out.println(
                     "Unable to open file '" +
                             filename + "'");
