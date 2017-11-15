@@ -190,7 +190,7 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void requestClick(ActionEvent event) {
-        //SceneEngine.display(RequestScreenController.class, null);
+        SceneEngine.display(RequestScreenController.class, null);
 
         // DEBUG: draw all the edges on the map and then print out info to the console
         for (MapNode n : map.getFloorNodes(dMap.getCurFloor()).values()) {

@@ -13,7 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class SceneEngine {
-
+    static String URL = "jdbc:derby://localhost:1527/testdb;create=true";
+    static public String getURL(){
+        return URL;
+    }
     private static Map<String, ImageStash> bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage;
