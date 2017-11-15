@@ -1,11 +1,12 @@
 package entities.servicerequests;
 
 import entities.Location;
+import entities.MapNode;
 
 public class Request {
     private Location location;
-    private RequestType reqType;
-    private PriorityLevel priority;
+    private Enum<RequestType> reqType;
+    private Enum<PriorityLevel> priority;
     private String note;
     private String id;
     private boolean fulfilled = false;
@@ -15,7 +16,7 @@ public class Request {
         this.fulfilled = fulfilled;
     }
 
-    public Request(String id, Location location, RequestType reqType, PriorityLevel priority, String note) {
+    public Request(String id, Location location, Enum<RequestType> reqType, Enum<PriorityLevel> priority, String note) {
         this.id = id;
         this.location = location;
         this.reqType = reqType;
@@ -27,20 +28,40 @@ public class Request {
         return location;
     }
 
-    public RequestType getReqType() {
+    public void setLocation(Location location){
+        this.location = location;
+    };
+
+    public Enum<RequestType> getReqType() {
         return reqType;
     }
 
-    public PriorityLevel getPriority() {
+    public void setReqType(RequestType reqType){
+        this.reqType = reqType;
+    }
+
+    public Enum<PriorityLevel> getPriority() {
         return priority;
+    }
+
+    public void setPriority(PriorityLevel priority){
+        this.priority = priority;
     }
 
     public String getNote() {
         return note;
     }
 
+    public void setNote(String note){
+        this.note = note;
+    }
+
     public String getId() {
         return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 
     public void setFulfilled() { fulfilled = true; }
@@ -53,6 +74,6 @@ public class Request {
             f = "TRUE";
         }
         return "'"+getId()+"',"+location.getxCoord()+","+location.getyCoord()+",'"+location.getLevel()+"','"
-                +location.getBuilding()+"','"+getReqType()+"','"+getPriority()+"','"+getNote()+"','"+f+"'";
+                +location.getBuilding()+"','"+getReqType().name()+"','"+getPriority()+"','"+getNote()+"','"+f+"'";
     }
 }

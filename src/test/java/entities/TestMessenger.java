@@ -1,5 +1,6 @@
 package entities;
 
+import boundaries.Provider;
 import boundaries.SMSMessage;
 
 import javax.mail.internet.AddressException;
@@ -17,7 +18,7 @@ public class TestMessenger {
         m1.sendSMSMessage();*/
 
 
-        SMSMessage m2 = new SMSMessage("6034893939", SMSMessage.Provider.VERIZON, "Hello jake from IntelliJ");
+        SMSMessage m2 = new SMSMessage("6034893939", Provider.VERIZON, "Hello jake from IntelliJ");
         m2.sendSMSMessage();
 
     }
