@@ -1,5 +1,5 @@
 package entities.staff;
 
 public enum StaffType {
-    INTERPRETER, TRANSPORT, SECURITY;
+    INTERPRETER, TRANSPORT, SECURITY, MAINTENANCE, JANITOR;
 }
