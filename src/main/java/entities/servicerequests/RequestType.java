@@ -1,7 +1,7 @@
 package entities.servicerequests;
 
 public enum RequestType {
-    FOOD("Food"), SEC("Security"), TRANS("Transportation"), INTR("Interpreter");
+    FOOD("Food"), SEC("Security"), TRANS("Transportation"), INTR("Interpreter"), MAIN("Maintenance");
 
     private final String value;
 
@@ -12,4 +12,9 @@ public enum RequestType {
     public String getValue() {
         return value;
     }
+
+    public String toString(){
+        return this.value;
+    }
+
 }
