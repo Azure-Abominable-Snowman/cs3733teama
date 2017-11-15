@@ -34,9 +34,14 @@ public class MainScreenController implements Controller {
     @FXML
     private Button editMap;
     @FXML
-    private Button LogIn;
+    private Button loginBtn;
+    @FXML
+    private Button logoutBtn;
     @FXML
     private Canvas mapCanvas;
+
+    @FXML
+    private Label alreadyLoginMsg;
 
     @FXML
     private ScrollPane mapPane;
@@ -65,6 +70,7 @@ public class MainScreenController implements Controller {
 
     public void initialize() {
         hideDirections();
+
         dMap = new DrawMap(mapPane, mapCanvas, -2, 75, 5000, 3500);
         // load in map node coordinates from DB
         map = HospitalMap.getInstance();
@@ -96,7 +102,18 @@ public class MainScreenController implements Controller {
             dMap.switchFloor(floor);
             floorLabel.setText(floor);
             populateBoxes(floor);
+
+
         });
+        if (SceneEngine.isAdminStatus() == false){
+            hideBtn();
+        }else{
+            showBtn();
+
+        }
+
+
+
     }
 
     private void populateBoxes(String floor) {
@@ -162,7 +179,6 @@ public class MainScreenController implements Controller {
     public void setStage(Stage stage) {
         // On resize of the stage
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            System.out.println(oldValue);
             dMap.updateSize();
         };
         // If the stage is resized make the canvas fill
@@ -173,6 +189,7 @@ public class MainScreenController implements Controller {
         mapPane.widthProperty().addListener(stageSizeListener);
 
         this.stage = stage;
+
     }
 
     public void setScene(Scene scene) {
@@ -191,7 +208,7 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void requestClick(ActionEvent event) {
-        //SceneEngine.display(RequestScreenController.class, null);
+        SceneEngine.display(RequestScreenController.class, null);
 
         // DEBUG: draw all the edges on the map and then print out info to the console
         for (MapNode n : map.getFloorNodes(dMap.getCurFloor()).values()) {
@@ -231,16 +248,44 @@ public class MainScreenController implements Controller {
 
         Path shortestPath = map.getPathGenerator().generatePath(start, end);
 
-        for (MapNode n : shortestPath.getNodes()) {
-            System.out.println(n.getId());
-        }
-
         // Draw the path between the two nodes
         dMap.setPath(shortestPath);
     }
 
     @FXML
-    private void logInClick(ActionEvent event) {
-        SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
+    private void onLogoutClick(ActionEvent event){
+        SceneEngine.setAdminStatus(false);
+        hideBtn();
+
     }
+
+    @FXML
+    private void logInClick(ActionEvent event) {
+        if(SceneEngine.isAdminStatus() == true){
+            alreadyLoginMsg.setText("Already login");
+
+        }else{
+            SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
+        }
+
+    }
+
+
+    private void showBtn(){
+            request.setVisible(true);
+            editMap.setVisible(true);
+            logoutBtn.setVisible(true);
+            loginBtn.setVisible(false);
+    }
+    private void hideBtn(){
+            request.setVisible(false);
+            editMap.setVisible(false);
+            logoutBtn.setVisible(false);
+            loginBtn.setVisible(true);
+
+    }
+
+
+
+
 }

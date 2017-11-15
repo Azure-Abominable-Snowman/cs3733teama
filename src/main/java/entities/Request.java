@@ -4,13 +4,14 @@ package entities;
 /**
  * Created by jakepardue on 11/10/17.
  */
+
 public class Request {
 
     private Location toLocation;
     private Enum<TypeOfRequest> type;
     private Enum<PriorityLevel> priorityLevel;
     private String message;
-    //private List<ServiceStaff> requiredStaff;
+    //private List<ServiceStaff> requiredStaff;*/
 
     public Request(Location toLocation, Enum<TypeOfRequest> type, Enum<PriorityLevel> priorityLevel, String message/*,List<ServiceStaff> staff*/){
         this.toLocation = toLocation;
@@ -38,6 +39,7 @@ public class Request {
 
     //public List<ServiceStaff> getRequiredStaff(){ return this.requiredStaff;}
     //public void setRequiredStaff(List<ServiceStaff> newList){ this.requiredStaff = newList; }
+
 
 
 

@@ -13,10 +13,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class SceneEngine {
-
+    static String URL = "jdbc:derby://localhost:1527/testdb;create=true";
+    static public String getURL(){
+        return URL;
+    }
     private static Map<String, ImageStash> bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage;
+
+    private static boolean adminStatus = false;
+
+    public static boolean isAdminStatus() {
+        return adminStatus;
+    }
+
+    public static void setAdminStatus(boolean adminStatus) {
+        SceneEngine.adminStatus = adminStatus;
+    }
 
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;
@@ -89,5 +102,7 @@ public final class SceneEngine {
     public static void display(Class<? extends Controller> newController, ControllerInfo info) {
         display(newController, getPrimaryStage(), info);
     }
+
+
 
 }
