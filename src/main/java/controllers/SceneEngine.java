@@ -60,6 +60,8 @@ public final class SceneEngine {
         loginStage.close();
     }
 
+    public static void closeFillReq(){fillReqStage.close();}
+
     public static Map<String, ImageStash> getHospitalImageMap() {
         if(bwImgs == null) {
             bwImgs = new HashMap<>();
