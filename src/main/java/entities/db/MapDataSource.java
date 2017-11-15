@@ -1,4 +1,7 @@
-package entities;
+package entities.db;
+
+import entities.MapEdge;
+import entities.MapNode;
 
 import java.util.ArrayList;
 
@@ -60,6 +63,13 @@ public interface MapDataSource {
     default MapEdge getEdge(String id) { return null; }
 
     default void close() {
+    }
 
+    default ArrayList<MapNode> getNodesOnFloor(String floor) {
+        return null;
+    }
+
+    default ArrayList<MapEdge> getEdgesOnFloor(String floor) {
+        return null;
     }
 }
