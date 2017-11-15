@@ -171,7 +171,7 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
         try {
             stmt = conn.createStatement();
             ResultSet set = stmt.executeQuery(
-                    "SELECT MAX(REQUESTID) FROM "+requestTable
+                    "SELECT MAX(CAST(REQUESTID AS INT)) FROM "+requestTable
             );
             set.next();
             return set.getInt(1);

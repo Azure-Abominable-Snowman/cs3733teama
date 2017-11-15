@@ -76,4 +76,8 @@ public class Request {
         return "'"+getId()+"',"+location.getxCoord()+","+location.getyCoord()+",'"+location.getLevel()+"','"
                 +location.getBuilding()+"','"+getReqType().name()+"','"+getPriority()+"','"+getNote()+"','"+f+"'";
     }
+    @Override
+    public String toString(){
+        return reqType +"\n" + id + "\n"+location.toString()+"\n"+note;
+    }
 }

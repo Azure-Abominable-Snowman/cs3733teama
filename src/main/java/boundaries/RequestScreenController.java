@@ -31,7 +31,7 @@ public class RequestScreenController implements Controller {
     @FXML
     private ComboBox building;
     @FXML
-    private ListView reqList;
+    private ListView<Request> reqList;
     @FXML
     private ComboBox<String> floor;
     private String floorName;
@@ -80,8 +80,7 @@ public class RequestScreenController implements Controller {
         reqList.getItems().clear();
         for(Request r: requests){
             if(!r.isFulfilled()){
-                reqList.getItems().add(r.getReqType()+"\n"+r.getId()+"\n"+r.getLocation().toString()+"\n"+
-                                        r.getNote());
+                reqList.getItems().add(r);
             }
         }
 
@@ -90,8 +89,18 @@ public class RequestScreenController implements Controller {
     @FXML
     private void onSelect(MouseEvent e){
         System.out.println(reqList.getSelectionModel().getSelectedItem());
+        Request r=reqList.getSelectionModel().getSelectedItem();
+       SceneEngine.display(FillRequestController.class, SceneEngine.getFillReqStage(), new ControllerInfo(r.getId()));
     }
-
+    private int getIdFromString(String reqEntry){
+        int index=0;
+        while(reqEntry.charAt(index++)!='\n'){;}
+        String strId="";
+        while(reqEntry.charAt(index++)!='\n'){
+            strId.concat(String.valueOf(reqEntry.charAt(index)));
+        }
+        return Integer.parseInt(strId);
+    }
     private ArrayList<Request> getDummyRequest(){
         ArrayList<Request> requests = new ArrayList<>();
         for(int i=0; i< 10; i++){
@@ -165,8 +174,7 @@ public class RequestScreenController implements Controller {
 
         requestTable.getInstance().submitRequest(request);
 
-        reqList.getItems().add(request.getReqType()+"\n"+request.getId()+"\n"+request.getLocation().toString()+"\n"+
-                request.getNote());
+        reqList.getItems().add(request);
        /* ArrayList<Request> requests = requestTable.getReqTable().getRequest();
         for(Request r: requests){
             reqList.getItems().add(r.getReqType()+"\n"+r.getId()+"\n"+r.getLocation().toString()+"\n"+

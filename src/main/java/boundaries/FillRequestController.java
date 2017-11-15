@@ -28,7 +28,10 @@ public class FillRequestController implements Controller {
         }
         System.out.println(serviceList.getSelectionModel().getSelectedItem());
     }
+    @Override
+    public void setControllerInfo(ControllerInfo c){
 
+    }
     private ArrayList<ServiceStaff> generateStaff(){
         ArrayList<ServiceStaff> staff = new ArrayList<>();
         ServiceStaff staff1 = new SecurityStaff("1234", "Jon","Smith", "6034893939", StaffType.SECURITY, null, Provider.VERIZON, true);
@@ -36,6 +39,11 @@ public class FillRequestController implements Controller {
         staff.add(staff1);
         staff.add(staff2);
         return staff;
+    }
+
+    @Override
+    public String getFXMLFileName() {
+        return "FulfillRequest.fxml";
     }
     
 }
