@@ -21,6 +21,16 @@ public final class SceneEngine {
 
     static private Stage primaryStage, popOutStage, loginStage;
 
+    private static boolean adminStatus = false;
+
+    public static boolean isAdminStatus() {
+        return adminStatus;
+    }
+
+    public static void setAdminStatus(boolean adminStatus) {
+        SceneEngine.adminStatus = adminStatus;
+    }
+
     public static void setStages(Stage primaryStage) {
         SceneEngine.primaryStage = primaryStage;
         popOutStage = new Stage();

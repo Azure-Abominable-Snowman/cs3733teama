@@ -103,13 +103,12 @@ public class DrawMap {
     }
 
     public void renderMap(double width, double height, String floor) {
-        // Keep the aspect ratio
-        c.setHeight(height*curZoom);
-        if(bwImg != null) { // if it can be obtained, set the width and height using the aspect ratio
+        if(bwImg != null && !zoomed) { // if it can be obtained, set the width and height using the aspect ratio
             double aspectRatio = bwImg.getWidth()/bwImg.getHeight();
             double scaledW, scaledH;
-            scaledH = (1 / ((1 / (width*curZoom)) * aspectRatio));
-            scaledW = ((height*curZoom)*aspectRatio);
+            // keep the aspect ratio
+            scaledH = (1 / ((1 / (width)) * aspectRatio));
+            scaledW = ((height)*aspectRatio);
             if(scaledH > height) {
                 c.setHeight(height);
                 c.setWidth(scaledW);
@@ -121,8 +120,22 @@ public class DrawMap {
                 c.setTranslateY((height-scaledH)/2);
                 c.setTranslateX(0);
             }
+        } else if(bwImg != null) {
+            double aspectRatio = bwImg.getWidth()/bwImg.getHeight();
+            double scaledW, scaledH;
+            // keep the aspect ratio
+            scaledH = (1 / ((1 / (width)) * aspectRatio));
+            scaledW = ((height)*aspectRatio);
+            if(scaledH > height) {
+                c.setHeight(height*curZoom);
+                c.setWidth(scaledW*curZoom);
+            } else {
+                c.setHeight(scaledH*curZoom);
+                c.setWidth(width*curZoom);
+            }
         } else {
-            c.setWidth(height*curZoom);
+            c.setHeight(height*curZoom);
+            c.setWidth(width*curZoom);
         }
         render(floor);
     }
@@ -150,14 +163,34 @@ public class DrawMap {
         }
     }
 
+    private double oldWidth, oldHeight;
+
     public void updateSize() {
         double width = mapPane.getWidth();
         double height = mapPane.getHeight();
+
+        if(oldWidth == 0) {
+            oldWidth = width;
+        }
+        if(oldHeight == 0) {
+            oldHeight = height;
+        }
+
+        double oldHvalue = mapPane.getHvalue();
+        double oldVvalue = mapPane.getVvalue();
         mapPane.setVmax(height);
         mapPane.setHmax(width);
-        zoomed = false;
-        curZoom = 1;
+        //System.out.println("O: "+oldHvalue+" "+oldVvalue+" C: "+mapPane.getHvalue()+" "+mapPane.getVvalue());
+        //System.out.println("OD: "+oldWidth+" "+oldHeight+" ND: "+width+" "+height);
+        //zoomed = false;
+        //curZoom = 1;
         renderMap(width, height);
+
+        mapPane.setVvalue((height/oldHeight)*oldVvalue);
+        mapPane.setHvalue((width/oldWidth)*oldHvalue);
+
+        oldWidth = width;
+        oldHeight = height;
     }
 
     private void drawNodeAnnotation(MapNode n) {

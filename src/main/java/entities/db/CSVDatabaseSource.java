@@ -30,11 +30,12 @@ public class CSVDatabaseSource implements MapDataSource {
             // Look up corresponding edges in the node hashmap
             MapEdge e = edgeListToObj(row);
             // Add this edge to the node objects that are associated with it
-            nodeMap.get(e.getStart().getId()).addEdge(e);
-            nodeMap.get(e.getEnd().getId()).addEdge(e);
+            nodeMap.get(e.getStartID()).addEdge(e);
+            nodeMap.get(e.getEndID()).addEdge(e);
             edgeMap.put(row.get(0), e);
         }
     }
+
     @Override
     public ArrayList<MapNode> getNodesOnFloor(String floor) {
         ArrayList<MapNode> allNodes = new ArrayList<MapNode>();
