@@ -3,9 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
@@ -78,27 +77,25 @@
                         <TextField fx:id="name" alignment="TOP_LEFT" maxWidth="600.0" prefHeight="16.0" prefWidth="152.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="13.0" />
-                     </font></TextField>
+                     </font>
+                  </TextField>
                         <TextField alignment="TOP_LEFT" maxWidth="600.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" fx:id="xCoord">
                      <font>
                         <Font size="13.0" />
-                     </font></TextField>
+                     </font>
+                  </TextField>
                         <TextField fx:id="yCoord" alignment="TOP_LEFT" maxWidth="600.0" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="13.0" />
-                     </font></TextField>
+                     </font>
+                  </TextField>
                         <Button fx:id="back" mnemonicParsing="false" prefHeight="176.0" prefWidth="149.0" text="Back" GridPane.rowSpan="2147483647">
                             <font>
                                 <Font size="19.0" />
                             </font>
                         </Button>
                   <Button fx:id="confirm" mnemonicParsing="false" onAction="#onConfirm" prefHeight="87.0" prefWidth="168.0" text="CONFIRM" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowSpan="2" />
-                  <MenuButton fx:id="nodeType" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="77.0" prefWidth="165.0" text="TYPE" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
-                  </MenuButton>
+                  <ComboBox fx:id="nodeType" prefWidth="150.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
                     </children>
                 </GridPane>
             </children>
@@ -115,8 +112,17 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Spinner fx:id="floor" prefHeight="25.0" prefWidth="161.0" GridPane.columnIndex="2" />
-                <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" text="Floor Level:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" text="Floor Level:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <graphic>
+                      <Spinner fx:id="floor" prefHeight="25.0" prefWidth="161.0" />
+               </graphic>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets right="15.0" />
+               </GridPane.margin>
+            </Label>
                 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="56.0" prefWidth="152.0" GridPane.hgrow="NEVER">
                     <columnConstraints>
                         <ColumnConstraints maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="74.5" />
@@ -135,11 +141,11 @@
             </children>
         </GridPane>
     </bottom>
-   <right>
-        <ScrollPane fx:id="mapPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="268.0" prefWidth="470.0" BorderPane.alignment="CENTER">
+   <center>
+        <ScrollPane fx:id="mapPane" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="268.0" prefWidth="470.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
             <Canvas fx:id="canvas" height="200.0" width="200.0" />
          </content>
         </ScrollPane>
-   </right>
+   </center>
 </BorderPane>
