@@ -13,8 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class SceneEngine {
-
-    private static Map<String, ImageStash>  bwImgs;
+    static String URL = "jdbc:derby://localhost:1527/testdb;create=true";
+    static public String getURL(){
+        return URL;
+    }
+    private static Map<String, ImageStash> bwImgs;
 
     static private Stage primaryStage, popOutStage, loginStage;
 
@@ -86,9 +89,6 @@ public final class SceneEngine {
             c.setScene(scene);
             stage.setScene(scene);
             stage.show();
-
-
-
 
         }catch(IOException e){
             e.printStackTrace();

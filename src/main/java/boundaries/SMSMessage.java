@@ -12,17 +12,12 @@ import java.util.EnumMap;
 public class SMSMessage {
 
 
-    public enum Provider{
-        VERIZON, ATT, SPRINT, TMOBILE;
-    }
 
     public static Map<Provider, String> providers = new EnumMap<Provider, String>(Provider.class);
 
     String phoneNumber;
     Provider provider;
     String msg;
-    String from;
-    String pwd;
     String workingAddress;
     EmailMessage emailMessage;
 
