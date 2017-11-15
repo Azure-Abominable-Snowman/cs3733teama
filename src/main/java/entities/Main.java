@@ -12,17 +12,25 @@ import java.io.IOException;
 
 public class Main extends Application{
 
+    private boolean userType = false;
+
+    public Boolean getUserType() {
+        return userType;
+    }
+
+    public void setUserType(Boolean userType) {
+        this.userType = userType;
+    }
+
     public static void main(String[] args) {
         launch(args);
-
-        HospitalMap.getInstance().exportToCSV();
     }
 
     @Override
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("../MainScreen.fxml"));
+            loader.setLocation(getClass().getResource("/MainScreen.fxml"));
             Parent root = loader.load();
             Controller c = (Controller) loader.getController();
             c.setStage(primaryStage);

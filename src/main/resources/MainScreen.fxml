@@ -76,9 +76,12 @@
                      <items>
                         <Button fx:id="request" mnemonicParsing="false" onAction="#requestClick" text="Request" />
                         <Button fx:id="editMap" mnemonicParsing="false" onAction="#editMapClick" text="Edit Map" />
-                        <Button mnemonicParsing="false" onAction="#logInClick" text="Log In" />
+                        <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#logInClick" text="Log In" />
+                        <Button mnemonicParsing="false" onAction="#exportToCSV" text="CSV Export" />
                         <Slider fx:id="floorSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" nodeOrientation="LEFT_TO_RIGHT" showTickMarks="true" snapToTicks="true" value="2.0" />
                         <Label fx:id="floorLabel" text="G" />
+                        <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#onLogoutClick" text="Log Out" />
+                        <Label fx:id="alreadyLoginMsg" prefHeight="17.0" prefWidth="141.0" />
                      </items>
                   </ToolBar>
                </children>

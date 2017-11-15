@@ -29,4 +29,6 @@ public interface ServiceRequestDataSource {
     default boolean fulfillRequest(String id) { return false; }
 
     default void close() { };
+
+    default int getNextId() { return 0; }
 }

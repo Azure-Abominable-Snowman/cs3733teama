@@ -16,6 +16,9 @@ public class CSVDatabaseSource implements MapDataSource {
         this.nodeFilename = nodeFilename;
         this.edgeFilename = edgeFilename;
         ArrayList<List<String>> nodeData = parseCSVFile(nodeFilename);
+        if(nodeData == null) {
+            return;
+        }
         for (List<String> row : nodeData.subList(1, nodeData.size())) {
             // Iterate through each row and make a node object
             // for each one and put it into the hashmap
@@ -24,6 +27,9 @@ public class CSVDatabaseSource implements MapDataSource {
         }
 
         ArrayList<List<String>> edgeData = parseCSVFile(edgeFilename);
+        if(edgeData == null) {
+            return;
+        }
         for (List<String> row : edgeData.subList(1, edgeData.size())) {
             // Iterate through each row and make an edge object
             // for each one and put it into the hashmap
@@ -66,11 +72,11 @@ public class CSVDatabaseSource implements MapDataSource {
     private ArrayList<List<String>> parseCSVFile(String filename) {
         BufferedReader nodeReader;
         try {
-            FileReader fileReader = new FileReader(filename);
+            //FileReader fileReader = new FileReader(filename);
+            InputStreamReader fileReader = new InputStreamReader(getClass().getResourceAsStream(filename), "UTF-8");
             nodeReader =  new BufferedReader(fileReader);
 
-        }
-        catch(FileNotFoundException ex) {
+        } catch (Exception e) {
             System.out.println(
                     "Unable to open file '" +
                             filename + "'");

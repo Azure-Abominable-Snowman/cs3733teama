@@ -4,15 +4,18 @@ package entities;
 /**
  * Created by jakepardue on 11/10/17.
  */
+
 public class Request {
 
     private Location toLocation;
     private Enum<TypeOfRequest> type;
     private Enum<PriorityLevel> priorityLevel;
     private String message;
-    //private List<ServiceStaff> requiredStaff;
+    private int ID;
+    //private List<ServiceStaff> requiredStaff;*/
 
-    public Request(Location toLocation, Enum<TypeOfRequest> type, Enum<PriorityLevel> priorityLevel, String message/*,List<ServiceStaff> staff*/){
+    public Request(int ID, Location toLocation, Enum<TypeOfRequest> type, Enum<PriorityLevel> priorityLevel, String message/*,List<ServiceStaff> staff*/){
+        this.ID = ID;
         this.toLocation = toLocation;
         this.type = type;
         this.priorityLevel = priorityLevel;
@@ -36,8 +39,13 @@ public class Request {
 
     public void setTypeOfRequest(Enum<TypeOfRequest> newType){ this.type = newType; }
 
+    public int getId(){ return this.ID; }
+
+    public void setID(int ID){ this.ID = ID;}
+
     //public List<ServiceStaff> getRequiredStaff(){ return this.requiredStaff;}
     //public void setRequiredStaff(List<ServiceStaff> newList){ this.requiredStaff = newList; }
+
 
 
 

@@ -16,8 +16,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.Map;
 
 
@@ -35,9 +37,14 @@ public class MainScreenController implements Controller {
     @FXML
     private Button editMap;
     @FXML
-    private Button LogIn;
+    private Button loginBtn;
+    @FXML
+    private Button logoutBtn;
     @FXML
     private Canvas mapCanvas;
+
+    @FXML
+    private Label alreadyLoginMsg;
 
     @FXML
     private ScrollPane mapPane;
@@ -66,6 +73,7 @@ public class MainScreenController implements Controller {
 
     public void initialize() {
         hideDirections();
+
         dMap = new DrawMap(mapPane, mapCanvas, -2, 75, 5000, 3500);
         // load in map node coordinates from DB
         map = HospitalMap.getInstance();
@@ -97,7 +105,18 @@ public class MainScreenController implements Controller {
             dMap.switchFloor(floor);
             floorLabel.setText(floor);
             populateBoxes(floor);
+
+
         });
+        if (SceneEngine.isAdminStatus() == false){
+            hideBtn();
+        }else{
+            showBtn();
+
+        }
+
+
+
     }
 
     private void populateBoxes(String floor) {
@@ -173,6 +192,7 @@ public class MainScreenController implements Controller {
         mapPane.widthProperty().addListener(stageSizeListener);
 
         this.stage = stage;
+
     }
 
     public void setScene(Scene scene) {
@@ -191,7 +211,7 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void requestClick(ActionEvent event) {
-        //SceneEngine.display(RequestScreenController.class, null);
+        SceneEngine.display(RequestScreenController.class, null);
 
         // DEBUG: draw all the edges on the map and then print out info to the console
 
@@ -240,7 +260,50 @@ public class MainScreenController implements Controller {
     }
 
     @FXML
+    private void onLogoutClick(ActionEvent event){
+        SceneEngine.setAdminStatus(false);
+        hideBtn();
+
+    }
+
+    @FXML
     private void logInClick(ActionEvent event) {
-        SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
+        if(SceneEngine.isAdminStatus()){
+            alreadyLoginMsg.setText("Already login");
+
+        }else{
+            SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
+        }
+
+    }
+
+    @FXML
+    void exportToCSV(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.*");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(stage);
+
+        if(file != null){
+            String path = file.getPath();
+            HospitalMap.getInstance().exportToCSV(path+"_nodes.csv", path+"_edges.csv");
+        }
+    }
+
+    private void showBtn(){
+            request.setVisible(true);
+            editMap.setVisible(true);
+            logoutBtn.setVisible(true);
+            loginBtn.setVisible(false);
+    }
+    private void hideBtn(){
+            request.setVisible(false);
+            editMap.setVisible(false);
+            logoutBtn.setVisible(false);
+            loginBtn.setVisible(true);
     }
 }
