@@ -13,13 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class SceneEngine {
-    static String URL = "jdbc:derby://localhost:1527/testdb;create=true";
+    //private static String URL = "jdbc:derby://localhost:1527/testdb;create=true";
+    private static String URL = "jdbc:derby:database;create=true";
+
     static public String getURL(){
         return URL;
     }
     private static Map<String, ImageStash> bwImgs;
 
-    static private Stage primaryStage, popOutStage, loginStage;
+    static private Stage primaryStage, popOutStage, loginStage, fillReqStage;
 
     private static boolean adminStatus = false;
 
@@ -35,7 +37,10 @@ public final class SceneEngine {
         SceneEngine.primaryStage = primaryStage;
         popOutStage = new Stage();
         loginStage = new Stage();
+        fillReqStage = new Stage();
     }
+
+    public static Stage getFillReqStage() { return fillReqStage; }
 
     public static Stage getPrimaryStage() {
         return primaryStage;
@@ -56,6 +61,8 @@ public final class SceneEngine {
     public static void closeLogin() {
         loginStage.close();
     }
+
+    public static void closeFillReq(){fillReqStage.close();}
 
     public static Map<String, ImageStash> getHospitalImageMap() {
         if(bwImgs == null) {

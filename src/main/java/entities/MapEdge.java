@@ -60,6 +60,9 @@ public class MapEdge {
      * TODO: Make this less opaque
      * @return
      */
+    public void setID(String id) {
+        this.id = id;
+    }
     public MapNode getStart() {
         if(start == null) {
             start = HospitalMap.getInstance().getMap().getNode(startID);

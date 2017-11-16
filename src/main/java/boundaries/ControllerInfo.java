@@ -1,11 +1,9 @@
 package boundaries;
 
 public class ControllerInfo {
-    private String t;
-    public ControllerInfo(String t) {
-        this.t = t;
+    private String request;
+    public ControllerInfo(String request) {
+        this.request = request;
     }
-    public String test() {
-        return t;
-    }
+    public String getRequest() {return request;}
 }
