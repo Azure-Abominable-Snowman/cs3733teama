@@ -1,22 +1,24 @@
 package boundaries;
 
-import com.sun.org.apache.regexp.internal.RE;
 import controllers.SceneEngine;
+import entities.HospitalMap;
+import entities.Location;
 import entities.MapNode;
 import entities.NodeType;
+import entities.db.RequestTable;
+import entities.servicerequests.PriorityLevel;
+import entities.servicerequests.Request;
+import entities.servicerequests.RequestType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import entities.db.RequestTable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import entities.Location;
-import javafx.scene.control.TextField;
-import entities.servicerequests.*;
-import entities.HospitalMap;
-import java.util.Map;
+import javafx.scene.input.MouseEvent;
+
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Map;
 
 public class RequestScreenController implements Controller {
     RequestTable requestTable = RequestTable.getInstance();
@@ -28,7 +30,8 @@ public class RequestScreenController implements Controller {
 
     @FXML
     private ComboBox building;
-
+    @FXML
+    private ListView<Request> reqList;
     @FXML
     private ComboBox<String> floor;
     private String floorName;
@@ -53,8 +56,7 @@ public class RequestScreenController implements Controller {
     @FXML
     private Button backButt;
 
-    @FXML
-    Button fulfillRequest;
+
 
 
 
@@ -72,7 +74,44 @@ public class RequestScreenController implements Controller {
         reqType.getItems().addAll(
                 RequestType.FOOD, RequestType.SEC,RequestType.INTR, RequestType.TRANS, RequestType.MAIN);
 
+        //fills
+        reqList.getItems().clear();
+        ArrayList<Request> requests = requestTable.getReqTable().getRequest();
+        reqList.getItems().clear();
+        for(Request r: requests){
+            if(!r.isFulfilled()){
+                reqList.getItems().add(r);
+            }
+        }
 
+    }
+
+    @FXML
+    private void onSelect(MouseEvent e){
+        System.out.println(reqList.getSelectionModel().getSelectedItem());
+        Request r=reqList.getSelectionModel().getSelectedItem();
+       SceneEngine.display(FillRequestController.class, SceneEngine.getFillReqStage(), new ControllerInfo(r.getId()));
+    }
+    private int getIdFromString(String reqEntry){
+        int index=0;
+        while(reqEntry.charAt(index++)!='\n'){;}
+        String strId="";
+        while(reqEntry.charAt(index++)!='\n'){
+            strId.concat(String.valueOf(reqEntry.charAt(index)));
+        }
+        return Integer.parseInt(strId);
+    }
+    private ArrayList<Request> getDummyRequest(){
+        ArrayList<Request> requests = new ArrayList<>();
+        for(int i=0; i< 10; i++){
+            Request r = new Request(Integer.toString(i), new Location(0,0,"BTM", "G"), RequestType.FOOD, PriorityLevel.HIGH, "test", false);
+            requests.add(r);
+        }
+        return requests;
+    }
+
+    private void getRequestTable(){
+        requestTable.getInstance().getReqTable();
     }
 
     @FXML
@@ -104,25 +143,28 @@ public class RequestScreenController implements Controller {
         //set Request Type
         if (reqType.getSelectionModel().isEmpty()) {
             return;
-        }
-        else {
-            RequestType rType = (RequestType)reqType.getItems().get(0);
-            switch (rType) {
-                case FOOD:
+        } else {
+            RequestType rType = (RequestType)reqType.getSelectionModel().getSelectedItem();
+            switch (rType.name()) {
+                case "FOOD":
                     requestType = RequestType.FOOD;
                     priorityLevel = PriorityLevel.LOW;
                     break;
-                case SEC:
+                case "SEC":
                     requestType = RequestType.SEC;
                     priorityLevel = PriorityLevel.HIGH;
                     break;
-                case TRANS:
+                case "TRANS":
                     requestType = RequestType.TRANS;
                     priorityLevel = PriorityLevel.MEDIUM;
                     break;
-                case INTR:
+                case "INTR":
                     requestType = RequestType.INTR;
                     priorityLevel = PriorityLevel.MEDIUM;
+                    break;
+                case "MAIN":
+                    requestType = RequestType.MAIN;
+                    priorityLevel = PriorityLevel.HIGH;
                     break;
             }
         }
@@ -132,15 +174,21 @@ public class RequestScreenController implements Controller {
 
         requestTable.getInstance().submitRequest(request);
 
+        reqList.getItems().add(request);
+       /* ArrayList<Request> requests = requestTable.getReqTable().getRequest();
+        for(Request r: requests){
+            reqList.getItems().add(r.getReqType()+"\n"+r.getId()+"\n"+r.getLocation().toString()+"\n"+
+                    r.getNote());
+        }*/
         //Ensure the request is confirmed to submit or canceled
-        /*
-        if(confirm.isPressed()){
+
+       /*if(confirm.isPressed()){
             requestTable.getInstance().submitRequest(request);
         }
         else if(cancel.isPressed()){
             request = null;
-        }
-        */
+        }*/
+
     }
 
     //find node from the floor input
@@ -175,5 +223,6 @@ public class RequestScreenController implements Controller {
     private void fulfillClick(ActionEvent event){
         SceneEngine.display(FulfillReqController.class, SceneEngine.getPopOutStage(), null);
     }
+
 
 }

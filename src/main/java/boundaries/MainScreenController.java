@@ -15,8 +15,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.Map;
 
 
@@ -211,11 +214,15 @@ public class MainScreenController implements Controller {
         SceneEngine.display(RequestScreenController.class, null);
 
         // DEBUG: draw all the edges on the map and then print out info to the console
+
+
+
         for (MapNode n : map.getFloorNodes(dMap.getCurFloor()).values()) {
             System.out.print(n.getId() + " " + n.getShortDescription() + " ");
             for (MapEdge e : n.getEdges()) {
                 System.out.print(e.getId() + " ");
-                dMap.drawEdge(mapCanvas, e);
+                dMap.drawEdge(mapCanvas, e, Color.BLACK);
+
             }
             System.out.println("");
         }
@@ -261,7 +268,7 @@ public class MainScreenController implements Controller {
 
     @FXML
     private void logInClick(ActionEvent event) {
-        if(SceneEngine.isAdminStatus() == true){
+        if(SceneEngine.isAdminStatus()){
             alreadyLoginMsg.setText("Already login");
 
         }else{
@@ -270,6 +277,22 @@ public class MainScreenController implements Controller {
 
     }
 
+    @FXML
+    void exportToCSV(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.*");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(stage);
+
+        if(file != null){
+            String path = file.getPath();
+            HospitalMap.getInstance().exportToCSV(path+"_nodes.csv", path+"_edges.csv");
+        }
+    }
 
     private void showBtn(){
             request.setVisible(true);
@@ -282,10 +305,5 @@ public class MainScreenController implements Controller {
             editMap.setVisible(false);
             logoutBtn.setVisible(false);
             loginBtn.setVisible(true);
-
     }
-
-
-
-
 }

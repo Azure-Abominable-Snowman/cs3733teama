@@ -1,7 +1,6 @@
 package entities;
 
 import boundaries.Controller;
-import boundaries.MainScreenController;
 import controllers.SceneEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +30,7 @@ public class Main extends Application{
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("../MainScreen.fxml"));
+            loader.setLocation(getClass().getResource("/MainScreen.fxml"));
             Parent root = loader.load();
             Controller c = (Controller) loader.getController();
             c.setStage(primaryStage);
