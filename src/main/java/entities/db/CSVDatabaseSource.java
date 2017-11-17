@@ -1,4 +1,6 @@
-package entities;
+package entities.db;
+
+import entities.*;
 
 import java.io.*;
 import java.util.*;
@@ -14,6 +16,9 @@ public class CSVDatabaseSource implements MapDataSource {
         this.nodeFilename = nodeFilename;
         this.edgeFilename = edgeFilename;
         ArrayList<List<String>> nodeData = parseCSVFile(nodeFilename);
+        if(nodeData == null) {
+            return;
+        }
         for (List<String> row : nodeData.subList(1, nodeData.size())) {
             // Iterate through each row and make a node object
             // for each one and put it into the hashmap
@@ -22,18 +27,43 @@ public class CSVDatabaseSource implements MapDataSource {
         }
 
         ArrayList<List<String>> edgeData = parseCSVFile(edgeFilename);
+        if(edgeData == null) {
+            return;
+        }
         for (List<String> row : edgeData.subList(1, edgeData.size())) {
             // Iterate through each row and make an edge object
             // for each one and put it into the hashmap
             // Look up corresponding edges in the node hashmap
             MapEdge e = edgeListToObj(row);
             // Add this edge to the node objects that are associated with it
-            nodeMap.get(e.getStart().getId()).addEdge(e);
-            nodeMap.get(e.getEnd().getId()).addEdge(e);
+            nodeMap.get(e.getStartID()).addEdge(e);
+            nodeMap.get(e.getEndID()).addEdge(e);
             edgeMap.put(row.get(0), e);
         }
     }
 
+    @Override
+    public ArrayList<MapNode> getNodesOnFloor(String floor) {
+        ArrayList<MapNode> allNodes = new ArrayList<MapNode>();
+        for (String id: nodeMap.keySet()) {
+            MapNode m = nodeMap.get(id);
+            if (m.getCoordinate().getLevel().equals(floor)) {
+                allNodes.add(m);
+            }
+        }
+        return allNodes;
+    }
+    @Override
+    public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
+        ArrayList<MapEdge> allEdges = new ArrayList<MapEdge>();
+        for (String id: edgeMap.keySet()) {
+            MapEdge e = edgeMap.get(id);
+            if (e.doesNotCrossFloors() && e.isOnFloor(floor)) {
+                allEdges.add(e);
+            }
+        }
+        return allEdges;
+    }
     /**
      * Returns an array of CSV data lines parsed from a given filename
      * @param filename
@@ -42,11 +72,11 @@ public class CSVDatabaseSource implements MapDataSource {
     private ArrayList<List<String>> parseCSVFile(String filename) {
         BufferedReader nodeReader;
         try {
-            FileReader fileReader = new FileReader(filename);
+            //FileReader fileReader = new FileReader(filename);
+            InputStreamReader fileReader = new InputStreamReader(getClass().getResourceAsStream(filename), "UTF-8");
             nodeReader =  new BufferedReader(fileReader);
 
-        }
-        catch(FileNotFoundException ex) {
+        } catch (Exception e) {
             System.out.println(
                     "Unable to open file '" +
                             filename + "'");
@@ -105,7 +135,7 @@ public class CSVDatabaseSource implements MapDataSource {
      * @return
      */
     private MapEdge edgeListToObj(List<String> row) {
-        return new MapEdge(row.get(0), nodeMap.get(row.get(1)), nodeMap.get(row.get(2)));
+        return new MapEdge(row.get(0), row.get(1), row.get(2));
     }
 
     @Override
@@ -137,9 +167,11 @@ public class CSVDatabaseSource implements MapDataSource {
 
     @Override
     public void addEdge(MapEdge edge) {
-        edgeMap.put(edge.getId(), edge);
-        // Open the edge file, and put the updated CSV into it
-        writeEdge(edge, false);
+        if (edge != null) {
+            edgeMap.put(edge.getId(), edge);
+            // Open the edge file, and put the updated CSV into it
+            writeEdge(edge, false);
+        }
     }
 
     @Override
@@ -154,46 +186,50 @@ public class CSVDatabaseSource implements MapDataSource {
 
     private void writeNode(MapNode node, boolean delete) throws IOException {
         // Create whole new CSV file with every edit
-        try {
-            File file = new File(nodeFilename);
-            if(!file.exists()) {
-                if (!(file.createNewFile())) {
-                    // If the file doesn't exist something must have gone wrong
-                    throw new IOException();
+        if (node != null) {
+            try {
+                File file = new File(nodeFilename);
+                if (!file.exists()) {
+                    if (!(file.createNewFile())) {
+                        // If the file doesn't exist something must have gone wrong
+                        throw new IOException();
+                    }
                 }
+                FileWriter fw = new FileWriter(nodeFilename);
+                BufferedWriter writer = new BufferedWriter(fw);
+                writer.write("nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n");
+                for (MapNode n : nodeMap.values()) {
+                    writer.write(n.toCSV() + "\n");
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            FileWriter fw = new FileWriter(nodeFilename);
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.write("nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n");
-            for(MapNode n : nodeMap.values()) {
-                writer.write(n.toCSV()+"\n");
-            }
-            writer.close();
-        } catch(IOException e) {
-            e.printStackTrace();
         }
     }
 
     private void writeEdge(MapEdge edge, boolean delete) {
         // Create whole new CSV file with every edit
-        try {
-            File file = new File(edgeFilename);
+        if (edge != null) {
+            try {
+                File file = new File(edgeFilename);
 
-            if(!file.exists()) {
-                if (!(file.createNewFile())) {
-                    // If the file doesn't exist something must have gone wrong
-                    throw new IOException();
+                if (!file.exists()) {
+                    if (!(file.createNewFile())) {
+                        // If the file doesn't exist something must have gone wrong
+                        throw new IOException();
+                    }
                 }
+                FileWriter fw = new FileWriter(edgeFilename);
+                BufferedWriter writer = new BufferedWriter(fw);
+                writer.write("edgeID,startNode,endNode\n");
+                for (MapEdge n : edgeMap.values()) {
+                    writer.write(n.toCSV() + "\n");
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            FileWriter fw = new FileWriter(edgeFilename);
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.write("edgeID,startNode,endNode\n");
-            for(MapEdge n : edgeMap.values()) {
-                writer.write(n.toCSV()+"\n");
-            }
-            writer.close();
-        } catch(IOException e) {
-            e.printStackTrace();
         }
     }
 

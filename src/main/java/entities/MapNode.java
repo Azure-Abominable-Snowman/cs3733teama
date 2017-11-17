@@ -23,7 +23,12 @@ public class MapNode {
         this.longDescription = longDescription;
         this.teamAssignment = teamAssignment;
     }
-
+    public void setID(String id) {
+        this.id = id;
+    }
+    public void setType(NodeType n) {
+        nodeType = n;
+    }
     public Location getCoordinate() {
         return coordinate;
     }
@@ -76,5 +81,9 @@ public class MapNode {
     public String toSQLVals() {
         return "'"+id+"',"+coordinate.getxCoord()+","+coordinate.getyCoord()+",'"+coordinate.getLevel()+"','"+
                 coordinate.getBuilding()+"','"+nodeType.name()+"','"+longDescription+"','"+shortDescription+"','"+teamAssignment+"'";
+    }
+
+    public String toString() {
+        return getShortDescription();
     }
 }

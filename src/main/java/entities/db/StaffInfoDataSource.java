@@ -3,6 +3,8 @@ package entities.db;
 import entities.staff.ServiceStaff;
 import entities.staff.StaffAttrib;
 
+import java.util.ArrayList;
+
 public interface StaffInfoDataSource {
 
     /**
@@ -16,5 +18,9 @@ public interface StaffInfoDataSource {
 
     default void close() {
 
+    }
+
+    default ArrayList<ServiceStaff> getIntrStaff() {
+        return null;
     }
 }

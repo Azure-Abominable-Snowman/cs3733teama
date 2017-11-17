@@ -46,7 +46,7 @@ public class JavaDBServiceRequestDataTest {
     @Test
     public void createRequest() throws Exception {
         // Try creating a basic request that is known to not already exist in the database
-        db.createRequest(new Request("testid", new Location(5, 10, "L2", "45 Francis"), RequestType.SEC,
+        db.submitRequest(new Request("testid", new Location(5, 10, "L2", "45 Francis"), RequestType.SEC,
                 PriorityLevel.LOW, "testnote"));
         // Check the db to see if it's there
         try {
@@ -71,7 +71,7 @@ public class JavaDBServiceRequestDataTest {
     @Test
     public void deleteRequest() throws Exception {
         // Create request, verfiy it is there, then try to delete it, then see if it was deleted
-        db.createRequest(new Request("testid", new Location(5, 10, "L2", "45 Francis"),
+        db.submitRequest(new Request("testid", new Location(5, 10, "L2", "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote"));
         try {
             // Verify it is in the db
@@ -82,12 +82,14 @@ public class JavaDBServiceRequestDataTest {
             stmt.close();
 
             // Try to delete from db
-            db.deleteRequest("testid");
+            db.cancelRequest("testid");
 
             // See if it was removed
             stmt = conn.createStatement();
             set = stmt.executeQuery("SELECT * FROM TEST_SERVICE WHERE REQUESTID='testid'");
             assertEquals(false, set.next());
+            set.close();
+            stmt.close();
 
         } catch(SQLException e) {
             e.printStackTrace();
@@ -99,16 +101,54 @@ public class JavaDBServiceRequestDataTest {
         // Create request and try to find it
         Request before = new Request("testid", new Location(5, 10, "L2", "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote");
-        db.createRequest(before);
-        assertEquals(before.toCSV(), db.getRequest("testid").toCSV());
+        db.submitRequest(before);
+        assertEquals(before.toSQLValues(), db.getRequest("testid").toSQLValues());
+
+        // Try with fulfilled request
+        Request beforeTwo = new Request("testid7", new Location(5, 10, "L2", "45 Francis"),
+                RequestType.SEC, PriorityLevel.LOW, "testnote", true);
+        db.submitRequest(beforeTwo);
+        assertEquals(beforeTwo.toSQLValues(), db.getRequest("testid7").toSQLValues());
 
         // Have multiple similar looking requests in the db and find the correct one
-        db.createRequest(new Request("testid2", new Location(5, 10, "L2", "45 Francis"),
+        db.submitRequest(new Request("testid2", new Location(5, 10, "L2", "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote"));
-        db.createRequest(new Request("testid3", new Location(5, 10, "L2", "45 Francis"),
+        db.submitRequest(new Request("testid3", new Location(5, 10, "L2", "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote"));
-        db.createRequest(new Request("testid4", new Location(5, 10, "L2", "45 Francis"),
+        db.submitRequest(new Request("testid4", new Location(5, 10, "L2", "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote"));
-        assertEquals(before.toCSV(), db.getRequest("testid").toCSV());
+        assertEquals(before.toSQLValues(), db.getRequest("testid").toSQLValues());
+    }
+
+    @Test
+    public void fulfillRequest() throws Exception {
+        // Create a request, make sure it's in the database, then fulfill it
+        // See if it's correct
+        Request before = new Request("testid", new Location(5, 10, "L2", "45 Francis"),
+                RequestType.SEC, PriorityLevel.LOW, "testnote", false);
+        db.submitRequest(before);
+
+        try {
+            // Verify it is in the db
+            stmt = conn.createStatement();
+            ResultSet set = stmt.executeQuery("SELECT * FROM TEST_SERVICE WHERE REQUESTID='testid'");
+            assertEquals(true, set.next());
+            set.close();
+            stmt.close();
+
+            // Fulfill the request
+            db.fulfillRequest("testid");
+
+            // See if it was fulfilled
+            stmt = conn.createStatement();
+            set = stmt.executeQuery("SELECT * FROM TEST_SERVICE WHERE REQUESTID='testid'");
+            assertEquals(true, set.next());
+            assertEquals(true, set.getBoolean("FULFILLED"));
+            set.close();
+            stmt.close();
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,12 +1,15 @@
 package entities.db;
 
+import boundaries.Provider;
 import entities.staff.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
+import entities.db.StaffInfo;
 
 public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
 
@@ -41,6 +44,7 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
                             "LASTNAME VARCHAR(30) NOT NULL, " +
                             "PHONENUMBER VARCHAR(20) NOT NULL, " +
                             "STAFFTYPE VARCHAR(30) NOT NULL," +
+                            "PHONEPROVIDER VARCHAR(10) NOT NULL,"+
                             "AVAILABLE BOOLEAN NOT NULL" +
                             ")"
             );
@@ -61,7 +65,42 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
         {
             log.info("Does the staff info database or language relation table already exist?");
         }
+
+        try {
+            stmt = conn.createStatement();
+            stmt.execute(
+                    "INSERT INTO "+staffTable+" VALUES('TESTSTAFF', 'Jake', 'Pardue', '6034893939', 'INTERPRETER', 'VERIZON', TRUE)"
+            );
+            stmt.execute(
+                    "INSERT INTO "+staffTable+"_LANGUAGES VALUES('TESTSTAFF', 'English')"
+            );
+            stmt.close();
+        } catch (SQLException e) {
+            log.info("Staff language or person already added");
+        }
     }
+
+    public ArrayList<ServiceStaff> getIntrStaff(){
+        ArrayList<ServiceStaff> INTRStaff = new ArrayList<>();
+        try{
+            stmt = conn.createStatement();
+            ResultSet s = stmt.executeQuery(
+                    "SELECT * FROM "+staffTable+" WHERE STAFFTYPE = 'INTERPRETER'"
+            );
+            while(s.next()){
+                ServiceStaff staff = new InterpreterStaff(s.getString("STAFFID"), s.getString("firstName"), s.getString("lastName"),
+                        s.getString("phoneNumber"), StaffType.valueOf(s.getString("STAFFTYPE")), null, Provider.valueOf(s.getString("PHONEPROVIDER")), s.getBoolean("available"));
+                        INTRStaff.add(staff);
+            }
+            return INTRStaff;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        System.out.println("Couldn't find staff");
+        return null;
+    }
+
 
     @Override
     public ServiceStaff findQualified(StaffAttrib attrib) {
@@ -109,22 +148,24 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             String firstName = result.getString("FIRSTNAME");
             String lastName = result.getString("LASTNAME");
             String phone =  result.getString("PHONENUMBER");
+            Provider provider = Provider.valueOf(result.getString("PHONEPROVIDER").toUpperCase());
             Set<Language> lanArray = new HashSet<>();
             lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
             while(result.next() && (result.getString("STAFFID").equals(foundId))) {
                 // Load up all of the array attributes
                 lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
             }
+
             log.info(lanArray.toString());
             switch(attrib.getType().toString()) {
                 case("SECURITY"):
-                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.SECURITY, lanArray, true);
+                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.SECURITY,lanArray, provider, true);
                     break;
                 case("TRANSPORT"):
-                    foundStaff = new TransportStaff(foundId, firstName, lastName, phone, StaffType.TRANSPORT, lanArray, true);
+                    foundStaff = new TransportStaff(foundId, firstName, lastName, phone, StaffType.TRANSPORT, lanArray, provider, true);
                     break;
                 case("INTERPRETER"):
-                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.INTERPRETER, lanArray, true);
+                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.INTERPRETER, lanArray, provider,true);
                     break;
                 default:
                     System.out.println("Invalid staff member requested");

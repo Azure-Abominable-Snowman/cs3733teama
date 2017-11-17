@@ -1,4 +1,7 @@
-package entities;
+package entities.db;
+
+import entities.MapEdge;
+import entities.MapNode;
 
 import java.util.ArrayList;
 
@@ -35,6 +38,9 @@ public interface MapDataSource {
     default void addEdge(MapEdge edge) {
 
     }
+    default void removeEdge(String id) {
+
+    }
 
     /**
      * Gets an array of all the node id strings
@@ -60,6 +66,26 @@ public interface MapDataSource {
     default MapEdge getEdge(String id) { return null; }
 
     default void close() {
+    }
 
+    default ArrayList<MapNode> getNodesOnFloor(String floor) {
+        return null;
+    }
+
+    default ArrayList<MapEdge> getEdgesOnFloor(String floor) {
+        return null;
+    }
+
+    /**
+     * Adds everything from the selected data source to this one
+     * @param dataSource
+     */
+    default void addAll(MapDataSource dataSource) {
+        for (String id : dataSource.getNodeIds()) {
+            addNode(dataSource.getNode(id));
+        }
+        for (String id : dataSource.getEdgeIds()) {
+            addEdge(dataSource.getEdge(id));
+        }
     }
 }
