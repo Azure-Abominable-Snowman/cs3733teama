@@ -1,20 +1,23 @@
 package com.teama.mapsubsystem.data;
 
+import com.teama.drawing.MapDisplay;
+
 import java.util.ArrayList;
 
-public class MapNode {
-    private Location coordinate;
-    private String id, shortDescription, longDescription, teamAssignment;
-    private Enum<NodeType> nodeType;
-    private ArrayList<MapEdge> edges;
+public abstract class MapNode {
+    Location coordinate;
+    String id, shortDescription, longDescription, teamAssignment;
+    Enum<NodeType> nodeType;
+    ArrayList<MapEdge> edges;
+    private DrawNode animationStyle;
 
     public MapNode(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
-                   String shortDescription, String teamAssignment) {
+                       String shortDescription, String teamAssignment) {
         this(id, coordinate, nodeType, longDescription, shortDescription, teamAssignment, new ArrayList<>());
     }
 
     public MapNode(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
-                   String shortDescription, String teamAssignment, ArrayList<MapEdge> edges) {
+                       String shortDescription, String teamAssignment, ArrayList<MapEdge> edges) {
         this.coordinate = coordinate;
         this.id = id;
         this.nodeType = nodeType;
@@ -22,68 +25,28 @@ public class MapNode {
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
         this.teamAssignment = teamAssignment;
-    }
-    public void setID(String id) {
-        this.id = id;
-    }
-    public void setType(NodeType n) {
-        nodeType = n;
-    }
-    public Location getCoordinate() {
-        return coordinate;
+        animationStyle = new DrawNodeInstantly();
     }
 
-    public String getId() {
-        return id;
+    public abstract String getId();
+    public abstract Enum<NodeType> getNodeType();
+    public abstract ArrayList<MapEdge> getEdges();
+    public abstract void setEdges(ArrayList<MapEdge> edges);
+    public abstract void addEdge(MapEdgeData edge);
+    public abstract String getShortDescription();
+    public abstract void setShortDescription(String shortDescription);
+    public abstract String getLongDescription();
+    public abstract void setLongDescription(String longDescription);
+    public abstract String getTeamAssignment();
+    public abstract String toCSV();
+    public abstract String toSQLVals();
+    public abstract Location getCoordinate();
+
+    public void setAnimationStyle(DrawNode animationStyle) {
+        this.animationStyle = animationStyle;
     }
 
-    public Enum<NodeType> getNodeType() {
-        return nodeType;
-    }
-
-    public ArrayList<MapEdge> getEdges() {
-        return edges;
-    }
-
-    public void setEdges(ArrayList<MapEdge> edges) {
-        this.edges = edges;
-    }
-
-    public void addEdge(MapEdge edge) {
-        this.edges.add(edge);
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public String getLongDescription() {
-        return longDescription;
-    }
-
-    public void setLongDescription(String longDescription) {
-        this.longDescription = longDescription;
-    }
-
-    public String getTeamAssignment() {
-        return teamAssignment;
-    }
-
-    public String toCSV() {
-        return "\""+id+"\","+coordinate.getxCoord()+","+coordinate.getyCoord()+",\""+coordinate.getLevel()+"\",\""+
-                coordinate.getBuilding()+"\",\""+nodeType.name()+"\",\""+longDescription+"\",\""+shortDescription+"\",\""+teamAssignment+"\"";
-    }
-
-    public String toSQLVals() {
-        return "'"+id+"',"+coordinate.getxCoord()+","+coordinate.getyCoord()+",'"+coordinate.getLevel()+"','"+
-                coordinate.getBuilding()+"','"+nodeType.name()+"','"+longDescription+"','"+shortDescription+"','"+teamAssignment+"'";
-    }
-
-    public String toString() {
-        return getShortDescription();
+    public void displayOnScreen(MapDisplay display) {
+        animationStyle.displayOnScreen(display);
     }
 }

@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem.data;
 
-import com.teama.mapsubsystem.HospitalMap;
+import com.teama.mapsubsystem.MapSubsystem;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -12,7 +12,7 @@ public class DatabaseUUID {
     private static String team = "A";
 
     public static String generateID(Enum<NodeType> type, String currentFloor) {
-        return generateID((NodeType)type, currentFloor, HospitalMap.getInstance().getFloorNodes(currentFloor).keySet());
+        return generateID((NodeType)type, currentFloor, MapSubsystem.getInstance().getFloorNodes(currentFloor).keySet());
     }
 
     public static String generateID(NodeType type, String currentFloor, Set<String> floorIds) {

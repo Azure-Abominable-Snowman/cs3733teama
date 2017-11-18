@@ -1,6 +1,7 @@
 package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.mapsubsystem.data.MapEdge;
+import com.teama.mapsubsystem.data.MapEdgeData;
 import com.teama.mapsubsystem.data.MapNode;
 
 import java.util.ArrayList;

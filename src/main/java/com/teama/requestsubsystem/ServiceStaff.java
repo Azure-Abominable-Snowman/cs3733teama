@@ -1,6 +1,6 @@
 package com.teama.requestsubsystem;
 
-import com.teama.controllers.Provider;
+import com.teama.messages.Provider;
 
 import java.util.Set;
 

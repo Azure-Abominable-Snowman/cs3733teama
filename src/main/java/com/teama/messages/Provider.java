@@ -1,4 +1,4 @@
-package com.teama.controllers;
+package com.teama.messages;
 
 /**
  * Created by jakepardue on 11/14/17.

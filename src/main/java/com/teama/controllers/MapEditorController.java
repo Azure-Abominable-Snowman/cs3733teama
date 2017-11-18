@@ -1,11 +1,8 @@
 package com.teama.controllers;
 
-import com.teama.mapsubsystem.HospitalMap;
-import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapEdge;
-import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.data.NodeType;
-import com.teama.mapsubsystem.data.DatabaseUUID;
+import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.*;
+import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.drawing.DrawMap;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -47,17 +44,17 @@ public class MapEditorController implements Controller {
     private ToggleGroup group = new ToggleGroup();
     private ToggleGroup editorAction = new ToggleGroup();
     private DrawMap editorMap;
-    private HospitalMap map;
+    private MapSubsystem map;
     private String defaultX = "Select a location on the map.";
     private String defaultY = "Select a location on the map.";
     private String currName;
     private Location selectedLocation = null;
-    private MapNode selectedNode = null;
-    private MapEdge selectedEdge = null;
+    private MapNodeData selectedNode = null;
+    private MapEdgeData selectedEdge = null;
     private Boolean existingNodeSelected = false;
     private Boolean unregisteredNodeClicked = false;
-    private MapNode startNode = null;
-    private MapNode endNode = null;
+    private MapNodeData startNode = null;
+    private MapNodeData endNode = null;
 
     private String currentFloor = "G";
 
@@ -91,7 +88,7 @@ public class MapEditorController implements Controller {
                 editorMap.drawNode(startNode, 4, color);
             }
 */
-            MapNode m = findNodeAt(xCanvas.intValue(), yCanvas.intValue()); // check if node exists in database
+            MapNodeData m = findNodeAt(xCanvas.intValue(), yCanvas.intValue()); // check if node exists in database
             if (m!= null) {
                 name.setText(m.getLongDescription());
             }
@@ -101,7 +98,7 @@ public class MapEditorController implements Controller {
                         String defaultText = "Please enter a name for the new location.";
                         name.setText(defaultText);
                         //color = Color.GREEN;
-                        MapNode newNode = new MapNode("", new Location(xBWcoord, yBWcoord, editorMap.getCurFloor(), "BTM"), null, "", "", "Team A", null);
+                        MapNodeData newNode = new MapNodeData("", new Location(xBWcoord, yBWcoord, editorMap.getCurFloor(), "BTM"), null, "", "", "Team A", null);
                         editorMap.drawNode(newNode, 4, Color.GREEN);
                         selectedNode = newNode;
                     }
@@ -159,7 +156,7 @@ public class MapEditorController implements Controller {
         editorMap.setRenderHidden(true);
         reDrawMap();
         //editorMap.drawAllEdges(canvas);
-        map = HospitalMap.getInstance();
+        map = MapSubsystem.getInstance();
         xCoord.setText(defaultX);
         yCoord.setText(defaultY);
 
@@ -325,8 +322,8 @@ public class MapEditorController implements Controller {
         yCoord.clear();
         name.clear();
         if (edgeToggle.isSelected()) {
-            for (MapNode n : map.getFloorNodes(editorMap.getCurFloor()).values()) {
-                for (MapEdge e : n.getEdges()) {
+            for (MapNodeData n : map.getFloorNodes(editorMap.getCurFloor()).values()) {
+                for (MapEdgeData e : n.getEdges()) {
                     editorMap.drawEdge(canvas, e, Color.GREY);
 
                 }
@@ -337,10 +334,10 @@ public class MapEditorController implements Controller {
 
 
     // takes UNscaled x and y coordinate from user click and searches through existing nodes on floor to see if a matching node is found
-    private MapNode findNodeAt(Integer xcoord, Integer ycoord) {
-        Map<String, MapNode> allNodes = HospitalMap.getInstance().getFloorNodes(editorMap.getCurFloor());
+    private MapNodeData findNodeAt(Integer xcoord, Integer ycoord) {
+        Map<String, MapNodeData> allNodes = MapSubsystem.getInstance().getFloorNodes(editorMap.getCurFloor());
         for (String id: allNodes.keySet()) {
-            MapNode m = allNodes.get(id);
+            MapNodeData m = allNodes.get(id);
             if (editorMap.isNodeWithinRegion(canvas, m, xcoord, ycoord)) {
                 return m;
             }
@@ -348,9 +345,9 @@ public class MapEditorController implements Controller {
         return null;
     }
 
-    private MapEdge findEdgeAt(MapNode start, MapNode end) {
-        ArrayList<MapEdge> edges = start.getEdges();
-        for (MapEdge e: edges) {
+    private MapEdgeData findEdgeAt(MapNodeData start, MapNodeData end) {
+        ArrayList<MapEdgeData> edges = start.getEdges();
+        for (MapEdgeData e: edges) {
             if (e.getEnd().getId().equals(end.getId())) {
                 return e;
             }
@@ -361,8 +358,8 @@ public class MapEditorController implements Controller {
         return null;
     }
     //fills in user-inputted values to the node to be added/edited
-    private MapNode makeNewNode() {
-        MapNode newNode = selectedNode;
+    private MapNodeData makeNewNode() {
+        MapNodeData newNode = selectedNode;
         String nodeName = name.getText();
         newNode.setLongDescription(nodeName);
         newNode.setShortDescription(nodeName);
@@ -388,7 +385,7 @@ public class MapEditorController implements Controller {
                 System.out.println("The end node is "+ endNode.getLongDescription());
 
                 String edgeID = startNode.getId() + "_" + endNode.getId();
-                MapEdge newEdge = new MapEdge(edgeID, startNode, endNode);
+                MapEdgeData newEdge = new MapEdgeData(edgeID, startNode, endNode);
                 selectedEdge = newEdge;
                 editorMap.drawEdge(canvas, newEdge, Color.YELLOWGREEN);
                 name.clear();
@@ -403,14 +400,14 @@ public class MapEditorController implements Controller {
             }
             else if (startNode != null && endNode != null) { // got the start and end nodes, so edge is selected
                 //String edgeID = startNode.getId() + "_" + endNode.getId();
-                //MapEdge edgeSelected = new MapEdge(edgeID, startNode, endNode);
+                //MapEdgeData edgeSelected = new MapEdgeData(edgeID, startNode, endNode);
                 //edgeSelected.setID(edgeID);
                 if (addToggle.isSelected()) {
                     String edgeID = startNode.getId() + "_" + endNode.getId();
-                    MapEdge edgeSelected = new MapEdge(edgeID, startNode, endNode);
+                    MapEdgeData edgeSelected = new MapEdgeData(edgeID, startNode, endNode);
                     edgeSelected.setID(edgeID);
 
-                    HospitalMap.getInstance().getMap().addEdge(edgeSelected);
+                    MapSubsystem.getInstance().getMap().addEdge(edgeSelected);
                     reDrawMap();
                     editorMap.drawEdge(canvas, edgeSelected, Color.GRAY);
                     System.out.println("The ID of the new Edge is " + edgeSelected.getId());
@@ -420,16 +417,16 @@ public class MapEditorController implements Controller {
                     refreshMap();
                 }
                 else if (deleteToggle.isSelected()) {
-                    MapEdge edgeSelected = null;
-                    for(MapEdge startEdge : startNode.getEdges()) {
-                        for(MapEdge endEdge : endNode.getEdges()) {
+                    MapEdgeData edgeSelected = null;
+                    for(MapEdgeData startEdge : startNode.getEdges()) {
+                        for(MapEdgeData endEdge : endNode.getEdges()) {
                             if(startEdge.getId().equals(endEdge.getId())) {
                                 edgeSelected = endEdge;
                                 break;
                             }
                         }
                     }
-                    HospitalMap.getInstance().getMap().removeEdge(edgeSelected.getId());
+                    MapSubsystem.getInstance().getMap().removeEdge(edgeSelected.getId());
                     refreshMap();
                     deleteToggle.setSelected(false);
                 }
@@ -437,10 +434,10 @@ public class MapEditorController implements Controller {
         }
         if (nodeToggle.isSelected()) {
             if (addToggle.isSelected() || editToggle.isSelected()) {
-                MapNode newNode = makeNewNode();
+                MapNodeData newNode = makeNewNode();
                 //reDrawMap();
                 //editorMap.drawNode(newNode, 3, Color.BLACK);
-                HospitalMap.getInstance().getMap().addNode(newNode);
+                MapSubsystem.getInstance().getMap().addNode(newNode);
                 refreshMap();
                 if (addToggle.isSelected()) {
                     addToggle.setSelected(false);
@@ -448,12 +445,12 @@ public class MapEditorController implements Controller {
                     editToggle.setSelected(false);
                 }
             } else if (deleteToggle.isSelected()) {
-                MapNode toDelete = selectedNode;
+                MapNodeData toDelete = selectedNode;
                 // TODO: do this in the hospitalmap singleton
-                for(MapEdge edge : toDelete.getEdges()) {
-                    HospitalMap.getInstance().getMap().removeEdge(edge.getId());
+                for(MapEdgeData edge : toDelete.getEdges()) {
+                    MapSubsystem.getInstance().getMap().removeEdge(edge.getId());
                 }
-                HospitalMap.getInstance().getMap().removeNode(toDelete.getId());
+                MapSubsystem.getInstance().getMap().removeNode(toDelete.getId());
                 refreshMap();
                 deleteToggle.setSelected(false);
             }

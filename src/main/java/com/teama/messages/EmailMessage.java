@@ -1,4 +1,4 @@
-package com.teama.controllers;
+package com.teama.messages;
 
 import javax.mail.*;
 import javax.mail.internet.AddressException;

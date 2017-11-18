@@ -3,13 +3,13 @@ package com.teama.mapsubsystem.data;
 public class Location {
     private int xCoord, yCoord;
     private String building;
-    private String level;
+    private Floor level;
 
     public Location(Location loc) {
         this(loc.getxCoord(), loc.getyCoord(), loc.getLevel(), loc.getBuilding());
     }
 
-    public Location(int xCoord, int yCoord, String level, String building) {
+    public Location(int xCoord, int yCoord, Floor level, String building) {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.level = level;
@@ -32,20 +32,12 @@ public class Location {
         this.yCoord = yCoord;
     }
 
-    public String getLevel() {
+    public Floor getLevel() {
         return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
     }
 
     public String getBuilding() {
         return building;
-    }
-
-    public void setBuilding(String building) {
-        this.building = building;
     }
 
     @Override

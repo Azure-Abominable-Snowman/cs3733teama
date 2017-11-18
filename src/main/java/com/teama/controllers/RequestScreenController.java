@@ -1,8 +1,8 @@
 package com.teama.controllers;
 
-import com.teama.mapsubsystem.HospitalMap;
+import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.data.NodeType;
 import com.teama.requestsubsystem.RequestTable;
 import com.teama.requestsubsystem.PriorityLevel;
@@ -36,7 +36,7 @@ public class RequestScreenController implements Controller {
     private String floorName;
 
     @FXML
-    private ComboBox<MapNode> longName;
+    private ComboBox<MapNodeData> longName;
     private String nodeName;
 
     @FXML
@@ -119,9 +119,9 @@ public class RequestScreenController implements Controller {
         longName.getItems().clear();
 
         System.out.println(floorName);
-        Map<String, MapNode> nodes = HospitalMap.getInstance().getFloorNodes(floorName);
+        Map<String, MapNodeData> nodes = MapSubsystem.getInstance().getFloorNodes(floorName);
         System.out.println(nodes.keySet());
-        for(MapNode n : nodes.values()) {
+        for(MapNodeData n : nodes.values()) {
             if(!n.getNodeType().equals(NodeType.HALL)) {
                 longName.getItems().add(n);
             }
@@ -134,8 +134,8 @@ public class RequestScreenController implements Controller {
     public void submitRequest() {
 
         Request request;
-        MapNode mapNode;
-        mapNode = findNode();
+        MapNodeData mapNodeData;
+        mapNodeData = findNode();
         Enum<RequestType> requestType = null;
         Enum<PriorityLevel> priorityLevel = null;
 
@@ -169,7 +169,7 @@ public class RequestScreenController implements Controller {
         }
         String Note = noteField.getText();
 
-        request = new Request(Integer.toString(requestTable.getInstance().getReqTable().getNextId()), mapNode.getCoordinate(), requestType, priorityLevel, Note);
+        request = new Request(Integer.toString(requestTable.getInstance().getReqTable().getNextId()), mapNodeData.getCoordinate(), requestType, priorityLevel, Note);
 
         requestTable.getInstance().submitRequest(request);
 
@@ -191,14 +191,14 @@ public class RequestScreenController implements Controller {
     }
 
     //find node from the floor input
-    private MapNode findNode(){
-        MapNode mNode = null;
+    private MapNodeData findNode(){
+        MapNodeData mNode = null;
         floorName = floor.getSelectionModel().getSelectedItem();
         nodeName = longName.getSelectionModel().getSelectedItem().toString();
 
         //get the map node from the floor input
-        Map<String, MapNode> floorMap = HospitalMap.getInstance().getFloorNodes(floorName);
-        ArrayList<MapNode> floorNode = new ArrayList<>(floorMap.values());
+        Map<String, MapNodeData> floorMap = MapSubsystem.getInstance().getFloorNodes(floorName);
+        ArrayList<MapNodeData> floorNode = new ArrayList<>(floorMap.values());
         for(int i = 0; i < floorNode.size(); i++){
             if(floorNode.get(i).getShortDescription().equals(nodeName))
             {

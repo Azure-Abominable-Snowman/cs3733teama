@@ -1,10 +1,10 @@
 package com.teama.drawing;
 
 import com.teama.controllers.SceneEngine;
-import com.teama.mapsubsystem.HospitalMap;
+import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapEdge;
-import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.MapEdgeData;
+import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.Path;
 import javafx.scene.canvas.Canvas;
@@ -32,11 +32,11 @@ public class DrawMap {
     private boolean zoomed = false;
     private double curZoom = 1;
     private String curFloor = "G";
-    private ArrayList<MapNode> nodes;
+    private ArrayList<MapNodeData> nodes;
 
     //private int nodeTolerance = 3;
     private ScrollPane mapPane;
-    private HospitalMap map;
+    private MapSubsystem map;
     private Path curPath;
 
     public DrawMap(ScrollPane mapPane, Canvas c, int xOffset, int yOffset, int imgW, int imgH) {
@@ -47,7 +47,7 @@ public class DrawMap {
         this.imgH = imgH;
         this.imgW = imgW;
         this.mapPane = mapPane;
-        map = HospitalMap.getInstance();
+        map = MapSubsystem.getInstance();
         bwImgs = SceneEngine.getHospitalImageMap();
 
         ArrayList<String> nodeIds = map.getMap().getNodeIds();
@@ -81,7 +81,7 @@ public class DrawMap {
         return newLoc;
     }
 
-    public void drawNode(MapNode n, int size, Paint pointColor) {
+    public void drawNode(MapNodeData n, int size, Paint pointColor) {
         double width = c.getWidth(); // make sure the width and height are updated
         double height = c.getHeight();
         Location drawLoc = convNodeCoords(n.getCoordinate());
@@ -91,7 +91,7 @@ public class DrawMap {
         gc.fillOval(nodeX, nodeY, size, size);
     }
 
-    public void drawEdge(Canvas c, MapEdge edge, Paint pointColor) {
+    public void drawEdge(Canvas c, MapEdgeData edge, Paint pointColor) {
         double width = c.getWidth(); // make sure the width and height are updated
         double height = c.getHeight();
         Location start = convNodeCoords(edge.getStart().getCoordinate());
@@ -170,7 +170,7 @@ public class DrawMap {
         }
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
         gc.drawImage(bwImg, 0,0, c.getWidth(), c.getHeight());
-        for(MapNode n : map.getFloorNodes(floor).values()) {
+        for(MapNodeData n : map.getFloorNodes(floor).values()) {
             //drawNodeAnnotation(n);
             if(renderHidden || !n.getNodeType().equals(NodeType.HALL)) { // Don't render hallway nodes
                 drawNode(n, nodeDim, Color.BLACK);
@@ -216,7 +216,7 @@ public class DrawMap {
         oldHeight = height;
     }
 
-    private void drawNodeAnnotation(MapNode n) {
+    private void drawNodeAnnotation(MapNodeData n) {
         gc.setLineDashes(0);
         gc.setLineWidth(1);
         gc.setLineCap(StrokeLineCap.SQUARE);
@@ -256,16 +256,16 @@ public class DrawMap {
     }
 
     public void drawPath(Path path) {
-        ArrayList<MapNode> pathNodes = path.getNodes();
+        ArrayList<MapNodeData> pathNodes = path.getNodes();
         gc.setLineDashes(5);
         gc.setLineWidth(2);
         gc.setLineCap(StrokeLineCap.BUTT);
-        for(MapEdge e : path.getConnectors()) {
+        for(MapEdgeData e : path.getConnectors()) {
             drawEdge(c, e, Color.BLACK);
         }
         // Draw the start and end nodes bigger
-        MapNode start = pathNodes.get(0);
-        MapNode end = pathNodes.get(pathNodes.size()-1);
+        MapNodeData start = pathNodes.get(0);
+        MapNodeData end = pathNodes.get(pathNodes.size()-1);
         drawNode(start, nodeDim*3, Color.RED);
         drawNode(end, nodeDim*3, Color.RED);
         //drawNodeAnnotation(start);
@@ -282,7 +282,7 @@ public class DrawMap {
     public void clearPath() {
         curPath = null;
     }
-    public boolean isNodeWithinRegion(Canvas c, MapNode m, Integer xcoord, Integer ycoord) {
+    public boolean isNodeWithinRegion(Canvas c, MapNodeData m, Integer xcoord, Integer ycoord) {
         int nodeTolerance = 4;
         Location nodeloc = m.getCoordinate();
         // Convert the BW coordinates to the canvas coordinates

@@ -1,6 +1,6 @@
 package entities.PathRelated;
 
-import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.pathfinding.Path;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class PathTest {
     // Testing objects
-    MapNode[][] testNodes = new MapNode[20][20];
+    MapNodeData[][] testNodes = new MapNodeData[20][20];
     Path testPath = new Path();
 
 
@@ -17,7 +17,7 @@ public class PathTest {
 
     public void createMap(){
         GenerateMap generater = new GenerateMap();
-        testNodes = new MapNode[20][20];
+        testNodes = new MapNodeData[20][20];
        testNodes=  generater.GenerateNewMap(1);
 
        generater.printMap(testNodes,20,20);

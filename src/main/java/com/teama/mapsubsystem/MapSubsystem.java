@@ -1,9 +1,9 @@
 package com.teama.mapsubsystem;
 
 import com.teama.controllers.SceneEngine;
-import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.pathfinding.AStar;
-import com.teama.mapsubsystem.pathfinding.PathGenerator;
+import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.data.CSVDatabaseSource;
 import com.teama.mapsubsystem.data.JavaDatabaseSource;
 import com.teama.mapsubsystem.data.MapDataSource;
@@ -14,20 +14,19 @@ import java.util.Map;
 
 /**
  * Created by aliss on 11/11/2017.
+ *
+ * Facade for all low level map details
  */
-public class HospitalMap {
+public class MapSubsystem {
 
-    static HospitalMap instance = null;
+    static MapSubsystem instance = null;
     private MapDataSource javaDBSource; // link to javaDB -- see MapDataSource interface to call functions that update DB
     private MapDataSource csvSource;
-
-    private int widthPixels = 5000;
-    private int heightPixels = 3400;
 
     private String nodefile = "/csvdata/MapAnodes.csv";
     private String edgefile = "/csvdata/MapAedges.csv";
 
-    private PathGenerator pathGenerator;
+    private PathAlgorithm pathGenerator;
 
     public MapDataSource getMap() {
         return javaDBSource;
@@ -40,20 +39,20 @@ public class HospitalMap {
         export.close();
     }
 
-    public Map<String, MapNode> getFloorNodes(String floor) {
-        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor);
-        Map<String, MapNode> nodeMap = new HashMap<>();
-        for(MapNode n : nodes) {
+    public Map<String, MapNodeData> getFloorNodes(String floor) {
+        ArrayList<MapNodeData> nodes = javaDBSource.getNodesOnFloor(floor);
+        Map<String, MapNodeData> nodeMap = new HashMap<>();
+        for(MapNodeData n : nodes) {
             nodeMap.put(n.getId(), n);
         }
         return nodeMap;
     }
 
-    public PathGenerator getPathGenerator() {
+    public PathAlgorithm getPathGenerator() {
         return pathGenerator;
     }
 
-    private HospitalMap() {
+    private MapSubsystem() {
         csvSource = new CSVDatabaseSource(nodefile, edgefile); // Reads CSV file
         javaDBSource = new JavaDatabaseSource(SceneEngine.getURL(), "NODES", "EDGES");
         pathGenerator = new AStar();
@@ -63,11 +62,11 @@ public class HospitalMap {
     }
 
 
-    public static synchronized HospitalMap getInstance()
+    public static synchronized MapSubsystem getInstance()
 
     {
         if (instance == null)
-            instance = new HospitalMap();
+            instance = new MapSubsystem();
         return instance;
     }
 }

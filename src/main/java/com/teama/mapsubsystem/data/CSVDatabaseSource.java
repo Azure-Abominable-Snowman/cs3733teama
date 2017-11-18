@@ -6,8 +6,8 @@ import java.util.*;
 public class CSVDatabaseSource implements MapDataSource {
 
     // Hashmaps that store all of the node and edge id keys and object values in memory
-    private HashMap<String, MapNode> nodeMap = new HashMap<>();
-    private HashMap<String, MapEdge> edgeMap = new HashMap<>();
+    private HashMap<String, MapNodeData> nodeMap = new HashMap<>();
+    private HashMap<String, MapEdgeData> edgeMap = new HashMap<>();
     private String nodeFilename, edgeFilename;
 
     public CSVDatabaseSource(String nodeFilename, String edgeFilename) {
@@ -20,7 +20,7 @@ public class CSVDatabaseSource implements MapDataSource {
         for (List<String> row : nodeData.subList(1, nodeData.size())) {
             // Iterate through each row and make a node object
             // for each one and put it into the hashmap
-            MapNode n = nodeListToObj(row);
+            MapNodeData n = nodeListToObj(row);
             nodeMap.put(row.get(0), n);
         }
 
@@ -32,7 +32,7 @@ public class CSVDatabaseSource implements MapDataSource {
             // Iterate through each row and make an edge object
             // for each one and put it into the hashmap
             // Look up corresponding edges in the node hashmap
-            MapEdge e = edgeListToObj(row);
+            MapEdgeData e = edgeListToObj(row);
             // Add this edge to the node objects that are associated with it
             nodeMap.get(e.getStartID()).addEdge(e);
             nodeMap.get(e.getEndID()).addEdge(e);
@@ -41,10 +41,10 @@ public class CSVDatabaseSource implements MapDataSource {
     }
 
     @Override
-    public ArrayList<MapNode> getNodesOnFloor(String floor) {
-        ArrayList<MapNode> allNodes = new ArrayList<MapNode>();
+    public ArrayList<MapNodeData> getNodesOnFloor(String floor) {
+        ArrayList<MapNodeData> allNodes = new ArrayList<MapNodeData>();
         for (String id: nodeMap.keySet()) {
-            MapNode m = nodeMap.get(id);
+            MapNodeData m = nodeMap.get(id);
             if (m.getCoordinate().getLevel().equals(floor)) {
                 allNodes.add(m);
             }
@@ -52,10 +52,10 @@ public class CSVDatabaseSource implements MapDataSource {
         return allNodes;
     }
     @Override
-    public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
-        ArrayList<MapEdge> allEdges = new ArrayList<MapEdge>();
+    public ArrayList<MapEdgeData> getEdgesOnFloor(String floor) {
+        ArrayList<MapEdgeData> allEdges = new ArrayList<MapEdgeData>();
         for (String id: edgeMap.keySet()) {
-            MapEdge e = edgeMap.get(id);
+            MapEdgeData e = edgeMap.get(id);
             if (e.doesNotCrossFloors() && e.isOnFloor(floor)) {
                 allEdges.add(e);
             }
@@ -121,8 +121,8 @@ public class CSVDatabaseSource implements MapDataSource {
      * @param row
      * @return
      */
-    private MapNode nodeListToObj(List<String> row) {
-        return new MapNode(row.get(0),
+    private MapNodeData nodeListToObj(List<String> row) {
+        return new MapNodeData(row.get(0),
                 new Location(Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)),
                         row.get(3), row.get(4)), NodeType.valueOf(row.get(5)), row.get(6), row.get(7), row.get(8));
     }
@@ -132,17 +132,17 @@ public class CSVDatabaseSource implements MapDataSource {
      * @param row
      * @return
      */
-    private MapEdge edgeListToObj(List<String> row) {
-        return new MapEdge(row.get(0), row.get(1), row.get(2));
+    private MapEdgeData edgeListToObj(List<String> row) {
+        return new MapEdgeData(row.get(0), row.get(1), row.get(2));
     }
 
     @Override
-    public MapNode getNode(String id) {
+    public MapNodeData getNode(String id) {
         return nodeMap.get(id);
     }
 
     @Override
-    public void addNode(MapNode node) {
+    public void addNode(MapNodeData node) {
         nodeMap.put(node.getId(), node);
         // Open node file, and put the updated CSV into it
         try {
@@ -164,7 +164,7 @@ public class CSVDatabaseSource implements MapDataSource {
     }
 
     @Override
-    public void addEdge(MapEdge edge) {
+    public void addEdge(MapEdgeData edge) {
         if (edge != null) {
             edgeMap.put(edge.getId(), edge);
             // Open the edge file, and put the updated CSV into it
@@ -182,7 +182,7 @@ public class CSVDatabaseSource implements MapDataSource {
         return new ArrayList<String>(edgeMap.keySet());
     }
 
-    private void writeNode(MapNode node, boolean delete) throws IOException {
+    private void writeNode(MapNodeData node, boolean delete) throws IOException {
         // Create whole new CSV file with every edit
         if (node != null) {
             try {
@@ -196,7 +196,7 @@ public class CSVDatabaseSource implements MapDataSource {
                 FileWriter fw = new FileWriter(nodeFilename);
                 BufferedWriter writer = new BufferedWriter(fw);
                 writer.write("nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n");
-                for (MapNode n : nodeMap.values()) {
+                for (MapNodeData n : nodeMap.values()) {
                     writer.write(n.toCSV() + "\n");
                 }
                 writer.close();
@@ -206,7 +206,7 @@ public class CSVDatabaseSource implements MapDataSource {
         }
     }
 
-    private void writeEdge(MapEdge edge, boolean delete) {
+    private void writeEdge(MapEdgeData edge, boolean delete) {
         // Create whole new CSV file with every edit
         if (edge != null) {
             try {
@@ -221,7 +221,7 @@ public class CSVDatabaseSource implements MapDataSource {
                 FileWriter fw = new FileWriter(edgeFilename);
                 BufferedWriter writer = new BufferedWriter(fw);
                 writer.write("edgeID,startNode,endNode\n");
-                for (MapEdge n : edgeMap.values()) {
+                for (MapEdgeData n : edgeMap.values()) {
                     writer.write(n.toCSV() + "\n");
                 }
                 writer.close();
@@ -232,7 +232,7 @@ public class CSVDatabaseSource implements MapDataSource {
     }
 
     @Override
-    public MapEdge getEdge(String id) {
+    public MapEdgeData getEdge(String id) {
         return edgeMap.get(id);
     }
 }

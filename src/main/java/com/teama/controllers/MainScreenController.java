@@ -1,8 +1,8 @@
 package com.teama.controllers;
 
-import com.teama.mapsubsystem.HospitalMap;
-import com.teama.mapsubsystem.data.MapEdge;
-import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.MapEdgeData;
+import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.drawing.DrawMap;
@@ -52,9 +52,9 @@ public class MainScreenController implements Controller {
     @FXML
     private Label floorLabel;
     @FXML
-    private ComboBox<MapNode> startBox;
+    private ComboBox<MapNodeData> startBox;
     @FXML
-    private ComboBox<MapNode> endBox;
+    private ComboBox<MapNodeData> endBox;
     @FXML
     private SplitPane directionsPane;
 
@@ -62,11 +62,11 @@ public class MainScreenController implements Controller {
 
     private boolean ctrlDown = false;
 
-    //private ArrayList<MapNode> nodes;
-    //private Map<String, MapNode> nodesOnFloor;
+    //private ArrayList<MapNodeData> nodes;
+    //private Map<String, MapNodeData> nodesOnFloor;
 
     private DrawMap dMap;
-    private HospitalMap map;
+    private MapSubsystem map;
 
     private Stage stage;
 
@@ -75,7 +75,7 @@ public class MainScreenController implements Controller {
 
         dMap = new DrawMap(mapPane, mapCanvas, -2, 75, 5000, 3500);
         // load in map node coordinates from DB
-        map = HospitalMap.getInstance();
+        map = MapSubsystem.getInstance();
         populateBoxes("G");
 
         // Make slider change the floor
@@ -122,7 +122,7 @@ public class MainScreenController implements Controller {
         // Populate combo boxes
         startBox.getItems().clear();
         endBox.getItems().clear();
-        for (MapNode n : map.getFloorNodes(floor).values()) {
+        for (MapNodeData n : map.getFloorNodes(floor).values()) {
             if (!n.getNodeType().equals(NodeType.HALL)) {
                 startBox.getItems().add(n);
                 endBox.getItems().add(n);
@@ -216,9 +216,9 @@ public class MainScreenController implements Controller {
 
 
 
-        for (MapNode n : map.getFloorNodes(dMap.getCurFloor()).values()) {
+        for (MapNodeData n : map.getFloorNodes(dMap.getCurFloor()).values()) {
             System.out.print(n.getId() + " " + n.getShortDescription() + " ");
-            for (MapEdge e : n.getEdges()) {
+            for (MapEdgeData e : n.getEdges()) {
                 System.out.print(e.getId() + " ");
                 dMap.drawEdge(mapCanvas, e, Color.BLACK);
 
@@ -242,9 +242,9 @@ public class MainScreenController implements Controller {
         addDirection("DIRECTION!"); // Dummy add direction method (just adds sample text)
 
         // draw the start and end nodes in a different size and color
-        Map<String, MapNode> curFloorMap = map.getFloorNodes(dMap.getCurFloor());
-        MapNode start = curFloorMap.get(startBox.getValue().getId());
-        MapNode end = curFloorMap.get(endBox.getValue().getId());
+        Map<String, MapNodeData> curFloorMap = map.getFloorNodes(dMap.getCurFloor());
+        MapNodeData start = curFloorMap.get(startBox.getValue().getId());
+        MapNodeData end = curFloorMap.get(endBox.getValue().getId());
 
         if (start == null || end == null) {
             System.out.println("Invalid ID for start or end");
@@ -289,7 +289,7 @@ public class MainScreenController implements Controller {
 
         if(file != null){
             String path = file.getPath();
-            HospitalMap.getInstance().exportToCSV(path+"_nodes.csv", path+"_edges.csv");
+            MapSubsystem.getInstance().exportToCSV(path+"_nodes.csv", path+"_edges.csv");
         }
     }
 

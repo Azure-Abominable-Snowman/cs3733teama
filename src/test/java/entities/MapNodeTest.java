@@ -1,16 +1,16 @@
 package entities;
 
 import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.data.NodeType;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class MapNodeTest {
-    private MapNode nodeOne;
+    private MapNodeData nodeOne;
     public MapNodeTest() {
-        nodeOne = new MapNode("WHALL00203", new Location(2080, 1280, "3", "45 Francis"),
+        nodeOne = new MapNodeData("WHALL00203", new Location(2080, 1280, "3", "45 Francis"),
                 NodeType.HALL, "Hallway Connector 2 Floor 3", "Hallway W0203", "Team I", null);
     }
 

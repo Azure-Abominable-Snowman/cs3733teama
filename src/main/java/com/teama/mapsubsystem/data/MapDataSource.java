@@ -8,7 +8,7 @@ public interface MapDataSource {
      * @param id
      * @return
      */
-    default MapNode getNode(String id) {
+    default MapNodeData getNode(String id) {
         return null;
     }
 
@@ -16,7 +16,7 @@ public interface MapDataSource {
      * Adds a node to the data source
      * @param node
      */
-    default void addNode(MapNode node) {
+    default void addNode(MapNodeData node) {
 
     }
 
@@ -32,7 +32,7 @@ public interface MapDataSource {
      * Adds an edge
      * @param edge
      */
-    default void addEdge(MapEdge edge) {
+    default void addEdge(MapEdgeData edge) {
 
     }
     default void removeEdge(String id) {
@@ -60,16 +60,16 @@ public interface MapDataSource {
      * @param id
      * @return
      */
-    default MapEdge getEdge(String id) { return null; }
+    default MapEdgeData getEdge(String id) { return null; }
 
     default void close() {
     }
 
-    default ArrayList<MapNode> getNodesOnFloor(String floor) {
+    default ArrayList<MapNodeData> getNodesOnFloor(String floor) {
         return null;
     }
 
-    default ArrayList<MapEdge> getEdgesOnFloor(String floor) {
+    default ArrayList<MapEdgeData> getEdgesOnFloor(String floor) {
         return null;
     }
 

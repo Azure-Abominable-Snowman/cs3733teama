@@ -2,13 +2,14 @@ package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
+
 import java.util.ArrayList;
 
 public class Path {
     private ArrayList<MapNode> nodes;
     private ArrayList<MapEdge> connectors;
-    private MapNode startNode; // @TODO do we need this? since the start of Arraylist could be start node. 
-    private MapNode endNode;
+    private MapNode startNode; // @TODO do we need this? since the start of Arraylist could be start node.
+    private MapEdge endNode;
 
     public Path()
     {

@@ -1,4 +1,4 @@
-package com.teama.controllers;
+package com.teama.messages;
 
 /**
  * Created by jakepardue on 11/13/17.
@@ -13,7 +13,7 @@ public class SMSMessage {
 
 
 
-    public static Map<Provider, String> providers = new EnumMap<Provider, String>(Provider.class);
+    public static Map<Provider, String> providers = new EnumMap<>(Provider.class);
 
     String phoneNumber;
     Provider provider;
