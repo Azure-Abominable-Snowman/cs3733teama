@@ -3,6 +3,7 @@ package entities.PathRelated;
 import entities.MapEdge;
 import entities.MapNode;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class KnownPoint implements  Comparable {
@@ -10,6 +11,7 @@ public class KnownPoint implements  Comparable {
     private MapNode node;
     private KnownPoint lastNode;
     private int pastCost,completeCost;
+    private int layer;
 
     //constructor
     public KnownPoint(MapNode node, KnownPoint lastNode, int pastCost, int completeCost) {
@@ -18,21 +20,35 @@ public class KnownPoint implements  Comparable {
         this.pastCost = pastCost;
         this.completeCost = completeCost;
     }
-    /**
-     * a little helper function
-     * @return return the edges contained with stored node.
-     */
+
+    public KnownPoint(MapNode node, int layer) {
+        this.node=node;
+        this.layer=layer;
+    }
+
+        /**
+         * a little helper function
+         * @return return the edges contained with stored node.
+         */
     public ArrayList<MapEdge> getEdge()
     {
         return node.getEdges();
     }
 
-
-
     /**
-     * compare nodes according to their total cost to destination
-     * Helping to for the PriorityQueue
+     * a helper function for getting adjacentNodes.
+     * @return  all the mapNodes linked by the edges in the node in ArrayList
      */
+    public ArrayList<MapNode>  getAdjacentNodes()
+    {
+        ArrayList<MapNode> result = new ArrayList<>();
+        for (MapEdge edge : node.getEdges()) {
+            if(edge.getStart().getId().equals((node.getId()))) result.add(edge.getEnd());
+            else result.add(edge.getStart());
+        }
+        return result;
+    }
+
 
     /**
      * Implemented to allow PriorityQueue to sort this.
@@ -43,12 +59,11 @@ public class KnownPoint implements  Comparable {
     @Override
     public int compareTo(Object o) {
         KnownPoint node = (KnownPoint) o;
-        if (this.completeCost>node.completeCost ) return 1;
-        else if (this.completeCost==node.completeCost) return 0;
-        else if(this.completeCost<node.completeCost) return -1;
+        if (this.completeCost > node.completeCost) return 1;
+        else if (this.completeCost == node.completeCost) return 0;
+        else if (this.completeCost < node.completeCost) return -1;
         return 0;
     }
-
 
     //////////// getter and setter
     public MapNode getNode() {
@@ -84,14 +99,11 @@ public class KnownPoint implements  Comparable {
     }
 
 
+    public int getLayer() {
+        return layer;
+    }
 
-
-
-
-
-
-
-
-
-
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
 }
