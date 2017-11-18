@@ -1,5 +1,6 @@
 package entities;
 
+import com.teama.mapsubsystem.data.Location;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

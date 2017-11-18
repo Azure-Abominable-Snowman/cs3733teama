@@ -1,7 +1,7 @@
 package entities;
 
-import boundaries.Provider;
-import boundaries.SMSMessage;
+import com.teama.controllers.Provider;
+import com.teama.controllers.SMSMessage;
 
 import javax.mail.internet.AddressException;
 

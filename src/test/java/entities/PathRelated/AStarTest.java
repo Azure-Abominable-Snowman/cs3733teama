@@ -1,6 +1,8 @@
 package entities.PathRelated;
 
-import entities.MapNode;
+import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.pathfinding.AStar;
+import com.teama.mapsubsystem.pathfinding.Path;
 import org.junit.Before;
 import org.junit.Test;
 

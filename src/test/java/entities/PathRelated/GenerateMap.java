@@ -1,9 +1,9 @@
 package entities.PathRelated;
 
-import entities.Location;
-import entities.MapEdge;
-import entities.MapNode;
-import entities.NodeType;
+import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.data.MapEdge;
+import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
 
 public class  GenerateMap  {
 

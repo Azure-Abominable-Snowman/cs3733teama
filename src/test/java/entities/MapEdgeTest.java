@@ -1,5 +1,9 @@
 package entities;
 
+import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.data.MapEdge;
+import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;

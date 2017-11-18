@@ -1,14 +1,15 @@
 package entities.db;
 
-import entities.auth.PrivelegedUser;
+import com.teama.login.JavaCredentialsDB;
+import com.teama.login.PrivelegedUser;
 import org.junit.Test;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static entities.auth.AccessType.ADMIN;
-import static entities.auth.AccessType.STAFF;
+import static com.teama.login.AccessType.ADMIN;
+import static com.teama.login.AccessType.STAFF;
 import static org.junit.Assert.*;
 
 /**
