@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 
+
 public class JavaDatabaseSource implements MapDataSource {
 
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
@@ -90,11 +91,11 @@ public class JavaDatabaseSource implements MapDataSource {
         }
     }
 
-    private MapNodeData nodeFromSQL(ResultSet result) throws SQLException {
-            return new MapNodeData(result.getString("NODEID"),
-                    new Location(result.getInt("XCOORD"), result.getInt("YCOORD"), result.getString("FLOOR"), result.getString("BUILDING")),
-                    NodeType.valueOf(result.getString("NODETYPE")), result.getString("LONGNAME"),
-                    result.getString("SHORTNAME"), result.getString("TEAMASSIGNED"));
+    private MapNode nodeFromSQL(ResultSet result) throws SQLException {
+        return new MapNodeData(result.getString("NODEID"),
+                new Location(result.getInt("XCOORD"), result.getInt("YCOORD"), Floor.valueOf(result.getString("FLOOR")), result.getString("BUILDING")),
+                NodeType.valueOf(result.getString("NODETYPE")), result.getString("LONGNAME"),
+                result.getString("SHORTNAME"), result.getString("TEAMASSIGNED"));
     }
 
     /**
@@ -102,12 +103,12 @@ public class JavaDatabaseSource implements MapDataSource {
      * @param id
      * @return
      */
-    private MapNodeData retrieveNode(String id) {
+    private MapNode retrieveNode(String id) {
         try {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM " + nodeTable + " WHERE NODEID = '" + id + "'");
             result.next();
-            MapNodeData retrievedNode = nodeFromSQL(result);
+            MapNode retrievedNode = nodeFromSQL(result);
             result.close();
             stmt.close();
             return retrievedNode;
@@ -117,7 +118,7 @@ public class JavaDatabaseSource implements MapDataSource {
         return null;
     }
 
-    private MapEdgeData edgeFromSQL(ResultSet result) throws SQLException {
+    private MapEdge edgeFromSQL(ResultSet result) throws SQLException {
         return new MapEdgeData(result.getString("EDGEID"), result.getString("STARTNODE"), result.getString("ENDNODE"));
     }
 
@@ -127,12 +128,12 @@ public class JavaDatabaseSource implements MapDataSource {
      * @return
      */
     @Override
-    public MapNodeData getNode(String id) {
+    public MapNode getNode(String id) {
         try
         {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE STARTNODE='"+id+"' OR ENDNODE='"+id+"'");
-            MapNodeData retrievedNode = retrieveNode(id);
+            MapNode retrievedNode = retrieveNode(id);
             if(retrievedNode == null) {
                 System.out.println("Requested node doesn't exist in the database");
                 return null;
@@ -154,7 +155,7 @@ public class JavaDatabaseSource implements MapDataSource {
      * @param node
      */
     @Override
-    public void addNode(MapNodeData node) {
+    public void addNode(MapNode node) {
         try {
             stmt = conn.createStatement();
             stmt.execute("INSERT INTO " + nodeTable + " VALUES ("+node.toSQLVals()+")");
@@ -170,7 +171,7 @@ public class JavaDatabaseSource implements MapDataSource {
                     result.updateString("NODEID", node.getId());
                     result.updateInt("XCOORD", node.getCoordinate().getxCoord());
                     result.updateInt("YCOORD", node.getCoordinate().getyCoord());
-                    result.updateString("FLOOR", node.getCoordinate().getLevel());
+                    result.updateString("FLOOR", node.getCoordinate().getLevel().toString());
                     result.updateString("BUILDING", node.getCoordinate().getBuilding());
                     result.updateString("NODETYPE", node.getNodeType().name());
                     result.updateString("LONGNAME", node.getLongDescription());
@@ -193,7 +194,7 @@ public class JavaDatabaseSource implements MapDataSource {
      * @param edge
      */
     @Override
-    public void addEdge(MapEdgeData edge) {
+    public void addEdge(MapEdge edge) {
         try {
             stmt = conn.createStatement();
             stmt.execute("INSERT INTO " + edgeTable + " VALUES ("+edge.toSQLVals()+")");
@@ -284,14 +285,14 @@ public class JavaDatabaseSource implements MapDataSource {
     }
 
     @Override
-    public MapEdgeData getEdge(String id) {
+    public MapEdge getEdge(String id) {
         try {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+id+"'");
             result.next();
-            //MapNodeData start = getNode(result.getString("STARTNODE"));
-            //MapNodeData end = getNode(result.getString("ENDNODE"));
-            MapEdgeData retrievedEdge = new MapEdgeData(result.getString("EDGEID"), result.getString("STARTNODE"), result.getString("ENDNODE"));
+            //MapNode start = getNode(result.getString("STARTNODE"));
+            //MapNode end = getNode(result.getString("ENDNODE"));
+            MapEdge retrievedEdge = new MapEdgeData(result.getString("EDGEID"), result.getString("STARTNODE"), result.getString("ENDNODE"));
             result.close();
             stmt.close();
             return retrievedEdge;
@@ -312,8 +313,8 @@ public class JavaDatabaseSource implements MapDataSource {
     }
 
     @Override
-    public ArrayList<MapNodeData> getNodesOnFloor(String floor) {
-        ArrayList<MapNodeData> nodes = new ArrayList<>();
+    public ArrayList<MapNode> getNodesOnFloor(String floor) {
+        ArrayList<MapNode> nodes = new ArrayList<>();
         try {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM "+nodeTable+" WHERE FLOOR='"+floor+"'");
@@ -323,7 +324,7 @@ public class JavaDatabaseSource implements MapDataSource {
             }
             result.close();
             // Get edges for all of the nodes retrieved
-            for(MapNodeData n : nodes) {
+            for(MapNode n : nodes) {
                 result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE STARTNODE='"+n.getId()+"' OR ENDNODE='"+n.getId()+"'");
                 while (result.next()) {
                     n.addEdge(edgeFromSQL(result));
@@ -340,8 +341,8 @@ public class JavaDatabaseSource implements MapDataSource {
     }
 
     @Override
-    public ArrayList<MapEdgeData> getEdgesOnFloor(String floor) {
-        ArrayList<MapEdgeData> edges = new ArrayList<>();
+    public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
+        ArrayList<MapEdge> edges = new ArrayList<>();
         try {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE FLOOR='"+floor+"'");

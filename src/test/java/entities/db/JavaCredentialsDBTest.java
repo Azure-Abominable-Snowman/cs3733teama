@@ -1,7 +1,7 @@
 package entities.db;
 
 import com.teama.login.JavaCredentialsDB;
-import com.teama.login.PrivelegedUser;
+import com.teama.login.LoginInfo;
 import org.junit.Test;
 
 import java.sql.DatabaseMetaData;
@@ -17,9 +17,9 @@ import static org.junit.Assert.*;
  */
 public class JavaCredentialsDBTest {
     JavaCredentialsDB db = new JavaCredentialsDB("jdbc:derby:testdb;create=true", "LOGIN_CREDS");
-    PrivelegedUser a = new PrivelegedUser("user1", "randompw", STAFF);
-    PrivelegedUser b = new PrivelegedUser("aostapenko", "notmypw", ADMIN);
-    PrivelegedUser c = new PrivelegedUser("supersecure", "hello", ADMIN);
+    LoginInfo a = new LoginInfo("user1", "randompw", STAFF);
+    LoginInfo b = new LoginInfo("aostapenko", "notmypw", ADMIN);
+    LoginInfo c = new LoginInfo("supersecure", "hello", ADMIN);
 
 
 
@@ -47,13 +47,13 @@ public class JavaCredentialsDBTest {
         assertTrue(db.checkCredentials(a));
         assertTrue(db.checkCredentials(b));
         assertTrue(db.checkCredentials(c));
-        PrivelegedUser d = new PrivelegedUser("supersecure", "hello", ADMIN);
+        LoginInfo d = new LoginInfo("supersecure", "hello", ADMIN);
         db.addLoginInfo(d);
         assertTrue(db.checkCredentials(d));
 
-        PrivelegedUser wrongPW = new PrivelegedUser("user1", "raNDOM2s", STAFF); //login with wrong password
-        PrivelegedUser wrongAccess = new PrivelegedUser("user1", "randompw", ADMIN); //trying to login as Admin when actually Staff
-        PrivelegedUser undoc = new PrivelegedUser("suspicious", "hello", STAFF);
+        LoginInfo wrongPW = new LoginInfo("user1", "raNDOM2s", STAFF); //login with wrong password
+        LoginInfo wrongAccess = new LoginInfo("user1", "randompw", ADMIN); //trying to login as Admin when actually Staff
+        LoginInfo undoc = new LoginInfo("suspicious", "hello", STAFF);
 
         assertFalse(db.checkCredentials(wrongPW));
         assertFalse(db.checkCredentials(wrongAccess));

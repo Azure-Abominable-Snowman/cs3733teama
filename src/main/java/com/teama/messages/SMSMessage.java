@@ -4,22 +4,19 @@ package com.teama.messages;
  * Created by jakepardue on 11/13/17.
  */
 
-import javax.mail.internet.AddressException;
-import java.util.Map;
 import java.util.EnumMap;
+import java.util.Map;
 
 
-public class SMSMessage {
+public class SMSMessage implements SendMessage {
 
 
+    public Map<Provider, String> providers = new EnumMap<>(Provider.class);
 
-    public static Map<Provider, String> providers = new EnumMap<>(Provider.class);
-
-    String phoneNumber;
-    Provider provider;
-    String msg;
-    String workingAddress;
-    EmailMessage emailMessage;
+    private String phoneNumber;
+    private Provider provider;
+    private String workingAddress;
+    private EmailMessage emailMessage;
 
     public void setMap(){
         providers.put(Provider.ATT, "@txt.att.net");
@@ -28,19 +25,25 @@ public class SMSMessage {
         providers.put(Provider.SPRINT, "@messaging.sprintpcs.com");
     }
 
-    public SMSMessage(String phoneNumber, Provider prov, String msg){
-        this.phoneNumber = phoneNumber;
+    public SMSMessage(Provider prov){
         this.provider = prov;
-        this.msg = msg;
 
         setMap();
 
         this.workingAddress = phoneNumber + providers.get(prov);
-        this.emailMessage = new EmailMessage(workingAddress, msg, "");
+        this.emailMessage = new EmailMessage();
     }
 
-    public void sendSMSMessage() throws AddressException {
-        emailMessage.sendMail();
-    }
+    @Override
+    public boolean sendMessage(ContactInfo contactInfo, Message message) {
+        if(!contactInfo.getAvailableContactInfoTypes().contains(ContactInfoTypes.PHONE)) {
+            System.out.println("No phone number available");
+            return false;
+        }
 
+        ContactInfo phoneCI = new ContactInfo();
+        phoneCI.setEmailAddress(workingAddress);
+
+        return  emailMessage.sendMessage(phoneCI, message);
+    }
 }

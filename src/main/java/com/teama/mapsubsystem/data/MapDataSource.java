@@ -8,70 +8,52 @@ public interface MapDataSource {
      * @param id
      * @return
      */
-    default MapNodeData getNode(String id) {
-        return null;
-    }
+    MapNode getNode(String id);
 
     /**
      * Adds a node to the data source
      * @param node
      */
-    default void addNode(MapNodeData node) {
-
-    }
+    void addNode(MapNode node);
 
     /**
      * Removes a node from the data source
      * @param id
      */
-    default void removeNode(String id) {
-
-    }
+    void removeNode(String id);
 
     /**
      * Adds an edge
      * @param edge
      */
-    default void addEdge(MapEdgeData edge) {
+    void addEdge(MapEdge edge);
 
-    }
-    default void removeEdge(String id) {
-
-    }
+    void removeEdge(String id);
 
     /**
      * Gets an array of all the node id strings
      * @return
      */
-    default ArrayList<String> getNodeIds() {
-        return null;
-    }
+    ArrayList<String> getNodeIds();
 
     /**
      * Returns an array of all the edge id strings
      * @return
      */
-    default ArrayList<String> getEdgeIds() {
-        return null;
-    }
+    ArrayList<String> getEdgeIds();
 
     /**
      * Gets a specified edge by id
      * @param id
      * @return
      */
-    default MapEdgeData getEdge(String id) { return null; }
+    MapEdge getEdge(String id);
 
-    default void close() {
-    }
+    void close();
 
-    default ArrayList<MapNodeData> getNodesOnFloor(String floor) {
-        return null;
-    }
+    ArrayList<MapNode> getNodesOnFloor(String floor);
 
-    default ArrayList<MapEdgeData> getEdgesOnFloor(String floor) {
-        return null;
-    }
+    ArrayList<MapEdge> getEdgesOnFloor(String floor);
 
     /**
      * Adds everything from the selected data source to this one

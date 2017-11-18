@@ -56,7 +56,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
         }
     }
 
-    public void addLoginInfo(PrivelegedUser p) {
+    public void addLoginInfo(LoginInfo p) {
         PreparedStatement pstmt = null;
         String uname = p.getUsername();
         int hash = uname.hashCode();
@@ -111,7 +111,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
 
 
     @Override
-    public boolean checkCredentials(PrivelegedUser p) {
+    public boolean checkCredentials(LoginInfo p) {
 
         boolean authorized = false;
         PreparedStatement pstmt = null;

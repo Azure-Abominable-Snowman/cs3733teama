@@ -1,18 +1,30 @@
 package com.teama.mapsubsystem.data;
 
+import com.teama.drawing.MapDisplay;
+
 import java.util.ArrayList;
 
-public abstract class MapNodeData extends MapNode{
+public class MapNodeData implements MapNode {
+    private Location coordinate;
+    private String id, shortDescription, longDescription, teamAssignment;
+    private Enum<NodeType> nodeType;
+    private ArrayList<MapEdge> edges;
 
-
-    public MapNodeData(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription, String shortDescription, String teamAssignment) {
-        super(id, coordinate, nodeType, longDescription, shortDescription, teamAssignment);
+    public MapNodeData(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
+                   String shortDescription, String teamAssignment) {
+        this(id, coordinate, nodeType, longDescription, shortDescription, teamAssignment, new ArrayList<>());
     }
 
-    public MapNodeData(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription, String shortDescription, String teamAssignment, ArrayList<MapEdge> edges) {
-        super(id, coordinate, nodeType, longDescription, shortDescription, teamAssignment, edges);
+    public MapNodeData(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
+                   String shortDescription, String teamAssignment, ArrayList<MapEdge> edges) {
+        this.coordinate = coordinate;
+        this.id = id;
+        this.nodeType = nodeType;
+        this.edges = edges;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
+        this.teamAssignment = teamAssignment;
     }
-
     public void setID(String id) {
         this.id = id;
     }
@@ -39,7 +51,7 @@ public abstract class MapNodeData extends MapNode{
         this.edges = edges;
     }
 
-    public void addEdge(MapEdgeData edge) {
+    public void addEdge(MapEdge edge) {
         this.edges.add(edge);
     }
 
@@ -75,5 +87,10 @@ public abstract class MapNodeData extends MapNode{
 
     public String toString() {
         return getShortDescription();
+    }
+
+    @Override
+    public void displayOnScreen(MapDisplay display) {
+        System.out.println("NOT IMPLEMENTED");
     }
 }

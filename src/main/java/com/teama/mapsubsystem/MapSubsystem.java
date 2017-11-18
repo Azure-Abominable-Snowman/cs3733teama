@@ -1,12 +1,11 @@
 package com.teama.mapsubsystem;
 
 import com.teama.controllers.SceneEngine;
-import com.teama.mapsubsystem.data.MapNodeData;
+import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.AStar;
+import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
-import com.teama.mapsubsystem.data.CSVDatabaseSource;
-import com.teama.mapsubsystem.data.JavaDatabaseSource;
-import com.teama.mapsubsystem.data.MapDataSource;
+import com.teama.mapsubsystem.pathfinding.TextDirections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,37 +18,8 @@ import java.util.Map;
  */
 public class MapSubsystem {
 
-    static MapSubsystem instance = null;
-    private MapDataSource javaDBSource; // link to javaDB -- see MapDataSource interface to call functions that update DB
-    private MapDataSource csvSource;
-
-    private String nodefile = "/csvdata/MapAnodes.csv";
-    private String edgefile = "/csvdata/MapAedges.csv";
-
-    private PathAlgorithm pathGenerator;
-
-    public MapDataSource getMap() {
-        return javaDBSource;
-    }
-
-    public void exportToCSV(String nodeFile, String edgeFile) {
-        //csvSource.addAll(javaDBSource);
-        CSVDatabaseSource export = new CSVDatabaseSource(nodeFile, edgeFile);
-        export.addAll(javaDBSource);
-        export.close();
-    }
-
-    public Map<String, MapNodeData> getFloorNodes(String floor) {
-        ArrayList<MapNodeData> nodes = javaDBSource.getNodesOnFloor(floor);
-        Map<String, MapNodeData> nodeMap = new HashMap<>();
-        for(MapNodeData n : nodes) {
-            nodeMap.put(n.getId(), n);
-        }
-        return nodeMap;
-    }
-
-    public PathAlgorithm getPathGenerator() {
-        return pathGenerator;
+    private static class MapSubsystemGetter {
+        private static final MapSubsystem instance = new MapSubsystem();
     }
 
     private MapSubsystem() {
@@ -62,11 +32,75 @@ public class MapSubsystem {
     }
 
 
-    public static synchronized MapSubsystem getInstance()
+    public static synchronized MapSubsystem getInstance() {
+        return MapSubsystemGetter.instance;
+    }
 
-    {
-        if (instance == null)
-            instance = new MapSubsystem();
-        return instance;
+    private MapDataSource javaDBSource; // link to javaDB -- see MapDataSource interface to call functions that update DB
+    private MapDataSource csvSource;
+
+    private String nodefile = "/csvdata/MapAnodes.csv";
+    private String edgefile = "/csvdata/MapAedges.csv";
+
+    private PathAlgorithm pathGenerator;
+
+    @Deprecated
+    public MapDataSource getMap() {
+        return javaDBSource;
+    }
+
+    @Deprecated
+    public void exportToCSV(String nodeFile, String edgeFile) {
+        //csvSource.addAll(javaDBSource);
+        CSVDatabaseSource export = new CSVDatabaseSource(nodeFile, edgeFile);
+        export.addAll(javaDBSource);
+        export.close();
+    }
+
+    @Deprecated
+    public PathAlgorithm getPathGenerator() {
+        return pathGenerator;
+    }
+
+    public MapNode getNode(String id) {
+        return null;
+    }
+
+    public MapEdge getEdge(String id) {
+        return null;
+    }
+
+    public void deleteEdge() {
+
+    }
+
+    public void deleteNode() {
+
+    }
+
+    public Map<String, MapNode> getFloorNodes(String floor) {
+        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor);
+        Map<String, MapNode> nodeMap = new HashMap<>();
+        for(MapNode n : nodes) {
+            nodeMap.put(n.getId(), n);
+        }
+        return nodeMap;
+    }
+
+    // make format enum
+    public void export() {
+
+    }
+
+    public TextDirections getDirections(Path path) {
+        return null;
+    }
+
+    public TextDirections getDirections(MapNode front, MapNode end) {
+        return null;
+    }
+
+    public Path getPath(MapNode start, MapNode end) {
+        return null;
     }
 }

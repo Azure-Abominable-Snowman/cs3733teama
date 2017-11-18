@@ -1,23 +1,52 @@
 package com.teama.mapsubsystem.data;
 
+import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 
-public abstract class MapEdgeData extends MapEdge {
+public class MapEdgeData implements MapEdge {
+    private MapNode start, end;
+    private String startID, endID;
+    private String id;
+    private double weight = -1;
 
+    /**
+     * Creates an edge on the graph, the weight is assumed to be the euclidean distance between the start and end nodes.
+     * @param id
+     * @param start
+     * @param end
+     */
     public MapEdgeData(String id, String start, String end) {
-        super(id, start, end);
+        this.startID = start;
+        this.endID = end;
+        this.id = id;
     }
 
-    public MapEdgeData(String id, MapNodeData start, MapNodeData end, double weight) {
-        super(id, start, end, weight);
+    public MapEdgeData(String id, MapNode start, MapNode end, double weight) {
+        this(id, start, end);
+        this.weight = weight;
     }
 
-    public MapEdgeData(String id, MapNodeData start, MapNodeData end) {
-        super(id, start, end);
+    public MapEdgeData(String id, MapNode start, MapNode end) {
+        this.startID = start.getId();
+        this.endID = end.getId();
+        this.start = start;
+        this.end = end;
+        this.id = id;
     }
 
+
+    /**
+     * Creates an edge using a defined weight
+     * @param id
+     * @param start
+     * @param end
+     * @param weight
+     */
     public MapEdgeData(String id, String start, String end, double weight) {
-        super(id, start, end, weight);
+        this.startID = start;
+        this.endID = end;
+        this.id = id;
+        this.weight = weight;
     }
 
     /**
@@ -30,21 +59,18 @@ public abstract class MapEdgeData extends MapEdge {
     }
 
     /**
-     * Gets the starting node, this calls the MapSubsystem static class, make sure this is what you want to do
+     * Gets the starting node, this calls the HospitalMap static class, make sure this is what you want to do
      * TODO: Make this less opaque
      * @return
      */
-    public void setID(String id) {
-        this.id = id;
-    }
-    public MapNodeData getStart() {
+    public MapNode getStart() {
         if(start == null) {
             start = MapSubsystem.getInstance().getMap().getNode(startID);
         }
         return start;
     }
 
-    public void setStart(MapNodeData start) {
+    public void setStart(MapNode start) {
         if(start == null) {
             System.out.println("Tried to set a null start");
             return;
@@ -56,18 +82,18 @@ public abstract class MapEdgeData extends MapEdge {
     }
 
     /**
-     * Gets the ending node, this calls the MapSubsystem static class, make sure this is what you want to do
+     * Gets the ending node, this calls the HospitalMap static class, make sure this is what you want to do
      * TODO: Make this less opaque
      * @return
      */
-    public MapNodeData getEnd() {
+    public MapNode getEnd() {
         if(end == null) {
             end = MapSubsystem.getInstance().getMap().getNode(endID);
         }
         return end;
     }
 
-    public void setEnd(MapNodeData end) {
+    public void setEnd(MapNode end) {
         if(end == null) {
             System.out.println("Tried to set a null end");
             return;
@@ -130,5 +156,10 @@ public abstract class MapEdgeData extends MapEdge {
 
     public String toSQLVals() {
         return String.format("'%s','%s','%s'", getId(), getStartID(), getEndID());
+    }
+
+    @Override
+    public void displayOnScreen(MapDisplay display) {
+        System.out.println("NOT IMPLEMENTED");
     }
 }
