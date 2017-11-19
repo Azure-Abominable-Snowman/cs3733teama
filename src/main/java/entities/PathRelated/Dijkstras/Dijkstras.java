@@ -81,7 +81,7 @@ public class Dijkstras implements PathAlgorithm {
      * @param n the node that's known
      * @return the node on the other end of this edge
      */
-    private MapNode adjacentNode(MapEdge e , MapNode n )
+    protected MapNode adjacentNode(MapEdge e, MapNode n)
     {
         if(e.getStart().getId().equals(n.getId())) return e.getEnd();
         else return e.getStart();
@@ -128,15 +128,15 @@ public class Dijkstras implements PathAlgorithm {
      * @param lastPoint the end point the Path
      * @return  the reversed Path
      */
-    private ArrayList<KnownPoint> collectPath(KnownPoint lastPoint)
+    private ArrayList<MapNode> collectPath(KnownPoint lastPoint)
     {
-        ArrayList<KnownPoint> finalPath = new ArrayList<>();
+        ArrayList<MapNode> finalPath = new ArrayList<>();
         for (;lastPoint.getLastNode()!=null;)
         {
-            finalPath.add(lastPoint);
+            finalPath.add(lastPoint.getNode());
             lastPoint=lastPoint.getLastNode();
         }
-        finalPath.add(lastPoint);
+        finalPath.add(lastPoint.getNode());
         return finalPath;
     }
 
@@ -145,15 +145,15 @@ public class Dijkstras implements PathAlgorithm {
      * @param finalPath the reversed path generated from ending location.
      * @return the formatted Path object.
      */
-    protected Path formatOutput(ArrayList<KnownPoint> finalPath)
+    protected Path formatOutput(ArrayList<MapNode> finalPath)
     {
         Path output = new Path();
-        MapNode currentNode = finalPath.get(finalPath.size()-1).getNode(); // extract the first Node of the list.
+        MapNode currentNode = finalPath.get(finalPath.size()-1); // extract the first Node of the list.
         output.addNode(currentNode); // put the start node into it.
         MapNode nextNode;
         for(int i =finalPath.size()-2;i>-1;--i)
         {
-            nextNode=finalPath.get(i).getNode(); // extract the second node
+            nextNode=finalPath.get(i); // extract the second node
             output.addNode(nextNode);             //store the next node
             output.addEdge(getEdgeBetweenNodes(nextNode,currentNode)); // store the edge between them.
             currentNode=nextNode;   // move forward one step.

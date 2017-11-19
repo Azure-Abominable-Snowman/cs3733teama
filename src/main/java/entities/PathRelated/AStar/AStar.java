@@ -75,17 +75,6 @@ public class AStar extends Dijkstras {
         return (int) sqrt ( x*x+y*y ) ;
     }
 
-    /**
-     * This helper function is to get the other node which links to the given edge.
-     * @param e the edge being checked
-     * @param n the node that's known
-     * @return the node on the other end of this edge
-     */
-    private MapNode adjacentNode(MapEdge e , MapNode n )
-    {
-        if(e.getStart().getId().equals(n.getId())) return e.getEnd();
-        else return e.getStart();
-    }
 
 
     /**
@@ -114,15 +103,15 @@ public class AStar extends Dijkstras {
      * @param lastPoint the end point the Path
      * @return  the reversed Path
      */
-    private ArrayList<KnownPoint> collectPath(KnownPoint lastPoint)
+    private ArrayList<MapNode> collectPath(KnownPoint lastPoint)
     {
-        ArrayList<KnownPoint> finalPath = new ArrayList<>();
+        ArrayList<MapNode> finalPath = new ArrayList<>();
         for (;lastPoint.getLastNode()!=null;)
         {
-            finalPath.add(lastPoint);
+            finalPath.add(lastPoint.getNode());
             lastPoint=lastPoint.getLastNode();
         }
-        finalPath.add(lastPoint);
+        finalPath.add(lastPoint.getNode());
         return finalPath;
     }
 
