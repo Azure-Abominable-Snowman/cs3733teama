@@ -89,14 +89,16 @@ public class Dijkstras implements PathAlgorithm {
      */
     private void putNodesIntoQueue (KnownPoint checking)
     {
+        MapNode nextNode;
+        KnownPoint nextPoint;
         for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
-            MapNode nextNode= adjacentNode(e,checking.getNode());  // get the node to be calculated.
+            nextNode= adjacentNode(e,checking.getNode());  // get the node to be calculated.
 
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
-                KnownPoint nextPoint = new KnownPoint(nextNode, checking, newPastCost); // Generate a new Point from checking point to add into queue.
+                nextPoint = new KnownPoint(nextNode, checking, newPastCost); // Generate a new Point from checking point to add into queue.
                 queue.add(nextPoint); // add into queue
             }
         }

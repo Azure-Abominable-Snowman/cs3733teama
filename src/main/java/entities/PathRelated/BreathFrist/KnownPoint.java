@@ -5,7 +5,9 @@ import entities.MapNode;
 
 import java.util.ArrayList;
 
-public class KnownPoint {
+public class KnownPoint  {
+
+
     private MapNode node;
     private int layer;
 
@@ -25,6 +27,15 @@ public class KnownPoint {
         return result;
     }
 
+
+    public int getLayer() {
+        return layer;
+    }
+
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
+
     public MapNode getNode() {
         return node;
     }
@@ -33,12 +44,8 @@ public class KnownPoint {
         this.node = node;
     }
 
-
-    public int getLayer() {
-        return layer;
-    }
-
-    public void setLayer(int layer) {
-        this.layer = layer;
+    @Override
+    public boolean equals(Object obj) {
+        return (this.getNode().getId() == ((KnownPoint) obj).getNode().getId());
     }
 }
