@@ -1,9 +1,6 @@
 package entities;
 
-import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapEdgeData;
-import com.teama.mapsubsystem.data.MapNodeData;
-import com.teama.mapsubsystem.data.NodeType;
+import com.teama.mapsubsystem.data.*;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -21,16 +18,16 @@ public class MapEdgeTest {
         // Create a new edge with known values and nodes.
         //'WHALL00203',2080,1290,'3','45 Francis','HALL','Hallway Connector 2 Floor 3','Hallway W0203','Team I'
         //'WHALL00302',2085,900,'2','45 Francis','HALL','Hallway Connector 3 Floor 2','Hallway W0302','Team H'
-        nodeOne = new MapNodeData("WHALL00203", new Location(2080, 1280, "3", "45 Francis"),
+        nodeOne = new MapNodeData("WHALL00203", new Location(2080, 1280, Floor.THREE, "45 Francis"),
                 NodeType.HALL, "Hallway W0203", "Hallway Connector 2 Floor 3", "Team I", null);
-        nodeTwo = new MapNodeData("WHALL00302", new Location(2070, 900, "2", "45 Francis"),
+        nodeTwo = new MapNodeData("WHALL00302", new Location(2070, 900, Floor.TWO, "45 Francis"),
                 NodeType.HALL, "Hallway W0302", "Hallway Connector 3 Floor 2", "Team H", null);
-        nodeThree = new MapNodeData("WHALL00302", new Location(2010, 700, "2", "45 Francis"),
+        nodeThree = new MapNodeData("WHALL00302", new Location(2010, 700, Floor.TWO, "45 Francis"),
                 NodeType.HALL, "Hallway W0303", "Hallway Connector 3 Floor 3", "Team Z", null);
 
-        nodeFour = new MapNodeData("WHALL00304", new Location(2010, 700, "2", "45 Francis"),
+        nodeFour = new MapNodeData("WHALL00304", new Location(2010, 700, Floor.TWO, "45 Francis"),
                 NodeType.HALL, "Hallway W0304", "Hallway Connector 3 Floor 4", "Team Z", null);
-        nodeFive = new MapNodeData("WELEV00W03", new Location(2080, 1280, "3", "45 Francis"),
+        nodeFive = new MapNodeData("WELEV00W03", new Location(2080, 1280, Floor.THREE, "45 Francis"),
                 NodeType.HALL, "Elevator W0203", "Elevator W Floor 3", "Team I", null);
 
         testEdge = new MapEdgeData("TestEdge", nodeOne, nodeTwo);

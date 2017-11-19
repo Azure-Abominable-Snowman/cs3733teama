@@ -15,4 +15,12 @@ public enum Floor {
 
     public String toString() { return this.floor; }
 
+    public static Floor getFloor(String name) {
+        for(Floor f : Floor.values()) {
+            if(f.toString().equals(name)) {
+                return f;
+            }
+        }
+        throw new IllegalArgumentException("No floor by the name "+name+" found");
+    }
 }

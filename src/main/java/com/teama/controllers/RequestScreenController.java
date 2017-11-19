@@ -1,23 +1,14 @@
 package com.teama.controllers;
 
-import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNodeData;
-import com.teama.mapsubsystem.data.NodeType;
-import com.teama.requestsubsystem.RequestTable;
-import com.teama.requestsubsystem.PriorityLevel;
 import com.teama.requestsubsystem.Request;
+import com.teama.requestsubsystem.RequestTable;
 import com.teama.requestsubsystem.RequestType;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 public class RequestScreenController implements Controller {
     RequestTable requestTable = RequestTable.getInstance();
@@ -58,7 +49,7 @@ public class RequestScreenController implements Controller {
 
 
 
-
+/*
     public void initialize(){
         //fills building options drop down menu
         building.getItems().clear();
@@ -187,7 +178,7 @@ public class RequestScreenController implements Controller {
         else if(cancel.isPressed()){
             request = null;
         }*/
-
+/*
     }
 
     //find node from the floor input
@@ -223,5 +214,5 @@ public class RequestScreenController implements Controller {
         SceneEngine.display(FulfillReqController.class, SceneEngine.getPopOutStage(), null);
     }
 
-
+*/
 }

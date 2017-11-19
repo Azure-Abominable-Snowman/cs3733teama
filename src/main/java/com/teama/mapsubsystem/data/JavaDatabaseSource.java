@@ -14,6 +14,7 @@ public class JavaDatabaseSource implements MapDataSource {
     private String nodeTable, edgeTable;
     private Connection conn = null;
     private Statement stmt = null;
+    private PreparedStatement addEdgeStmt;
 
     public JavaDatabaseSource(String dbURL, String nodeTable, String edgeTable) {
         this.dbURL = dbURL;
@@ -89,6 +90,13 @@ public class JavaDatabaseSource implements MapDataSource {
         {
             log.info("Does the edge database table already exist?");
         }
+
+        // Create all of the statement templates needed
+        try {
+            addEdgeStmt = conn.prepareStatement("INSERT INTO "+edgeTable+" VALUES( ?, ?, ? )");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private MapNode nodeFromSQL(ResultSet result) throws SQLException {
@@ -133,6 +141,9 @@ public class JavaDatabaseSource implements MapDataSource {
         {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE STARTNODE='"+id+"' OR ENDNODE='"+id+"'");
+            if(!result.next()) {
+                return null;
+            }
             MapNode retrievedNode = retrieveNode(id);
             if(retrievedNode == null) {
                 System.out.println("Requested node doesn't exist in the database");
@@ -197,11 +208,14 @@ public class JavaDatabaseSource implements MapDataSource {
     public void addEdge(MapEdge edge) {
         try {
             stmt = conn.createStatement();
-            stmt.execute("INSERT INTO " + edgeTable + " VALUES ("+edge.toSQLVals()+")");
+            addEdgeStmt.setString(1, edge.getId());
+            addEdgeStmt.setString(2, edge.getStartID());
+            addEdgeStmt.setString(3, edge.getEndID());
+            addEdgeStmt.execute();
             stmt.close();
             log.info("Adding a new edge with ID " + edge.getId());
         }
-        catch (SQLException sqlExcept) {
+        catch (SQLException sqlExcept) { // happens when it needs to be updated
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {
                 try {
                     stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -289,9 +303,9 @@ public class JavaDatabaseSource implements MapDataSource {
         try {
             stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+id+"'");
-            result.next();
-            //MapNode start = getNode(result.getString("STARTNODE"));
-            //MapNode end = getNode(result.getString("ENDNODE"));
+            if(!result.next()) {
+                return null;
+            }
             MapEdge retrievedEdge = new MapEdgeData(result.getString("EDGEID"), result.getString("STARTNODE"), result.getString("ENDNODE"));
             result.close();
             stmt.close();

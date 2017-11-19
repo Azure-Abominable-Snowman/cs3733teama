@@ -1,9 +1,6 @@
 package entities.PathRelated;
 
-import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapEdgeData;
-import com.teama.mapsubsystem.data.MapNodeData;
-import com.teama.mapsubsystem.data.NodeType;
+import com.teama.mapsubsystem.data.*;
 
 public class  GenerateMap  {
 
@@ -121,7 +118,7 @@ public class  GenerateMap  {
     private void fillMap (MapNodeData[][] map, int sizeX, int sizeY)
     {
         String str  = new String();
-        Location tempLoc = new Location(1,1,"1","a");// create location
+        Location tempLoc = new Location(1,1, Floor.ONE,"a");// create location
         for(int i = 0;i< sizeX;i++){    // start fill in the map
             for (int j = 0; j < sizeY; j++)
             {
@@ -198,7 +195,7 @@ public class  GenerateMap  {
      */
     private double findWeight(MapNodeData n1, MapNodeData n2)
     {
-        for (MapEdgeData edge: n1.getEdges()) {
+        for (MapEdge edge: n1.getEdges()) {
             if ( edge.getEnd()==n2 || edge.getStart() == n2 ) return edge.getWeight();
         }
         return -1;

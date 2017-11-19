@@ -1,21 +1,12 @@
 package com.teama.drawing;
 
-import com.teama.controllers.SceneEngine;
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapEdgeData;
 import com.teama.mapsubsystem.data.MapNodeData;
-import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.Path;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -38,7 +29,7 @@ public class DrawMap {
     private ScrollPane mapPane;
     private MapSubsystem map;
     private Path curPath;
-
+/*
     public DrawMap(ScrollPane mapPane, Canvas c, int xOffset, int yOffset, int imgW, int imgH) {
         this.c = c;
         this.gc = c.getGraphicsContext2D();
@@ -64,7 +55,7 @@ public class DrawMap {
     }
     /**
      * Converts input coordinate system to output coordinate system
-     */
+     *//*
     public double convUnits(double x, double origMaxX, double curMaxX) {
         return (x*(curMaxX/origMaxX));
     }
@@ -73,7 +64,7 @@ public class DrawMap {
      * Creates new location with the X and Y coordinates suitable for drawing on the map
      * @param loc
      * @return
-     */
+     *//*
     private Location convNodeCoords(Location loc) {
         Location newLoc = new Location(loc);
         newLoc.setxCoord(loc.getxCoord()+xOffset);
@@ -291,5 +282,5 @@ public class DrawMap {
         return ((xcoord <= canvasX+nodeTolerance && xcoord >= canvasX-nodeTolerance)&&
                 (ycoord <= canvasY+nodeTolerance && ycoord >= canvasY-nodeTolerance));
 
-    }
+    }*/
 }

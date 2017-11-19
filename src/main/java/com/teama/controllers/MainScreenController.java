@@ -1,25 +1,13 @@
 package com.teama.controllers;
 
-import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.MapEdgeData;
-import com.teama.mapsubsystem.data.MapNodeData;
-import com.teama.mapsubsystem.data.NodeType;
-import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.drawing.DrawMap;
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
+import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.MapNodeData;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.util.Map;
 
 
 public class MainScreenController implements Controller {
@@ -69,7 +57,7 @@ public class MainScreenController implements Controller {
     private MapSubsystem map;
 
     private Stage stage;
-
+/*
     public void initialize() {
         hideDirections();
 
@@ -117,6 +105,7 @@ public class MainScreenController implements Controller {
 
 
     }
+
 
     private void populateBoxes(String floor) {
         // Populate combo boxes
@@ -171,12 +160,13 @@ public class MainScreenController implements Controller {
             dMap.toggleZoom(e.getX(), e.getY());
         }
     }
-
+*/
     /**
      * Called when the stage is given to the controller, does initialization routines
      *
      * @param stage
      */
+    /*
     @Override
     public void setStage(Stage stage) {
         // On resize of the stage
@@ -305,4 +295,5 @@ public class MainScreenController implements Controller {
             logoutBtn.setVisible(false);
             loginBtn.setVisible(true);
     }
+*/
 }

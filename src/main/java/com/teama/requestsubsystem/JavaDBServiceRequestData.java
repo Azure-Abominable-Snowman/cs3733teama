@@ -1,10 +1,7 @@
 package com.teama.requestsubsystem;
 
-import com.teama.requestsubsystem.ServiceRequestDataSource;
+import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
-import com.teama.requestsubsystem.PriorityLevel;
-import com.teama.requestsubsystem.Request;
-import com.teama.requestsubsystem.RequestType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -101,7 +98,7 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
             set.next();
             // Get info from table and return object based off of it
             Request r = new Request(id, new Location(set.getInt("XCOORD"), set.getInt("YCOORD"),
-                    set.getString("LEVEL"), set.getString("BUILDING")),
+                    Floor.getFloor(set.getString("LEVEL")), set.getString("BUILDING")),
                     RequestType.valueOf(set.getString("REQTYPE")), PriorityLevel.valueOf(set.getString("PRIORITY")),
                     set.getString("NOTE"), set.getBoolean("FULFILLED")
             );
@@ -124,7 +121,7 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
 
                 Request r = new Request(set.getString("REQUESTID"),
                         new Location(set.getInt("XCOORD"), set.getInt("YCOORD"),
-                                set.getString("LEVEL"), set.getString("BUILDING")),
+                                Floor.valueOf(set.getString("LEVEL")), set.getString("BUILDING")),
                         RequestType.valueOf(set.getString("REQTYPE")),
                         PriorityLevel.valueOf(set.getString("PRIORITY")),
                         set.getString("NOTE"),

@@ -1,24 +1,14 @@
 package com.teama.controllers;
 
-import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.*;
-import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.drawing.DrawMap;
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.data.MapEdgeData;
+import com.teama.mapsubsystem.data.MapNodeData;
+import com.teama.mapsubsystem.data.NodeType;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
-import javafx.util.StringConverter;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 
 public class MapEditorController implements Controller {
@@ -59,7 +49,7 @@ public class MapEditorController implements Controller {
     private String currentFloor = "G";
 
 
-
+/*
     EventHandler<MouseEvent> onMouseClick = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
@@ -87,7 +77,8 @@ public class MapEditorController implements Controller {
                 }
                 editorMap.drawNode(startNode, 4, color);
             }
-*/
+            */
+/*
             MapNodeData m = findNodeAt(xCanvas.intValue(), yCanvas.intValue()); // check if node exists in database
             if (m!= null) {
                 name.setText(m.getLongDescription());
@@ -478,11 +469,12 @@ public class MapEditorController implements Controller {
 
 
     private boolean ctrlDown = false;
-
+*/
     /**
      * Resizes the map when needed
      * @param stage
      */
+    /*
     @Override
     public void setStage(Stage stage) {
         // On resize of the stage
@@ -509,7 +501,7 @@ public class MapEditorController implements Controller {
                 ctrlDown = false; // when it is released, set the variable to false
             }
         });
-    }
+    }*/
 
 }
 
