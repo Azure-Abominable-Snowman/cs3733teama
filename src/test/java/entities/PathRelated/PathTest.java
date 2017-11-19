@@ -36,8 +36,4 @@ public class PathTest {
         assertEquals(false, testPath.addNode(testNodes[1][2]));
     }
 
-    @Test
-    public void addEdge() throws Exception {
-    }
-
 }

@@ -79,31 +79,110 @@ public class  GenerateMap  {
         MapNode[][] map = new MapNode[sizeX][sizeY]; // allocate new map
         fillMap (map,sizeX,sizeY);
         // Done creating the Nodes, Start making edges.
+        // add individual edges.
         linkNodes(map[0][0], map[0][1],1);
-        linkNodes(map[0][1], map[0][2],2);
-        linkNodes(map[0][4], map[0][5],3);
-        linkNodes(map[0][0],map[1][0],2);
-        linkNodes(map[1][0],map[1][1],1);
-        linkNodes(map[2][1],map[3][1],14);
-        linkNodes(map[0][5],map[1][5],8);
-        linkNodes(map[1][5],map[2][5],8);
-        linkNodes(map[3][1],map[3][2],12);
+        linkNodes(map[10][1], map[11][1],2);
+        linkNodes(map[12][1], map[11][1],1);
 
-        for(int i=4 ,col=4;i<sizeX;++i) // create the map for part 5th col
-            linkNodes(map[col][i-1],map[col][i],3+(i%10));
-        for(int i=3 ,col=0;i<5;++i) // create the map for part 5th col
-            linkNodes(map[col][i-1],map[col][i],0+((i/2)%10));
-        for(int i=2 ,col=4;i<4;++i) // create the map for part 5th col
-            linkNodes(map[col][i-1],map[col][i],1);
-        for(int i=1 ,col=11;i<8;++i) // create the map for part 5th col
-            linkNodes(map[col][i-1],map[col][i],3+i%3*3%4);
+        linkNodes(map[23][19], map[24][19],3);
+        linkNodes(map[23][17], map[24][17],3);
+        linkNodes(map[23][22], map[24][22],3);
 
-        for(int i=1;i<sizeX;++i) // create the map for part 5th row
-            linkNodes(map[i-1][4],map[i][4],2+((i/2)%3));
-        for(int i=2,row=2;i<13;++i) // create the map for part 3th row
-            linkNodes(map[i-1][row],map[i][row],6+((i/3)%3));
-        for(int i=4,row=1;i<15;++i) // create the map for part 2th row
-            linkNodes(map[i-1][row],map[i][row],1+((i*19)%7));
+
+        linkNodes(map[22][22], map[22][23],3);
+        linkNodes(map[23][22], map[23][23],3);
+        linkNodes(map[22][23], map[22][24],3);
+        linkNodes(map[23][23], map[23][24],3);
+
+        linkNodes(map[20][23], map[20][24],3);
+        linkNodes(map[20][22], map[20][23],3);
+
+
+
+        // add vertical edges.
+        for(int i=2 ,col=10;i<9;++i) // create the map for part 10th col
+            linkNodes(map[col][i-1],map[col][i],1+i*3%2);
+        for(int i=2 ,col=12;i<11;++i) // create the map for part 5th col
+        linkNodes(map[col][i-1],map[col][i],1+i*4%3);
+
+        for(int i=14 ,col=24;i<25;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],1+i*4%3);
+        for(int i=9,col=10;i<17;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],9+i*8%7);
+        for(int i=1,col=2;i<9;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],5+i*8%7);
+
+
+        // add horizontial edges.
+        for (int i = 1,row=1; i < 11; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 3+i*8%7);
+        for (int i = 11,row=8; i < 13; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 12+i*3%4);
+        for (int i = 21,row=23; i < 25; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*2%3);
+        for (int i = 21,row=24; i < 25; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*3%2);
+
+
+
+        for (int i = 22,row=15; i < 25; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*3%2);
+        for(int i=15 ,col=21;i<20;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],1+i*4%3);
+
+        for (int i =19,row=17; i < 23; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*3%2);
+        for (int i =17,row=18; i < 23; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*3%2);
+        for (int i =19,row=13; i < 25; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 10+i*3%6);
+        for(int i=7 ,col=18;i<20;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],1+i*4%3);
+        for(int i=3 ,col=16;i<20;++i) // create the map for part 5th col
+            linkNodes(map[col][i-1],map[col][i],1+i*7%4);
+        for (int i =11,row=2; i < 17; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*3%2);
+        for (int i =11,row=14; i < 19; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*3%2);
+        for (int i =3,row=8; i < 11; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*7%3);
+
+        for (int i =11,row=17; i < 19; ++i)
+        linkNodes(map[i - 1][row], map[i][row], 8+i*5%4);
+        for (int i =3,row=4; i < 11; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 1+i*3%2);
+        for (int i =12,row=6; i <19; ++i)
+            linkNodes(map[i - 1][row], map[i][row], 9+i*5%4);
+
+
+
+        for (int row = 19;row<23 ;++row )
+            for (int i = 17; i < 24; ++i)
+                linkNodes(map[i - 1][row], map[i][row], 15);
+        for (int col =16; col<24;++col)
+            for(int i=20 ;i<23;++i) // create the map for part 5th col
+                linkNodes(map[col][i-1],map[col][i],15);
+
+
+        for (int row = 16;row<19 ;++row )
+                linkNodes(map[22][row], map[23][row], 15);
+
+        for (int col =22; col<24;++col)
+            for(int i=16 ;i<20;++i) // create the map for part 5th col
+                linkNodes(map[col][i-1],map[col][i],15);
+
+
+
+
+
+        //make island
+        for (int row = 10;row<15 ;++row )
+            for (int i = 4; i < 9; ++i)
+                linkNodes(map[i - 1][row], map[i][row], 2+row%3 + ((i / 2) % 3));
+        for (int col =3; col<9;++col)
+            for(int i=11 ;i<15;++i) // create the map for part 5th col
+                linkNodes(map[col][i-1],map[col][i],3+(i%10));
+
 
         return map;
     }
@@ -188,6 +267,7 @@ public class  GenerateMap  {
             if(findWeight(map[i][sizeY-1],map[i+1][sizeY-1])<0) System.out.print("   ");
             else System.out.printf("%h  ",(int) findWeight(map[i][sizeY-1],map[i+1][sizeY-1]));
         }
+        System.out.print("X\n");
     }
 
     /**
