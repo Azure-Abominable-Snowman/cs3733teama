@@ -19,6 +19,7 @@ jar {
 
 repositories {
     mavenCentral()
+    jcenter()
     maven {
         url "https://maven.atlassian.com/3rdparty/"
     }
@@ -26,6 +27,8 @@ repositories {
 
 dependencies {
     compile 'com.jfoenix:jfoenix:1.10.0'
+    testCompile "org.testfx:testfx-core:4.0.+"
+    testCompile "org.testfx:testfx-junit:4.0.+"
     compile(
             [group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'],
             [group: 'org.apache.derby', name: 'derbyclient', version: '10.11.1.1'],

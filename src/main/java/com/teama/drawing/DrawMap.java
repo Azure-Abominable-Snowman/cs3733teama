@@ -1,18 +1,7 @@
 package com.teama.drawing;
 
-import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.MapNodeData;
-import com.teama.mapsubsystem.pathfinding.Path;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-
-import java.util.ArrayList;
-import java.util.Map;
-
 public class DrawMap {
-    private Canvas c;
+ /*   private Canvas c;
     private GraphicsContext gc;
     private int xOffset, yOffset, imgW, imgH;
     private ImageStash stash;
@@ -29,7 +18,7 @@ public class DrawMap {
     private ScrollPane mapPane;
     private MapSubsystem map;
     private Path curPath;
-/*
+
     public DrawMap(ScrollPane mapPane, Canvas c, int xOffset, int yOffset, int imgW, int imgH) {
         this.c = c;
         this.gc = c.getGraphicsContext2D();
