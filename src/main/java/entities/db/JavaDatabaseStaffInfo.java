@@ -4,10 +4,12 @@ import boundaries.Provider;
 import entities.staff.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
+import entities.db.StaffInfo;
 
 public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
 
@@ -63,7 +65,42 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
         {
             log.info("Does the staff info database or language relation table already exist?");
         }
+
+        try {
+            stmt = conn.createStatement();
+            stmt.execute(
+                    "INSERT INTO "+staffTable+" VALUES('TESTSTAFF', 'Jake', 'Pardue', '6034893939', 'INTERPRETER', 'VERIZON', TRUE)"
+            );
+            stmt.execute(
+                    "INSERT INTO "+staffTable+"_LANGUAGES VALUES('TESTSTAFF', 'English')"
+            );
+            stmt.close();
+        } catch (SQLException e) {
+            log.info("Staff language or person already added");
+        }
     }
+
+    public ArrayList<ServiceStaff> getIntrStaff(){
+        ArrayList<ServiceStaff> INTRStaff = new ArrayList<>();
+        try{
+            stmt = conn.createStatement();
+            ResultSet s = stmt.executeQuery(
+                    "SELECT * FROM "+staffTable+" WHERE STAFFTYPE = 'INTERPRETER'"
+            );
+            while(s.next()){
+                ServiceStaff staff = new InterpreterStaff(s.getString("STAFFID"), s.getString("firstName"), s.getString("lastName"),
+                        s.getString("phoneNumber"), StaffType.valueOf(s.getString("STAFFTYPE")), null, Provider.valueOf(s.getString("PHONEPROVIDER")), s.getBoolean("available"));
+                        INTRStaff.add(staff);
+            }
+            return INTRStaff;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        System.out.println("Couldn't find staff");
+        return null;
+    }
+
 
     @Override
     public ServiceStaff findQualified(StaffAttrib attrib) {
