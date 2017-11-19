@@ -19,11 +19,6 @@ public class Dijkstras implements PathAlgorithm {
     private PriorityQueue<KnownPoint> queue;
     private MapNode start, end;
 
-    @Override
-    public boolean verifyLocations() {
-        return false;
-    }
-
 
     /**
      * This is the a star itself.

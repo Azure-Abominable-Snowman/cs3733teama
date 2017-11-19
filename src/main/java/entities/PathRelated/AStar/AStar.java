@@ -15,14 +15,9 @@ import static java.lang.Math.sqrt;
 public class AStar extends Dijkstras {
 
 
-    private HashMap<String,KnownPoint> checkedPoints;
-    private PriorityQueue<KnownPoint> queue;
-    private MapNode start, end;
-
-    @Override
-    public boolean verifyLocations() {
-        return false;
-    }
+    protected HashMap<String,KnownPoint> checkedPoints;
+    protected PriorityQueue<KnownPoint> queue;
+    protected MapNode start, end;
 
 
     /**
@@ -37,6 +32,7 @@ public class AStar extends Dijkstras {
         this.end=end;
         checkedPoints= new HashMap<>();
         queue=new PriorityQueue<>();
+
 
         KnownPoint checking ; // create a temp variable to keep track of which node are we on.
 
@@ -68,7 +64,7 @@ public class AStar extends Dijkstras {
      * @param n2 is the end node.
      * @return returns the sum of x coord diff and y coord diff.
      */
-    private int calDistance(MapNode n1, MapNode n2)
+    protected int calDistance(MapNode n1, MapNode n2)
     {
         double x = (double) abs(n1.getCoordinate().getxCoord() - n2.getCoordinate().getxCoord());
         double y = (double) abs(n1.getCoordinate().getyCoord() - n2.getCoordinate().getxCoord());
@@ -81,7 +77,7 @@ public class AStar extends Dijkstras {
      * This helper function is to put all the nodes that are linked to checking into the queue.
      * @param checking is the node currently under examining.
      */
-    private void putNodesIntoQueue (KnownPoint checking)
+    protected void putNodesIntoQueue (KnownPoint checking)
     {
         for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
@@ -103,7 +99,7 @@ public class AStar extends Dijkstras {
      * @param lastPoint the end point the Path
      * @return  the reversed Path
      */
-    private ArrayList<MapNode> collectPath(KnownPoint lastPoint)
+    protected ArrayList<MapNode> collectPath(KnownPoint lastPoint)
     {
         ArrayList<MapNode> finalPath = new ArrayList<>();
         for (;lastPoint.getLastNode()!=null;)

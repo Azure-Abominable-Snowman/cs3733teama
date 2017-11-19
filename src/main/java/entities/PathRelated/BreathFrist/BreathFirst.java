@@ -11,12 +11,7 @@ public class BreathFirst implements PathAlgorithm {
    private Queue<MapNode> queue;
    private HashMap<String,MapNode> checkedPoints;
 
-   //TODO make new helper class like knownPoint or expend knownPoint to be reusable?
 
-    @Override
-    public boolean verifyLocations() {
-        return false;
-    }
 
     @Override
     public Path generatePath(MapNode start, MapNode end) {
