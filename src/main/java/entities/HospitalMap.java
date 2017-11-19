@@ -1,7 +1,7 @@
 package entities;
 
 import controllers.SceneEngine;
-import entities.PathRelated.AStar;
+import entities.PathRelated.AStar.AStar;
 import entities.PathRelated.PathGenerator;
 import entities.db.CSVDatabaseSource;
 import entities.db.JavaDatabaseSource;
