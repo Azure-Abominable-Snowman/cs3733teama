@@ -10,7 +10,7 @@ public class Path {
     private MapNode startNode; // @TODO do we need this? since the start of Arraylist could be start node. 
     private MapNode endNode;
 
-    Path ()
+    public Path()
     {
         nodes = new ArrayList<MapNode>();
         connectors = new ArrayList<MapEdge>();

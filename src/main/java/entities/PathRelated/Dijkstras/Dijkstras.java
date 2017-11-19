@@ -1,6 +1,10 @@
-package entities.PathRelated;
+package entities.PathRelated.Dijkstras;
+
+
 import entities.MapEdge;
 import entities.MapNode;
+import entities.PathRelated.Path;
+import entities.PathRelated.PathAlgorithm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +13,7 @@ import java.util.PriorityQueue;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 
-public class AStar implements  PathGenerator{
+public class Dijkstras implements PathAlgorithm {
 
     private HashMap<String,KnownPoint> checkedPoints;
     private PriorityQueue<KnownPoint> queue;
@@ -37,17 +41,17 @@ public class AStar implements  PathGenerator{
         KnownPoint checking ; // create a temp variable to keep track of which node are we on.
 
         //Generate Path
-        for(checking = new KnownPoint(start,null,0,calDistance(start,end));
+        for(checking = new KnownPoint(start,null,0);
             !checking.getNode().getId().equals(end.getId());   // reached end
             checking=queue.poll() // move forward one step
-            )
+                )
         {
             putNodesIntoQueue(checking); // put adjacent node into queue.
             checkedPoints.put(checking.getNode().getId(),checking);
             if(queue.peek()==null) {
                 throw new java.lang.RuntimeException("Cannot generate a route from the given start and end.");
             }
-                // @TODO double check if this is good enough for errors.
+            // @TODO double check if this is good enough for errors.
         }
         // Done generating, output the path
         // make it into the format of outputting.
@@ -97,8 +101,7 @@ public class AStar implements  PathGenerator{
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
-                KnownPoint nextPoint = new KnownPoint(nextNode, checking, newPastCost,
-                        newPastCost + calDistance(nextNode, end)); // Generate a new Point from checking point to add into queue.
+                KnownPoint nextPoint = new KnownPoint(nextNode, checking, newPastCost); // Generate a new Point from checking point to add into queue.
                 queue.add(nextPoint); // add into queue
             }
         }
@@ -142,7 +145,7 @@ public class AStar implements  PathGenerator{
      * @param finalPath the reversed path generated from ending location.
      * @return the formatted Path object.
      */
-    private Path formatOutput (ArrayList<KnownPoint> finalPath)
+    protected Path formatOutput(ArrayList<KnownPoint> finalPath)
     {
         Path output = new Path();
         MapNode currentNode = finalPath.get(finalPath.size()-1).getNode(); // extract the first Node of the list.

@@ -1,8 +1,10 @@
-package entities.PathRelated;
+package entities.PathRelated.BeamSearch;
 
 import entities.MapNode;
+import entities.PathRelated.Path;
+import entities.PathRelated.PathAlgorithm;
 
-public class BeamSearch implements PathGenerator {
+public class BeamSearch implements PathAlgorithm {
     @Override
     public boolean verifyLocations() {
         return false;

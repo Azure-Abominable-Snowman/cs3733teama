@@ -1,10 +1,9 @@
 package entities.PathRelated;
 
 import entities.MapNode;
+import entities.PathRelated.AStar.AStar;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.management.RuntimeErrorException;
 
 import static org.junit.Assert.*;
 

@@ -1,35 +1,27 @@
-package entities.PathRelated;
+package entities.PathRelated.Dijkstras;
 
 import entities.MapEdge;
 import entities.MapNode;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class KnownPoint implements  Comparable {
 
     private MapNode node;
     private KnownPoint lastNode;
-    private int pastCost,completeCost;
-    private int layer;
+    private int pastCost;
 
     //constructor
-    public KnownPoint(MapNode node, KnownPoint lastNode, int pastCost, int completeCost) {
+    public KnownPoint(MapNode node, KnownPoint lastNode, int pastCost) {
         this.node = node;
         this.lastNode = lastNode;
         this.pastCost = pastCost;
-        this.completeCost = completeCost;
     }
 
-    public KnownPoint(MapNode node, int layer) {
-        this.node=node;
-        this.layer=layer;
-    }
-
-        /**
-         * a little helper function
-         * @return return the edges contained with stored node.
-         */
+    /**
+     * a little helper function
+     * @return return the edges contained with stored node.
+     */
     public ArrayList<MapEdge> getEdge()
     {
         return node.getEdges();
@@ -59,9 +51,9 @@ public class KnownPoint implements  Comparable {
     @Override
     public int compareTo(Object o) {
         KnownPoint node = (KnownPoint) o;
-        if (this.completeCost > node.completeCost) return 1;
-        else if (this.completeCost == node.completeCost) return 0;
-        else if (this.completeCost < node.completeCost) return -1;
+        if (this.pastCost > node.pastCost) return 1;
+        else if (this.pastCost== node.pastCost) return 0;
+        else if (this.pastCost< node.pastCost) return -1;
         return 0;
     }
 
@@ -90,20 +82,5 @@ public class KnownPoint implements  Comparable {
         this.pastCost = pastCost;
     }
 
-    public int getCompleteCost() {
-        return completeCost;
-    }
 
-    public void setCompleteCost(int completeCost) {
-        this.completeCost = completeCost;
-    }
-
-
-    public int getLayer() {
-        return layer;
-    }
-
-    public void setLayer(int layer) {
-        this.layer = layer;
-    }
 }
