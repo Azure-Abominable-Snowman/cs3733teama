@@ -1,10 +1,5 @@
 package com.teama.controllers;
 
-import com.teama.drawing.DrawMap;
-import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapEdgeData;
-import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.data.NodeType;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -31,7 +26,7 @@ public class MapEditorController implements Controller {
     //private Spinner<String> floor;
     //private SpinnerValueFactory.ListSpinnerValueFactory<String> floors;
     private SpinnerValueFactory.IntegerSpinnerValueFactory values;
-    private ToggleGroup group = new ToggleGroup();
+  /*  private ToggleGroup group = new ToggleGroup();
     private ToggleGroup editorAction = new ToggleGroup();
     private DrawMap editorMap;
     private MapSubsystem map;
@@ -49,7 +44,7 @@ public class MapEditorController implements Controller {
     private String currentFloor = "G";
 
 
-/*
+
     EventHandler<MouseEvent> onMouseClick = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {

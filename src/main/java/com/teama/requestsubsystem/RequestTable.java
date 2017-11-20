@@ -4,7 +4,7 @@ package com.teama.requestsubsystem;
  * Created by jakepardue on 11/14/17.
  */
 
-import com.teama.controllers.SceneEngine;
+import com.teama.Configuration;
 
 public class RequestTable {
 
@@ -20,7 +20,7 @@ public class RequestTable {
 
     public static synchronized RequestTable getInstance() {
         if (instance == null)
-            instance = new RequestTable(SceneEngine.getURL(), "requestTable");
+            instance = new RequestTable(Configuration.dbURL, Configuration.requestTable);
         return instance;
     }
     //TODO add method for getting ArrayList<Request> from the request database

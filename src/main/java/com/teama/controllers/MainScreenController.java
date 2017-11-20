@@ -1,13 +1,9 @@
 package com.teama.controllers;
 
-import com.teama.drawing.DrawMap;
-import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.MapNodeData;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 
 public class MainScreenController implements Controller {
@@ -46,7 +42,7 @@ public class MainScreenController implements Controller {
     @FXML
     private SplitPane directionsPane;
 
-    private GridPane directions;
+  /*  private GridPane directions;
 
     private boolean ctrlDown = false;
 
@@ -57,7 +53,7 @@ public class MainScreenController implements Controller {
     private MapSubsystem map;
 
     private Stage stage;
-/*
+
     public void initialize() {
         hideDirections();
 

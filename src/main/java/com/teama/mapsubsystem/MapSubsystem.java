@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem;
 
-import com.teama.controllers.SceneEngine;
+import com.teama.Configuration;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.AStar;
 import com.teama.mapsubsystem.pathfinding.Path;
@@ -24,7 +24,7 @@ public class MapSubsystem {
 
     private MapSubsystem() {
         csvSource = new CSVDatabaseSource(nodefile, edgefile); // Reads CSV file
-        javaDBSource = new JavaDatabaseSource(SceneEngine.getURL(), "NODES", "EDGES");
+        javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
         pathGenerator = new AStar();
 
         // Initially populate the tables with the data from CSV
