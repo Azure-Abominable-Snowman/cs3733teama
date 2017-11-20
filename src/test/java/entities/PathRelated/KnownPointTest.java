@@ -1,7 +1,7 @@
 package entities.PathRelated;
 
 import entities.MapNode;
-import entities.PathRelated.AStar.KnownPoint;
+import com.teama.mapsubsystem.pathfinding.AStar.KnownPoint;
 import org.junit.Before;
 import org.junit.Test;
 
