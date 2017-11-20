@@ -9,10 +9,10 @@ public abstract class ServiceStaff {
     private boolean available;
     private StaffType type;
     private String staffId, firstName, lastName, phoneNumber;
-    public Enum<Provider> provider;
+    public Provider provider;
 
     public ServiceStaff(String staffId, String firstName, String lastName, String phoneNumber, StaffType type,
-                        Set<Language> languages, Enum<Provider> provider, boolean available) {
+                        Set<Language> languages, Provider provider, boolean available) {
         this.available = available;
         this.languages = languages;
         this.type = type;

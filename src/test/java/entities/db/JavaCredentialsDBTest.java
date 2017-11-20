@@ -44,20 +44,20 @@ public class JavaCredentialsDBTest {
         db.addLoginInfo(a); // STAFF
         db.addLoginInfo(b); //ADMIN
         db.addLoginInfo(c); //ADMIN
-        assertTrue(db.checkCredentials(a));
-        assertTrue(db.checkCredentials(b));
-        assertTrue(db.checkCredentials(c));
+        assertNotNull(db.checkCredentials(a));
+        assertNotNull(db.checkCredentials(b));
+        assertNotNull(db.checkCredentials(c));
         LoginInfo d = new LoginInfo("supersecure", "hello", ADMIN);
         db.addLoginInfo(d);
-        assertTrue(db.checkCredentials(d));
+        assertNotNull(db.checkCredentials(d));
 
         LoginInfo wrongPW = new LoginInfo("user1", "raNDOM2s", STAFF); //login with wrong password
         LoginInfo wrongAccess = new LoginInfo("user1", "randompw", ADMIN); //trying to login as Admin when actually Staff
         LoginInfo undoc = new LoginInfo("suspicious", "hello", STAFF);
 
-        assertFalse(db.checkCredentials(wrongPW));
-        assertFalse(db.checkCredentials(wrongAccess));
-        assertFalse(db.checkCredentials(undoc));
+        assertNull(db.checkCredentials(wrongPW));
+        assertNull(db.checkCredentials(wrongAccess));
+        assertNull(db.checkCredentials(undoc));
 
 
 
