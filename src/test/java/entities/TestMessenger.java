@@ -1,7 +1,9 @@
 package entities;
 
-import boundaries.Provider;
-import boundaries.SMSMessage;
+import com.teama.messages.ContactInfo;
+import com.teama.messages.Message;
+import com.teama.messages.Provider;
+import com.teama.messages.SMSMessage;
 
 import javax.mail.internet.AddressException;
 
@@ -18,8 +20,10 @@ public class TestMessenger {
         m1.sendSMSMessage();*/
 
 
-        SMSMessage m2 = new SMSMessage("6034893939", Provider.VERIZON, "Hello jake from IntelliJ");
-        m2.sendSMSMessage();
+        SMSMessage m2 = new SMSMessage(Provider.VERIZON);
+        ContactInfo ci = new ContactInfo();
+        ci.setPhoneNumber("6034893939");
+        m2.sendMessage(ci, new Message());
 
     }
 
