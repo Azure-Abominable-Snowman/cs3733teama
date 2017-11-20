@@ -76,6 +76,7 @@ public class MapEdgeData implements MapEdge {
             return;
         }
         this.start = start;
+        this.startID = start.getId();
         if(end != null) {
             weight = calculateWeight();
         }
@@ -99,6 +100,7 @@ public class MapEdgeData implements MapEdge {
             return;
         }
         this.end = end;
+        this.endID = end.getId();
         if(start != null) {
             weight = calculateWeight();
         }
