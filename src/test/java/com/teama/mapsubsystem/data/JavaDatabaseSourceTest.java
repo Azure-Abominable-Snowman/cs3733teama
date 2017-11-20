@@ -77,8 +77,6 @@ public class JavaDatabaseSourceTest {
 
     @Test
     public void addNode() throws Exception {
-
-
         String randID = "WNodeTeamA";
         String floor = "G";
         String building = "BTM";
@@ -136,6 +134,7 @@ public class JavaDatabaseSourceTest {
         String teamAssigned = "TeamA";
         MapNode newNode = new MapNodeData(randID, new Location(35, 54, Floor.getFloor(floor), building), NodeType.ELEV, longName, shortName, teamAssigned);
         newEdge.setStart(newNode); //change the start node of the edge
+        System.out.println(newEdge.getId() + newEdge.getStartID() + newEdge.getEndID());
         db.addEdge(newEdge); //looks up by old ID then updates stored edge ID according to the changes
         assertEquals(randID, db.getEdge(randID+"_WTONG").getStartID());
         assertEquals(null, db.getEdge("WWONG_WTONG"));

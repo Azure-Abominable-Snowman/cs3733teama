@@ -2,7 +2,7 @@ package com.teama.controllers;
 
 import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.requestsubsystem.Request;
-import com.teama.requestsubsystem.RequestTable;
+import com.teama.requestsubsystem.RequestSubsystem;
 import com.teama.requestsubsystem.RequestType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,7 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
 public class RequestScreenController implements Controller {
-    RequestTable requestTable = RequestTable.getInstance();
+    RequestSubsystem requestTable = RequestSubsystem.getInstance();
 
     @Override
     public String getFXMLFileName() {

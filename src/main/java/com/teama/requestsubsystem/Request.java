@@ -4,8 +4,8 @@ import com.teama.mapsubsystem.data.Location;
 
 public class Request {
     private Location location;
-    private Enum<RequestType> reqType;
-    private Enum<PriorityLevel> priority;
+    private RequestType reqType;
+    private PriorityLevel priority;
     private String note;
     private String id;
     private boolean fulfilled = false;
@@ -15,7 +15,7 @@ public class Request {
         this.fulfilled = fulfilled;
     }
 
-    public Request(String id, Location location, Enum<RequestType> reqType, Enum<PriorityLevel> priority, String note) {
+    public Request(String id, Location location, RequestType reqType, PriorityLevel priority, String note) {
         this.id = id;
         this.location = location;
         this.reqType = reqType;
@@ -31,7 +31,7 @@ public class Request {
         this.location = location;
     };
 
-    public Enum<RequestType> getReqType() {
+    public RequestType getReqType() {
         return reqType;
     }
 
@@ -39,7 +39,7 @@ public class Request {
         this.reqType = reqType;
     }
 
-    public Enum<PriorityLevel> getPriority() {
+    public PriorityLevel getPriority() {
         return priority;
     }
 

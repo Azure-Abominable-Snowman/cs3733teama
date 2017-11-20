@@ -1,6 +1,7 @@
-package com.teama.requestsubsystem;
+package com.teama.requestsubsystem.data;
 
 import com.teama.messages.Provider;
+import com.teama.requestsubsystem.*;
 
 import java.sql.*;
 import java.util.ArrayList;
