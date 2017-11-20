@@ -13,8 +13,8 @@ public interface MapDisplay {
     Location getDisplayedLocation();
     double getMaxX();
     double getMaxY();
-    boolean isPointAt(Location loc);
-    boolean isLineAt(Location loc);
+    String pointAt(Location loc);
+    String lineAt(Location loc);
     void setZoom(double zoom);
     double getZoom();
     void zoomInto(Location loc, double zoom);

@@ -54,12 +54,19 @@ public class TestMapDisplay extends Application {
         System.out.println("MOUSE PRESSED ON CANVAS");
 
         if(event.isShiftDown()) {
-            System.out.println("KEY PRESSED");
+            System.out.println("ZOOM");
             if(map.getZoom() == 1) {
                 map.zoomInto(new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown"), 5);
             } else {
                 map.setZoom(1);
             }
+            return;
+        }
+
+        if(event.isControlDown()) {
+            System.out.println("LOOK FOR POINT OR LINE");
+            System.out.println(map.pointAt(new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown")));
+            System.out.println(map.lineAt(new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown")));
             return;
         }
 
@@ -75,7 +82,7 @@ public class TestMapDisplay extends Application {
         prevX = event.getX();
         prevY =  event.getY();
 
-        map.drawPoint(Integer.toString(idCounter), start, 5, Color.BLUE, true);
+        map.drawPoint(Integer.toString(idCounter), start, 10, Color.BLUE, true);
 
         idCounter++;
 
