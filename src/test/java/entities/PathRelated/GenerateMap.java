@@ -1,9 +1,6 @@
 package entities.PathRelated;
 
-import entities.Location;
-import entities.MapEdge;
-import entities.MapNode;
-import entities.NodeType;
+import com.teama.mapsubsystem.data.*;
 
 public class  GenerateMap  {
 
@@ -12,9 +9,9 @@ public class  GenerateMap  {
      * Default map is 30*30 map.
      * Version1 is 20*20 map.
      * @param version
-     * @return This function returns the MapNode.
+     * @return This function returns the MapNodeData.
      */
-     public MapNode[][] GenerateNewMap(int version)
+     public MapNodeData[][] GenerateNewMap(int version)
     {
         switch (version)
         {
@@ -25,15 +22,15 @@ public class  GenerateMap  {
 
     /**
      * This function is to generate version1 map (20*20).
-     * @return This function returns the 20*20 MapNode array.
+     * @return This function returns the 20*20 MapNodeData array.
      */
-    public MapNode[][] GenerateV1()  // Final version, do not change, make new map.
+    public MapNodeData[][] GenerateV1()  // Final version, do not change, make new map.
     {
         int sizeX=20, sizeY=20;
         if(sizeX <5 ) sizeX=5;
         if(sizeY<5 ) sizeY =5; // make sure no sizes are smaller then 5;
 
-        MapNode[][] map = new MapNode[sizeX][sizeY]; // allocate new map
+        MapNodeData[][] map = new MapNodeData[sizeX][sizeY]; // allocate new map
         fillMap (map,sizeX,sizeY);
         // Done creating the Nodes, Start making edges.
         linkNodes(map[0][0], map[0][1],1);
@@ -68,15 +65,15 @@ public class  GenerateMap  {
 
     /**
      * This function is to generate default map(30*30).
-     * @return This function returns the 30*30 MapNode array.
+     * @return This function returns the 30*30 MapNodeData array.
      */
-    public MapNode[][] GenerateVdefult()  // need change.
+    public MapNodeData[][] GenerateVdefult()  // need change.
     {
         int sizeX=30, sizeY=30;
         if(sizeX <5 ) sizeX=5;
         if(sizeY<5 ) sizeY =5; // make sure no sizes are smaller then 5;
 
-        MapNode[][] map = new MapNode[sizeX][sizeY]; // allocate new map
+        MapNodeData[][] map = new MapNodeData[sizeX][sizeY]; // allocate new map
         fillMap (map,sizeX,sizeY);
         // Done creating the Nodes, Start making edges.
         linkNodes(map[0][0], map[0][1],1);
@@ -118,17 +115,17 @@ public class  GenerateMap  {
      * @param sizeY is the height of map (can be smaller, but no bigger then actual map)
      * @return This function returns void.
      */
-    private void fillMap (MapNode[][] map,int sizeX,int sizeY)
+    private void fillMap (MapNodeData[][] map, int sizeX, int sizeY)
     {
         String str  = new String();
-        Location tempLoc = new Location(1,1,"1","a");// create location
+        Location tempLoc = new Location(1,1, Floor.ONE,"a");// create location
         for(int i = 0;i< sizeX;i++){    // start fill in the map
             for (int j = 0; j < sizeY; j++)
             {
                 tempLoc.setxCoord(i);   // put in correct coord
                 tempLoc.setyCoord(j);
                 str=str.format("C %d R %d",i,j);    // create correct name
-                map[i][j]= new MapNode(str,tempLoc, NodeType.HALL,str
+                map[i][j]= new MapNodeData(str,tempLoc, NodeType.HALL,str
                         ,str,"A");  // create the Node in the map
             }
         }
@@ -141,9 +138,9 @@ public class  GenerateMap  {
      * @param weight is the weight between two nodes.
      * @return This function returns void.
      */
-    public void linkNodes(MapNode node1, MapNode node2, double weight){
+    public void linkNodes(MapNodeData node1, MapNodeData node2, double weight){
         String temp = String.format("%s - %s",node1.getId(),node2.getId());
-        MapEdge edge = new MapEdge(temp, node1, node2, weight);
+        MapEdgeData edge = new MapEdgeData(temp, node1, node2, weight);
          node1.addEdge(edge);
          node2.addEdge(edge);
     }
@@ -154,7 +151,7 @@ public class  GenerateMap  {
      * @param sizeX is the width of map (can be smaller, but no bigger then actual map)
      * @param sizeY is the height of map (can be smaller, but no bigger then actual map)
      */
-    public void printMap (MapNode[][] map,int sizeX, int sizeY)
+    public void printMap (MapNodeData[][] map, int sizeX, int sizeY)
     {
         System.out.printf("    ");
         for(int i=0;i<sizeX;i++)
@@ -196,7 +193,7 @@ public class  GenerateMap  {
      * @param n2 is the node 2
      * @return This function returns the weight of the edge connecting node 1 and node 2, return -1 when no edge.
      */
-    private double findWeight(MapNode n1,MapNode n2)
+    private double findWeight(MapNodeData n1, MapNodeData n2)
     {
         for (MapEdge edge: n1.getEdges()) {
             if ( edge.getEnd()==n2 || edge.getStart() == n2 ) return edge.getWeight();
