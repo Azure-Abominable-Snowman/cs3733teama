@@ -78,8 +78,8 @@ public class MapSubsystem {
 
     }
 
-    public Map<String, MapNode> getFloorNodes(String floor) {
-        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor);
+    public Map<String, MapNode> getFloorNodes(Floor floor) {
+        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor.toString());
         Map<String, MapNode> nodeMap = new HashMap<>();
         for(MapNode n : nodes) {
             nodeMap.put(n.getId(), n);

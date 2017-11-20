@@ -124,7 +124,7 @@ public class CSVDatabaseSource implements MapDataSource {
     private MapNode nodeListToObj(List<String> row) {
         return new MapNodeData(row.get(0),
                 new Location(Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)),
-                        Floor.valueOf(row.get(3)), row.get(4)), NodeType.valueOf(row.get(5)), row.get(6), row.get(7), row.get(8));
+                        Floor.getFloor(row.get(3)), row.get(4)), NodeType.valueOf(row.get(5)), row.get(6), row.get(7), row.get(8));
     }
 
     /**

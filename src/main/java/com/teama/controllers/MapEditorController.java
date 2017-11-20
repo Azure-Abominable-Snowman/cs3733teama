@@ -458,7 +458,7 @@ public class MapEditorController implements Controller {
     @FXML
 
     private void onBackClick(ActionEvent e){
-        SceneEngine.display(MainScreenController.class, null);
+        SceneEngine.display(MainScreenController_old.class, null);
 
     }
 

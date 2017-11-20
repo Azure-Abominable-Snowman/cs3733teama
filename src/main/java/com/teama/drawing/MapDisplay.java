@@ -18,4 +18,6 @@ public interface MapDisplay {
     void setZoom(double zoom);
     double getZoom();
     void zoomInto(Location loc, double zoom);
+    void setGrow(boolean grow);
+    boolean getGrow();
 }

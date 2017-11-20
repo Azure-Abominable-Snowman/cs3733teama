@@ -80,6 +80,21 @@ public class HospitalMapDisplay implements MapDisplay {
         return curZoom;
     }
 
+    private boolean grow = false;
+
+    /**
+     * Sets the grow variable. Should the map grow to fit the whole screen when resizing or should the
+     * map shrink to fit the screen and maintain aspect ratio.
+     * @param grow
+     */
+    public void setGrow(boolean grow) {
+        this.grow = grow;
+    }
+
+    public boolean getGrow() {
+        return grow;
+    }
+
     /**
      * Update the canvas' and scrollpane size as well as render
      */
@@ -106,7 +121,11 @@ public class HospitalMapDisplay implements MapDisplay {
         pane.setVmax(height);
         pane.setHmax(width);
 
-        renderMap(width, height, curZoom);
+        if(grow) {
+            renderMapGrow(width, height, curZoom);
+        } else {
+            renderMap(width, height, curZoom);
+        }
 
         pane.setVvalue((height/oldHeight)*oldVvalue);
         pane.setHvalue((width/oldWidth)*oldHvalue);
@@ -138,6 +157,47 @@ public class HospitalMapDisplay implements MapDisplay {
                     canvas.setTranslateX(0);
                 }
             } else {
+                canvas.setHeight(scaledH*curZoom);
+                canvas.setWidth(width*curZoom);
+                if(curZoom <= 1) { // If we aren't zoomed, translate the image to the center of the screen
+                    canvas.setTranslateY(((height - scaledH) / 2));
+                    canvas.setTranslateX(0);
+                } else {
+                    canvas.setTranslateY(0);
+                }
+            }
+        } else {
+            canvas.setHeight(height*curZoom);
+            canvas.setWidth(width*curZoom);
+        }
+        render();
+    }
+
+    /**
+     * Renders the map but has a preference for growth rather than fitting within the screen
+     * @param width
+     * @param height
+     * @param curZoom
+     */
+    private void renderMapGrow(double width, double height, double curZoom) {
+        if(curMap != null) { // if it can be obtained, set the width and height using the aspect ratio
+            double aspectRatio = curMap.getMap().getWidth()/curMap.getMap().getHeight();
+            double scaledW, scaledH;
+            // keep the aspect ratio
+            scaledH = (1 / ((1 / (width)) * aspectRatio));
+            scaledW = ((height)*aspectRatio);
+            if(scaledH <= pane.getHeight()) {
+                canvas.setHeight(height*curZoom);
+                canvas.setWidth(scaledW*curZoom);
+                if(curZoom <= 1) { // If we aren't zoomed, translate the image to the center of the screen
+                    canvas.setTranslateX(((width - scaledW) / 2));
+                    canvas.setTranslateY(0);
+                } else {
+                    canvas.setTranslateX(0);
+                }
+            }
+
+            if(scaledW <= pane.getWidth()) {
                 canvas.setHeight(scaledH*curZoom);
                 canvas.setWidth(width*curZoom);
                 if(curZoom <= 1) { // If we aren't zoomed, translate the image to the center of the screen
