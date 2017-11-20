@@ -1,13 +1,15 @@
 package entities.PathRelated;
 
-import entities.MapNode;
+import com.teama.mapsubsystem.data.MapNodeData;
+import com.teama.mapsubsystem.pathfinding.AStar;
+import com.teama.mapsubsystem.pathfinding.Path;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class AStarTest {
-    MapNode[][] map1 = new MapNode[20][20];
+    MapNodeData[][] map1 = new MapNodeData[20][20];
 
     @Before
     public void setUp() throws Exception {

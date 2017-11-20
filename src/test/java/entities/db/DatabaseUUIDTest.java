@@ -1,6 +1,7 @@
 package entities.db;
 
-import entities.NodeType;
+import com.teama.mapsubsystem.data.DatabaseUUID;
+import com.teama.mapsubsystem.data.NodeType;
 import org.junit.Test;
 
 import java.util.HashSet;

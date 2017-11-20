@@ -1,18 +1,12 @@
 package entities.db;
 
-import boundaries.Provider;
-import entities.staff.Language;
-import entities.staff.ServiceStaff;
-import entities.staff.StaffAttrib;
-import entities.staff.StaffType;
+import com.teama.requestsubsystem.data.JavaDatabaseStaffInfo;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.HashSet;
-import java.util.Set;
 
 import static junit.framework.TestCase.assertEquals;
 
