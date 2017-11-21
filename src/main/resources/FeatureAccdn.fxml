@@ -136,7 +136,7 @@
                               <Insets />
                            </VBox.margin>
                         </JFXComboBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                     </content>
