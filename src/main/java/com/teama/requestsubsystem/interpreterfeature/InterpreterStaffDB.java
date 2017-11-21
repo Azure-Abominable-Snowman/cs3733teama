@@ -1,9 +1,7 @@
-package com.teama.requestsubsystem.data;
+package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.messages.Provider;
 import com.teama.requestsubsystem.*;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.Language;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,22 +9,26 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
-
-public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
-
+//TODO : FINISH THE METHODS IN THIS CLASS. PERHAPS ADD A CONTACTINFO DATABASE. MAKE THE STAFF TABLE AUTOINCREMENT - THAT WILL BE THE UNIQUE STAFF ID FOR NOW. 
+/**
+ * Created by aliss on 11/21/2017.
+ */
+public class InterpreterStaffDB {
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL, staffTable;
     private String staffTableLanguages;
     private Connection conn = null;
     private Statement stmt = null;
+    PreparedStatement addStaff, removeStaffReqTable, updateStaffReqTable, getStaff;
+    PreparedStatement addStaffLangTable, updateStaffLangTable;
 
-    public JavaDatabaseStaffInfo(String dbURL, String staffTable) {
-        this.staffTable = staffTable;
+    public InterpreterStaffDB(String dbURL) {
+        this.staffTable = "INTERPRETER_STAFF";
         this.dbURL = dbURL;
         this.staffTableLanguages = staffTable+"_LANGUAGES";
 
         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             // Get a connection
             conn = DriverManager.getConnection(dbURL);
         }
@@ -34,19 +36,18 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             except.printStackTrace();
         }
 
-        // Creates the staff table if it isn't there already
+        // Creates the staff table if it isn't there already; link to request table by staffID
         try
         {
             stmt = conn.createStatement();
             stmt.execute(
                     " CREATE TABLE "+staffTable+" (" +
-                            "STAFFID VARCHAR(10) PRIMARY KEY NOT NULL," +
+                            "STAFFID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," +
                             "FIRSTNAME VARCHAR(30) NOT NULL, " +
                             "LASTNAME VARCHAR(30) NOT NULL, " +
                             "PHONENUMBER VARCHAR(20) NOT NULL, " +
-                            "STAFFTYPE VARCHAR(30) NOT NULL," +
                             "PHONEPROVIDER VARCHAR(10) NOT NULL,"+
-                            "AVAILABLE BOOLEAN NOT NULL" +
+                            "ONDUTY VARCHAR(20) NOT NULL " +
                             ")"
             );
             stmt.close();
@@ -56,8 +57,9 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             stmt = conn.createStatement();
             stmt.execute(
                     " CREATE TABLE "+staffTableLanguages+" (" +
-                            "STAFFID VARCHAR(20) NOT NULL," +
+                            "STAFFID INTEGER NOT NULL," +
                             "LANGUAGE VARCHAR(30) NOT NULL" +
+                            "FOREIGN KEY(STAFFID) REFERENCES " + staffTable +
                             ")"
             );
             stmt.close();
@@ -66,7 +68,7 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
         {
             log.info("Does the staff info database or language relation table already exist?");
         }
-
+/*
         try {
             stmt = conn.createStatement();
             stmt.execute(
@@ -78,6 +80,18 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             stmt.close();
         } catch (SQLException e) {
             log.info("Staff language or person already added");
+        }
+        */
+        try {
+            addStaff = conn.prepareStatement("INSERT INTO " + staffTable + " VALUES(?, ?, ?, ?, ?)");
+            getStaff = conn.prepareStatement("SELECT * FROM " + staffTable + " WHERE STAFFID = ?");
+            removeStaffReqTable = conn.prepareStatement("DELETE FROM " + staffTable + " WHERE STAFFID = ?");
+            updateStaffReqTable = conn.prepareStatement("UPDATE " + staffTable + " SET FIRSTNAME = ?, LASTNAME = ?, PHONENUMBER = ?, PHONEPROVIDER = ?, ONDUTY = ? WHERE STAFFID = ?");
+            addStaffLangTable = conn.prepareStatement("INSERT INTO " + staffTableLanguages + " VALUES(?) WHERE STAFFID = ?");
+            updateStaffLangTable = conn.prepareStatement("UPDATE " + staffTableLanguages + " SET LANGUAGE = ? WHERE STAFFID = ?");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -91,7 +105,7 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
             while(s.next()){
                 ServiceStaff staff = new InterpreterStaff(s.getString("STAFFID"), s.getString("firstName"), s.getString("lastName"),
                         s.getString("phoneNumber"), StaffType.valueOf(s.getString("STAFFTYPE")), null, Provider.valueOf(s.getString("PHONEPROVIDER")), s.getBoolean("available"));
-                        INTRStaff.add(staff);
+                INTRStaff.add(staff);
             }
             return INTRStaff;
         } catch (SQLException e)
@@ -103,7 +117,6 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
     }
 
 
-    @Override
     public ServiceStaff findQualified(StaffAttrib attrib) {
         ServiceStaff foundStaff;
         // Use all of the attributes to build a query for the database
@@ -181,7 +194,6 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
         return null;
     }
 
-    @Override
     public void close() {
         try {
             conn.close();
@@ -190,3 +202,4 @@ public class JavaDatabaseStaffInfo implements StaffInfoDataSource {
         }
     }
 }
+

@@ -1,21 +1,12 @@
 package com.teama.requestsubsystem;
 
 import com.teama.controllers.Controller;
-import com.teama.controllers.ControllerInfo;
-import com.teama.controllers.SceneEngine;
-import com.teama.messages.ContactInfo;
-import com.teama.messages.Provider;
-import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.data.RequestSubsystem;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
 
-import javax.mail.internet.AddressException;
 import java.util.ArrayList;
 
 public class FillRequestController implements Controller {
@@ -36,7 +27,7 @@ public class FillRequestController implements Controller {
     public void initialize() {
         
     }
-
+/*
     @FXML
     private void onSelect(MouseEvent e) {
         System.out.println(serviceList.getSelectionModel().getSelectedItem());
@@ -92,5 +83,5 @@ public class FillRequestController implements Controller {
         return "FulfillRequest.fxml";
     }
     */
-    
+
 }

@@ -2,8 +2,6 @@ package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.requestsubsystem.RequestStatus;
 
-import java.util.ArrayList;
-
 /**
  * Created by aliss on 11/20/2017.
  */
@@ -12,20 +10,19 @@ public class InterpreterRequest {
     RequestStatus r; // used in database
     int familySize;
     Language requiredLanguage;
-    String assignedLastName;
-    String assignedFirstName;
 
 
     // THESE FIELDS WILL BE FILLED OUT AFTER THE SERVICE IS COMPLETED:
     double serviceTime;
-    ArrayList<TranslationType> types; // which type of translation was required? whether written, verbal, and/or ASL
+    TranslationType type; // which type of translation was required? whether written, verbal, and/or ASL
 
 
     public InterpreterRequest(GenericRequestInfo g, int familySize, Language requiredLanguage) {
         this.info = g;
-        this.r = RequestStatus.OPEN;
+        this.r = RequestStatus.ASSIGNED;
         this.requiredLanguage = requiredLanguage;
         this.familySize = familySize;
+
     }
     // methods used by DB to get info
     public GenericRequestInfo getInfo() {
@@ -44,19 +41,28 @@ public class InterpreterRequest {
         return requiredLanguage;
     }
 
-    void setID(int ID) {
+
+    void setRequestID(int ID) {
         info.setID(ID);
     }
 
-    // info to be added for later
+    int getRequestID() {
+        return info.getRequestID();
+    }
+
+    public int getStaffID () {
+        return info.getRequestID();
+    }
+
+    // info to be added for report generation
 
 
     public void setServiceTime(double time) {
         serviceTime = time;
     }
 
-    public void setTranslationTypes(ArrayList<TranslationType> t) {
-        this.types = t;
+    public void setTranslationTypes(TranslationType t) {
+        this.type = t;
     }
 
     public void updateStatus(RequestStatus newStatus) {
