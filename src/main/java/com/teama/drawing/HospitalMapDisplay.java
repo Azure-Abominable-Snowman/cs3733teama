@@ -322,6 +322,7 @@ public class HospitalMapDisplay implements MapDisplay {
     public void setCurrentFloor(Floor floor) {
         curFloor = floor;
         curMap = maps.get(floor);
+        render();
     }
 
     /**
@@ -383,6 +384,12 @@ public class HospitalMapDisplay implements MapDisplay {
             }
         }
         return null;
+    }
+
+    public void clear() {
+        lineMap = new HashMap<>();
+        pointMap = new HashMap<>();
+        render();
     }
 
     /**

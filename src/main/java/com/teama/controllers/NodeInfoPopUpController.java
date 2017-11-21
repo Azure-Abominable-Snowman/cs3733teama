@@ -40,7 +40,9 @@ public class NodeInfoPopUpController {
 
     @FXML
     void addEdgeToNode(ActionEvent event) {
-
+        for(MapNode n : mapSubsystem.getInvisibleFloorNodes(map.getCurrentFloor()).values()) {
+            new DrawNodeInstantly(n).displayOnScreen(map);
+        }
     }
 
     @FXML

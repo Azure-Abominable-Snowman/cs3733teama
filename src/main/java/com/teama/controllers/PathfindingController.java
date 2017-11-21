@@ -6,6 +6,7 @@ import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.*;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -16,6 +17,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -29,7 +31,7 @@ public class PathfindingController {
     private ScrollPane mapScrollPane;
     private Canvas mapCanvas;
 
-    public PathfindingController(MapSubsystem mapSubsystem, MapDisplay map, AnchorPane mapAreaPane, JFXTextField searchBar, JFXButton searchButton) {
+    public PathfindingController(MapSubsystem mapSubsystem, MapDisplay map, AnchorPane mapAreaPane, JFXTextField searchBar, JFXButton searchButton, VBox floorButtonBox) {
         this.map = map;
         this.searchBar = searchBar;
         this.searchButton = searchButton;
@@ -40,10 +42,7 @@ public class PathfindingController {
 
         // Stuff for the node pop up window
 
-        // Display all the nodes for the given floor
-        for(MapNode n : mapSubsystem.getVisibleFloorNodes(map.getCurrentFloor()).values()) {
-            new DrawNodeInstantly(n).displayOnScreen(map);
-        }
+        switchFloor(Floor.GROUND);
 
         /*for(MapNode n : mapSubsystem.getFloorNodes(map.getCurrentFloor()).values()) {
             // Display all edges (DEBUG)
@@ -109,6 +108,31 @@ public class PathfindingController {
                     break;
             }
         });
+
+        // Populate the floor button box
+        for(Floor floor : Floor.values()) {
+            JFXButton curFloorButton = new JFXButton();
+            curFloorButton.setText(floor.toString());
+            curFloorButton.getStylesheets().add("css/MainScreenStyle.css");
+            curFloorButton.getStyleClass().add("floorbutton");
+            curFloorButton.setPrefWidth(35);
+            curFloorButton.pressedProperty().addListener((Observable obs) -> {
+                switchFloor(floor);
+            });
+            floorButtonBox.getChildren().add(curFloorButton);
+        }
+
+    }
+
+    private void switchFloor(Floor floor) {
+        // Wipe the whole map
+        map.clear();
+        // Changes the floor then updates the nodes
+        map.setCurrentFloor(floor);
+        // Display all the nodes for the given floor
+        for(MapNode n : mapSubsystem.getVisibleFloorNodes(map.getCurrentFloor()).values()) {
+            new DrawNodeInstantly(n).displayOnScreen(map);
+        }
     }
 
 

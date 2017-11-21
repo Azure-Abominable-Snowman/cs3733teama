@@ -98,6 +98,21 @@ public class MapSubsystem {
         return nodeMap;
     }
 
+    public Map<String, MapNode> getInvisibleFloorNodes(Floor floor) {
+        return getFloorNodes(floor, NodeType.HALL);
+    }
+
+    public Map<String, MapNode> getFloorNodes(Floor floor, NodeType type) {
+        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor.toString());
+        Map<String, MapNode> nodeMap = new HashMap<>();
+        for(MapNode n : nodes) {
+            if(n.getNodeType().equals(type)) {
+                nodeMap.put(n.getId(), n);
+            }
+        }
+        return nodeMap;
+    }
+
     // make format enum
     public void export() {
 

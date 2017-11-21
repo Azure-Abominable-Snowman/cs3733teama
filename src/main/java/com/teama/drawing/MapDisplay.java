@@ -35,4 +35,6 @@ public interface MapDisplay {
 
     Canvas getUnderlyingCanvas();
     ScrollPane getUnderlyingScrollPane();
+
+    void clear();
 }

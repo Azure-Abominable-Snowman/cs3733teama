@@ -20,6 +20,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,6 +52,9 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private AnchorPane areaPane;
+
+    @FXML
+    private VBox floorButtonBox;
 
     private MapDisplay map;
 
@@ -90,7 +94,7 @@ public class MainScreenController implements Initializable {
         map.setGrow(true);
         map.setZoom(1.5);
 
-        PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, searchBar, searchButton);
+        PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, searchBar, searchButton, floorButtonBox);
 
         // When the hamburger retracts, make it disappear, otherwise appear
         hamOpnsTran.onFinishedProperty().set((ActionEvent e) -> {

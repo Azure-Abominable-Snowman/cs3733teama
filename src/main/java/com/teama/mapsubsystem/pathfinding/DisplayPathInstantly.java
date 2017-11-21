@@ -25,7 +25,6 @@ public class DisplayPathInstantly extends DisplayPath {
             display.deleteLine(n.getId());
         }*/
         for(MapEdge e : getConnectors()) {
-            System.out.println(e);
             display.deleteLine(e.getId());
         }
     }
