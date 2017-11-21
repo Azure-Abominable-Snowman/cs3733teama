@@ -1,6 +1,7 @@
 package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.drawing.MapDisplay;
+import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
 
@@ -32,5 +33,6 @@ public abstract class DisplayPath {
     }
 
     public abstract void displayOnScreen(MapDisplay display);
+    public abstract void displayOnScreen(MapDisplay display, Floor floor);
     public abstract void deleteFromScreen(MapDisplay display);
 }

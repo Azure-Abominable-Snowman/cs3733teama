@@ -34,9 +34,15 @@ public class CSVDatabaseSource implements MapDataSource {
             // Look up corresponding edges in the node hashmap
             MapEdge e = edgeListToObj(row);
             // Add this edge to the node objects that are associated with it
-            nodeMap.get(e.getStartID()).addEdge(e);
-            nodeMap.get(e.getEndID()).addEdge(e);
-            edgeMap.put(row.get(0), e);
+            MapNode startNode = nodeMap.get(e.getStartID());
+            MapNode endNode = nodeMap.get(e.getEndID());
+            if(startNode != null && endNode != null) {
+                startNode.addEdge(e);
+                endNode.addEdge(e);
+                edgeMap.put(row.get(0), e);
+            } else {
+                System.out.println("INVALID EDGE "+e.getId());
+            }
         }
     }
 
@@ -108,8 +114,10 @@ public class CSVDatabaseSource implements MapDataSource {
         for(int i = 0; i < sep.length; i++) {
             sep[i] = sep[i].replace("\"", "");
             // Check to see if it is bordered by single quotes, if it is remove them.
-            if(sep[i].charAt(0) == '\'' && sep[i].charAt(sep[i].length()-1) == '\'') {
-                sep[i] = sep[i].substring(1, sep[i].length()-1);
+            if(sep[i].length() > 0) {
+                if (sep[i].charAt(0) == '\'' && sep[i].charAt(sep[i].length() - 1) == '\'') {
+                    sep[i] = sep[i].substring(1, sep[i].length() - 1);
+                }
             }
         }
         return Arrays.asList(sep);
