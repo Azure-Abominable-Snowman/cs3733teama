@@ -1,7 +1,13 @@
-package com.teama.controllers;
+package com.teama.requestsubsystem;
 
-import com.teama.requestsubsystem.Request;
-import com.teama.requestsubsystem.ServiceStaff;
+import com.teama.controllers.Controller;
+import com.teama.controllers.ControllerInfo;
+import com.teama.controllers.SceneEngine;
+import com.teama.messages.ContactInfo;
+import com.teama.messages.Provider;
+import com.teama.messages.SMSMessage;
+import com.teama.requestsubsystem.data.RequestSubsystem;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,6 +15,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 
+import javax.mail.internet.AddressException;
 import java.util.ArrayList;
 
 public class FillRequestController implements Controller {
@@ -40,10 +47,11 @@ public class FillRequestController implements Controller {
         SceneEngine.closeFillReq();
     }
 
-    /*
+
     @FXML
     private void fulfill(ActionEvent e) throws AddressException {
         System.out.println(staffToFulfill);
+        ContactInfo info = new
         SMSMessage message = new SMSMessage(staffToFulfill.getPhoneNumber(), (Provider)staffToFulfill.getProvider(),
                 request.getNote());
         message.sendSMSMessage();
@@ -54,7 +62,7 @@ public class FillRequestController implements Controller {
     @Override
     public void setControllerInfo(ControllerInfo c){
         idRequest=c.getRequest();
-        request = RequestTable.getInstance().getReqTable().getRequest(idRequest);
+        request = RequestSubsystem.getInstance().getRequest(idRequest);
         staff = StaffInfo.getInstance().getStaffInfoDB().getIntrStaff();
         for(ServiceStaff s: staff){
             serviceList.getItems().addAll(s);

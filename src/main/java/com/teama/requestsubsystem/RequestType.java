@@ -9,10 +9,6 @@ public enum RequestType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public String toString(){
         return this.value;
     }

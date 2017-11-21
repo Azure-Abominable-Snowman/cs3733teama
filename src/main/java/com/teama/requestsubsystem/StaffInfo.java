@@ -5,6 +5,7 @@ import com.teama.requestsubsystem.data.JavaDatabaseStaffInfo;
 import com.teama.requestsubsystem.data.StaffInfoDataSource;
 
 public class StaffInfo {
+    // TODO: DELETE THIS, MOVE INTO REQUEST SUBSYSTEM.
     private static StaffInfo ourInstance = new StaffInfo();
 
     public static StaffInfo getInstance() {

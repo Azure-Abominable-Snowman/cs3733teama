@@ -1,26 +1,27 @@
-package com.teama.requestsubsystem.data;
+package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.requestsubsystem.PriorityLevel;
 import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestType;
+import com.teama.requestsubsystem.data.ServiceRequestDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class JavaDBServiceRequestData implements ServiceRequestDataSource {
+public class InterpreterRequestDB {
 
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
-    private String requestTable;
+    private String tableName;
     private Connection conn = null;
     private Statement stmt = null;
-    private int curId;
+    private PreparedStatement addRequest, getRequest, deleteRequest, updateRequest, getRequestID;
 
-    public JavaDBServiceRequestData(String dbURL, String requestTable) {
-        this.requestTable = requestTable;
+    public InterpreterRequestDB(String dbURL) {
+        this.tableName = "INTERPRETER_REQUESTS";
         this.dbURL = dbURL;
 
         try {
@@ -32,20 +33,26 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
             except.printStackTrace();
         }
 
-        // Creates the requests table if it isn't there already
+        // Creates the Interpreter request table if it isn't there already
+        // This request table stores the info of an interpreter request made by a staff or admin member
+        // Already has an assigned staff member, location, status, as well as extra info for filling request - family size, language, note
+        // Admin will later access the table to pull up a request and mark it as fulfilled by filling out the form
+        // database sets ID of request; this ID links to database of InterpreterReports
         try {
             stmt = conn.createStatement();
             stmt.execute(
-                    " CREATE TABLE "+requestTable+" (" +
-                            "REQUESTID VARCHAR(10) PRIMARY KEY NOT NULL," +
+                    " CREATE TABLE "+ tableName +" (" +
+                            "REQUESTID INTEGER PRIMARY KEY NOT NULL," +
+                            "LASTNAME VARCHAR(50) NOT NULL, " +
+                            "FIRSTNAME VARCHAR(50) NOT NULL, " +
                             "XCOORD INT NOT NULL," +
-                            "YCOORD INT NOT NULL," +
-                            "LEVEL VARCHAR(20) NOT NULL," +
+                            "YCOORD INT NOT NULL, " +
+                            "LVL VARCHAR(20) NOT NULL," +
                             "BUILDING VARCHAR(20) NOT NULL," +
-                            "REQTYPE VARCHAR(30) NOT NULL, " +
-                            "PRIORITY VARCHAR(15) NOT NULL, " +
+                            "STATUS VARCHAR(10) NOT NULL, " +
+                            "FAMSIZE INTEGER NOT NULL, " +
+                            "LANG VARCHAR(30) NOT NULL, " +
                             "NOTE VARCHAR(300) NOT NULL, " +
-                            "FULFILLED BOOLEAN NOT NULL" +
                             ")"
             );
             stmt.close();
@@ -54,36 +61,52 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
             log.info("Does the service request database already exist?");
         }
 
-        // Get the latest ID number from the database
-        curId = getLatestId();
-    }
-
-    @Override
-    public void submitRequest(Request request) {
         try {
-            stmt = conn.createStatement();
-            stmt.execute(
-                    "INSERT INTO "+requestTable+" VALUES("+request.toSQLValues()+")"
-            );
-            stmt.close();
-        } catch(SQLException exception) {
-            exception.printStackTrace();
+            //getRequestID = conn.prepareStatement("")
+            addRequest = conn.prepareStatement("INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            getRequest = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE REQUESTID = ?");
+            deleteRequest = conn.prepareStatement("DELETE FROM " + tableName + " WHERE REQUESTID = ?");
+            updateRequest = conn.prepareStatement("UPDATE " + tableName + " SET XCOORD = ?, YCOORD = ?, LVL = ?, BUILDING = ?, BUILDING = ?, " +
+                                                        " PRIORITY = ?, STATUS = ?, FAMSIZE = ?, LANG = ?, NOTE = ? WHERE REQUESTID = ?");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    @Override
-    public boolean cancelRequest(Request request) {
-        return cancelRequest(request.getId());
+    public InterpreterRequest addRequest(InterpreterRequest request) {
+        try {
+            addRequest.setInt(1, request.getInfo().getLocation().getxCoord());
+            addRequest.setInt(2, request.getInfo().getLocation().getyCoord());
+            addRequest.setString(3, request.getInfo().getLocation().getLevel().toString());
+            addRequest.setString(4, request.getInfo().getLocation().getBuilding());
+            addRequest.setInt(5, request.getInfo().getPriority().getValue());
+            addRequest.setString(6, request.getStatus().toString());
+            addRequest.setInt(7, request.getFamilySize());
+            addRequest.setString(8, request.getRequiredLanguage().toString());
+            addRequest.setString(9, request.getInfo().getNote());
+
+            addRequest.executeUpdate();
+            ResultSet rs = addRequest.getGeneratedKeys();
+            if (rs.next()) {
+                int ID = rs.getInt(1);
+                request.setID(ID);
+                log.info("The new request has ID " + ID);
+            }
+            return request;
+        } catch(SQLException exception) {
+            exception.printStackTrace();
+            return null;
+        }
     }
 
-    @Override
-    public boolean cancelRequest(String id) {
+    public boolean cancelRequest(InterpreterRequest request) {
+        return cancelRequest(request);
+    }
+
+    private boolean cancelReq(InterpreterRequest r) {
         try {
-            stmt = conn.createStatement();
-            stmt.execute(
-                    "DELETE FROM "+requestTable+" WHERE REQUESTID='"+id+"'"
-            );
-            stmt.close();
+            deleteRequest.setInt(1, r.getInfo().getID());
             return true;
         } catch(SQLException e) {
             e.printStackTrace();
@@ -92,7 +115,7 @@ public class JavaDBServiceRequestData implements ServiceRequestDataSource {
     }
 
     @Override
-    public Request getRequest(String id) {
+    public InterpreterRequest getRequest(InterpreterRequest r) {
         try {
             stmt = conn.createStatement();
             ResultSet set = stmt.executeQuery(

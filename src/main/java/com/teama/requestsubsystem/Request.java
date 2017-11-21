@@ -1,82 +1,43 @@
 package com.teama.requestsubsystem;
 
-import com.teama.mapsubsystem.data.Location;
+import com.teama.requestsubsystem.interpreterfeature.GenericRequestInfo;
 
-public class Request {
-    private Location location;
-    private RequestType reqType;
-    private PriorityLevel priority;
-    private String note;
-    private String id;
-    private boolean fulfilled = false;
+public abstract class Request {
+    RequestStatus status; // see Enum. For tracking whether request is open, closed, or assigned -> will be used to synchronize generation of reports.
+    GenericRequestInfo info; // for storing basic information shared across all requests - location, priority, request type, etc.
 
-    public Request(String id, Location location, RequestType reqType, PriorityLevel priority, String note, boolean fulfilled) {
-        this(id, location, reqType, priority, note);
-        this.fulfilled = fulfilled;
+    public Request() { // will probably never use this
+        this.status = RequestStatus.OPEN;
+        info = null;
     }
 
-    public Request(String id, Location location, RequestType reqType, PriorityLevel priority, String note) {
-        this.id = id;
-        this.location = location;
-        this.reqType = reqType;
-        this.priority = priority;
-        this.note = note;
+    public Request(RequestStatus status, GenericRequestInfo info) {
+        this.status = status;
+        this.info = info;
     }
 
-    public Location getLocation() {
-        return location;
+    public RequestStatus getStatus() {
+        return status;
     }
-
-    public void setLocation(Location location){
-        this.location = location;
-    };
-
-    public RequestType getReqType() {
-        return reqType;
+    public void updateStatus(RequestStatus updated) {
+        status = updated;
     }
-
-    public void setReqType(RequestType reqType){
-        this.reqType = reqType;
+    public GenericRequestInfo getBasicRequestInfo() {
+        return info;
     }
-
-    public PriorityLevel getPriority() {
-        return priority;
-    }
-
-    public void setPriority(PriorityLevel priority){
-        this.priority = priority;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note){
-        this.note = note;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public void setFulfilled() { fulfilled = true; }
-
-    public boolean isFulfilled() { return  fulfilled; }
 
     public String toSQLValues() {
-        String f = "FALSE";
-        if(fulfilled) {
-            f = "TRUE";
-        }
-        return "'"+getId()+"',"+location.getxCoord()+","+location.getyCoord()+",'"+location.getLevel()+"','"
-                +location.getBuilding()+"','"+getReqType().name()+"','"+getPriority()+"','"+getNote()+"','"+f+"'";
+        String reqStatus = status.toString();
+        String sqlString = info.toSQLValues() + reqStatus+"'";
+        return sqlString;
     }
+
     @Override
     public String toString(){
-        return reqType +"\n" + id + "\n"+location.toString()+"\n"+note;
+        return info.toString();
     }
+
+    public abstract void fillRequest(); // each specific Request (InterpreterRequest, SecurityRequest) will have its own filling methods. Request will be loaded from database with all fields filled except those the assignee must fill out.
+
+
 }

@@ -1,9 +1,8 @@
-package com.teama.controllers;
+package com.teama.requestsubsystem;
 
+import com.teama.controllers.Controller;
 import com.teama.mapsubsystem.data.MapNodeData;
-import com.teama.requestsubsystem.Request;
-import com.teama.requestsubsystem.RequestSubsystem;
-import com.teama.requestsubsystem.RequestType;
+import com.teama.requestsubsystem.data.RequestSubsystem;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;

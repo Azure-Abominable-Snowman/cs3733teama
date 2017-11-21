@@ -1,6 +1,8 @@
 package com.teama.requestsubsystem;
 
+import com.teama.messages.ContactInfo;
 import com.teama.messages.Provider;
+import com.teama.requestsubsystem.interpreterfeature.Language;
 
 import java.util.Set;
 
@@ -10,6 +12,9 @@ public abstract class ServiceStaff {
     private StaffType type;
     private String staffId, firstName, lastName, phoneNumber;
     public Provider provider;
+    private ContactInfo info;
+
+
 
     public ServiceStaff(String staffId, String firstName, String lastName, String phoneNumber, StaffType type,
                         Set<Language> languages, Provider provider, boolean available) {
