@@ -302,6 +302,16 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     @Override
+    public void deletePoint(String id) {
+        pointMap.remove(id);
+    }
+
+    @Override
+    public void deleteLine(String id) {
+        lineMap.remove(id);
+    }
+
+    @Override
     public Floor getCurrentFloor() {
         return curFloor;
     }
@@ -417,6 +427,11 @@ public class HospitalMapDisplay implements MapDisplay {
                 return null;
             }
         }
+        return null;
+    }
+
+    @Override
+    public String pathPointAt(Location loc) {
         return null;
     }
 

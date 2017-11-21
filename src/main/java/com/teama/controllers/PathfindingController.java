@@ -4,8 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.DrawNodeInstantly;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.pathfinding.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -15,7 +17,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -38,9 +39,11 @@ public class PathfindingController {
         this.mapScrollPane = map.getUnderlyingScrollPane();
         this.mapCanvas = map.getUnderlyingCanvas();
 
+        // Stuff for the node pop up window
+
         // Display all the nodes for the given floor
         for(MapNode n : mapSubsystem.getVisibleFloorNodes(map.getCurrentFloor()).values()) {
-            map.drawPoint(n.getId(), n.getCoordinate(), 4, Color.BLACK, false);
+            new DrawNodeInstantly(n).displayOnScreen(map);
         }
 
         // Make each node clickable to reveal a detailed menu
@@ -55,6 +58,8 @@ public class PathfindingController {
             if(event.isControlDown()) { // check for a node and if there is one display the node info
                 generateNodePopUp(event);
             }
+
+            genPathWithClicks(event);
         };
 
         map.getUnderlyingCanvas().onMouseClickedProperty().set(clickedOnMapHandler);
@@ -132,6 +137,37 @@ public class PathfindingController {
                 System.out.println("MOVE Y");
                 nodeInfo.setTranslateY(newY);
             }
+        }
+    }
+
+    private MapNode prevNode;
+    private DisplayPath oldPath;
+
+    private PathGenerator gen = new PathGenerator(new AStar());
+
+    private void genPathWithClicks(MouseEvent mouseEvent) {
+        Location clickedLoc = new Location((int)mouseEvent.getX(), (int)mouseEvent.getY(), map.getCurrentFloor(), "Unknown");
+        String curPointId = map.pointAt(clickedLoc);
+
+        System.out.println("PATH CLICK");
+
+        if(curPointId != null) {
+            MapNode curNode = mapSubsystem.getNode(curPointId);
+            if(prevNode != null) { // Draw path
+                System.out.println("PATH NODE SPECIFIED");
+                Path path = gen.generatePath(curNode, prevNode);
+                if(oldPath != null) {
+                    oldPath.deleteFromScreen(map);
+                }
+                if(path != null) {
+                    DisplayPath dpi = new DisplayPathInstantly(path);
+                    dpi.displayOnScreen(map);
+                    oldPath = dpi;
+                }
+            }
+
+            // Fill previous location
+            prevNode = curNode;
         }
     }
 }
