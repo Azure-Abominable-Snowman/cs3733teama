@@ -56,9 +56,9 @@ public class PathAlgorithmTest {
         Path result =  finder.generatePath(map1[0][0], map1[12][1]);
         assertTrue(result.getNodes().contains(map1[0][0]));    //check the start
         assertTrue(result.getNodes().contains(map1[12][1]));   //check the end
-      //  assertTrue(result.getNodes().contains(map1[1][1]));    //check some points in the path
-     //   assertTrue(result.getNodes().contains(map1[6][1]));
-       // assertTrue(result.getNodes().contains(map1[11][1]));
+        assertTrue(result.getNodes().contains(map1[1][1]));    //check some points in the path
+        assertTrue(result.getNodes().contains(map1[6][1]));
+        assertTrue(result.getNodes().contains(map1[11][1]));
 
         Path result2 = finder.generatePath(mapd[0][0],mapd[22][20]);
         result2 = finder.generatePath(mapd[0][0],mapd[13][14]);
