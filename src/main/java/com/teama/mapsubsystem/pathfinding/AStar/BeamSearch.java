@@ -13,7 +13,7 @@ public class BeamSearch extends AStar {
     private LimitedPriorityQueue limitedQueue;
     protected MapNode start, end;
 
-    BeamSearch(int queueSize)
+    public BeamSearch(int queueSize)
     {
         limitedQueue =new LimitedPriorityQueue(queueSize);
     }

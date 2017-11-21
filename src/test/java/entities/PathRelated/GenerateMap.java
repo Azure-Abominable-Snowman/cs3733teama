@@ -197,12 +197,10 @@ public class  GenerateMap  {
     private void fillMap (MapNodeData[][] map, int sizeX, int sizeY)
     {
         String str  = new String();
-        Location tempLoc = new Location(1,1, Floor.ONE,"a");// create location
         for(int i = 0;i< sizeX;i++){    // start fill in the map
             for (int j = 0; j < sizeY; j++)
             {
-                tempLoc.setxCoord(i);   // put in correct coord
-                tempLoc.setyCoord(j);
+                Location tempLoc = new Location(i,j, Floor.ONE,"a");// create location
                 str=str.format("C %d R %d",i,j);    // create correct name
                 map[i][j]= new MapNodeData(str,tempLoc, NodeType.HALL,str
                         ,str,"A");  // create the Node in the map
