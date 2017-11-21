@@ -132,6 +132,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
         Integer pwHash = p.getPassword().hashCode();
         String access = p.getAccess().toString();
         try {
+            System.out.println(uname+" "+pwHash+" "+access);
             log.info("Searching for user " +uname);
             checkLogin.setString(1, uname);
             checkLogin.setInt(2, pwHash);

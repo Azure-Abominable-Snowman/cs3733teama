@@ -169,6 +169,7 @@ public class JavaDatabaseSource implements MapDataSource {
                 log.info("Error in getNode. No such node. Must have edges.");
                 return null;
             }
+
             MapNode retrievedNode = retrieveNode(id);
             if(retrievedNode == null) {
                 log.info("Error in getNode. Requested node doesn't exist in the database");
@@ -203,7 +204,7 @@ public class JavaDatabaseSource implements MapDataSource {
             addNodeStmt.setInt(3, node.getCoordinate().getyCoord());
             addNodeStmt.setString(4, (node.getCoordinate().getLevel()).toString());
             addNodeStmt.setString(5,  (node.getCoordinate().getBuilding()));
-            addNodeStmt.setString(6, "ELEV");
+            addNodeStmt.setString(6, node.getNodeType().name());
             addNodeStmt.setString(7, node.getLongDescription());
             addNodeStmt.setString(8, node.getShortDescription());
             addNodeStmt.setString(9, node.getTeamAssignment());
@@ -261,14 +262,15 @@ public class JavaDatabaseSource implements MapDataSource {
 
                     String updatedEdgeID = edge.getStartID() + "_" + edge.getEndID(); //update Edge ID to reflect changes
                     log.info("Edge " + edge.getId() + " was updated to " + updatedEdgeID);
-                    updateEdgeStmt.setString(1, updatedEdgeID);
+
+                    //TODO: get preparedstatement working, for some reason isn't working
+                    /*updateEdgeStmt.setString(1, updatedEdgeID);
                     updateEdgeStmt.setString(2, edge.getStartID());
                     updateEdgeStmt.setString(3, edge.getEndID());
                     updateEdgeStmt.setString(4, edge.getId()); //look up by old edge ID
-                    updateEdgeStmt.executeUpdate();
+                    updateEdgeStmt.executeUpdate();*/
 
-                    //stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    /*
+                    stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+edge.getId()+"'");
                     result.absolute(1);
                     result.updateString("EDGEID", edge.getId());
@@ -277,7 +279,7 @@ public class JavaDatabaseSource implements MapDataSource {
                     result.updateRow();
                     result.close();
                     stmt.close();
-                    */
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
