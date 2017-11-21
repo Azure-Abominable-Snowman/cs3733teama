@@ -145,7 +145,7 @@ public class InterpreterStaffDB {
     }
 
     public boolean addStaff(InterpreterStaff s) {
-        
+        return true;
     }
 }
 
