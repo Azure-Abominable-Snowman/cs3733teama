@@ -2,3 +2,8 @@
     -fx-background-color: white;
     -fx-border-color: lightgray;
 }
+
+.illuminatedfloorbutton {
+    -fx-background-color: dodgerblue;
+    -fx-border-color: lightgray;
+}

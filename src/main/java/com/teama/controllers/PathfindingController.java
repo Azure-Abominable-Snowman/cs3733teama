@@ -4,13 +4,17 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.*;
+import com.teama.mapsubsystem.data.DrawNodeInstantly;
+import com.teama.mapsubsystem.data.Floor;
+import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.*;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
@@ -20,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class PathfindingController {
 
@@ -30,6 +35,12 @@ public class PathfindingController {
     private AnchorPane mapAreaPane;
     private ScrollPane mapScrollPane;
     private Canvas mapCanvas;
+    private VBox floorButtonBox;
+
+    private final String illuminatedFloorButtonClass = "illuminatedfloorbutton";
+    private final String regularFloorButtonClass = "floorbutton";
+    private final String pressedFloorButtonClass = "pressedfloorbutton";
+
 
     public PathfindingController(MapSubsystem mapSubsystem, MapDisplay map, AnchorPane mapAreaPane, JFXTextField searchBar, JFXButton searchButton, VBox floorButtonBox) {
         this.map = map;
@@ -39,6 +50,7 @@ public class PathfindingController {
         this.mapSubsystem = mapSubsystem;
         this.mapScrollPane = map.getUnderlyingScrollPane();
         this.mapCanvas = map.getUnderlyingCanvas();
+        this.floorButtonBox = floorButtonBox;
 
         // Stuff for the node pop up window
 
@@ -114,17 +126,24 @@ public class PathfindingController {
             JFXButton curFloorButton = new JFXButton();
             curFloorButton.setText(floor.toString());
             curFloorButton.getStylesheets().add("css/MainScreenStyle.css");
-            curFloorButton.getStyleClass().add("floorbutton");
+            curFloorButton.getStyleClass().add(regularFloorButtonClass);
+            curFloorButton.setId(floor.toString());
             curFloorButton.setPrefWidth(35);
             curFloorButton.pressedProperty().addListener((Observable obs) -> {
                 switchFloor(floor);
             });
+
             floorButtonBox.getChildren().add(curFloorButton);
         }
-
     }
 
+    /**
+     * Called when floors are switched
+     * @param floor
+     */
     private void switchFloor(Floor floor) {
+        Floor prevFloor = map.getCurrentFloor();
+
         // Wipe the whole map
         map.clear();
         // Changes the floor then updates the nodes
@@ -132,6 +151,11 @@ public class PathfindingController {
         // Display all the nodes for the given floor
         for(MapNode n : mapSubsystem.getVisibleFloorNodes(map.getCurrentFloor()).values()) {
             new DrawNodeInstantly(n).displayOnScreen(map);
+        }
+
+        // Display the path on the floor if needed
+        if(curPath != null) {
+            curPath.displayOnScreen(map, map.getCurrentFloor());
         }
     }
 
@@ -188,7 +212,7 @@ public class PathfindingController {
         }
     }
 
-    private DisplayPath oldPath;
+    private DisplayPath curPath;
 
     private PathGenerator gen = new PathGenerator(new AStar());
 
@@ -202,12 +226,28 @@ public class PathfindingController {
             MapNode curNode = mapSubsystem.getNode(curPointId);
             System.out.println("PATH NODE SPECIFIED");
             Path path = gen.generatePath(mapSubsystem.getKioskNode(), curNode);
-            if(oldPath != null) {
-                oldPath.deleteFromScreen(map);
+            if(curPath != null) {
+                curPath.deleteFromScreen(map);
+                // unlight floors traveled on the button box
+                for(Node button : floorButtonBox.getChildren()) {
+                    if(button.getStyleClass().contains(illuminatedFloorButtonClass)) {
+                        button.getStyleClass().remove(illuminatedFloorButtonClass);
+                    }
+                }
             }
             DisplayPath dpi = new DisplayPathInstantly(path);
-            dpi.displayOnScreen(map);
-            oldPath = dpi;
+            dpi.displayOnScreen(map, map.getCurrentFloor());
+            Set<Floor> floorsTraveled = path.getFloorsCrossedExceptTrans();
+            System.out.println(floorsTraveled);
+
+            // Light up floors traveled on the button box
+            for(Node button : floorButtonBox.getChildren()) {
+                if(floorsTraveled.contains(Floor.getFloor(button.getId()))) {
+                    button.getStyleClass().add(illuminatedFloorButtonClass);
+                }
+            }
+
+            curPath = dpi;
         }
     }
 }

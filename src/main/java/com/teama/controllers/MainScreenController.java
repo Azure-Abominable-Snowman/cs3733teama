@@ -19,6 +19,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -55,6 +56,9 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private VBox floorButtonBox;
+
+    @FXML
+    private GridPane displayedMaps;
 
     private MapDisplay map;
 
@@ -95,6 +99,13 @@ public class MainScreenController implements Initializable {
         map.setZoom(1.5);
 
         PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, searchBar, searchButton, floorButtonBox);
+
+        /*Canvas newMapCanvas = new Canvas(); Test to add another map as an inset (multi-floor pathfinding)
+        ScrollPane newMapPane = new ScrollPane(newMapCanvas);
+        MapDisplay newMap = new HospitalMapDisplay(newMapPane, newMapCanvas, imgs);
+        newMapPane.setMinWidth(300);
+        newMap.setGrow(true);
+        displayedMaps.addColumn(1, newMapPane);*/
 
         // When the hamburger retracts, make it disappear, otherwise appear
         hamOpnsTran.onFinishedProperty().set((ActionEvent e) -> {

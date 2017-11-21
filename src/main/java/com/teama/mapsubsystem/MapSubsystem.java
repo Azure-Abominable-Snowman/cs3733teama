@@ -22,13 +22,36 @@ public class MapSubsystem {
         private static final MapSubsystem instance = new MapSubsystem();
     }
 
+    //private String nodefile = "/csvdata/MapAnodes.csv";
+    //private String edgefile = "/csvdata/MapAedges.csv";
+
     private MapSubsystem() {
-        csvSource = new CSVDatabaseSource(nodefile, edgefile); // Reads CSV file
+        // TODO: automatic concatenation
+        // Get all csv files from the filesystem and load them all in.
+        /*File eFile = new File("csvdata/edges");
+        File nFile = new File("csvdata/nodes");
+        File[] eList = eFile.listFiles();
+        File[] nList = nFile.listFiles();
+        if(eList.length != nList.length) {
+            System.out.println("Something is wrong, different number of node and edge files!");
+        }
         javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
+        for(int i = 0; i < eList.length; i++) {
+            System.out.println(eList[i]+" "+nList[i]);
+            csvSource = new CSVDatabaseSource("/csvdata/nodes/"+nList[i].getName(), "/csvdata/edges/"+eList[i].getName()); // Reads CSV file
+            javaDBSource.addAll(csvSource);
+        }*/
+
+        // load in concatenated files
+        //String nodefile = "/csvdata/Mapnodes.csv";
+        //String edgefile = "/csvdata/Mapedges.csv";
+        //csvSource = new CSVDatabaseSource(nodefile, edgefile); // Reads CSV file
+        javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
+
         pathGenerator = new AStar();
 
-        // Initially populate the tables with the data from CSV
-        javaDBSource.addAll(csvSource);
+        // Initially populate the tables with the data from CSV (Not needed every time)
+        //javaDBSource.addAll(csvSource);
     }
 
 
@@ -39,8 +62,6 @@ public class MapSubsystem {
     private MapDataSource javaDBSource; // link to javaDB -- see MapDataSource interface to call functions that update DB
     private MapDataSource csvSource;
 
-    private String nodefile = "/csvdata/MapAnodes.csv";
-    private String edgefile = "/csvdata/MapAedges.csv";
 
     private PathAlgorithm pathGenerator;
 
@@ -51,7 +72,6 @@ public class MapSubsystem {
 
     @Deprecated
     public void exportToCSV(String nodeFile, String edgeFile) {
-        //csvSource.addAll(javaDBSource);
         CSVDatabaseSource export = new CSVDatabaseSource(nodeFile, edgeFile);
         export.addAll(javaDBSource);
         export.close();

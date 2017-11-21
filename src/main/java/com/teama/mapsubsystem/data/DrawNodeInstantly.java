@@ -10,7 +10,7 @@ public class DrawNodeInstantly extends DrawNode {
 
     @Override
     public void displayOnScreen(MapDisplay display) {
-        display.drawPoint(getId(),getCoordinate(),4, Color.BLACK,false);
+        display.drawPoint(getId(),getCoordinate(),9, Color.BLACK,false);
     }
 
     @Override
