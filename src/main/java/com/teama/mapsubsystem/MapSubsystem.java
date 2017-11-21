@@ -2,7 +2,7 @@ package com.teama.mapsubsystem;
 
 import com.teama.Configuration;
 import com.teama.mapsubsystem.data.*;
-import com.teama.mapsubsystem.pathfinding.AStar;
+import com.teama.mapsubsystem.pathfinding.AStar.AStar;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextDirections;
