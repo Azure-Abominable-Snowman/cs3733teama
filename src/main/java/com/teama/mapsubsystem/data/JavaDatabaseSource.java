@@ -260,9 +260,11 @@ public class JavaDatabaseSource implements MapDataSource {
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {
                 try {
 
-                    /*String updatedEdgeID = edge.getStartID() + "_" + edge.getEndID(); //update Edge ID to reflect changes
+                    String updatedEdgeID = edge.getStartID() + "_" + edge.getEndID(); //update Edge ID to reflect changes
                     log.info("Edge " + edge.getId() + " was updated to " + updatedEdgeID);
-                    updateEdgeStmt.setString(1, updatedEdgeID);
+
+                    //TODO: get preparedstatement working, for some reason isn't working
+                    /*updateEdgeStmt.setString(1, updatedEdgeID);
                     updateEdgeStmt.setString(2, edge.getStartID());
                     updateEdgeStmt.setString(3, edge.getEndID());
                     updateEdgeStmt.setString(4, edge.getId()); //look up by old edge ID
