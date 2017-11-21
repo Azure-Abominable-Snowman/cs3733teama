@@ -2,7 +2,7 @@ package entities.db;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
-import com.teama.requestsubsystem.JavaDBServiceRequestData;
+import com.teama.requestsubsystem.data.JavaDBServiceRequestData;
 import com.teama.requestsubsystem.PriorityLevel;
 import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestType;

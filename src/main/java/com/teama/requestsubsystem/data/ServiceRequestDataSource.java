@@ -1,4 +1,6 @@
-package com.teama.requestsubsystem;
+package com.teama.requestsubsystem.data;
+
+import com.teama.requestsubsystem.Request;
 
 import java.util.ArrayList;
 

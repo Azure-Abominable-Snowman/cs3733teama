@@ -1,6 +1,6 @@
 package entities.db;
 
-import com.teama.requestsubsystem.JavaDatabaseStaffInfo;
+import com.teama.requestsubsystem.data.JavaDatabaseStaffInfo;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,21 +1,30 @@
 package com.teama.requestsubsystem;
 
+import com.teama.Configuration;
+import com.teama.requestsubsystem.data.JavaDBServiceRequestData;
+import com.teama.requestsubsystem.data.ServiceRequestDataSource;
+
 public class RequestSubsystem {
-    private static RequestSubsystem ourInstance = new RequestSubsystem();
+    private ServiceRequestDataSource requestDB = new JavaDBServiceRequestData(Configuration.dbURL, Configuration.requestTable);
+
+    private static class RequestSubsystemGetter {
+        private static final RequestSubsystem _instance = new RequestSubsystem();
+    }
 
     public static RequestSubsystem getInstance() {
-        return ourInstance;
+        return RequestSubsystemGetter._instance;
     }
 
-    private RequestSubsystem() {
+
+    public void makeRequest(Request r) {
+        requestDB.submitRequest(r);
 
     }
 
-    public void makeRequest() {
-
+    public void fulfillRequest(String id) {
+        requestDB.fulfillRequest(id);
     }
-
-    public void fulfillRequest() {
-
+    public void submitRequest(Request req) {
+        requestDB.submitRequest(req);
     }
 }

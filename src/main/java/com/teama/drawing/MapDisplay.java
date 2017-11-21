@@ -2,6 +2,8 @@ package com.teama.drawing;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 
 public interface MapDisplay {
@@ -20,4 +22,6 @@ public interface MapDisplay {
     void zoomInto(Location loc, double zoom);
     void setGrow(boolean grow);
     boolean getGrow();
+    Canvas getUnderlyingCanvas();
+    ScrollPane getUnderlyingScrollPane();
 }

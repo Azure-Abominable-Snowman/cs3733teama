@@ -357,8 +357,10 @@ public class HospitalMapDisplay implements MapDisplay {
         loc = convToImageCoords(loc);
         Location pointLoc = point.getLoc();
 
-        return ((loc.getxCoord() <= pointLoc.getxCoord()+(point.getWeight()) && loc.getxCoord() >= pointLoc.getxCoord()-(point.getWeight())) &&
-                (loc.getyCoord() <= pointLoc.getyCoord()+(point.getWeight()) && loc.getyCoord() >= pointLoc.getyCoord()-(point.getWeight())));
+        double pointDiameter = point.getWeight()*2;
+
+        return ((loc.getxCoord() <= pointLoc.getxCoord()+(pointDiameter) && loc.getxCoord() >= pointLoc.getxCoord()-(pointDiameter)) &&
+                (loc.getyCoord() <= pointLoc.getyCoord()+(pointDiameter) && loc.getyCoord() >= pointLoc.getyCoord()-(pointDiameter)));
     }
 
     @Override
@@ -416,6 +418,16 @@ public class HospitalMapDisplay implements MapDisplay {
             }
         }
         return null;
+    }
+
+    @Override
+    public Canvas getUnderlyingCanvas() {
+        return canvas;
+    }
+
+    @Override
+    public ScrollPane getUnderlyingScrollPane() {
+        return pane;
     }
 
     // Nested classes for the point and line so we can redraw them later

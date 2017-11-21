@@ -279,7 +279,8 @@ public class JavaDatabaseSource implements MapDataSource {
                     stmt.close();
                     */
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println("Edge already exists");
+                    //e.printStackTrace();
                 }
             } else {
                 sqlExcept.printStackTrace();

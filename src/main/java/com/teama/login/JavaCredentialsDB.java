@@ -3,9 +3,6 @@ package com.teama.login;
 import java.sql.*;
 import java.util.logging.Logger;
 
-import static com.teama.login.AccessType.ADMIN;
-import static com.teama.login.AccessType.STAFF;
-
 /**
  * Created by aliss on 11/11/2017.
  */
@@ -14,6 +11,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
     private Connection conn = null;
     private Statement stmt = null;
     private String dbURL, tablename;
+    PreparedStatement addLogin, checkLogin, updateLogin;
 
     public JavaCredentialsDB(String dbURL, String tablename) {
         this.dbURL = dbURL;
@@ -37,14 +35,24 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
         // Create table
         try {
             String createTable = "CREATE TABLE " + tablename +
-                    "(USERNAME INTEGER not NULL, " +
-                    "PASSWORD VARCHAR(25) not NULL, " +
+                    "(USERNAME VARCHAR(25) not NULL, " +
+                    "PASSWORD INTEGER not NULL, " +
                     "ACCESS VARCHAR(25) not NULL, " +
                     "PRIMARY KEY (USERNAME))";
             stmt.execute(createTable);
         } catch (SQLException e) {
             log.info("Table " + tablename + " may already exist.");
 
+        }
+
+        try {
+            addLogin = conn.prepareStatement("INSERT INTO " + tablename + " VALUES (?, ?, ?)");
+            updateLogin = conn.prepareStatement("UPDATE " + tablename + " SET PASSWORD = ?, ACCESS = ?" + " WHERE USERNAME = ?",
+                    ResultSet.CONCUR_UPDATABLE);
+            checkLogin = conn.prepareStatement("SELECT * FROM " + tablename + " WHERE USERNAME = ? AND PASSWORD = ? AND ACCESS = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                     ResultSet.CONCUR_UPDATABLE);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         if (stmt != null) {
@@ -56,81 +64,85 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
         }
     }
 
-    public void addLoginInfo(LoginInfo p) {
-        PreparedStatement pstmt = null;
+    public boolean addLoginInfo(LoginInfo p) {
+        //PreparedStatement pstmt = null;
         String uname = p.getUsername();
-        int hash = uname.hashCode();
         String pw = p.getPassword();
-        String access = "";
-        if (p.getAccess() == ADMIN) {
-            access = "ADMIN";
-        }
-        if (p.getAccess() == STAFF) {
-            access = "STAFF";
-        }
+        int pw_hash = pw.hashCode();
+        String access = p.getAccess().toString();
 
         try {
-            PreparedStatement insert = null;
+            addLogin.setString(1, uname);
+            addLogin.setInt(2, pw_hash);
+            addLogin.setString(3, access);
+            /*
             String sql = "INSERT INTO " + tablename +
                     "(USERNAME, PASSWORD, ACCESS)" +
                     "VALUES (?, ?, ?)";
             insert = conn.prepareStatement(sql);
-            insert.setInt(1, hash);
-            insert.setString(2, pw);
+            insert.setString(1, uname);
+            insert.setInt(2, pw_hash);
             insert.setString(3, access);
-            insert.executeUpdate();
-
+            */
+            addLogin.executeUpdate();
+            //insert.close();
             // Update
         } catch (SQLException e) {
-            log.info("Login info already exists; update");
+            log.info("Login info already exists");
+            return false;
         }
-        try {
-            log.info("Updating information");
-            String update = "UPDATE " + tablename +
-                    " SET PASSWORD = ? " +
-                    "WHERE USERNAME = ?";
-
-            pstmt = conn.prepareStatement(update);
-            pstmt.setString(1, pw);
-            pstmt.setInt(2, hash);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-        finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    //e.printStackTrace();
-                }
-
-            }
-        }
+        return true;
     }
 
+    @Override
+    public void updateLoginInfo(LoginInfo p) {
+        //PreparedStatement insert = null;
+        String uname = p.getUsername();
+        Integer pw_hash = p.getPassword().hashCode();
+        String access = p.getAccess().toString();
+        /*
+        String sql = "UPDATE " + tablename +
+                "(USERNAME, PASSWORD, ACCESS)" +
+                "VALUES (?, ?, ?)";
+        insert = conn.prepareStatement(sql);
+        insert.setString(1, uname);
+        insert.setInt(2, pw_hash);
+        insert.setString(3, access);
+        */
+
+        try {
+            updateLogin.setInt(1, pw_hash);
+            updateLogin.setString(2, access);
+            updateLogin.setString(3, uname);
+            updateLogin.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //insert.close();
+    }
 
     @Override
-    public boolean checkCredentials(LoginInfo p) {
+    public LoginInfo checkCredentials(LoginInfo p) {
 
-        boolean authorized = false;
-        PreparedStatement pstmt = null;
+        //boolean authorized = false;
+        //PreparedStatement pstmt = null;
         ResultSet rs = null;
         String uname = p.getUsername();
-        Integer hash = uname.hashCode();
+        Integer pwHash = p.getPassword().hashCode();
+        String access = p.getAccess().toString();
         try {
-            log.info("Searching for user " +hash);
-            String search = "SELECT * " +
-                            "FROM " + tablename +
-                            " WHERE USERNAME = ?";
-            pstmt = conn.prepareStatement(search, ResultSet.TYPE_SCROLL_INSENSITIVE,
-                                                    ResultSet.CONCUR_UPDATABLE);
-            pstmt.setInt(1, hash);
-            rs = pstmt.executeQuery();
+            log.info("Searching for user " +uname);
+            checkLogin.setString(1, uname);
+            checkLogin.setInt(2, pwHash);
+            checkLogin.setString(3, access);
+            rs = checkLogin.executeQuery();
+
             //rs = pstmt.executeQuery(search);
             if (!rs.next()) {
                 log.info("No such user in system: " + uname);
-                return false;
+                rs.close();
+                return null;
             }
             else {
                 rs.beforeFirst();
@@ -141,7 +153,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
                         log.info("Correct password.");
                         if (rs.getString("ACCESS").equals(p.getAccess().toString())) {
                             log.info("Authorized Access for user " + uname);
-                            authorized = true;
+                            //authorized = true;
                         } else {
                             log.info("Illegal access by user " + uname);
                         }
@@ -153,13 +165,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-            } catch (SQLException e) {
-                //e.printStackTrace();
-            }
-        }
+
         if (rs != null) {
             try {
                 rs.close();
@@ -167,7 +173,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
                 //e.printStackTrace();
             }
         }
-        return authorized;
+        return p;
     }
 
 

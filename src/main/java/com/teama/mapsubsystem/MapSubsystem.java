@@ -63,19 +63,19 @@ public class MapSubsystem {
     }
 
     public MapNode getNode(String id) {
-        return null;
+        return javaDBSource.getNode(id);
     }
 
     public MapEdge getEdge(String id) {
-        return null;
+        return javaDBSource.getEdge(id);
     }
 
-    public void deleteEdge() {
-
+    public void deleteEdge(String id) {
+        javaDBSource.removeEdge(id);
     }
 
-    public void deleteNode() {
-
+    public void deleteNode(String id) {
+        javaDBSource.removeNode(id);
     }
 
     public Map<String, MapNode> getFloorNodes(Floor floor) {
@@ -83,6 +83,17 @@ public class MapSubsystem {
         Map<String, MapNode> nodeMap = new HashMap<>();
         for(MapNode n : nodes) {
             nodeMap.put(n.getId(), n);
+        }
+        return nodeMap;
+    }
+
+    public Map<String, MapNode> getVisibleFloorNodes(Floor floor) {
+        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor.toString());
+        Map<String, MapNode> nodeMap = new HashMap<>();
+        for(MapNode n : nodes) {
+            if(!n.getNodeType().equals(NodeType.HALL)) {
+                nodeMap.put(n.getId(), n);
+            }
         }
         return nodeMap;
     }

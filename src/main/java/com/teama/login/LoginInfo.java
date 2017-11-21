@@ -8,9 +8,9 @@ public class LoginInfo {
     // holds the login credentials for an admin/staff user for verification
     private String username;
     private String password;
-    private Enum<AccessType> access;
+    private AccessType access;
 
-    public LoginInfo(String uname, String pw, Enum<AccessType> a) {
+    public LoginInfo(String uname, String pw, AccessType a) {
         username = uname;
         password = pw;
         access = a;
@@ -24,7 +24,7 @@ public class LoginInfo {
         return password;
     }
 
-    public Enum<AccessType> getAccess() {
+    public AccessType getAccess() {
         return access;
     }
 
