@@ -85,6 +85,7 @@ build/
 bin/
 
 testdb/
+unittestdb/
 lib/javax.ejb.jar
 lib/javax.jms.jar
 lib/javax.persistence.jar
