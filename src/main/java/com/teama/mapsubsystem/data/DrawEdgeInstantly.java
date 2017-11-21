@@ -1,6 +1,7 @@
 package com.teama.mapsubsystem.data;
 
 import com.teama.drawing.MapDisplay;
+import javafx.scene.paint.Color;
 
 public class DrawEdgeInstantly extends DrawEdge {
     public DrawEdgeInstantly(MapEdge edge) {
@@ -9,6 +10,6 @@ public class DrawEdgeInstantly extends DrawEdge {
 
     @Override
     public void displayOnScreen(MapDisplay display) {
-        System.out.println("DISPLAY EDGE INSTANTLY");
+        display.drawLine(getId(), getStart().getCoordinate(), getEnd().getCoordinate(), 2, Color.RED, false);
     }
 }

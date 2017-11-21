@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem;
 
-import com.teama.controllers.SceneEngine;
+import com.teama.Configuration;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.AStar;
 import com.teama.mapsubsystem.pathfinding.Path;
@@ -24,7 +24,7 @@ public class MapSubsystem {
 
     private MapSubsystem() {
         csvSource = new CSVDatabaseSource(nodefile, edgefile); // Reads CSV file
-        javaDBSource = new JavaDatabaseSource(SceneEngine.getURL(), "NODES", "EDGES");
+        javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
         pathGenerator = new AStar();
 
         // Initially populate the tables with the data from CSV
@@ -78,11 +78,22 @@ public class MapSubsystem {
         javaDBSource.removeNode(id);
     }
 
-    public Map<String, MapNode> getFloorNodes(String floor) {
-        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor);
+    public Map<String, MapNode> getFloorNodes(Floor floor) {
+        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor.toString());
         Map<String, MapNode> nodeMap = new HashMap<>();
         for(MapNode n : nodes) {
             nodeMap.put(n.getId(), n);
+        }
+        return nodeMap;
+    }
+
+    public Map<String, MapNode> getVisibleFloorNodes(Floor floor) {
+        ArrayList<MapNode> nodes = javaDBSource.getNodesOnFloor(floor.toString());
+        Map<String, MapNode> nodeMap = new HashMap<>();
+        for(MapNode n : nodes) {
+            if(!n.getNodeType().equals(NodeType.HALL)) {
+                nodeMap.put(n.getId(), n);
+            }
         }
         return nodeMap;
     }
@@ -102,5 +113,9 @@ public class MapSubsystem {
 
     public Path getPath(MapNode start, MapNode end) {
         return null;
+    }
+
+    public MapNode getKioskNode() {
+        return getNode("AINFO0020G"); // 1st floor info desk
     }
 }
