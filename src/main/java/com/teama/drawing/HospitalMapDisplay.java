@@ -80,6 +80,21 @@ public class HospitalMapDisplay implements MapDisplay {
         return curZoom;
     }
 
+    private boolean grow = false;
+
+    /**
+     * Sets the grow variable. Should the map grow to fit the whole screen when resizing or should the
+     * map shrink to fit the screen and maintain aspect ratio.
+     * @param grow
+     */
+    public void setGrow(boolean grow) {
+        this.grow = grow;
+    }
+
+    public boolean getGrow() {
+        return grow;
+    }
+
     /**
      * Update the canvas' and scrollpane size as well as render
      */
@@ -106,7 +121,11 @@ public class HospitalMapDisplay implements MapDisplay {
         pane.setVmax(height);
         pane.setHmax(width);
 
-        renderMap(width, height, curZoom);
+        if(grow) {
+            renderMapGrow(width, height, curZoom);
+        } else {
+            renderMap(width, height, curZoom);
+        }
 
         pane.setVvalue((height/oldHeight)*oldVvalue);
         pane.setHvalue((width/oldWidth)*oldHvalue);
@@ -138,6 +157,47 @@ public class HospitalMapDisplay implements MapDisplay {
                     canvas.setTranslateX(0);
                 }
             } else {
+                canvas.setHeight(scaledH*curZoom);
+                canvas.setWidth(width*curZoom);
+                if(curZoom <= 1) { // If we aren't zoomed, translate the image to the center of the screen
+                    canvas.setTranslateY(((height - scaledH) / 2));
+                    canvas.setTranslateX(0);
+                } else {
+                    canvas.setTranslateY(0);
+                }
+            }
+        } else {
+            canvas.setHeight(height*curZoom);
+            canvas.setWidth(width*curZoom);
+        }
+        render();
+    }
+
+    /**
+     * Renders the map but has a preference for growth rather than fitting within the screen
+     * @param width
+     * @param height
+     * @param curZoom
+     */
+    private void renderMapGrow(double width, double height, double curZoom) {
+        if(curMap != null) { // if it can be obtained, set the width and height using the aspect ratio
+            double aspectRatio = curMap.getMap().getWidth()/curMap.getMap().getHeight();
+            double scaledW, scaledH;
+            // keep the aspect ratio
+            scaledH = (1 / ((1 / (width)) * aspectRatio));
+            scaledW = ((height)*aspectRatio);
+            if(scaledH <= pane.getHeight()) {
+                canvas.setHeight(height*curZoom);
+                canvas.setWidth(scaledW*curZoom);
+                if(curZoom <= 1) { // If we aren't zoomed, translate the image to the center of the screen
+                    canvas.setTranslateX(((width - scaledW) / 2));
+                    canvas.setTranslateY(0);
+                } else {
+                    canvas.setTranslateX(0);
+                }
+            }
+
+            if(scaledW <= pane.getWidth()) {
                 canvas.setHeight(scaledH*curZoom);
                 canvas.setWidth(width*curZoom);
                 if(curZoom <= 1) { // If we aren't zoomed, translate the image to the center of the screen
@@ -215,7 +275,7 @@ public class HospitalMapDisplay implements MapDisplay {
             loc = convToImageCoords(loc);
         }
 
-        Point p = new Point(loc, size, color);
+        Point p = new Point(id, loc, size, color);
         pointMap.put(id, p);
         render();
     }
@@ -236,8 +296,20 @@ public class HospitalMapDisplay implements MapDisplay {
             start = convToImageCoords(start);
             end = convToImageCoords(end);
         }
-        Line l = new Line(start, end, weight, color);
+        Line l = new Line(id, start, end, weight, color);
         lineMap.put(id, l);
+        render();
+    }
+
+    @Override
+    public void deletePoint(String id) {
+        pointMap.remove(id);
+        render();
+    }
+
+    @Override
+    public void deleteLine(String id) {
+        lineMap.remove(id);
         render();
     }
 
@@ -250,6 +322,7 @@ public class HospitalMapDisplay implements MapDisplay {
     public void setCurrentFloor(Floor floor) {
         curFloor = floor;
         curMap = maps.get(floor);
+        render();
     }
 
     /**
@@ -292,14 +365,93 @@ public class HospitalMapDisplay implements MapDisplay {
         return curMap.getMap().getHeight();
     }
 
+
+    private boolean isPointOnLoc(Location loc, Point point) {
+        loc = convToImageCoords(loc);
+        Location pointLoc = point.getLoc();
+
+        double pointDiameter = point.getWeight()*2;
+
+        return ((loc.getxCoord() <= pointLoc.getxCoord()+(pointDiameter) && loc.getxCoord() >= pointLoc.getxCoord()-(pointDiameter)) &&
+                (loc.getyCoord() <= pointLoc.getyCoord()+(pointDiameter) && loc.getyCoord() >= pointLoc.getyCoord()-(pointDiameter)));
+    }
+
     @Override
-    public boolean isPointAt(Location loc) {
+    public String pointAt(Location loc) {
+        for (Point p : pointMap.values()) {
+            if (isPointOnLoc(loc, p)) {
+                return p.getId();
+            }
+        }
+        return null;
+    }
+
+    public void clear() {
+        lineMap = new HashMap<>();
+        pointMap = new HashMap<>();
+        render();
+    }
+
+    /**
+     * finds if a point is on a line, doesn't work yet...
+     * @param loc
+     * @param line
+     * @return
+     */
+    private boolean isPointOnLine(Location loc, Line line) {
+        System.out.println("SX: "+line.getStart().getxCoord()+" SY: "+line.getStart().getyCoord()+" EX: "+line.getEnd().getxCoord()+" EY: "+line.getEnd().getyCoord());
+        try {
+            double slope = ((line.getStart().getyCoord() - line.getEnd().getyCoord())/(line.getStart().getxCoord() - line.getEnd().getxCoord()));
+            double invSlope = 1 / slope;
+            loc = convToImageCoords(loc);
+            System.out.println("CONVY: "+loc.getyCoord()+" CONVX: "+loc.getxCoord());
+
+            double yGuess = slope*loc.getxCoord()-slope*line.getStart().getxCoord()+line.getStart().getyCoord();
+            double xGuess = loc.getyCoord()*invSlope-line.getStart().getyCoord()*invSlope+line.getStart().getxCoord();
+            System.out.println("YGUESS: "+yGuess+" XGUESS: "+xGuess);
+
+            double yDist = yGuess-loc.getyCoord();
+            double xDist = xGuess-loc.getxCoord();
+
+            System.out.println("YDIST: "+yDist+" XDIST: "+xDist);
+
+            /*double bound = Math.cos(Math.atan((xDist/yDist)))*yDist;
+
+            System.out.println("BOUND: "+bound);*/
+
+        } catch(ArithmeticException e) {
+            return false;
+        }
+
         return false;
     }
 
     @Override
-    public boolean isLineAt(Location loc) {
-        return false;
+    public String lineAt(Location loc) {
+        System.out.println("Y: "+loc.getyCoord()+" X: "+loc.getxCoord());
+        for(Line l : lineMap.values()) {
+            if(isPointOnLine(loc, l)) {
+                //return l.getId();
+                //TODO: make this work
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String pathPointAt(Location loc) {
+        return null;
+    }
+
+    @Override
+    public Canvas getUnderlyingCanvas() {
+        return canvas;
+    }
+
+    @Override
+    public ScrollPane getUnderlyingScrollPane() {
+        return pane;
     }
 
     // Nested classes for the point and line so we can redraw them later
@@ -307,11 +459,13 @@ public class HospitalMapDisplay implements MapDisplay {
         private Location start, end;
         private double weight;
         private Color color;
-        public Line(Location start, Location end, double weight, Color color) {
+        private String id;
+        public Line(String id, Location start, Location end, double weight, Color color) {
             this.start = start;
             this.end = end;
             this.weight = weight;
             this.color = color;
+            this.id = id;
         }
 
         public void draw(GraphicsContext gc) {
@@ -325,16 +479,35 @@ public class HospitalMapDisplay implements MapDisplay {
                     convUnits(end.getxCoord(), getMaxX(), width),
                     convUnits(end.getyCoord(), getMaxY(), height));
         }
+
+        public Location getStart() {
+            return start;
+        }
+
+        public Location getEnd() {
+            return end;
+        }
+
+        public double getWeight() {
+            return weight;
+        }
+
+        public String getId() {
+            return id;
+        }
     }
 
+    // Stores location data in the format of the image, not the canvas
     private class Point {
         private Location loc;
         private double weight;
         private Color color;
-        public Point(Location loc, double weight, Color color) {
+        private String id;
+        public Point(String id, Location loc, double weight, Color color) {
             this.loc = loc;
             this.weight = weight;
             this.color = color;
+            this.id = id;
         }
 
         public void draw(GraphicsContext gc) {
@@ -343,7 +516,19 @@ public class HospitalMapDisplay implements MapDisplay {
             double height = canvas.getHeight();
             double nodeX = convUnits(loc.getxCoord(), getMaxX(), width);
             double nodeY = convUnits(loc.getyCoord(), getMaxY(), height);
-            gc.fillOval(nodeX, nodeY, weight, weight);
+            gc.fillOval(nodeX-(weight/2), nodeY-(weight/2), weight, weight);
+        }
+
+        public Location getLoc() {
+            return loc;
+        }
+
+        public double getWeight() {
+            return weight;
+        }
+
+        public String getId() {
+            return id;
         }
     }
 }
