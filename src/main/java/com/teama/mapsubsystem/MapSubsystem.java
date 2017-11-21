@@ -7,9 +7,7 @@ import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextDirections;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by aliss on 11/11/2017.
@@ -22,36 +20,25 @@ public class MapSubsystem {
         private static final MapSubsystem instance = new MapSubsystem();
     }
 
-    //private String nodefile = "/csvdata/MapAnodes.csv";
-    //private String edgefile = "/csvdata/MapAedges.csv";
-
     private MapSubsystem() {
-        // TODO: automatic concatenation
-        // Get all csv files from the filesystem and load them all in.
-        /*File eFile = new File("csvdata/edges");
-        File nFile = new File("csvdata/nodes");
-        File[] eList = eFile.listFiles();
-        File[] nList = nFile.listFiles();
-        if(eList.length != nList.length) {
-            System.out.println("Something is wrong, different number of node and edge files!");
+        // All of the files put into a set
+        // Teams A through I and W for Wong's files
+        Set<String> nList = new HashSet<>();
+        Set<String> eList = new HashSet<>();
+        for (char alphabet = 'A'; alphabet <= 'I'; alphabet++) {
+            nList.add("/csvdata/nodes/Map"+alphabet+"nodes.csv");
+            eList.add("/csvdata/edges/Map"+alphabet+"edges.csv");
         }
-        javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
-        for(int i = 0; i < eList.length; i++) {
-            System.out.println(eList[i]+" "+nList[i]);
-            csvSource = new CSVDatabaseSource("/csvdata/nodes/"+nList[i].getName(), "/csvdata/edges/"+eList[i].getName()); // Reads CSV file
-            javaDBSource.addAll(csvSource);
-        }*/
+        nList.add("/csvdata/nodes/MapWnodes.csv");
+        eList.add("/csvdata/edges/MapWedges.csv");
 
-        // load in concatenated files
-        //String nodefile = "/csvdata/Mapnodes.csv";
-        //String edgefile = "/csvdata/Mapedges.csv";
-        //csvSource = new CSVDatabaseSource(nodefile, edgefile); // Reads CSV file
+        csvSource = new CSVDatabaseSource(nList, eList, null, null); // Don't specify output files
         javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
 
         pathGenerator = new AStar();
 
         // Initially populate the tables with the data from CSV (Not needed every time)
-        //javaDBSource.addAll(csvSource);
+        javaDBSource.addAll(csvSource);
     }
 
 
@@ -77,7 +64,6 @@ public class MapSubsystem {
         export.close();
     }
 
-    @Deprecated
     public PathAlgorithm getPathGenerator() {
         return pathGenerator;
     }
