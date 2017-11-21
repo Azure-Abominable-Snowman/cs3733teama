@@ -24,7 +24,7 @@ public class BreathFirst implements PathAlgorithm {
         {
             putNodesIntoQueue(checking, checking.getLayer() + 1);
             visited.put(checking.getNode().getId(), checking);
-            if( open.peek()!=null )
+            if( open.peek() ==null )
                 throw new java.lang.RuntimeException("Cannot Generate a route from the given start and end.");
         }
 
@@ -41,7 +41,7 @@ public class BreathFirst implements PathAlgorithm {
         KnownPoint nextPoint;
         for (MapNode node: checking.getAdjacentNodes()) {
             nextPoint = new KnownPoint(node,layer);
-            if(  (! visited.containsKey(node.getId())) || (! open.contains(nextPoint))  )
+            if(  (! visited.containsKey(node.getId())) && (! open.contains(nextPoint))  )
                 open.add(nextPoint);
         }
     }

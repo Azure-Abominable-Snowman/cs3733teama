@@ -11,7 +11,7 @@ public class  GenerateMap  {
      * @param version
      * @return This function returns the MapNodeData.
      */
-     public MapNodeData[][] GenerateNewMap(int version)
+     public MapNode[][] GenerateNewMap(int version)
     {
         switch (version)
         {
@@ -24,11 +24,11 @@ public class  GenerateMap  {
      * This function is to generate version1 map (20*20).
      * @return This function returns the 20*20 MapNodeData array.
      */
-    public MapNodeData[][] GenerateV1()  // Final version, do not change, make new map.
+    public MapNode[][] GenerateV1()  // Final version, do not change, make new map.
     {
         int sizeX=20, sizeY=20;
-        if(sizeX <5 ) sizeX=5;
-        if(sizeY<5 ) sizeY =5; // make sure no sizes are smaller then 5;
+        if(sizeX < 5 ) sizeX=5;
+        if(sizeY< 5 ) sizeY =5; // make sure no sizes are smaller then 5;
 
         MapNodeData[][] map = new MapNodeData[sizeX][sizeY]; // allocate new map
         fillMap (map,sizeX,sizeY);
@@ -67,7 +67,7 @@ public class  GenerateMap  {
      * This function is to generate default map(30*30).
      * @return This function returns the 30*30 MapNodeData array.
      */
-    public MapNodeData[][] GenerateVdefult()  // need change.
+    public MapNode[][] GenerateVdefult()  // need change.
     {
         int sizeX=30, sizeY=30;
         if(sizeX <5 ) sizeX=5;
@@ -230,7 +230,7 @@ public class  GenerateMap  {
      * @param sizeX is the width of map (can be smaller, but no bigger then actual map)
      * @param sizeY is the height of map (can be smaller, but no bigger then actual map)
      */
-    public void printMap (MapNodeData[][] map, int sizeX, int sizeY)
+    public void printMap (MapNode[][] map, int sizeX, int sizeY)
     {
         System.out.printf("    ");
         for(int i=0;i<sizeX;i++)
@@ -273,7 +273,7 @@ public class  GenerateMap  {
      * @param n2 is the node 2
      * @return This function returns the weight of the edge connecting node 1 and node 2, return -1 when no edge.
      */
-    private double findWeight(MapNodeData n1, MapNodeData n2)
+    private double findWeight(MapNode n1, MapNode n2)
     {
         for (MapEdge edge: n1.getEdges()) {
             if ( edge.getEnd()==n2 || edge.getStart() == n2 ) return edge.getWeight();
