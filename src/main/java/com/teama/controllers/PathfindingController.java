@@ -63,9 +63,9 @@ public class PathfindingController {
 
             if(event.isControlDown()) { // check for a node and if there is one display the node info
                 generateNodePopUp(event);
+            } else {
+                genPathWithClicks(event);
             }
-
-            genPathWithClicks(event);
         };
 
         map.getUnderlyingCanvas().onMouseClickedProperty().set(clickedOnMapHandler);
@@ -138,7 +138,7 @@ public class PathfindingController {
                 e.printStackTrace();
             }
             NodeInfoPopUpController ni = loader.getController();
-            ni.setNode(clickedNode);
+            ni.setInfo(clickedNode, map, mapSubsystem);
 
             // Create pane to load nodeInfo root node into
             nodeInfo.toFront(); // bring to front of screen

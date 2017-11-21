@@ -304,11 +304,13 @@ public class HospitalMapDisplay implements MapDisplay {
     @Override
     public void deletePoint(String id) {
         pointMap.remove(id);
+        render();
     }
 
     @Override
     public void deleteLine(String id) {
         lineMap.remove(id);
+        render();
     }
 
     @Override

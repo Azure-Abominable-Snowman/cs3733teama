@@ -12,4 +12,9 @@ public class DrawNodeInstantly extends DrawNode {
     public void displayOnScreen(MapDisplay display) {
         display.drawPoint(getId(),getCoordinate(),4, Color.BLACK,false);
     }
+
+    @Override
+    public void removeFromScreen(MapDisplay display) {
+        display.deletePoint(getId());
+    }
 }

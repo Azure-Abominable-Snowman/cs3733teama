@@ -58,7 +58,7 @@
                   <Insets right="15.0" />
                </padding>
             </GridPane>
-            <JFXHamburger fx:id="hamburgerButton" alignment="CENTER_RIGHT" onMouseClicked="#onHamburgerButtonClick" prefHeight="25.0" prefWidth="32.0" />
+            <JFXHamburger fx:id="hamburgerButton" alignment="CENTER_RIGHT" maxWidth="39.0" onMouseClicked="#onHamburgerButtonClick" prefHeight="48.0" prefWidth="39.0" />
          </children>
       </StackPane>
     </children>
