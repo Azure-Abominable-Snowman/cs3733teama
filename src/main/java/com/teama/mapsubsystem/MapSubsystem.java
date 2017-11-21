@@ -114,4 +114,8 @@ public class MapSubsystem {
     public Path getPath(MapNode start, MapNode end) {
         return null;
     }
+
+    public MapNode getKioskNode() {
+        return getNode("AINFO0020G"); // 1st floor info desk
+    }
 }

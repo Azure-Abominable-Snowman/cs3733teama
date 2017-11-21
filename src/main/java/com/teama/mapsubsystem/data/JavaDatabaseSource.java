@@ -169,6 +169,7 @@ public class JavaDatabaseSource implements MapDataSource {
                 log.info("Error in getNode. No such node. Must have edges.");
                 return null;
             }
+
             MapNode retrievedNode = retrieveNode(id);
             if(retrievedNode == null) {
                 log.info("Error in getNode. Requested node doesn't exist in the database");
@@ -203,7 +204,7 @@ public class JavaDatabaseSource implements MapDataSource {
             addNodeStmt.setInt(3, node.getCoordinate().getyCoord());
             addNodeStmt.setString(4, (node.getCoordinate().getLevel()).toString());
             addNodeStmt.setString(5,  (node.getCoordinate().getBuilding()));
-            addNodeStmt.setString(6, "ELEV");
+            addNodeStmt.setString(6, node.getNodeType().name());
             addNodeStmt.setString(7, node.getLongDescription());
             addNodeStmt.setString(8, node.getShortDescription());
             addNodeStmt.setString(9, node.getTeamAssignment());

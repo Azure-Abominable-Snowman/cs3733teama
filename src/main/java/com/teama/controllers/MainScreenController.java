@@ -11,6 +11,7 @@ import com.teama.drawing.MapDisplay;
 import com.teama.drawing.ProxyMap;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -53,16 +54,23 @@ public class MainScreenController implements Initializable {
 
     private MapDisplay map;
 
+    private boolean drawerExtended = false;
+
     @FXML
     void onHamburgerButtonClick(MouseEvent event) throws IOException {
         hamOpnsTran.setRate(animRate*=-1);
         hamOpnsTran.play();
-        HBox box = FXMLLoader.load(getClass().getResource("/featureAccdn.fxml"));
+        HBox box = FXMLLoader.load(getClass().getResource("/FeatureAccdn.fxml"));
+        box.toFront();
         drawer.setSidePane(box);
         if(drawer.isShown()){
             drawer.close();
-        }
-        else{
+            drawerExtended = false;
+            //drawer.setVisible(false);
+        } else {
+            drawer.setPrefWidth(box.getPrefWidth());
+            //drawer.setVisible(true);
+            drawerExtended = true;
             drawer.open();
         }
     }
@@ -70,7 +78,7 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         drawer.setSidePane();
-        hamOpnsTran=new HamburgerBackArrowBasicTransition(hamburgerButton);
+        hamOpnsTran = new HamburgerBackArrowBasicTransition(hamburgerButton);
 
         Map<Floor, HospitalMap> imgs = new HashMap<>();
         imgs.put(Floor.SUBBASEMENT, new ProxyMap("/maps/L2.png"));
@@ -85,5 +93,11 @@ public class MainScreenController implements Initializable {
         map.setZoom(1.5);
 
         PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, searchBar, searchButton);
+
+        // When the hamburger retracts, make it disappear, otherwise appear
+        hamOpnsTran.onFinishedProperty().set((ActionEvent e) -> {
+            System.out.println(drawerExtended);
+            drawer.setVisible(drawerExtended);
+        });
     }
 }

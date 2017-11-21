@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -85,6 +86,24 @@ public class PathfindingController {
         };
 
         mapScrollPane.onDragDetectedProperty().set(panningMap);
+
+        // Zoom in and out using plus and minus keys
+        mapScrollPane.onKeyTypedProperty().set((KeyEvent event) -> {
+            switch(event.getCharacter()) {
+                case "=":
+                    // zoom in
+                    if(map.getZoom() < 3) { // TODO: make this not throw an exception when the image gets too big
+                        map.setZoom(map.getZoom() + 0.1);
+                    }
+                    break;
+                case "-":
+                    // zoom out
+                    if(map.getZoom() > 1.5) {
+                        map.setZoom(map.getZoom() - 0.1);
+                    }
+                    break;
+            }
+        });
     }
 
 
@@ -140,7 +159,6 @@ public class PathfindingController {
         }
     }
 
-    private MapNode prevNode;
     private DisplayPath oldPath;
 
     private PathGenerator gen = new PathGenerator(new AStar());
@@ -153,21 +171,14 @@ public class PathfindingController {
 
         if(curPointId != null) {
             MapNode curNode = mapSubsystem.getNode(curPointId);
-            if(prevNode != null) { // Draw path
-                System.out.println("PATH NODE SPECIFIED");
-                Path path = gen.generatePath(curNode, prevNode);
-                if(oldPath != null) {
-                    oldPath.deleteFromScreen(map);
-                }
-                if(path != null) {
-                    DisplayPath dpi = new DisplayPathInstantly(path);
-                    dpi.displayOnScreen(map);
-                    oldPath = dpi;
-                }
+            System.out.println("PATH NODE SPECIFIED");
+            Path path = gen.generatePath(mapSubsystem.getKioskNode(), curNode);
+            if(oldPath != null) {
+                oldPath.deleteFromScreen(map);
             }
-
-            // Fill previous location
-            prevNode = curNode;
+            DisplayPath dpi = new DisplayPathInstantly(path);
+            dpi.displayOnScreen(map);
+            oldPath = dpi;
         }
     }
 }

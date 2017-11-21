@@ -1,6 +1,7 @@
 package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.drawing.MapDisplay;
+import com.teama.mapsubsystem.data.DrawEdgeInstantly;
 import com.teama.mapsubsystem.data.MapEdge;
 
 public class DisplayPathInstantly extends DisplayPath {
@@ -15,7 +16,7 @@ public class DisplayPathInstantly extends DisplayPath {
         }*/
         for(MapEdge e : getConnectors()) {
             System.out.println(e);
-            //new DrawEdgeInstantly(e).displayOnScreen(display);
+            new DrawEdgeInstantly(e).displayOnScreen(display);
         }
     }
 
