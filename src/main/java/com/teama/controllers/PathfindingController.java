@@ -4,9 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.DrawNodeInstantly;
-import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -46,6 +44,13 @@ public class PathfindingController {
         for(MapNode n : mapSubsystem.getVisibleFloorNodes(map.getCurrentFloor()).values()) {
             new DrawNodeInstantly(n).displayOnScreen(map);
         }
+
+        /*for(MapNode n : mapSubsystem.getFloorNodes(map.getCurrentFloor()).values()) {
+            // Display all edges (DEBUG)
+            for(MapEdge e : n.getEdges()) {
+                new DrawEdgeInstantly(e).displayOnScreen(map);
+            }
+        }*/
 
         // Make each node clickable to reveal a detailed menu
         EventHandler<MouseEvent> clickedOnMapHandler = (MouseEvent event) -> {

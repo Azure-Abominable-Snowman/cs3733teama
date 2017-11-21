@@ -22,45 +22,43 @@
                   <Canvas fx:id="mapCanvas" height="405.0" width="514.0" />
                </content>
             </ScrollPane>
-            <JFXDrawer fx:id="drawer" alignment="CENTER_RIGHT" defaultDrawerSize="328.0" direction="RIGHT" layoutY="75.0" overLayVisible="false" prefHeight="325.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <JFXDrawer fx:id="drawer" alignment="CENTER_RIGHT" defaultDrawerSize="328.0" direction="RIGHT" layoutX="722.0" layoutY="70.0" maxHeight="260.0" overLayVisible="false" prefHeight="325.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </JFXDrawer>
          </children>
       </AnchorPane>
-      <StackPane alignment="TOP_RIGHT" prefHeight="48.0" prefWidth="722.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+      <StackPane alignment="TOP_RIGHT" prefHeight="48.0" prefWidth="416.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <children>
-            <GridPane prefHeight="52.0">
+            <GridPane maxWidth="-Infinity" StackPane.alignment="TOP_LEFT">
               <columnConstraints>
-                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="430.0" />
-                <ColumnConstraints hgrow="NEVER" maxWidth="440.0" minWidth="0.0" prefWidth="180.0" />
-                  <ColumnConstraints hgrow="NEVER" maxWidth="440.0" minWidth="10.0" prefWidth="53.0" />
-                  <ColumnConstraints hgrow="NEVER" maxWidth="440.0" minWidth="10.0" prefWidth="33.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="304.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="440.0" minWidth="0.0" prefWidth="81.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                              <JFXTextField fx:id="searchBar" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="500.0" promptText="Search..." style="-fx-background-color: #eeeeee;" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
+                              <JFXTextField fx:id="searchBar" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="500.0" promptText="Search..." style="-fx-background-color: #eeeeee;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </JFXTextField>
-                              <JFXButton fx:id="searchButton" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: BLUE;" text="Search" textFill="WHITE" GridPane.columnIndex="1">
+                              <JFXButton fx:id="searchButton" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: BLUE;" text="Search" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </JFXButton>
-                  <JFXHamburger fx:id="hamburgerButton" alignment="CENTER_RIGHT" onMouseClicked="#onHamburgerButtonClick" prefHeight="25.0" prefWidth="32.0" GridPane.columnIndex="3" />
                </children>
                <StackPane.margin>
-                  <Insets left="15.0" />
+                  <Insets />
                </StackPane.margin>
                <padding>
                   <Insets right="15.0" />
                </padding>
             </GridPane>
+            <JFXHamburger fx:id="hamburgerButton" alignment="CENTER_RIGHT" onMouseClicked="#onHamburgerButtonClick" prefHeight="25.0" prefWidth="32.0" />
          </children>
       </StackPane>
     </children>

@@ -260,16 +260,15 @@ public class JavaDatabaseSource implements MapDataSource {
             if(Objects.equals(sqlExcept.getSQLState(), "23505")) {
                 try {
 
-                    String updatedEdgeID = edge.getStartID() + "_" + edge.getEndID(); //update Edge ID to reflect changes
+                    /*String updatedEdgeID = edge.getStartID() + "_" + edge.getEndID(); //update Edge ID to reflect changes
                     log.info("Edge " + edge.getId() + " was updated to " + updatedEdgeID);
                     updateEdgeStmt.setString(1, updatedEdgeID);
                     updateEdgeStmt.setString(2, edge.getStartID());
                     updateEdgeStmt.setString(3, edge.getEndID());
                     updateEdgeStmt.setString(4, edge.getId()); //look up by old edge ID
-                    updateEdgeStmt.executeUpdate();
+                    updateEdgeStmt.executeUpdate();*/
 
-                    //stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    /*
+                    stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet result = stmt.executeQuery("SELECT * FROM "+edgeTable+" WHERE EDGEID = '"+edge.getId()+"'");
                     result.absolute(1);
                     result.updateString("EDGEID", edge.getId());
@@ -278,10 +277,9 @@ public class JavaDatabaseSource implements MapDataSource {
                     result.updateRow();
                     result.close();
                     stmt.close();
-                    */
+
                 } catch (SQLException e) {
-                    System.out.println("Edge already exists");
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 }
             } else {
                 sqlExcept.printStackTrace();

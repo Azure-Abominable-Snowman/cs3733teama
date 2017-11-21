@@ -66,10 +66,8 @@ public class MainScreenController implements Initializable {
         if(drawer.isShown()){
             drawer.close();
             drawerExtended = false;
-            //drawer.setVisible(false);
         } else {
             drawer.setPrefWidth(box.getPrefWidth());
-            //drawer.setVisible(true);
             drawerExtended = true;
             drawer.open();
         }
@@ -96,7 +94,6 @@ public class MainScreenController implements Initializable {
 
         // When the hamburger retracts, make it disappear, otherwise appear
         hamOpnsTran.onFinishedProperty().set((ActionEvent e) -> {
-            System.out.println(drawerExtended);
             drawer.setVisible(drawerExtended);
         });
     }
