@@ -11,7 +11,12 @@ public class ContactInfo {
     public ContactInfo() {
         availableContactInfoTypes = new HashSet<>();
     }
-
+    public ContactInfo(Set<ContactInfoTypes> t, String num, String email, Provider prov) {
+        availableContactInfoTypes = t;
+        phoneNumber = num;
+        emailAddress = email;
+        provider = prov;
+    }
     public Set<ContactInfoTypes> getAvailableContactInfoTypes() {
         return availableContactInfoTypes;
     }

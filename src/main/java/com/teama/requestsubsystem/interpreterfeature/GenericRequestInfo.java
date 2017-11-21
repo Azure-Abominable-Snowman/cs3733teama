@@ -25,7 +25,6 @@ public class GenericRequestInfo {
     }
 
     public GenericRequestInfo(int requestID, Location location, RequestType reqType, int staffID, String note) {
-        this.ID = requestID;
         this.location = location;
         this.reqType = reqType;
         this.staffID = staffID;
