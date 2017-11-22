@@ -40,6 +40,9 @@ public class ContactInfo {
     public String getEmailAddress() {
         return emailAddress;
     }
+    public Provider getProvider() {
+        return this.provider;
+    }
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;

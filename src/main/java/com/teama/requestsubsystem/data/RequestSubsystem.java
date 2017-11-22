@@ -1,8 +1,8 @@
+/*
 package com.teama.requestsubsystem.data;
 
 import com.teama.controllers.SceneEngine;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequestDB;
-import com.teama.requestsubsystem.Request;
 
 public class RequestSubsystem {
     private ServiceRequestDataSource requestDB = new InterpreterRequestDB(SceneEngine.getURL(), "REQUEST_TABLE");
@@ -32,3 +32,4 @@ public class RequestSubsystem {
         return requestDB.getRequest(id);
     }
 }
+*/

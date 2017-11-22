@@ -4,7 +4,6 @@ import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequestDB;
 import com.teama.requestsubsystem.PriorityLevel;
-import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestType;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,6 @@
-package com.teama.requestsubsystem.interpreterfeature;
+package com.teama.requestsubsystem;
 
 import com.teama.mapsubsystem.data.Location;
-import com.teama.requestsubsystem.RequestType;
 
 /**
  * Created by aliss on 11/20/2017.
@@ -9,24 +8,24 @@ import com.teama.requestsubsystem.RequestType;
 public class GenericRequestInfo {
     private int ID; // set by database. originally 0
     private Location location;
-    private RequestType reqType;
+    //private RequestType reqType;
     int staffID; // unique staff ID of assigned staff member
 
     //private PriorityLevel priority;
     private String additionalInfo;
 
-    public GenericRequestInfo(Location location, RequestType reqType, int staffID, String note) {
+    public GenericRequestInfo(Location location, int staffID, String note) {
         this.ID = 0;
         this.location = location;
-        this.reqType = reqType;
+        //this.reqType = reqType;
         this.staffID = staffID;
         //this.priority = priority;
         this.additionalInfo = note; // for any additional details an admin may want to add about situation
     }
 
-    public GenericRequestInfo(int requestID, Location location, RequestType reqType, int staffID, String note) {
+    public GenericRequestInfo(int requestID, Location location,int staffID, String note) {
         this.location = location;
-        this.reqType = reqType;
+        //this.reqType = reqType;
         this.staffID = staffID;
         //this.priority = priority;
         this.additionalInfo = note; // for any additional details an admin may want to add about situation
@@ -36,10 +35,10 @@ public class GenericRequestInfo {
         return location;
     }
 
-    void setID(int ID) { //protected, only used by DB
+    //TODO: PROBABLY DELETE THIS BECAUSE IT WON'T BE NECESSARY
+    public void setID(int ID) { //protected, only used by DB
         this.ID = ID;
     } // set by DB when request is entered into Request Table
-
 
 
     public int getRequestID() { // protected, only used by DB
@@ -50,38 +49,40 @@ public class GenericRequestInfo {
         return staffID;
     }
 
-    public void setLocation(Location location){
+    public void setLocation(Location location) {
         this.location = location;
-    };
+    }
 
-    public RequestType getReqType() {
-            return reqType;
-            }
+    ;
 
-    public void setReqType(RequestType reqType){
-            this.reqType = reqType;
-            }
+    /*
+        public RequestType getReqType() {
+                return reqType;
+                }
+        public void setReqType(RequestType reqType){
+                this.reqType = reqType;
+                }
 
-            /*
-    public PriorityLevel getPriority() {
-            return priority;
-            }
 
-    public void setPriority(PriorityLevel priority){
-            this.priority = priority;
-            }
-*/
+        public PriorityLevel getPriority() {
+                return priority;
+                }
+
+        public void setPriority(PriorityLevel priority){
+                this.priority = priority;
+                }
+    */
     public String getNote() {
-            return additionalInfo;
-            }
+        return additionalInfo;
+    }
 
-    public void setNote(String note){
-            this.additionalInfo = note;
-            }
+    public void setNote(String note) {
+        this.additionalInfo = note;
+    }
 
+}
 
-
-
+/*
 
     @Override
     public String toString(){
@@ -89,5 +90,5 @@ public class GenericRequestInfo {
             }
             }
 
-
+*/
 

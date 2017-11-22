@@ -7,7 +7,8 @@ public enum CertificationType {
     CHI("CHI"),
     CCHI("CCHI"),
     CMI("CMI"),
-    CDI("CDI");
+    CDI("CDI"),
+    NONE("NONE");
 
     private final String name;
 

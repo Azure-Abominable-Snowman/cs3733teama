@@ -1,5 +1,7 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
+import com.teama.mapsubsystem.data.Location;
+import com.teama.requestsubsystem.GenericRequestInfo;
 import com.teama.requestsubsystem.RequestStatus;
 
 /**
@@ -10,7 +12,7 @@ public class InterpreterRequest {
     RequestStatus r; // used in database
     int familySize;
     Language requiredLanguage;
-
+// may want to add a filter for CertificationType in the future
 
     // THESE FIELDS WILL BE FILLED OUT AFTER THE SERVICE IS COMPLETED:
     double serviceTime;
@@ -29,6 +31,13 @@ public class InterpreterRequest {
         return info;
     }
 
+    public Location getLocation() {
+        return info.getLocation();
+    }
+
+    public String getNote() {
+        return info.getNote();
+    }
     public RequestStatus getStatus() {
         return r;
     }
@@ -41,7 +50,13 @@ public class InterpreterRequest {
         return requiredLanguage;
     }
 
+    public double getServiceTime() {
+        return serviceTime;
+    }
 
+    public TranslationType getTranslType() {
+        return type;
+    }
     void setRequestID(int ID) {
         info.setID(ID);
     }

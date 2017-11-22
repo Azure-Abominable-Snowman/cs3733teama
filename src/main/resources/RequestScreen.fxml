@@ -21,7 +21,7 @@
          <items>
             <HBox maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="597.0">
                <children>
-                  <Button fx:id="backButt" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#backClick" prefHeight="34.0" prefWidth="68.0" text="Back" HBox.hgrow="NEVER">
+                  <Button fx:id="backButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#backClick" prefHeight="34.0" prefWidth="68.0" text="Back" HBox.hgrow="NEVER">
                      <font>
                         <Font size="16.0" />
                      </font>

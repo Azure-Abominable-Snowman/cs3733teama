@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * Created by aliss on 11/11/2017.
  */
 public class JavaCredentialsDBTest {
-    JavaCredentialsDB db = new JavaCredentialsDB("jdbc:derby:testdb;create=true", "LOGIN_CREDS");
+    JavaCredentialsDB db = new JavaCredentialsDB("jdbc:derby:unittestdb;create=true", "LOGIN_CREDS");
     LoginInfo a = new LoginInfo("user1", "randompw", STAFF);
     LoginInfo b = new LoginInfo("aostapenko", "notmypw", ADMIN);
     LoginInfo c = new LoginInfo("supersecure", "hello", ADMIN);
