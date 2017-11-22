@@ -9,11 +9,11 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-//TODO : FINISH THE METHODS IN THIS CLASS. PERHAPS ADD A CONTACTINFO DATABASE. MAKE THE STAFF TABLE AUTOINCREMENT - THAT WILL BE THE UNIQUE STAFF ID FOR NOW. 
 /**
  * Created by aliss on 11/21/2017.
  */
-public class InterpreterStaffDB {
+
+public class InterpreterStaffDB implements InterpreterStaffInfoSource {
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL, staffTable;
     private String staffTableLanguages;
@@ -22,10 +22,10 @@ public class InterpreterStaffDB {
     PreparedStatement addStaff, removeStaffReqTable, updateStaffReqTable, getStaff, getQualifiedStaff, getContactInfo;
     PreparedStatement addStaffLangTable, updateStaffLangTable;
 
-    public InterpreterStaffDB(String dbURL) {
-        this.staffTable = "INTERPRETER_STAFF";
+    public InterpreterStaffDB(String dbURL, String staffTableName, String languageTableName) {
+        this.staffTable = staffTableName;
         this.dbURL = dbURL;
-        this.staffTableLanguages = staffTable + "_LANGUAGES";
+        this.staffTableLanguages = languageTableName;
 
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
@@ -66,20 +66,7 @@ public class InterpreterStaffDB {
         } catch (SQLException sqlExcept) {
             log.info("Does the staff info database or language relation table already exist?");
         }
-/*
-        try {
-            stmt = conn.createStatement();
-            stmt.execute(
-                    "INSERT INTO "+staffTable+" VALUES('TESTSTAFF', 'Jake', 'Pardue', '6034893939', 'INTERPRETER', 'VERIZON', TRUE)"
-            );
-            stmt.execute(
-                    "INSERT INTO "+staffTable+"_LANGUAGES VALUES('TESTSTAFF', 'English')"
-            );
-            stmt.close();
-        } catch (SQLException e) {
-            log.info("Staff language or person already added");
-        }
-        */
+
         try {
             addStaff = conn.prepareStatement("INSERT INTO " + staffTable + " VALUES(?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             getStaff = conn.prepareStatement("SELECT * FROM " + staffTable + " WHERE STAFFID = ?");
@@ -97,52 +84,32 @@ public class InterpreterStaffDB {
             e.printStackTrace();
         }
     }
-/*
-    public ArrayList<ServiceStaff> getIntrStaff(){
-        ArrayList<ServiceStaff> INTRStaff = new ArrayList<>();
-        try{
-            stmt = conn.createStatement();
-            ResultSet s = stmt.executeQuery(
-                    "SELECT * FROM "+staffTable+" WHERE STAFFTYPE = 'INTERPRETER'"
-            );
-            while(s.next()){
-                ServiceStaff staff = new InterpreterStaff(s.getString("STAFFID"), s.getString("firstName"), s.getString("lastName"),
-                        s.getString("phoneNumber"), StaffType.valueOf(s.getString("STAFFTYPE")), null, Provider.valueOf(s.getString("PHONEPROVIDER")), s.getBoolean("available"));
-                INTRStaff.add(staff);
-            }
-            return INTRStaff;
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        System.out.println("Couldn't find staff");
-        return null;
-    }
-    */
+
 
     // filter based on language for now
-    public InterpreterStaff findQualified(Language lang) {
-        InterpreterStaff foundStaff = null;
+    public Set<InterpreterStaff> findQualified(Language lang) {
+        Set<InterpreterStaff> foundStaff = new HashSet<InterpreterStaff>();
         // Use all of the attributes to build a query for the database
         try {
             getQualifiedStaff.setString(1, lang.toString());
             ResultSet rs = getQualifiedStaff.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
+                InterpreterStaff found = null;
                 Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
                 avail.add(ContactInfoTypes.EMAIL);
                 avail.add(ContactInfoTypes.TEXT);
                 avail.add(ContactInfoTypes.PHONE);
                 ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.valueOf(rs.getString("PROVIDER")));
-                foundStaff = new InterpreterStaff(new GenericStaffInfo(rs.getInt("STAFFID"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
+                found = new InterpreterStaff(new GenericStaffInfo(rs.getInt("STAFFID"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
                         new InterpreterInfo(new HashSet<Language>(), CertificationType.valueOf(rs.getString("CERTIFICATION"))));
                 log.info("Found qualified staff member");
-                return foundStaff;
+                foundStaff.add(found);
                 // perform another query to find contact info types
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return foundStaff;
     }
     /*
     addStaff = conn.prepareStatement("INSERT INTO " + staffTable + " VALUES(?, ?, ?, ?, ?, ?, ?)");
@@ -164,6 +131,7 @@ public class InterpreterStaffDB {
                             "FOREIGN KEY(STAFFID) REFERENCES " + staffTable +
                             ")
      */
+
     public boolean addStaff(InterpreterStaff s) {
         try {
             addStaff.setString(1, s.getFirstName());
@@ -206,6 +174,7 @@ public class InterpreterStaffDB {
             updateStaffLangTable = conn.prepareStatement("UPDATE " + staffTableLanguages + " SET LANGUAGE = ? WHERE STAFFID = ?");
 
  */
+
     public boolean updateStaff(InterpreterStaff s) {
          try {
             updateStaffReqTable.setString(1, s.getFirstName());
@@ -246,6 +215,7 @@ public class InterpreterStaffDB {
             removeStaffReqTable = conn.prepareStatement("DELETE FROM " + staffTable + " WHERE STAFFID = ?");
 
  */
+
     public boolean deleteStaff(int id) {
         try {
             removeStaffReqTable.setInt(1, id);
@@ -258,64 +228,6 @@ public class InterpreterStaffDB {
         }
 
     }
-}
-
-
-/*
-            log.info(query.toString());
-            ResultSet result = stmt.executeQuery(query.toString());
-            // If none match...
-            if(!result.next()) {
-                // No available members found in db
-                log.info("No results found for qualified servicestaff");
-                return null;
-            }
-            // Query returns all matching ID's
-            // Another query is needed to get all attributes for the staff member
-            String foundId = result.getString("STAFFID");
-            log.info("FOUND "+foundId);
-            result.close();
-
-            // Retrieves all info on the found staff member
-            result = stmt.executeQuery("SELECT * FROM "+staffTable+" AS T1, "+staffTableLanguages+" AS T2 WHERE T1.STAFFID='"+foundId+"' AND T2.STAFFID='"+foundId+"'");
-
-            // Add all of the stuff in the first row
-            result.next();
-            String firstName = result.getString("FIRSTNAME");
-            String lastName = result.getString("LASTNAME");
-            String phone =  result.getString("PHONENUMBER");
-            Provider provider = Provider.valueOf(result.getString("PHONEPROVIDER").toUpperCase());
-            Set<Language> lanArray = new HashSet<>();
-            lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
-            while(result.next() && (result.getString("STAFFID").equals(foundId))) {
-                // Load up all of the array attributes
-                lanArray.add(Language.valueOf(result.getString("LANGUAGE")));
-            }
-
-            log.info(lanArray.toString());
-            switch(attrib.getType().toString()) {
-                case("SECURITY"):
-                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.SECURITY,lanArray, provider, true);
-                    break;
-                case("TRANSPORT"):
-                    foundStaff = new TransportStaff(foundId, firstName, lastName, phone, StaffType.TRANSPORT, lanArray, provider, true);
-                    break;
-                case("INTERPRETER"):
-                    foundStaff = new SecurityStaff(foundId, firstName, lastName, phone, StaffType.INTERPRETER, lanArray, provider,true);
-                    break;
-                default:
-                    System.out.println("Invalid staff member requested");
-                    return null;
-            }
-            result.close();
-            stmt.close();
-            return foundStaff;
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public void close() {
         try {
             conn.close();
@@ -325,6 +237,5 @@ public class InterpreterStaffDB {
     }
 }
 
- catch (SQLException e) {
-            e.printStackTrace();
-        */
+
+

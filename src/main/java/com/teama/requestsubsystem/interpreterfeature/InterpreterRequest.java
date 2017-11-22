@@ -8,10 +8,12 @@ import com.teama.requestsubsystem.RequestStatus;
  * Created by aliss on 11/20/2017.
  */
 public class InterpreterRequest {
-    GenericRequestInfo info; // will be filled in
-    RequestStatus r; // used in database
-    int familySize;
-    Language requiredLanguage;
+    private GenericRequestInfo info; // will be filled in
+    private RequestStatus r; // used in database
+    private int familySize;
+    private Language requiredLanguage;
+    private int id = 0; // only set by db
+
 // may want to add a filter for CertificationType in the future
 
     // THESE FIELDS WILL BE FILLED OUT AFTER THE SERVICE IS COMPLETED:
@@ -26,10 +28,25 @@ public class InterpreterRequest {
         this.familySize = familySize;
 
     }
+
+    // ONLY USED BY INTERPRETER REQUEST DB
+    InterpreterRequest(GenericRequestInfo g, RequestStatus s, int familySize, Language requiredLanguage, int id) {
+        this.info = g;
+        this.r = s;
+        this.requiredLanguage = requiredLanguage;
+        this.familySize = familySize;
+        this.id = id;
+    }
+
+
     // methods used by DB to get info
     public GenericRequestInfo getInfo() {
         return info;
     }
+    protected void setRequestID(int ID) { //protected, only used by DB
+        this.id = ID;
+    } // set by DB when request is entered into Request Table
+
 
     public Location getLocation() {
         return info.getLocation();
@@ -57,21 +74,20 @@ public class InterpreterRequest {
     public TranslationType getTranslType() {
         return type;
     }
-    void setRequestID(int ID) {
-        info.setID(ID);
-    }
 
-    int getRequestID() {
-        return info.getRequestID();
+    public int getRequestID() { // protected, only used by DB
+        return this.id;
     }
 
     public int getStaffID () {
-        return info.getRequestID();
+        return info.getStaffID();
     }
 
     // info to be added for report generation
 
-
+    public void setStaffID(int ID) {
+        info.setStaffID(ID);
+    }
     public void setServiceTime(double time) {
         serviceTime = time;
     }

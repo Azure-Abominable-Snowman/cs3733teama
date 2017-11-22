@@ -1,5 +1,5 @@
 package com.teama.requestsubsystem.data;
-
+/*
 import com.teama.requestsubsystem.ServiceStaff;
 
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ public interface StaffInfoDataSource {
      * @param attrib
      * @return
      */
+/*
     default ServiceStaff findQualified(StaffAttrib attrib) {
         return null;
     }
@@ -23,3 +24,4 @@ public interface StaffInfoDataSource {
         return null;
     }
 }
+*/

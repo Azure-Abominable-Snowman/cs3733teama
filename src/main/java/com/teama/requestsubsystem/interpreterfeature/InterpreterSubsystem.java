@@ -4,6 +4,7 @@ import com.teama.Configuration;
 import com.teama.requestsubsystem.RequestStatus;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by aliss on 11/21/2017.
@@ -15,8 +16,8 @@ public class InterpreterSubsystem {
     private InterpreterRequestDB requestDB;
     private InterpreterStaffDB staffDB;
     private InterpreterSubsystem() {
-        requestDB = new InterpreterRequestDB(Configuration.dbURL);
-        staffDB = new InterpreterStaffDB(Configuration.dbURL);
+        requestDB = new InterpreterRequestDB(Configuration.dbURL, "REQUEST_TABLE", "REPORT_TABLE");
+        staffDB = new InterpreterStaffDB(Configuration.dbURL, "STAFF_TABLE", "LANGUAGE_TABLE");
     }
     private static class InterpreterHelper {
         private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
@@ -40,8 +41,8 @@ public class InterpreterSubsystem {
         return staffDB.deleteStaff(staffID);
     }
 
-    // finds qualified staff member based on the specified language
-    public InterpreterStaff findQualfied(Language language) {
+    // finds all qualified staff members based on the specified language
+    public Set<InterpreterStaff> findQualfied(Language language) {
         return staffDB.findQualified(language);
     }
 
@@ -56,9 +57,9 @@ public class InterpreterSubsystem {
         return requestDB.addRequest(r);
     }
 
-    // cancels the selected request
-    public boolean cancelRequest(int requestID) {
-        return requestDB.cancelRequest(requestID);
+    // deletes the selected request
+    public boolean deleteRequest(int requestID) {
+        return requestDB.deleteRequest(requestID);
     }
 
     // updates a request that has been assigned but not closed yet. cannot update closed requests

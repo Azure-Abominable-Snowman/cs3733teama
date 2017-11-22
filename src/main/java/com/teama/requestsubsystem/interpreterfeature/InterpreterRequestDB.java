@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class InterpreterRequestDB {
+public class InterpreterRequestDB implements InterpreterRequestInfoSource {
 
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
@@ -18,15 +18,16 @@ public class InterpreterRequestDB {
     private Connection conn = null;
     private Statement stmt = null;
     private PreparedStatement addRequest, getRequest, deleteRequest, selectRequestByStatus, updateRequest, markClosed, getRequestID; //for request table
-    private PreparedStatement addReport, updateReport, deleteReport;
+    private PreparedStatement addReport, updateReport, deleteReport, getReport;
 
-    public InterpreterRequestDB(String dbURL) {
-        this.requestTableName = "INTERPRETER_REQUESTS";
-        this.reportTableName = "INTERPRETER_REPORTS";
+    public InterpreterRequestDB(String dbURL, String reqTableName, String reportTableName) {
+
+        this.requestTableName = reqTableName;
+        this.reportTableName = reportTableName;
         this.dbURL = dbURL;
 
         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             // Get a connection
             conn = DriverManager.getConnection(dbURL);
         } catch (Exception except) {
@@ -43,32 +44,34 @@ public class InterpreterRequestDB {
 
         try {
             stmt = conn.createStatement();
+            log.info("Preparing to create Request Table.");
             stmt.execute(
-                    " CREATE TABLE " + requestTableName + " (" +
-                            "REQUESTID INTEGER NOT NULL AUTO_INCREMENT," +
+                    " CREATE TABLE " + this.requestTableName + " (" +
+                            "REQUESTID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
                             "STAFFID INTEGER NOT NULL, " +
-                            "XCOORD INT NOT NULL," +
-                            "YCOORD INT NOT NULL, " +
+                            "XCOORD INTEGER NOT NULL," +
+                            "YCOORD INTEGER NOT NULL, " +
                             "LVL VARCHAR(20) NOT NULL," +
                             "BUILDING VARCHAR(20) NOT NULL," +
                             "STATUS VARCHAR(10) NOT NULL, " +
                             "FAMSIZE INTEGER NOT NULL, " +
                             "LANG VARCHAR(30) NOT NULL, " +
-                            "NOTE VARCHAR(300) NOT NULL, " +
-                            " FOREIGN KEY(STAFFID) REFERENCES INTERPRETER_STAFF(STAFFID)" +
-                            " PRIMARY KEY(REQUESTID) " +
+                            "NOTE VARCHAR(300) NOT NULL" +
+                            //" FOREIGN KEY(STAFFID) REFERENCES INTERPRETER_STAFF(STAFFID)" +
+                            //" PRIMARY KEY(REQUESTID) " +
                             ")"
             );
             stmt.close();
+            log.info("Created the request table.");
         } catch (SQLException e) {
-            log.info("Interpreter Request Table already exists.");
+            log.info("Does the Request table already exist?");
             e.printStackTrace();
         }
 
         // Create the report table linked to request table by foreign key
         try {
             stmt = conn.createStatement();
-            stmt.execute(" CREATE TABLE " + reportTableName + " (" +
+            stmt.execute(" CREATE TABLE " + this.reportTableName + " (" +
                     "REQUESTID INTEGER PRIMARY KEY NOT NULL, " +
                     "SERVICETIME DOUBLE NOT NULL, " +
                     "TRANSTYPE VARCHAR(40) NOT NULL, " +
@@ -76,24 +79,45 @@ public class InterpreterRequestDB {
                     "REFERENCES " + requestTableName + "(REQUESTID)" +
                     ")"
             );
+            stmt.close();
         } catch (SQLException e) {
-            log.info("Interpreter Report Table already exists.");
+            log.info("Does the report table already exist?");
+            //e.printStackTrace();
+        }
+        /*
+        DatabaseMetaData meta = null;
+        try {
+            meta = conn.getMetaData();
+            ResultSet res = meta.getTables(null, null, reqTableName,
+                    new String[] {"TABLE"});
+            while (res.next()) {
+                System.out.println(
+                        "   "+res.getString("TABLE_CAT")
+                                + ", "+res.getString("TABLE_SCHEM")
+                                + ", "+res.getString("TABLE_NAME")
+                                + ", "+res.getString("TABLE_TYPE")
+                                + ", "+res.getString("REMARKS"));
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
 
 
         try {
             //getRequestID = conn.prepareStatement("")
-            addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " (STAFFID, XCOORD, YCOORD, LVL, BUILDING, STATUS, FAMSIZE, LANG, NOTE) " +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
             deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
             updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STAFFID = ?, XCOORD = ?, YCOORD = ?, LVL = ?, BUILDING = ?, " +
                     " STATUS = ?, FAMSIZE = ?, LANG = ?, NOTE = ? WHERE REQUESTID = ?");
             selectRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
 
-            markClosed = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ? WHERE REQUESTID = ?");
+            markClosed = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ? WHERE REQUESTID = ?", ResultSet.CONCUR_UPDATABLE);
             addReport = conn.prepareStatement("INSERT INTO " + reportTableName + " VALUES(?, ?, ?)");
             deleteReport = conn.prepareStatement("DELETE FROM " + reportTableName + " WHERE REQUESTID = ?");
+            getReport = conn.prepareStatement("SELECT * FROM " + reportTableName + " WHERE REQUESTID = ?");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,7 +134,7 @@ public class InterpreterRequestDB {
             addRequest.setString(4, request.getInfo().getLocation().getLevel().toString());
             addRequest.setString(5, request.getInfo().getLocation().getBuilding());
             //addRequest.setInt(5, request.getInfo().getPriority().getValue());
-            addRequest.setString(6, request.getStatus().toString());
+            addRequest.setString(6, RequestStatus.ASSIGNED.toString()); // a request only added to db if assigned to staff member
             addRequest.setInt(7, request.getFamilySize());
             addRequest.setString(8, request.getRequiredLanguage().toString());
             addRequest.setString(9, request.getInfo().getNote());
@@ -129,11 +153,11 @@ public class InterpreterRequestDB {
         }
     }
 
-    public boolean cancelRequest(int requestID) {
-        return cancelRequest(requestID);
+    public boolean deleteRequest(int requestID) {
+        return deleteReq(requestID);
     }
 
-    private boolean cancelReq(int requestID) {
+    private boolean deleteReq(int requestID) {
         try {
             deleteRequest.setInt(1, requestID);
             deleteRequest.executeUpdate();
@@ -146,9 +170,10 @@ public class InterpreterRequestDB {
 
     private InterpreterRequest requestFromResultSet(ResultSet set) {
         try {
-            InterpreterRequest r = new InterpreterRequest(new GenericRequestInfo(set.getInt("REQUESTID"), new Location(set.getInt("XCOORD"), set.getInt("YCOORD"),
+            InterpreterRequest r = new InterpreterRequest(new GenericRequestInfo(new Location(set.getInt("XCOORD"), set.getInt("YCOORD"),
                     Floor.getFloor(set.getString("LVL")), set.getString("BUILDING")), set.getInt("STAFFID"),
-                    set.getString("NOTE")), set.getInt("FAMSIZE"), Language.valueOf(set.getString("LANG")));
+                    set.getString("NOTE")), RequestStatus.getRequestStatus(set.getString("STATUS")), set.getInt("FAMSIZE"), Language.valueOf(set.getString("LANG")), set.getInt("REQUESTID"));
+            r.setRequestID(set.getInt("REQUESTID"));
             return r;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -157,18 +182,23 @@ public class InterpreterRequestDB {
     }
 
     public InterpreterRequest getRequest(int requestID) {
+        InterpreterRequest r = null;
         try {
             getRequest.setInt(1, requestID);
             ResultSet set = getRequest.executeQuery();
-            set.next();
-            // Get info from table and return object based off of it
-            InterpreterRequest r = requestFromResultSet(set);
+            if (set.next()) {
+                // Get info from table and return object based off of it
+                System.out.println(set.getInt("REQUESTID"));
+
+                //log.info("Found a request with ID " + r.getRequestID());
+
+                r = requestFromResultSet(set);
+            }
             set.close();
-            return r;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return r;
     }
 
     public ArrayList<InterpreterRequest> getAllRequests(RequestStatus status) {
@@ -189,10 +219,13 @@ public class InterpreterRequestDB {
     }
 
     public boolean fulfillRequest(InterpreterRequest r) {
+        System.out.println(r.getRequestID());
         try { //mark the request as closed from the RequestTable
             markClosed.setString(1, RequestStatus.CLOSED.toString());
             markClosed.setInt(2, r.getRequestID());
             markClosed.executeUpdate();
+            log.info("Marked the report as closed.");
+
         } catch (SQLException e) {
             e.printStackTrace();
             log.info("Could not mark Request " + r.getRequestID() + " as Closed...");
@@ -212,6 +245,7 @@ public class InterpreterRequestDB {
         return true;
         // fill in the report table with newly-entered info
     }
+
 
     public void close() {
         try {

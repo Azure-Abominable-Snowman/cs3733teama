@@ -1,5 +1,5 @@
 package entities.db;
-
+/*
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequestDB;
@@ -153,3 +153,4 @@ public class JavaDBServiceRequestDataTest {
         }
     }
 }
+*/
