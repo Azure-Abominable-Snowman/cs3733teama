@@ -2,10 +2,8 @@ package com.teama.mapsubsystem;
 
 import com.teama.Configuration;
 import com.teama.mapsubsystem.data.*;
+import com.teama.mapsubsystem.pathfinding.*;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
-import com.teama.mapsubsystem.pathfinding.Path;
-import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
-import com.teama.mapsubsystem.pathfinding.TextDirections;
 
 import java.util.*;
 
@@ -35,7 +33,7 @@ public class MapSubsystem {
         csvSource = new CSVDatabaseSource(nList, eList, null, null); // Don't specify output files
         javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
 
-        pathGenerator = new AStar();
+        pathGenerator = new PathGenerator(new AStar());
 
         // Initially populate the tables with the data from CSV (Not needed every time)
         javaDBSource.addAll(csvSource);
@@ -50,23 +48,27 @@ public class MapSubsystem {
     private MapDataSource csvSource;
 
 
-    private PathAlgorithm pathGenerator;
+    private PathGenerator pathGenerator;
 
     @Deprecated
     public MapDataSource getMap() {
         return javaDBSource;
     }
 
-    @Deprecated
     public void exportToCSV(String nodeFile, String edgeFile) {
         CSVDatabaseSource export = new CSVDatabaseSource(nodeFile, edgeFile);
         export.addAll(javaDBSource);
         export.close();
     }
 
-    public PathAlgorithm getPathGenerator() {
+    public PathGenerator getPathGenerator() {
         return pathGenerator;
     }
+
+    public void setPathGeneratorStrategy(PathAlgorithm strategy) {
+        pathGenerator = new PathGenerator(strategy);
+    }
+
 
     public MapNode getNode(String id) {
         return javaDBSource.getNode(id);
