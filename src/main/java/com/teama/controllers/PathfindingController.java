@@ -8,7 +8,9 @@ import com.teama.mapsubsystem.data.DrawNodeInstantly;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.pathfinding.*;
+import com.teama.mapsubsystem.pathfinding.DisplayPath;
+import com.teama.mapsubsystem.pathfinding.DisplayPathInstantly;
+import com.teama.mapsubsystem.pathfinding.Path;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -214,8 +216,6 @@ public class PathfindingController {
 
     private DisplayPath curPath;
 
-    private PathGenerator gen = new PathGenerator(new AStar());
-
     private void genPathWithClicks(MouseEvent mouseEvent) {
         Location clickedLoc = new Location((int)mouseEvent.getX(), (int)mouseEvent.getY(), map.getCurrentFloor(), "Unknown");
         String curPointId = map.pointAt(clickedLoc);
@@ -225,7 +225,7 @@ public class PathfindingController {
         if(curPointId != null) {
             MapNode curNode = mapSubsystem.getNode(curPointId);
             System.out.println("PATH NODE SPECIFIED");
-            Path path = gen.generatePath(mapSubsystem.getKioskNode(), curNode);
+            Path path = mapSubsystem.getPathGenerator().generatePath(mapSubsystem.getKioskNode(), curNode);
             if(curPath != null) {
                 curPath.deleteFromScreen(map);
                 // unlight floors traveled on the button box

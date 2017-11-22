@@ -46,6 +46,53 @@ public class CSVDatabaseSource implements MapDataSource {
         }
     }
 
+    private ArrayList<List<String>> parseCSVFileList(Set<String> files) {
+        ArrayList<List<String>> data = new ArrayList<>();
+        for(String file : files) {
+            ArrayList<List<String>> curData = parseCSVFile(file);
+            if(curData == null) {
+                System.out.println("Cannot have a null CSV file");
+                return null;
+            }
+            // Remove the top (index) row from each file
+            curData.remove(0);
+            data.addAll(curData);
+        }
+        return data;
+    }
+
+    public CSVDatabaseSource(Set<String> nodeFiles, Set<String> edgeFiles, String outNodeFile, String outEdgeFile) {
+        this.nodeFilename = outNodeFile;
+        this.edgeFilename = outEdgeFile;
+
+        ArrayList<List<String>> nodeData = parseCSVFileList(nodeFiles);
+        for (List<String> row : nodeData.subList(1, nodeData.size())) {
+            // Iterate through each row and make a node object
+            // for each one and put it into the hashmap
+            MapNode n = nodeListToObj(row);
+            nodeMap.put(row.get(0), n);
+        }
+        ArrayList<List<String>> edgeData = parseCSVFileList(edgeFiles);
+        for (List<String> row : edgeData.subList(1, edgeData.size())) {
+            // Iterate through each row and make an edge object
+            // for each one and put it into the hashmap
+            // Look up corresponding edges in the node hashmap
+            MapEdge e = edgeListToObj(row);
+            // Add this edge to the node objects that are associated with it
+            MapNode startNode = nodeMap.get(e.getStartID());
+            MapNode endNode = nodeMap.get(e.getEndID());
+            if(startNode != null && endNode != null) {
+                startNode.addEdge(e);
+                endNode.addEdge(e);
+                edgeMap.put(row.get(0), e);
+            } else {
+                System.out.println("INVALID EDGE "+e.getId());
+            }
+        }
+
+
+    }
+
     @Override
     public ArrayList<MapNode> getNodesOnFloor(String floor) {
         ArrayList<MapNode> allNodes = new ArrayList<MapNode>();
