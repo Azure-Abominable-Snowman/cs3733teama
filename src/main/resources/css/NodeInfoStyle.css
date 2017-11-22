@@ -1,0 +1,9 @@
+.nodeInfoPopUp {
+    -fx-effect: dropshadow(three-pass-box, gray, 10, 0, 4, 4);
+    -fx-background-color: white;
+}
+
+.adminInfo {
+    -fx-alignment: center;
+    -fx-start-margin: 10em;
+}

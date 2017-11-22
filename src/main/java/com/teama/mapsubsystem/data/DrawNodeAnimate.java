@@ -11,4 +11,9 @@ public class DrawNodeAnimate extends DrawNode {
     public void displayOnScreen(MapDisplay display) {
 
     }
+
+    @Override
+    public void removeFromScreen(MapDisplay display) {
+
+    }
 }
