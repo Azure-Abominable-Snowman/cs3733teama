@@ -21,7 +21,7 @@ public class InterpreterStaff  {
         return info.getLastName();
     }
     public int getStaffID() {
-        return info.getStaffID();
+        return interpSpecs.getStaffID();
     }
     public String getPhone() {
         return info.getContactInfo().getPhoneNumber();
@@ -38,6 +38,32 @@ public class InterpreterStaff  {
     public Set<Language> getLanguages() {
         return interpSpecs.getLanguages();
     }
+    public void setCertification(CertificationType c) {
+        interpSpecs.setCertification(c);
+    }
+    public void setLanguages(Set<Language> langs) {
+        interpSpecs.setLanguages(langs);
+    }
+    public void setFirstName(String name) {
+        info.setFirstName(name);
+    }
+    public void setLastName(String name) {
+        info.setLastName(name);
+    }
+
+    public void setProvider(Provider p) {
+        info.setProvider(p);
+    }
+
+    public void setEmail(String email) {
+        info.setEmail(email);
+    }
+
+    public void setPhone(String phone) {
+        info.setPhoneNumber(phone);
+    }
+
+
     /*
     public boolean isOnDuty() {
 

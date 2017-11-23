@@ -159,6 +159,13 @@ public class InterpreterRequestDB implements InterpreterRequestInfoSource {
 
     private boolean deleteReq(int requestID) {
         try {
+            deleteReport.setInt(1, requestID);
+            deleteReport.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+
             deleteRequest.setInt(1, requestID);
             deleteRequest.executeUpdate();
             return true;

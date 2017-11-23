@@ -4,7 +4,6 @@ import com.teama.Configuration;
 import com.teama.requestsubsystem.RequestStatus;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Created by aliss on 11/21/2017.
@@ -42,7 +41,7 @@ public class InterpreterSubsystem {
     }
 
     // finds all qualified staff members based on the specified language
-    public Set<InterpreterStaff> findQualfied(Language language) {
+    public ArrayList<InterpreterStaff> findQualfied(Language language) {
         return staffDB.findQualified(language);
     }
 

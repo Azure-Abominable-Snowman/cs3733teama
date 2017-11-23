@@ -47,6 +47,10 @@ public class ContactInfo {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
+
+    public void setProvider(Provider p) {
+        provider = p;
+    }
 }
 
 //TODO: add a DB for Staff Contact Info linked to the Staff Database

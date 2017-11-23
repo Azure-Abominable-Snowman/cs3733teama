@@ -1,5 +1,7 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
+
 /**
  * Created by aliss on 11/21/2017.
  */
@@ -18,6 +20,14 @@ public enum CertificationType {
     @Override
     public String toString() {
         return name;
+    }
+    public static CertificationType getCertificationType(String s) {
+        for (CertificationType c: CertificationType.values()) {
+            if (c.toString().equals(s)) {
+                return c;
+            }
+        }
+        throw new IllegalArgumentException("No such Certification Type, " + s);
     }
 
 
