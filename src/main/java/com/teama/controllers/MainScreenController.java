@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +37,8 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private ScrollPane mapScroll;
+    @FXML
+    private JFXButton login;
 
     @FXML
     private Canvas mapCanvas;
@@ -68,7 +72,7 @@ public class MainScreenController implements Initializable {
     void onHamburgerButtonClick(MouseEvent event) throws IOException {
         hamOpnsTran.setRate(animRate*=-1);
         hamOpnsTran.play();
-        HBox box = FXMLLoader.load(getClass().getResource("/FeatureAccdn.fxml"));
+        HBox box = FXMLLoader.load(getClass().getResource("/PathfindingAccordion.fxml"));
         box.toFront();
         drawer.setSidePane(box);
         if(drawer.isShown()){
@@ -83,6 +87,7 @@ public class MainScreenController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         drawer.setSidePane();
         hamOpnsTran = new HamburgerBackArrowBasicTransition(hamburgerButton);
 
@@ -112,4 +117,38 @@ public class MainScreenController implements Initializable {
             drawer.setVisible(drawerExtended);
         });
     }
+
+    @FXML
+    public void onLoginClick() {
+        ///Dialog d = new Dialog();
+        try {
+            /*
+            d.getDialogPane().setContent(FXMLLoader.load(getClass().getResource("/StaffLogIn.fxml")));
+            d.show();
+            */
+            Stage loginPopup = new Stage();
+
+            loginPopup.setTitle("B&W Login");
+            FXMLLoader loader = new FXMLLoader();
+            //StaffLoginController loginController = loader.getController();
+
+
+            Scene loginScene = new Scene(loader.load(getClass().getResource("/LogIn2.fxml")));
+            //loginPopup.setScene((AnchorPane)));
+            StaffLoginController loginController = new StaffLoginController();
+
+            loginController.setLoggedIn(false);
+            loginController.getLoggedInProperty().addListener((obs, before, nowLoggedIn) -> {
+                if (loginController.isLoggedIn()) {
+                    loginPopup.hide();
+                }
+            });
+            loginPopup.setScene(loginScene);
+            loginPopup.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

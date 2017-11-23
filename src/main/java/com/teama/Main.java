@@ -19,7 +19,7 @@ public class Main extends Application{
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/MainScreen.fxml"));
+            loader.setLocation(getClass().getResource("/MainScreen2.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setTitle("Brigham and Women's Hospital Kiosk");

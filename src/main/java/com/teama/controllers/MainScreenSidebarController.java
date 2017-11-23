@@ -1,5 +1,6 @@
 package com.teama.controllers;
 
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXRadioButton;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
@@ -9,10 +10,14 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 
 public class MainScreenSidebarController {
-
+    @FXML
+    private JFXListView directions;
+    @FXML
+    private TitledPane algorithmSelect;
     @FXML
     private JFXRadioButton aStar;
 
