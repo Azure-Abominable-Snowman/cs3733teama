@@ -4,6 +4,7 @@ import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
 import com.teama.requestsubsystem.GenericStaffInfo;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.*;
@@ -38,7 +39,7 @@ public class InterpreterStaffDBTest {
         catch (Exception except) {
             except.printStackTrace();
         }
-
+/*
         // Delete table from last time
         try {
             stmt = conn.createStatement();
@@ -54,6 +55,25 @@ public class InterpreterStaffDBTest {
         }
 
         db = new InterpreterStaffDB(dbURL, staffTable, langTable);
+        */
+    }
+
+    @Before
+    public void setup() {
+        try {
+            stmt = conn.createStatement();
+            stmt.execute("DROP TABLE TEST_LANGTABLE"); // drop the report table first because it has foreign key in request table
+
+            stmt.execute("DROP TABLE TEST_STAFFTABLE");
+            stmt.close();
+            System.out.println("Deleted the previous tables");
+        } catch (SQLException e) {
+            //System.out.println("No previous table");
+
+            e.printStackTrace();
+        }
+        db = new InterpreterStaffDB(dbURL, staffTable, langTable);
+
     }
 
     @Test
@@ -79,10 +99,13 @@ public class InterpreterStaffDBTest {
             assertEquals(CertificationType.CCHI.toString(), s.getString("CERTIFICATION"));
             assertEquals(wilson.getFirstName(), s.getString("FIRSTNAME"));
         }
+        p.close();
+        s.close();
     }
 
     @Test
     public void findQualified() throws Exception {
+
         Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
         avail.add(ContactInfoTypes.EMAIL);
         avail.add(ContactInfoTypes.TEXT);

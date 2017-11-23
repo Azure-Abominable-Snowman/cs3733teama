@@ -4,6 +4,7 @@ import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.requestsubsystem.GenericRequestInfo;
 import com.teama.requestsubsystem.RequestStatus;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.*;
@@ -31,12 +32,12 @@ public class InterpreterRequestDBTest {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             // Get a connection
             conn = DriverManager.getConnection(dbURL);
-        }
-        catch (Exception except) {
+        } catch (Exception except) {
             except.printStackTrace();
         }
-
-        // Delete table from last time
+    }
+    @Before
+    public void setup() {
         try {
             stmt = conn.createStatement();
 
@@ -44,12 +45,14 @@ public class InterpreterRequestDBTest {
             stmt.execute("DROP TABLE TEST_REQUESTS");
             stmt.close();
             System.out.println("Deleted the previous tables");
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println("No previous table");
             e.printStackTrace();
         }
 
         db = new InterpreterRequestDB(dbURL, reqTable, reportTable);
+
+
     }
 
 
@@ -80,6 +83,7 @@ public class InterpreterRequestDBTest {
         db.addRequest(russian);
         assertEquals(Language.Spanish.toString(), db.getRequest(1).getRequiredLanguage().name);
         db.deleteRequest(1);
+        db.deleteRequest(3);
         assertNull(db.getRequest(1));
         assertEquals(Language.German.name, db.getRequest(2).getRequiredLanguage().name);
     }
@@ -139,6 +143,8 @@ public class InterpreterRequestDBTest {
             assertEquals(spanish.getServiceTime(), rs.getDouble("SERVICETIME"), 0.01);
             assertEquals(spanish.getTranslType().toString(), rs.getString("TRANSTYPE"));
         }
+        rs.close();
+        getReport.close();
 
     }
 
