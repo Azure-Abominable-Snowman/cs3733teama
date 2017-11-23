@@ -1,13 +1,11 @@
-package com.teama.controllers;
-
-import com.teama.requestsubsystem.Request;
-import com.teama.requestsubsystem.ServiceStaff;
+package com.teama.requestsubsystem;
+/*
+import com.teama.controllers.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 
@@ -29,7 +27,7 @@ public class FillRequestController implements Controller {
     public void initialize() {
         
     }
-
+/*
     @FXML
     private void onSelect(MouseEvent e) {
         System.out.println(serviceList.getSelectionModel().getSelectedItem());
@@ -40,10 +38,11 @@ public class FillRequestController implements Controller {
         SceneEngine.closeFillReq();
     }
 
-    /*
+
     @FXML
     private void fulfill(ActionEvent e) throws AddressException {
         System.out.println(staffToFulfill);
+        ContactInfo info = new
         SMSMessage message = new SMSMessage(staffToFulfill.getPhoneNumber(), (Provider)staffToFulfill.getProvider(),
                 request.getNote());
         message.sendSMSMessage();
@@ -54,7 +53,7 @@ public class FillRequestController implements Controller {
     @Override
     public void setControllerInfo(ControllerInfo c){
         idRequest=c.getRequest();
-        request = RequestTable.getInstance().getReqTable().getRequest(idRequest);
+        request = RequestSubsystem.getInstance().getRequest(idRequest);
         staff = StaffInfo.getInstance().getStaffInfoDB().getIntrStaff();
         for(ServiceStaff s: staff){
             serviceList.getItems().addAll(s);
@@ -84,5 +83,4 @@ public class FillRequestController implements Controller {
         return "FulfillRequest.fxml";
     }
     */
-    
-}
+
