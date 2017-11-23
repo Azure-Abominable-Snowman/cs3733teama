@@ -1,6 +1,5 @@
 package com.teama;
 
-import com.teama.controllers.Controller;
 import com.teama.controllers.SceneEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,16 +11,6 @@ import java.io.IOException;
 
 public class Main extends Application{
 
-    private boolean userType = false;
-
-    public Boolean getUserType() {
-        return userType;
-    }
-
-    public void setUserType(Boolean userType) {
-        this.userType = userType;
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -32,10 +21,7 @@ public class Main extends Application{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/MainScreen.fxml"));
             Parent root = loader.load();
-            Controller c = (Controller) loader.getController();
-            c.setStage(primaryStage);
             Scene scene = new Scene(root);
-            c.setScene(scene);
             primaryStage.setTitle("Brigham and Women's Hospital Kiosk");
             primaryStage.setScene(scene);
             primaryStage.show();

@@ -1,12 +1,12 @@
 package com.teama.login;
 
-import com.teama.controllers.SceneEngine;
+import com.teama.Configuration;
 
 /**
  * Created by aliss on 11/19/2017.
  */
 public class KioskUser {
-    private LoginInfoDataSource loginDatabase = new JavaCredentialsDB(SceneEngine.getURL(), "CREDENTIALS_TABLE");
+    private LoginInfoDataSource loginDatabase = new JavaCredentialsDB(Configuration.dbURL, Configuration.credentialsTable);
     private AccessType access = AccessType.USER;
     private KioskUser() {
     }

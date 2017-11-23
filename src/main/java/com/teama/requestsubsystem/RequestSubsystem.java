@@ -1,11 +1,11 @@
 package com.teama.requestsubsystem;
 
-import com.teama.controllers.SceneEngine;
+import com.teama.Configuration;
 import com.teama.requestsubsystem.data.JavaDBServiceRequestData;
 import com.teama.requestsubsystem.data.ServiceRequestDataSource;
 
 public class RequestSubsystem {
-    private ServiceRequestDataSource requestDB = new JavaDBServiceRequestData(SceneEngine.getURL(), "REQUEST_TABLE");
+    private ServiceRequestDataSource requestDB = new JavaDBServiceRequestData(Configuration.dbURL, Configuration.requestTable);
 
     private static class RequestSubsystemGetter {
         private static final RequestSubsystem _instance = new RequestSubsystem();
