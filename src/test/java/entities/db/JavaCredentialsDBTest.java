@@ -1,7 +1,7 @@
 package entities.db;
 
 import com.teama.login.JavaCredentialsDB;
-import com.teama.login.LoginInfo;
+import com.teama.login.SystemUser;
 import org.junit.Test;
 
 import java.sql.DatabaseMetaData;
@@ -17,9 +17,9 @@ import static org.junit.Assert.*;
  */
 public class JavaCredentialsDBTest {
     JavaCredentialsDB db = new JavaCredentialsDB("jdbc:derby:unittestdb;create=true", "LOGIN_CREDS");
-    LoginInfo a = new LoginInfo("user1", "randompw", STAFF);
-    LoginInfo b = new LoginInfo("aostapenko", "notmypw", ADMIN);
-    LoginInfo c = new LoginInfo("supersecure", "hello", ADMIN);
+    SystemUser a = new SystemUser("user1", "randompw", STAFF);
+    SystemUser b = new SystemUser("aostapenko", "notmypw", ADMIN);
+    SystemUser c = new SystemUser("supersecure", "hello", ADMIN);
 
 
 
@@ -47,13 +47,13 @@ public class JavaCredentialsDBTest {
         assertNotNull(db.checkCredentials(a));
         assertNotNull(db.checkCredentials(b));
         assertNotNull(db.checkCredentials(c));
-        LoginInfo d = new LoginInfo("supersecure", "hello", ADMIN);
+        SystemUser d = new SystemUser("supersecure", "hello", ADMIN);
         db.addLoginInfo(d);
         assertNotNull(db.checkCredentials(d));
 
-        LoginInfo wrongPW = new LoginInfo("user1", "raNDOM2s", STAFF); //login with wrong password
-        LoginInfo wrongAccess = new LoginInfo("user1", "randompw", ADMIN); //trying to login as Admin when actually Staff
-        LoginInfo undoc = new LoginInfo("suspicious", "hello", STAFF);
+        SystemUser wrongPW = new SystemUser("user1", "raNDOM2s", STAFF); //login with wrong password
+        SystemUser wrongAccess = new SystemUser("user1", "randompw", ADMIN); //trying to login as Admin when actually Staff
+        SystemUser undoc = new SystemUser("suspicious", "hello", STAFF);
 
         assertNull(db.checkCredentials(wrongPW));
         assertNull(db.checkCredentials(wrongAccess));
