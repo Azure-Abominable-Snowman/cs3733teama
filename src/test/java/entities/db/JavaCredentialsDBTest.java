@@ -102,6 +102,7 @@ public class JavaCredentialsDBTest {
         assertEquals(login2.getUsername(), retrieved.getUsername());
         assertEquals(login2.getPassword(), retrieved.getPassword());
         assertEquals(b.getAccess(), retrieved.getAccess());
+        assertNull(db.addUser(new SystemUser(b.getLoginInfo(), AccessType.ADMIN))); //make sure not to add a user if input username already exists
     }
     @Test
     public void checkCredentials() {
@@ -131,6 +132,42 @@ public class JavaCredentialsDBTest {
         db.removeUser(c);
         assertNull(db.getUser(c.getLoginInfo()));
         assertNotNull(db.getUser(a.getLoginInfo()));
+    }
+
+    @Test
+    public void updateLoginInfo() {
+        db.addUser(a);
+        db.addUser(b);
+
+        LoginInfo updatedA = new LoginInfo("newUsername", a.getPassword()); // update the username
+        assertTrue(db.updateLoginInfo(a.getLoginInfo(), updatedA));
+        assertNull(db.getUser(a.getLoginInfo()));
+        SystemUser updatedAFound = db.getUser(updatedA);
+        assertNotNull(updatedAFound);
+        assertEquals(updatedA.getUsername(), updatedAFound.getUsername()); // make sure username was updated
+        assertEquals(a.getPassword(), updatedAFound.getPassword()); // make sure password stayed the same
+        assertEquals(a.getAccess(), updatedAFound.getAccess()); // make sure AccessType is untouched
+
+        LoginInfo updateBPW = new LoginInfo(b.getUsername(), "someRandomNewPW"); // update password only
+        assertTrue(db.updateLoginInfo(b.getLoginInfo(), updateBPW));
+        SystemUser updatedBFound = db.getUser(updateBPW);
+        assertEquals(b.getUsername(), updatedBFound.getUsername());
+        assertEquals(updateBPW.getPassword(), updatedBFound.getPassword());
+        assertEquals(b.getAccess(), updatedBFound.getAccess());
+
+        LoginInfo totalUpdateA = new LoginInfo("user123", "usersnewPW");
+        assertTrue(db.updateLoginInfo(updatedA, totalUpdateA));
+        SystemUser aUpdated = db.getUser(totalUpdateA);
+        assertNotNull(aUpdated);
+        assertEquals(totalUpdateA.getUsername(), aUpdated.getUsername());
+        assertEquals(totalUpdateA.getPassword(), aUpdated.getPassword());
+        assertNotEquals(b.getUsername(), aUpdated.getUsername());
+        assertEquals(a.getAccess(), aUpdated.getAccess());
+
+        LoginInfo updateAtoB = new LoginInfo(b.getUsername(), "awjeiro2"); // updating to an existing username should fail
+        assertFalse(db.updateLoginInfo(aUpdated.getLoginInfo(), updateAtoB));
+
+        assertFalse(db.updateLoginInfo(c.getLoginInfo(), totalUpdateA)); // updating user info that doesn't exist should fial
     }
 
 }

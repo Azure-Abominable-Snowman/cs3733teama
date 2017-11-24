@@ -11,7 +11,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
     private Connection conn = null;
     private Statement stmt = null;
     private String dbURL, tablename;
-    PreparedStatement addLogin, checkLogin, updateLogin, getLogin, removeUser, getUser;
+    PreparedStatement addLogin, checkLogin, updateLogin, getLogin, removeUser, updatePW, updateUName;
 
     public JavaCredentialsDB(String dbURL, String tablename) {
         this.dbURL = dbURL;
@@ -48,8 +48,10 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
         try {
             addLogin = conn.prepareStatement("INSERT INTO " + tablename + " VALUES (?, ?, ?)");
             getLogin = conn.prepareStatement("SELECT * FROM " + tablename + " WHERE USERNAME = ? ");
-            updateLogin = conn.prepareStatement("UPDATE " + tablename + " SET PASSWORD = ?, ACCESS = ?" + " WHERE USERNAME = ?",
-                    ResultSet.CONCUR_UPDATABLE);
+            updateLogin = conn.prepareStatement("UPDATE " + tablename + " SET USERNAME = ?, PASSWORD = ?" + " WHERE USERNAME = ?",
+                    ResultSet.CONCUR_UPDATABLE); // can only update username/password, not privelege level
+            updatePW = conn.prepareStatement("UPDATE " + tablename + " SET PASSWORD = ?" + " WHERE USERNAME = ?");
+            updateUName = conn.prepareStatement("UPDATE " + tablename + " SET USERNAME = ?" + " WHERE USERNAME = ?");
             checkLogin = conn.prepareStatement("SELECT * FROM " + tablename + " WHERE USERNAME = ? AND PASSWORD = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
                      ResultSet.CONCUR_UPDATABLE);
             removeUser = conn.prepareStatement("DELETE FROM " + tablename + " WHERE USERNAME = ?");
@@ -90,7 +92,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
             //insert.close();
             // Update
         } catch (SQLException e) {
-            log.info("Login info already exists");
+            log.info("User with given username already exists");
             return false;
         }
         return true;
@@ -123,29 +125,48 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
     @Override
     public boolean updateLoginInfo(LoginInfo old, LoginInfo newLogin) {
         //PreparedStatement insert = null;
-        String uname = old.getUsername();
-        Integer pw_hash = old.getPassword().hashCode();
-        //String access = p.getAccess().toString();
-        /*
-        String sql = "UPDATE " + tablename +
-                "(USERNAME, PASSWORD, ACCESS)" +
-                "VALUES (?, ?, ?)";
-        insert = conn.prepareStatement(sql);
-        insert.setString(1, uname);
-        insert.setInt(2, pw_hash);
-        insert.setString(3, access);
-        */
-
-        try { //TODO: first check that username to be updated to doesn't already exist, then update
-            updateLogin.setInt(1, pw_hash);
-            //updateLogin.setString(2, access);
-            updateLogin.setString(3, uname);
-            updateLogin.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        boolean updatedUser = true;
+        boolean updatingUserName = false;
+        String oldUname = old.getUsername();
+        String newUname = newLogin.getUsername();
+        int oldHash = old.getPassword().hashCode();
+        int newHash = newLogin.getPassword().hashCode();
+        // updateUName = conn.prepareStatement("UPDATE " + tablename + " SET USERNAME = ?" + " WHERE USERNAME = ?");
+        SystemUser s = getUser(old);
+        if (s == null) {
+            return false;
         }
-return false;
-        //insert.close();
+        if (!(oldUname.equals(newUname))) { //updating the username
+            updatingUserName = true;
+            try {
+                updateUName.setString(1, newUname);
+                updateUName.setString(2, oldUname);
+                updateUName.executeUpdate();
+                log.info("Updated the username for user with old username " + oldUname);
+            } catch (SQLException e) {
+                //e.printStackTrace();
+                updatedUser = false;
+            }
+        }
+        if (!(oldHash == newHash) && updatedUser) { //update the password, only if username update was successful (if username is updated)
+            // updatePW = conn.prepareStatement("UPDATE " + tablename + " SET PASSWORD = ?" + " WHERE USERNAME = ?");
+            try {
+                updatePW.setInt(1, newHash);
+                if (updatingUserName) {
+                    updatePW.setString(2, newUname);
+                }
+                else {
+                    updatePW.setString(2, oldUname);
+                }
+                updatePW.executeUpdate();
+                updatedUser = true;
+            } catch (SQLException e) {
+                log.info("Could not update the password for user.");
+                e.printStackTrace();
+                updatedUser = false;
+            }
+        }
+        return updatedUser;
     }
 
     @Override

@@ -13,13 +13,13 @@ public class LoginSubsystem {
     private LoginSubsystem() {
     }
 
-    private static class ViewKioskUser {
+    private static class LoginSubsystemGetter {
         private static final LoginSubsystem instance = new LoginSubsystem();
     }
 
     // get an instance of the LoginSubsystem
     public static LoginSubsystem getInstance() {
-        return ViewKioskUser.instance;
+        return LoginSubsystemGetter.instance;
     }
 
     //Input: LoginInfo for user that tried to sign in
@@ -47,8 +47,13 @@ public class LoginSubsystem {
     public boolean addUser(SystemUser p) {
         return loginDatabase.addUser(p);
     }
+
     //assumes user already exists in DB -- only done when successfully signed in. Takes old login info and new login info,
     public boolean updateUser(LoginInfo old, LoginInfo newLogin) {
-        return loginDatabase.updateLoginInfo(old, newLogin);
+        boolean updateResult =  loginDatabase.updateLoginInfo(old, newLogin);
+        if (updateResult) { // if update successful
+            user.setLoginInfo(newLogin); // update the current user info
+        }
+        return updateResult;
     }
 }
