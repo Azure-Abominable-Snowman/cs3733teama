@@ -8,4 +8,5 @@ public interface LoginInfoDataSource {
     boolean addUser(SystemUser p);
     boolean updateLoginInfo(LoginInfo old, LoginInfo newLogin); // if someone wants to change username or password
     boolean removeUser(SystemUser p);
+    SystemUser getUser(LoginInfo l);
 }

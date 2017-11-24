@@ -11,7 +11,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
     private Connection conn = null;
     private Statement stmt = null;
     private String dbURL, tablename;
-    PreparedStatement addLogin, checkLogin, updateLogin, getLogin, removeUser;
+    PreparedStatement addLogin, checkLogin, updateLogin, getLogin, removeUser, getUser;
 
     public JavaCredentialsDB(String dbURL, String tablename) {
         this.dbURL = dbURL;
@@ -95,6 +95,28 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
         }
         return true;
     }
+    /*
+    private int basicHash(String s) {
+        int hash = 11;
+        for (int i = 0; i<s.length(); i++) {
+            hash += (s.charAt(i))
+        }
+    }
+    */
+    public SystemUser getUser(LoginInfo c) {
+        SystemUser found = null;
+        try {
+            getLogin.setString(1,c.getUsername());
+            ResultSet rs = getLogin.executeQuery();
+            if (rs.next()) {
+                found = new SystemUser(new LoginInfo(rs.getString("USERNAME"), c.getPassword()), AccessType.getAccessType(rs.getString("ACCESS")));
+            }
+        } catch (SQLException e) {
+            log.info("Failed to get the user with given login info, where username is " + c.getUsername());
+            e.printStackTrace();
+        }
+        return found;
+    }
 
     // TODO
 
@@ -137,29 +159,24 @@ return false;
         String uname = l.getUsername();
         Integer pwHash = l.getPassword().hashCode();
         try {
-            System.out.println(uname+" "+pwHash);
             log.info("Searching for user " +uname);
             checkLogin.setString(1, uname);
             checkLogin.setInt(2, pwHash);
             //checkLogin.setString(3, access);
             rs = checkLogin.executeQuery();
 
-            if (!rs.next()) {
-                log.info("No such user in system: " + uname);
-            }
-            else { // found a user!
-                rs.beforeFirst(); // reset the resultset to the beginning
-                if (rs.next()) {
-                    //System.out.println(rs.getString("PASSWORD"));
-                    //System.out.println(p.getPassword());
-                    if (rs.getString("PASSWORD").equals(l.getPassword())) {
-                        log.info("Correct password.");
-                        user = new SystemUser(l, AccessType.valueOf(rs.getString("ACCESS")));
-                    } else {
-                        log.info("Password incorrect for user " + uname);
-                    }
+            if (rs.next()) {
+                if (rs.getInt("PASSWORD") == (l.getPassword().hashCode())) { // compare the hashes to see if password correct
+                    log.info("Correct password.");
+                    user = new SystemUser(l, AccessType.getAccessType(rs.getString("ACCESS")));
+                } else {
+                    log.info("Password incorrect for user " + uname);
                 }
             }
+            else {
+                  log.info("No such username, " + l.getUsername() + ", is in the system.");
+                }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

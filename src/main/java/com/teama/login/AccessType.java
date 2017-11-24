@@ -14,7 +14,7 @@ public enum AccessType {
         return this.name;
     }
 
-    public AccessType getAccessType(String s) {
+    public static AccessType getAccessType(String s) {
         for (AccessType a: AccessType.values()) {
             if (a.toString().equals(s)){
                 return a;

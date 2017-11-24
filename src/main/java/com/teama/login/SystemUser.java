@@ -42,6 +42,14 @@ public class SystemUser {
         return access;
     }
 
+    public LoginInfo getLoginInfo() {
+        return login;
+    }
+
+    public void setLoginInfo(LoginInfo l) {
+        this.login = l;
+    }
+
     public void setAccess(AccessType a) {
         this.access = a;
     }
