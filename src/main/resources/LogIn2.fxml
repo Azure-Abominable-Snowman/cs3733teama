@@ -26,29 +26,35 @@
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints maxHeight="84.5" minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="79.5" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="83.0" minHeight="0.0" prefHeight="32.5" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="89.5" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="92.5" minHeight="8.5" prefHeight="23.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="92.5" minHeight="6.0" prefHeight="19.5" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="92.5" minHeight="10.0" prefHeight="62.5" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="83.0" minHeight="0.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="89.5" minHeight="10.0" prefHeight="68.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="92.5" minHeight="8.5" prefHeight="21.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="92.5" minHeight="6.0" prefHeight="21.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <JFXTextField fx:id="uname" focusColor="#061e65" labelFloat="true" prefHeight="16.0" prefWidth="133.0" promptText="username" unFocusColor="#0a011e" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
-                        <Font name="Calibri Light Italic" size="13.0" />
+                        <Font name="Calibri Light Italic" size="14.0" />
                      </font>
                   </JFXTextField>
                   <JFXPasswordField fx:id="pword" prefHeight="5.0" prefWidth="155.0" promptText="password" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
                      <font>
-                        <Font name="Calibri Light Italic" size="13.0" />
+                        <Font name="Calibri Light Italic" size="14.0" />
                      </font>
                   </JFXPasswordField>
-                  <JFXRadioButton fx:id="admin" text="Admin" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
-                  <JFXRadioButton fx:id="staff" text="Staff" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                  <JFXButton fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" style="-fx-background-color: rgba(10,25,100,.8);" text="Log In" textFill="#e1dfeb" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                  <JFXRadioButton fx:id="admin" text="Admin" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4">
                      <font>
-                        <Font name="Calibri" size="13.0" />
+                        <Font size="14.0" />
+                     </font></JFXRadioButton>
+                  <JFXRadioButton fx:id="staff" text="Staff" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+                     <font>
+                        <Font size="14.0" />
+                     </font></JFXRadioButton>
+                  <JFXButton fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: rgba(10,25,100,.8);" text="Log In" textFill="#e1dfeb" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
                      </font>
                   </JFXButton>
                </children>
