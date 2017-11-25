@@ -4,9 +4,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public interface Controller {
-    default String getFXMLFileName() { return ""; }
-
-    default void setControllerInfo(ControllerInfo info) { }
+    String getFXMLFileName();
 
     default void setStage(Stage stage) { }
 
