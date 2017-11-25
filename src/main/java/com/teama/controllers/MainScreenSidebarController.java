@@ -1,5 +1,7 @@
 package com.teama.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXRadioButton;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
@@ -12,13 +14,21 @@ import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainScreenSidebarController {
-
+    @FXML
+    private JFXListView directions;
+    @FXML
+    private TitledPane algorithmSelect;
     @FXML
     private JFXRadioButton aStar;
 
@@ -33,6 +43,9 @@ public class MainScreenSidebarController {
 
     @FXML
     private Text selectedNode;
+
+    @FXML
+    private JFXButton login;
 
     private ToggleGroup algoToggleGroup;
 
@@ -123,5 +136,47 @@ public class MainScreenSidebarController {
             }
             shownHiddenNodesAndEdges = false;
         }
+    }
+
+
+    @FXML
+    void onLogIn(ActionEvent event) {
+        ///Dialog d = new Dialog();
+        try {
+            /*
+            d.getDialogPane().setContent(FXMLLoader.load(getClass().getResource("/StaffLogIn.fxml")));
+            d.show();
+            */
+            Stage loginPopup = new Stage();
+
+            loginPopup.setTitle("B&W Login");
+            FXMLLoader loader = new FXMLLoader();
+            //StaffLoginController loginController = loader.getController();
+
+
+            Scene loginScene = new Scene(loader.load(getClass().getResource("/LogInScreen.fxml")));
+            //loginPopup.setScene((AnchorPane)));
+            StaffLoginController loginController = new StaffLoginController();
+
+            loginController.setLoggedIn(false);
+
+            loginController.getLoggedInProperty().addListener((obs, before, nowLoggedIn) -> {
+                if (nowLoggedIn) {
+                    loginPopup.hide();
+                    login.setVisible(false);
+                }
+            });
+
+
+            loginPopup.setScene(loginScene);
+            loginPopup.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hideLoginButton() {
+        login.setVisible(false);
     }
 }

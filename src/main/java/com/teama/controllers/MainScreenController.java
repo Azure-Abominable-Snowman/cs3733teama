@@ -57,6 +57,9 @@ public class MainScreenController implements Initializable {
     private ScrollPane mapScroll;
 
     @FXML
+    private JFXButton login;
+
+    @FXML
     private Canvas mapCanvas;
 
     @FXML
@@ -273,5 +276,4 @@ public class MainScreenController implements Initializable {
             }
         }
     }
-
 }

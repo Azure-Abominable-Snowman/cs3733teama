@@ -16,177 +16,187 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox prefHeight="665.0" prefWidth="328.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.MainScreenSidebarController">
+<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.MainScreenSidebarController">
    <children>
-      <Accordion prefHeight="665.0" prefWidth="329.0" style="-fx-background-color: GREY;">
-        <panes>
-            <TitledPane animated="false" text="Directions">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <JFXListView fx:id="directions" layoutX="87.0" layoutY="52.0" prefHeight="564.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
-               </content>
-            </TitledPane>
-          <TitledPane animated="false" text="Login">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </TitledPane>
-          <TitledPane animated="false" text="Editor">
-            <content>
-                  <ScrollPane>
+      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <children>
+            <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="665.0" prefWidth="329.0" style="-fx-background-color: GREY;" VBox.vgrow="ALWAYS">
+              <panes>
+                  <TitledPane animated="false" text="Directions">
                      <content>
-                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                          <AnchorPane minHeight="0.0" minWidth="0.0">
+                              <JFXListView fx:id="directions" layoutX="87.0" layoutY="52.0" prefHeight="564.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                <TitledPane animated="false" text="Login">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Editor">
+                  <content>
+                        <ScrollPane>
+                           <content>
+                              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                                  <children>
-                                    <VBox prefHeight="75.0" prefWidth="140.0">
+                                <AnchorPane minHeight="0.0" minWidth="0.0">
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding Algorithm" textAlignment="CENTER">
+                                          <VBox prefHeight="75.0" prefWidth="140.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding Algorithm" textAlignment="CENTER">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <JFXRadioButton fx:id="aStar" selected="true" text="A*">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </JFXRadioButton>
+                                                <JFXRadioButton fx:id="breadthFirst" prefWidth="91.0" text="Breadth First">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </JFXRadioButton>
+                                                <JFXRadioButton fx:id="dijkstra" text="Dijkstra">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </JFXRadioButton>
+                                                <JFXRadioButton fx:id="beamSearch" text="Beam Search">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </JFXRadioButton>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="20.0" left="5.0" right="20.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                    <VBox>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Editing">
                                              <VBox.margin>
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </Text>
-                                          <JFXRadioButton fx:id="aStar" selected="true" text="A*">
-                                             <padding>
+                                          <HBox>
+                                             <VBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </JFXRadioButton>
-                                          <JFXRadioButton fx:id="breadthFirst" prefWidth="91.0" text="Breadth First">
-                                             <padding>
+                                             </VBox.margin>
+                                             <children>
+                                                <JFXButton buttonType="RAISED" onAction="#onSelectNode" style="-fx-background-color: #cfcfcf;" text="Select Node">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </JFXButton>
+                                                <Text fx:id="selectedNode" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;selected node name&gt;">
+                                                   <HBox.margin>
+                                                      <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </Text>
+                                             </children>
+                                          </HBox>
+                                          <JFXButton buttonType="RAISED" onAction="#onAddEdge" style="-fx-background-color: #cdcdcd;" text="Add Edges">
+                                             <VBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </JFXRadioButton>
-                                          <JFXRadioButton fx:id="dijkstra" text="Dijkstra">
-                                             <padding>
+                                             </VBox.margin>
+                                          </JFXButton>
+                                          <JFXButton buttonType="RAISED" onAction="#onAddNode" style="-fx-background-color: #cdcdcd;" text="Add Nodes">
+                                             <VBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </JFXRadioButton>
-                                          <JFXRadioButton fx:id="beamSearch" text="Beam Search">
-                                             <padding>
+                                             </VBox.margin>
+                                          </JFXButton>
+                                          <JFXButton buttonType="RAISED" onAction="#onToggleHiddenNodesAndEdges" style="-fx-background-color: #cdcdcd;" text="Toggle Hidden Nodes and Edges">
+                                             <VBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </JFXRadioButton>
+                                             </VBox.margin>
+                                          </JFXButton>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="20.0" left="5.0" right="20.0" top="5.0" />
-                                       </padding>
+                                       <VBox.margin>
+                                          <Insets left="5.0" />
+                                       </VBox.margin>
                                     </VBox>
                                  </children>
-                              </AnchorPane>
-                              <VBox>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Service Requests">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="377.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Editing">
+                                    <JFXTextField alignment="CENTER" editable="false" text="Create Request">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXTextField alignment="CENTER" editable="false" text="Location">
                                        <VBox.margin>
-                                          <Insets bottom="10.0" />
+                                          <Insets bottom="2.0" />
                                        </VBox.margin>
-                                    </Text>
-                                    <HBox>
-                                       <VBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <HBox prefHeight="33.0" prefWidth="379.0">
                                        <children>
-                                          <JFXButton buttonType="RAISED" onAction="#onSelectNode" style="-fx-background-color: #cfcfcf;" text="Select Node">
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
-                                          </JFXButton>
-                                          <Text fx:id="selectedNode" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;selected node name&gt;">
-                                             <HBox.margin>
-                                                <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
-                                             </HBox.margin>
-                                          </Text>
+                                          <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="Building" style="-fx-border-color: TRANSPARENT BLUE;" />
+                                          <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="120.0" promptText="Floor" style="-fx-border-color: TRANSPARENT BLUE;" HBox.hgrow="NEVER" />
+                                          <JFXComboBox prefHeight="27.0" prefWidth="189.0" promptText="Long Name" style="-fx-border-color: TRANSPARENT BLUE;" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
-                                    <JFXButton buttonType="RAISED" onAction="#onAddEdge" style="-fx-background-color: #cdcdcd;" text="Add Edges">
+                                    <JFXTextField alignment="CENTER" editable="false" text="Type">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
                                        <VBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                          <Insets bottom="2.0" />
                                        </VBox.margin>
-                                    </JFXButton>
-                                    <JFXButton buttonType="RAISED" onAction="#onAddNode" style="-fx-background-color: #cdcdcd;" text="Add Nodes">
+                                    </JFXTextField>
+                                    <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="120.0" promptText="Select Type:" style="-fx-border-color: TRANSPARENT BLUE;" />
+                                    <JFXTextField alignment="CENTER" editable="false" text="Note">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
                                        <VBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                          <Insets bottom="2.0" />
                                        </VBox.margin>
-                                    </JFXButton>
-                                    <JFXButton buttonType="RAISED" onAction="#onToggleHiddenNodesAndEdges" style="-fx-background-color: #cdcdcd;" text="Toggle Hidden Nodes and Edges">
+                                    </JFXTextField>
+                                    <JFXTextArea prefHeight="50.0" prefWidth="379.0" style="-fx-background-color: #dddddd;">
                                        <VBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                          <Insets bottom="6.0" />
                                        </VBox.margin>
+                                    </JFXTextArea>
+                                    <JFXButton prefHeight="31.0" prefWidth="379.0" style="-fx-background-color: #39b44b;" text="Submit" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
                                     </JFXButton>
+                                    <JFXTextField alignment="CENTER" editable="false" text="Current Requests">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXListView prefHeight="268.0" prefWidth="379.0" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
-            </content>
-          </TitledPane>
-          <TitledPane animated="false" text="Service Requests">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="377.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <JFXTextField alignment="CENTER" editable="false" text="Create Request">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </JFXTextField>
-                              <JFXTextField alignment="CENTER" editable="false" text="Location">
-                                 <VBox.margin>
-                                    <Insets bottom="2.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </JFXTextField>
-                              <HBox prefHeight="33.0" prefWidth="379.0">
-                                 <children>
-                                    <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="Building" style="-fx-border-color: TRANSPARENT BLUE;" />
-                                    <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="120.0" promptText="Floor" style="-fx-border-color: TRANSPARENT BLUE;" HBox.hgrow="NEVER" />
-                                    <JFXComboBox prefHeight="27.0" prefWidth="189.0" promptText="Long Name" style="-fx-border-color: TRANSPARENT BLUE;" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <JFXTextField alignment="CENTER" editable="false" text="Type">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="2.0" />
-                                 </VBox.margin>
-                              </JFXTextField>
-                              <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="120.0" promptText="Select Type:" style="-fx-border-color: TRANSPARENT BLUE;" />
-                              <JFXTextField alignment="CENTER" editable="false" text="Note">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="2.0" />
-                                 </VBox.margin>
-                              </JFXTextField>
-                              <JFXTextArea prefHeight="50.0" prefWidth="379.0" style="-fx-background-color: #dddddd;">
-                                 <VBox.margin>
-                                    <Insets bottom="6.0" />
-                                 </VBox.margin>
-                              </JFXTextArea>
-                              <JFXButton prefHeight="31.0" prefWidth="379.0" style="-fx-background-color: #39b44b;" text="Submit" textFill="WHITE">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></JFXButton>
-                              <JFXTextField alignment="CENTER" editable="false" text="Current Requests">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </JFXTextField>
-                              <JFXListView prefHeight="268.0" prefWidth="379.0" VBox.vgrow="ALWAYS" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </TitledPane>
-        </panes>
-      </Accordion>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+            <JFXButton fx:id="login" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onLogIn" style="-fx-background-color: #cfcfcf;" text="Log In" />
+         </children>
+      </VBox>
    </children>
 </HBox>
