@@ -140,7 +140,7 @@ public class MainScreenSidebarController {
 
 
     @FXML
-    void onLogIn(ActionEvent event) {
+    public void onLoginClick() {
         ///Dialog d = new Dialog();
         try {
             /*
@@ -149,24 +149,33 @@ public class MainScreenSidebarController {
             */
             Stage loginPopup = new Stage();
 
+
             loginPopup.setTitle("B&W Login");
             FXMLLoader loader = new FXMLLoader();
             //StaffLoginController loginController = loader.getController();
 
 
             Scene loginScene = new Scene(loader.load(getClass().getResource("/LogInScreen.fxml")));
+
             //loginPopup.setScene((AnchorPane)));
             StaffLoginController loginController = new StaffLoginController();
 
             loginController.setLoggedIn(false);
-
-            loginController.getLoggedInProperty().addListener((obs, before, nowLoggedIn) -> {
-                if (nowLoggedIn) {
+            //login.visibleProperty().bind(loginController.getLoggedInProperty());
+            //setLoggedIn(false);
+            //login.visibleProperty().bind(this.isLoggedIn);
+/*
+            loginController.getLoggedInProperty().addListener((obs, before, now) -> {
+                if (now) {
                     loginPopup.hide();
                     login.setVisible(false);
                 }
+                else {
+                    login.setVisible(true);
+                }
             });
-
+*/
+            loader.setController(loginController);
 
             loginPopup.setScene(loginScene);
             loginPopup.show();

@@ -30,13 +30,11 @@
                            </children>
                         </AnchorPane>
                      </content>
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
                   </TitledPane>
-                <TitledPane animated="false" text="Login">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </TitledPane>
-                <TitledPane animated="false" text="Editor">
+                <TitledPane animated="false" text="Select Algorithm">
                   <content>
                         <ScrollPane>
                            <content>
@@ -127,7 +125,18 @@
                            </content>
                         </ScrollPane>
                   </content>
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
                 </TitledPane>
+                  <TitledPane animated="false" text="Map Tools">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
+                  </TitledPane>
                 <TitledPane animated="false" text="Service Requests">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -192,10 +201,16 @@
                            </children>
                         </AnchorPane>
                   </content>
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
                 </TitledPane>
               </panes>
             </Accordion>
-            <JFXButton fx:id="login" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onLogIn" style="-fx-background-color: #cfcfcf;" text="Log In" />
+            <JFXButton fx:id="login" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onLoginClick" style="-fx-background-color: rgba(10,25,100,.8);" text="Log In" textFill="#faf3f3">
+               <font>
+                  <Font name="Calibri" size="15.0" />
+               </font></JFXButton>
          </children>
       </VBox>
    </children>

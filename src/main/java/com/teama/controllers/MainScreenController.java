@@ -14,6 +14,8 @@ import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -52,10 +54,21 @@ import java.util.ResourceBundle;
 public class MainScreenController implements Initializable {
     private int animRate=-1;
     private HamburgerBackArrowBasicTransition hamOpnsTran;
+    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty();
+    public BooleanProperty getLoggedInProperty() {
+        return isLoggedIn;
+    }
+
+    public final boolean isLoggedIn() {
+        return isLoggedIn.get();
+    }
+
+    public final void setLoggedIn(Boolean update) {
+        isLoggedIn.set(update);
+    }
 
     @FXML
     private ScrollPane mapScroll;
-
     @FXML
     private JFXButton login;
 
@@ -214,6 +227,8 @@ public class MainScreenController implements Initializable {
             });
         }
 
+
+
         // If the searchbutton is pressed, display a path to the selected/approximately matched node
         searchButton.pressedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean before, Boolean after) -> {
             if(!before && after) { // When button is pressed
@@ -233,7 +248,6 @@ public class MainScreenController implements Initializable {
      */
     private void generateNodePopUp(MouseEvent event) {
         System.out.println("CLICK ON NODE BUTTON");
-
         // Get the id of the node clicked on (if any)
         String id = map.pointAt(new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown"));
 
@@ -276,4 +290,11 @@ public class MainScreenController implements Initializable {
             }
         }
     }
+
+
+    public void hideLoginButton() {
+        login.setVisible(false);
+    }
+
+
 }
