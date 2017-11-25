@@ -138,16 +138,25 @@ public class MainScreenController implements Initializable {
             StaffLoginController loginController = new StaffLoginController();
 
             loginController.setLoggedIn(false);
+
             loginController.getLoggedInProperty().addListener((obs, before, nowLoggedIn) -> {
-                if (loginController.isLoggedIn()) {
+                if (nowLoggedIn) {
                     loginPopup.hide();
+                    login.setVisible(false);
                 }
             });
+
+
             loginPopup.setScene(loginScene);
             loginPopup.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void hideLoginButton() {
+        login.setVisible(false);
     }
 
 

@@ -96,13 +96,13 @@ public class JavaCredentialsDBTest {
     @Test
     public void addUser() {
         assertNull(db.getUser(login2));
-        db.addUser(b);
+        assertTrue(db.addUser(b));
         SystemUser retrieved = db.getUser(login2);
         assertNotNull(retrieved);
         assertEquals(login2.getUsername(), retrieved.getUsername());
         assertEquals(login2.getPassword(), retrieved.getPassword());
         assertEquals(b.getAccess(), retrieved.getAccess());
-        assertNull(db.addUser(new SystemUser(b.getLoginInfo(), AccessType.ADMIN))); //make sure not to add a user if input username already exists
+        assertFalse(db.addUser(new SystemUser(b.getLoginInfo(), AccessType.ADMIN))); //make sure not to add a user if input username already exists
     }
     @Test
     public void checkCredentials() {
