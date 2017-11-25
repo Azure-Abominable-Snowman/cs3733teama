@@ -165,10 +165,6 @@ public class JavaDatabaseSource implements MapDataSource {
             selectNodeEdgesStmt.setString(1, id);
             selectNodeEdgesStmt.setString(2, id);
             ResultSet result = selectNodeEdgesStmt.executeQuery();
-            if(!result.next()) {
-                log.info("Error in getNode. No such node. Must have edges.");
-                return null;
-            }
 
             MapNode retrievedNode = retrieveNode(id);
             if(retrievedNode == null) {
@@ -298,6 +294,13 @@ public class JavaDatabaseSource implements MapDataSource {
 
 
         try {
+
+            // Delete all of its connecting edges
+            MapNode n = getNode(id);
+            for(MapEdge e : n.getEdges()) {
+                removeEdge(e.getId());
+            }
+
             //stmt = conn.createStatement();
             removeNodeStmt.setString(1, id);
             removeNodeStmt.executeUpdate();

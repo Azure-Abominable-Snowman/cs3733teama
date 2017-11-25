@@ -79,4 +79,6 @@ public abstract class DrawNode implements MapNode {
 
 
     public abstract void displayOnScreen(MapDisplay display);
+
+    public abstract void removeFromScreen(MapDisplay display);
 }

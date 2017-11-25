@@ -2,7 +2,7 @@ package com.teama.controllers;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
-import com.teama.requestsubsystem.Request;
+//import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestType;
 
 import javafx.collections.FXCollections;
@@ -33,7 +33,7 @@ public class FeatureAccdnController implements Initializable {
     VBox createReqBox;
     private AnchorPane curReqPane;
     public void initialize(URL url, ResourceBundle rb){
-        cmbType.setItems(FXCollections.observableArrayList(RequestType.INTR.getValue(), RequestType.SEC.getValue()));
+        cmbType.setItems(FXCollections.observableArrayList(RequestType.INTR.toString(), RequestType.SEC.toString()));
         curReqPane=null;
     }
 
@@ -41,7 +41,7 @@ public class FeatureAccdnController implements Initializable {
     public void onRequestSelected(){
         try {
             System.out.println("Firing");
-            if(cmbType.getSelectionModel().getSelectedItem().equals(RequestType.INTR.getValue())){
+            if(cmbType.getSelectionModel().getSelectedItem().equals(RequestType.INTR.toString())){
                 System.out.println("Firing");
                 AnchorPane interpParent = FXMLLoader.load(getClass().getResource("/InterpreterReq.fxml"));
                 if(curReqPane!=interpParent) {

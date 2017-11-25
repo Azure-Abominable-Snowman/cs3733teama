@@ -1,5 +1,5 @@
 package entities.db;
-
+/*
 import com.teama.requestsubsystem.data.JavaDatabaseStaffInfo;
 import org.junit.Before;
 import org.junit.Test;
@@ -124,4 +124,3 @@ public class JavaDatabaseStaffInfoTest {
 
     }
     */
-}

@@ -10,4 +10,8 @@ public enum Provider {
     Provider(String provider){
         this.provider = provider;
     }
+
+    public String toString() {
+        return this.provider;
+    }
 }
