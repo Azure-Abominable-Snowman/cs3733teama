@@ -51,7 +51,7 @@ public class StaffLoginController implements Controller {
 
     @FXML
     private void onBackClick(ActionEvent event){
-        SceneEngine.display(MainScreenController_old.class, null);
+        //SceneEngine.display(MainScreenController_old.class, null);
         SceneEngine.closeLogin();
     }
 
@@ -85,7 +85,7 @@ public class StaffLoginController implements Controller {
             System.out.println("succeed");
             SceneEngine.setAdminStatus(true);
             SceneEngine.closeLogin();
-            SceneEngine.display(MainScreenController_old.class, null);
+           // SceneEngine.display(MainScreenController_old.class, null);
         } else{
             System.out.println("failed");
             loginMessage.setText("Incorrect user or pw.");

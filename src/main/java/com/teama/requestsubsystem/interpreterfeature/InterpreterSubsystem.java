@@ -41,7 +41,7 @@ public class InterpreterSubsystem {
     }
 
     // finds all qualified staff members based on the specified language
-    public ArrayList<InterpreterStaff> findQualfied(Language language) {
+    public ArrayList<InterpreterStaff> findQualified(Language language) {
         return staffDB.findQualified(language);
     }
 
