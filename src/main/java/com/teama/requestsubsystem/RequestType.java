@@ -1,5 +1,6 @@
 package com.teama.requestsubsystem;
 
+// for use by controller to generate appropriate form
 public enum RequestType {
     FOOD("Food"), SEC("Security"), TRANS("Transportation"), INTR("Interpreter"), MAIN("Maintenance");
 
@@ -7,10 +8,6 @@ public enum RequestType {
 
     private RequestType(String value) {
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public String toString(){

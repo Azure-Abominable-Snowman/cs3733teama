@@ -26,6 +26,11 @@ public class MapEditorController implements Controller {
     //private Spinner<String> floor;
     //private SpinnerValueFactory.ListSpinnerValueFactory<String> floors;
     private SpinnerValueFactory.IntegerSpinnerValueFactory values;
+
+    @Override
+    public String getFXMLFileName() {
+        return null;
+    }
   /*  private ToggleGroup group = new ToggleGroup();
     private ToggleGroup editorAction = new ToggleGroup();
     private DrawMap editorMap;

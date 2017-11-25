@@ -11,7 +11,12 @@ public class ContactInfo {
     public ContactInfo() {
         availableContactInfoTypes = new HashSet<>();
     }
-
+    public ContactInfo(Set<ContactInfoTypes> t, String num, String email, Provider prov) {
+        availableContactInfoTypes = t;
+        phoneNumber = num;
+        emailAddress = email;
+        provider = prov;
+    }
     public Set<ContactInfoTypes> getAvailableContactInfoTypes() {
         return availableContactInfoTypes;
     }
@@ -35,8 +40,17 @@ public class ContactInfo {
     public String getEmailAddress() {
         return emailAddress;
     }
+    public Provider getProvider() {
+        return this.provider;
+    }
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
+
+    public void setProvider(Provider p) {
+        provider = p;
+    }
 }
+
+//TODO: add a DB for Staff Contact Info linked to the Staff Database
