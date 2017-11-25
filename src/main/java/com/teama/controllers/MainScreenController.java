@@ -11,6 +11,8 @@ import com.teama.drawing.MapDisplay;
 import com.teama.drawing.ProxyMap;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +36,18 @@ import java.util.ResourceBundle;
 public class MainScreenController implements Initializable {
     private int animRate=-1;
     private HamburgerBackArrowBasicTransition hamOpnsTran;
+    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty();
+    public BooleanProperty getLoggedInProperty() {
+        return isLoggedIn;
+    }
+
+    public final boolean isLoggedIn() {
+        return isLoggedIn.get();
+    }
+
+    public final void setLoggedIn(Boolean update) {
+        isLoggedIn.set(update);
+    }
 
     @FXML
     private ScrollPane mapScroll;
@@ -134,18 +148,23 @@ public class MainScreenController implements Initializable {
 
 
             Scene loginScene = new Scene(loader.load(getClass().getResource("/LogIn2.fxml")));
+
             //loginPopup.setScene((AnchorPane)));
             StaffLoginController loginController = new StaffLoginController();
 
             loginController.setLoggedIn(false);
-
+            login.visibleProperty().bind(loginController.getLoggedInProperty());
+            //setLoggedIn(false);
+            //login.visibleProperty().bind(this.isLoggedIn);
+            /*
             loginController.getLoggedInProperty().addListener((obs, before, nowLoggedIn) -> {
                 if (nowLoggedIn) {
                     loginPopup.hide();
                     login.setVisible(false);
                 }
             });
-
+            */
+            loader.setController(loginController);
 
             loginPopup.setScene(loginScene);
             loginPopup.show();
