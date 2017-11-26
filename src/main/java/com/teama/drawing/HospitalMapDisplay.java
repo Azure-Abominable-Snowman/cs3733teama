@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
@@ -30,6 +31,9 @@ public class HospitalMapDisplay implements MapDisplay {
     // List of all the lines, and all the points
     private Map<String, Line> lineMap = new HashMap<>();
     private Map<String, Point> pointMap = new HashMap<>();
+
+    // List of all of the images
+    private Map<String, Img> imgMap = new HashMap<>();
 
     public HospitalMapDisplay(ScrollPane pane, Canvas canvas, Map<Floor, HospitalMap> maps) {
         this.pane = pane;
@@ -236,6 +240,11 @@ public class HospitalMapDisplay implements MapDisplay {
         for(Point p : pointMap.values()) {
             p.draw(gc);
         }
+
+        // Images
+        for(Img i : imgMap.values()) {
+            i.draw(gc);
+        }
     }
 
     /**
@@ -292,12 +301,28 @@ public class HospitalMapDisplay implements MapDisplay {
      */
     @Override
     public void drawLine(String id, Location start, Location end, double weight, Color color, boolean screenCoords) {
+        drawLine(id, start, end, weight, color, false, screenCoords);
+    }
+
+    @Override
+    public void drawLine(String id, Location start, Location end, double weight, Color color, boolean arrow, boolean screenCoords) {
         if(screenCoords) {
             start = convToImageCoords(start);
             end = convToImageCoords(end);
         }
-        Line l = new Line(id, start, end, weight, color);
+        Line l = new Line(id, start, end, weight, color, arrow);
         lineMap.put(id, l);
+        render();
+    }
+
+    @Override
+    public void drawImage(String id, Image img, Location center, boolean screenCoords) {
+        if(screenCoords) {
+            center = convToImageCoords(center);
+        }
+
+        Img i = new Img(id, img, center);
+        imgMap.put(id, i);
         render();
     }
 
@@ -310,6 +335,12 @@ public class HospitalMapDisplay implements MapDisplay {
     @Override
     public void deleteLine(String id) {
         lineMap.remove(id);
+        render();
+    }
+
+    @Override
+    public void deleteImage(String id) {
+        imgMap.remove(id);
         render();
     }
 
@@ -460,19 +491,53 @@ public class HospitalMapDisplay implements MapDisplay {
         private double weight;
         private Color color;
         private String id;
-        public Line(String id, Location start, Location end, double weight, Color color) {
+        private boolean arrow;
+
+        public Line(String id, Location start, Location end, double weight, Color color, boolean arrow) {
             this.start = start;
             this.end = end;
             this.weight = weight;
             this.color = color;
             this.id = id;
+            this.arrow = arrow;
         }
 
         public void draw(GraphicsContext gc) {
+            /*double width = canvas.getWidth();
+            double height = canvas.getHeight();
+            gc.setLineWidth(weight);
+            gc.setStroke(color);
+            gc.strokeLine(
+                    convUnits(start.getxCoord(), getMaxX(), width),
+                    convUnits(start.getyCoord(), getMaxY(), height),
+                    convUnits(end.getxCoord(), getMaxX(), width),
+                    convUnits(end.getyCoord(), getMaxY(), height));*/
+            draw(gc, arrow);
+        }
+
+        public void draw(GraphicsContext gc, boolean arrow) {
             double width = canvas.getWidth();
             double height = canvas.getHeight();
             gc.setLineWidth(weight);
             gc.setStroke(color);
+            double node1X =  convUnits(start.getxCoord(), getMaxX(), width);
+            double node1Y = convUnits(start.getyCoord(), getMaxY(), height);
+            double node2X = convUnits(end.getxCoord(), getMaxX(), width);
+            double node2Y = convUnits(end.getyCoord(), getMaxY(), height);
+            if(arrow) {
+                double arrowAngle = Math.toRadians(45.0);
+                double arrowLength = 10.0;
+                double dx = node1X - node2X;
+                double dy = node1Y - node2Y;
+                double angle = Math.atan2(dy, dx);
+                double x1 = Math.cos(angle + arrowAngle) * arrowLength + node2X;
+                double y1 = Math.sin(angle + arrowAngle) * arrowLength + node2Y;
+
+                double x2 = Math.cos(angle - arrowAngle) * arrowLength + node2X;
+                double y2 = Math.sin(angle - arrowAngle) * arrowLength + node2Y;
+                gc.strokeLine(node2X, node2Y, x1, y1);
+                gc.strokeLine(node2X, node2Y, x2, y2);
+            }
             gc.strokeLine(
                     convUnits(start.getxCoord(), getMaxX(), width),
                     convUnits(start.getyCoord(), getMaxY(), height),
@@ -530,5 +595,28 @@ public class HospitalMapDisplay implements MapDisplay {
         public String getId() {
             return id;
         }
+    }
+
+    // Stores location data for an image so it can be easily redrawn
+    private class Img {
+        private Location loc;
+        private Image img;
+        private String id;
+
+        public Img(String id, Image img, Location loc) {
+            this.loc = loc;
+            this.img = img;
+            this.id = id;
+        }
+
+        public void draw(GraphicsContext gc) {
+            double x = convUnits(loc.getxCoord(), getMaxX(), canvas.getWidth());
+            double y = convUnits(loc.getyCoord(), getMaxY(), canvas.getHeight());
+            gc.drawImage(img, x, y);
+        }
+
+        public Location getLoc() { return loc; }
+
+        public String getId() { return id; }
     }
 }
