@@ -15,7 +15,7 @@ public class AStar extends Dijkstras {
 
 
     protected HashMap<String,KnownPoint> checkedPoints;
-    protected PriorityQueue<KnownPoint> queue;
+    private PriorityQueue<KnownPoint> queue;
     protected MapNode start, end;
 
 

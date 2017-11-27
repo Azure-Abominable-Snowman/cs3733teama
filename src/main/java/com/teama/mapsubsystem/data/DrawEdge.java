@@ -75,4 +75,6 @@ public abstract class DrawEdge implements MapEdge {
     }
 
     public abstract void displayOnScreen(MapDisplay display);
+
+    public abstract void removeFromScreen(MapDisplay display);
 }

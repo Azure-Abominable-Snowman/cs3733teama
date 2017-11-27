@@ -65,7 +65,7 @@ public class MapEdgeData implements MapEdge {
      */
     public MapNode getStart() {
         if(start == null) {
-            start = MapSubsystem.getInstance().getMap().getNode(startID);
+            start = MapSubsystem.getInstance().getNode(startID);
         }
         return start;
     }
@@ -89,7 +89,7 @@ public class MapEdgeData implements MapEdge {
      */
     public MapNode getEnd() {
         if(end == null) {
-            end = MapSubsystem.getInstance().getMap().getNode(endID);
+            end = MapSubsystem.getInstance().getNode(endID);
         }
         return end;
     }

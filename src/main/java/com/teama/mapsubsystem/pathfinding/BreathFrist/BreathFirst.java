@@ -49,12 +49,14 @@ public class BreathFirst implements PathAlgorithm {
     private Stack<MapNode> collectPath(KnownPoint lastPoint)
     {
         Stack<MapNode> output = new Stack<>();
-        for(;lastPoint.getLayer()!=0;)
-        for (MapNode node: lastPoint.getAdjacentNodes()) {
-            if (visited.get(node.getId()).getLayer()==lastPoint.getLayer()) {
-                output.push(node);
-                lastPoint=visited.get(node.getId());
-                break;
+        output.push(lastPoint.getNode());
+        for(;lastPoint.getLayer()!=0;) {
+            for (MapNode node : lastPoint.getAdjacentNodes()) {
+                if (visited.get(node.getId()).getLayer() == lastPoint.getLayer() - 1) {
+                    output.push(node);
+                    lastPoint = visited.get(node.getId());
+                    break;
+                }
             }
         }
 

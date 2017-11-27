@@ -1,92 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.265" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.MainScreenController">
-  <items>
-      <HBox maxHeight="100.0" minHeight="-Infinity" prefHeight="100.0">
+<AnchorPane fx:id="areaPane" prefHeight="400.0" prefWidth="722.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.MainScreenController">
+    <children>
+      <GridPane fx:id="displayedMaps" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <GridPane HBox.hgrow="ALWAYS">
+            <AnchorPane>
+               <children>
+                  <ScrollPane fx:id="mapScroll" hbarPolicy="NEVER" pannable="true" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                        <Canvas fx:id="mapCanvas" height="405.0" width="514.0" />
+                     </content>
+                  </ScrollPane>
+                  <JFXDrawer fx:id="drawer" alignment="CENTER_RIGHT" defaultDrawerSize="328.0" direction="RIGHT" layoutX="722.0" layoutY="70.0" maxHeight="260.0" overLayVisible="false" prefHeight="325.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </JFXDrawer>
+               </children>
+            </AnchorPane>
+         </children>
+      </GridPane>
+      <StackPane alignment="TOP_RIGHT" prefHeight="48.0" prefWidth="416.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+         <children>
+            <GridPane maxWidth="-Infinity" StackPane.alignment="TOP_LEFT">
               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="304.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="440.0" minWidth="0.0" prefWidth="81.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start" GridPane.halignment="CENTER">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-                  <ComboBox fx:id="startBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS">
+                  <JFXComboBox fx:id="searchBar" editable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" style="-fx-background-color: #FFFFFF;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                              <JFXButton fx:id="searchButton" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: rgba(10,25,100,1);" text="Search" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <GridPane.margin>
-                        <Insets left="20.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
-                  </ComboBox>
-                  <ComboBox fx:id="endBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="20.0" />
-                     </GridPane.margin>
-                  </ComboBox>
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
+                  </JFXButton>
                </children>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
                <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets right="15.0" />
                </padding>
             </GridPane>
-            <Button fx:id="go" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#goClick" prefHeight="203.0" prefWidth="135.0" text="Go" HBox.hgrow="ALWAYS">
-               <opaqueInsets>
-                  <Insets bottom="10.0" right="10.0" top="10.0" />
-               </opaqueInsets>
-            </Button>
+            <JFXHamburger fx:id="hamburgerButton" alignment="CENTER_RIGHT" maxWidth="39.0" onMouseClicked="#onHamburgerButtonClick" prefHeight="48.0" prefWidth="39.0" />
          </children>
-      </HBox>
-      <SplitPane fx:id="directionsPane">
-         <items>
-            <VBox>
-               <children>
-                  <ScrollPane fx:id="mapPane" hbarPolicy="NEVER" onMouseClicked="#zoomIntoMap" pannable="true" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-                     <content>
-                        <Canvas fx:id="mapCanvas" height="200.0" width="300.0" />
-                     </content>
-                  </ScrollPane>
-                  <ToolBar>
-                     <items>
-                        <Button fx:id="request" mnemonicParsing="false" onAction="#requestClick" text="Request" />
-                        <Button fx:id="editMap" mnemonicParsing="false" onAction="#editMapClick" text="Edit Map" />
-                        <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#logInClick" text="Log In" />
-                        <Button mnemonicParsing="false" onAction="#exportToCSV" text="CSV Export" />
-                        <Slider fx:id="floorSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" nodeOrientation="LEFT_TO_RIGHT" showTickMarks="true" snapToTicks="true" value="2.0" />
-                        <Label fx:id="floorLabel" text="G" />
-                        <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#onLogoutClick" text="Log Out" />
-                        <Label fx:id="alreadyLoginMsg" prefHeight="17.0" prefWidth="141.0" />
-                     </items>
-                  </ToolBar>
-               </children>
-            </VBox>
-         </items>
-      </SplitPane>
-  </items>
-</SplitPane>
+      </StackPane>
+      <AnchorPane layoutX="18.0" layoutY="81.0" prefHeight="0.0" prefWidth="54.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <VBox fx:id="floorButtonBox" layoutX="30.0" layoutY="123.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+    </children>
+
+</AnchorPane>

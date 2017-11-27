@@ -11,8 +11,8 @@ public class DatabaseUUID {
 
     private static String team = "A";
 
-    public static String generateID(Enum<NodeType> type, String currentFloor) {
-        return generateID((NodeType)type, currentFloor, MapSubsystem.getInstance().getFloorNodes(currentFloor).keySet());
+    public static String generateID(Enum<NodeType> type, Floor currentFloor) {
+        return generateID((NodeType)type, currentFloor.toString(), MapSubsystem.getInstance().getFloorNodes(currentFloor).keySet());
     }
 
     public static String generateID(NodeType type, String currentFloor, Set<String> floorIds) {
