@@ -1,31 +1,30 @@
 package com.teama.login;
 
-
 /**
- * Created by aliss on 11/11/2017.
+ * Created by aliss on 11/24/2017.
  */
 public class LoginInfo {
-    // holds the login credentials for an admin/staff user for verification
     private String username;
     private String password;
-    private AccessType access;
 
-    public LoginInfo(String uname, String pw, AccessType a) {
-        username = uname;
-        password = pw;
-        access = a;
+    public LoginInfo(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
+    }
+
+    public void setUsername(String uname) {
+        this.username = uname;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public AccessType getAccess() {
-        return access;
+    public void setPassword(String pw) {
+        this.password = pw;
     }
-
 }

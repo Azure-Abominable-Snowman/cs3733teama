@@ -1,299 +1,300 @@
 package com.teama.controllers;
 
-import com.teama.drawing.DrawMap;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.teama.drawing.HospitalMap;
+import com.teama.drawing.HospitalMapDisplay;
+import com.teama.drawing.MapDisplay;
+import com.teama.drawing.ProxyMap;
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.MapNodeData;
+import com.teama.mapsubsystem.data.Floor;
+import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.data.MapNode;
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
-public class MainScreenController implements Controller {
+/**
+ * Delegates tasks to the other controllers on the main screen
+ *
+ * PathfindingController is for pathfinding and navigation between floors
+ * MainScreenSidebarController controls the sidebar hamburger on the main screen
+ * NodeInfoPopUpController controls the popup when you ctrl+click on a node
+ * SearchBarController controls how the search bar parses and displays its intermediate results for pathfinding
+ *
+ * (Not yet implemented)
+ * MapEditorController handles editing of the map edges/nodes
+ */
+public class MainScreenController implements Initializable {
+    private int animRate=-1;
+    private HamburgerBackArrowBasicTransition hamOpnsTran;
+    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty();
+    public BooleanProperty getLoggedInProperty() {
+        return isLoggedIn;
+    }
 
-    @Override
-    public String getFXMLFileName() {
-        return "MainScreen.fxml";
+    public final boolean isLoggedIn() {
+        return isLoggedIn.get();
+    }
+
+    public final void setLoggedIn(Boolean update) {
+        isLoggedIn.set(update);
     }
 
     @FXML
-    private Button go, login;
+    private ScrollPane mapScroll;
     @FXML
-    private Button request;
-    @FXML
-    private Button editMap;
-    @FXML
-    private Button loginBtn;
-    @FXML
-    private Button logoutBtn;
+    private JFXButton login;
+
     @FXML
     private Canvas mapCanvas;
 
     @FXML
-    private Label alreadyLoginMsg;
+    private JFXDrawer drawer;
 
     @FXML
-    private ScrollPane mapPane;
+    private JFXHamburger hamburgerButton;
+
     @FXML
-    private Slider floorSlider;
+    private JFXComboBox<String> searchBar;
+
     @FXML
-    private Label floorLabel;
+    private JFXButton searchButton;
+
     @FXML
-    private ComboBox<MapNodeData> startBox;
+    private AnchorPane areaPane;
+
     @FXML
-    private ComboBox<MapNodeData> endBox;
+    private VBox floorButtonBox;
+
     @FXML
-    private SplitPane directionsPane;
+    private GridPane displayedMaps;
 
-    private GridPane directions;
+    private MapDisplay map;
 
-    private boolean ctrlDown = false;
+    private boolean drawerExtended = false;
 
-    //private ArrayList<MapNodeData> nodes;
-    //private Map<String, MapNodeData> nodesOnFloor;
+    private double maxZoom = 3.0;
+    private double minZoom = 1.1;
 
-    private DrawMap dMap;
-    private MapSubsystem map;
+    private MapSubsystem mapSubsystem;
 
-    private Stage stage;
-/*
-    public void initialize() {
-        hideDirections();
-
-        dMap = new DrawMap(mapPane, mapCanvas, -2, 75, 5000, 3500);
-        // load in map node coordinates from DB
-        map = MapSubsystem.getInstance();
-        populateBoxes("G");
-
-        // Make slider change the floor
-        floorSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
-            String floor = "G";
-            switch (newVal.intValue()) { // TODO: make an enum to get rid of this switch
-                case 0:
-                    floor = "L2";
-                    break;
-                case 1:
-                    floor = "L1";
-                    break;
-                case 2:
-                    floor = "G";
-                    break;
-                case 3:
-                    floor = "1";
-                    break;
-                case 4:
-                    floor = "2";
-                    break;
-                case 5:
-                    floor = "3";
-                    break;
-            }
-            dMap.switchFloor(floor);
-            floorLabel.setText(floor);
-            populateBoxes(floor);
-
-
-        });
-        if (SceneEngine.isAdminStatus() == false){
-            hideBtn();
-        }else{
-            showBtn();
-
-        }
-
-
-
-    }
-
-
-    private void populateBoxes(String floor) {
-        // Populate combo boxes
-        startBox.getItems().clear();
-        endBox.getItems().clear();
-        for (MapNodeData n : map.getFloorNodes(floor).values()) {
-            if (!n.getNodeType().equals(NodeType.HALL)) {
-                startBox.getItems().add(n);
-                endBox.getItems().add(n);
-            }
+    @FXML
+    void onHamburgerButtonClick(MouseEvent event) throws IOException {
+        hamOpnsTran.setRate(animRate*=-1);
+        hamOpnsTran.play();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/MainSidebar.fxml"));
+        HBox box = loader.load();
+        MainScreenSidebarController sidebar = loader.getController();
+        sidebar.setMapDisplay(map);
+        drawer.setSidePane(box);
+        if(drawer.isShown()){
+            drawer.close();
+            drawerExtended = false;
+        } else {
+            drawer.setPrefWidth(box.getPrefWidth());
+            drawerExtended = true;
+            drawer.open();
         }
     }
 
-    private void hideDirections() {
-        if (directionsPane.getItems().size() < 2) { // if there are too few, don't add
-            return;
-        }
-
-        directionsPane.getItems().remove(1);
-    }
-
-    private void showDirections() {
-        if (directionsPane.getItems().size() > 1) { // if there are directions already, don't add them
-            return;
-        }
-
-        ScrollPane directionScroll = new ScrollPane();
-        directions = new GridPane();
-        directionScroll.setContent(directions);
-        directionsPane.getItems().add(directionScroll);
-        directionsPane.setDividerPosition(0, 0.75);
-        // Lock it at 25%
-        directionScroll.maxWidthProperty().bind(directionsPane.widthProperty().multiply(0.25));
-        directionScroll.minWidthProperty().bind(directionsPane.widthProperty().multiply(0.25));
-
-        directions.setHgap(10);
-        directions.setVgap(10);
-
-        // make the window 25% larger in the x direction to compensate for the window cutting in
-        stage.setWidth(stage.getWidth() * 1.25);
-    }
-
-    private void addDirection(String text) {
-        directions.add(new Label(text), 0, 0);
-        directions.add(new Label(text), 0, 1);
-        directions.add(new Label(text), 0, 2);
-    }
-
-    @FXML
-    public void zoomIntoMap(MouseEvent e) {
-        if (ctrlDown) {
-            dMap.toggleZoom(e.getX(), e.getY());
-        }
-    }
-*/
-    /**
-     * Called when the stage is given to the controller, does initialization routines
-     *
-     * @param stage
-     */
-    /*
     @Override
-    public void setStage(Stage stage) {
-        // On resize of the stage
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            dMap.updateSize();
+    public void initialize(URL location, ResourceBundle resources) {
+        mapSubsystem = MapSubsystem.getInstance();
+        drawer.setSidePane();
+        hamOpnsTran = new HamburgerBackArrowBasicTransition(hamburgerButton);
+
+        Map<Floor, HospitalMap> imgs = new HashMap<>();
+        imgs.put(Floor.SUBBASEMENT, new ProxyMap("/maps/L2.png"));
+        imgs.put(Floor.BASEMENT, new ProxyMap("/maps/L1.png"));
+        imgs.put(Floor.GROUND, new ProxyMap("/maps/G.png"));
+        imgs.put(Floor.ONE, new ProxyMap("/maps/1.png"));
+        imgs.put(Floor.TWO, new ProxyMap("/maps/2.png"));
+        imgs.put(Floor.THREE, new ProxyMap("/maps/3.png"));
+
+        map = new HospitalMapDisplay(mapScroll, mapCanvas, imgs);
+        map.setGrow(true);
+        map.setZoom(minZoom);
+
+        PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, floorButtonBox);
+        SearchBarController searchBarController = new SearchBarController(searchBar, searchButton, mapSubsystem);
+
+        // Zoom in and out using plus and minus keys
+        mapScroll.onKeyTypedProperty().set((KeyEvent event) -> {
+            switch(event.getCharacter()) {
+                case "=":
+                    // zoom in
+                    if(map.getZoom() < maxZoom) { // TODO: make this not throw an exception when the image gets too big
+                        map.setZoom(map.getZoom() + 0.1);
+                    }
+                    break;
+                case "-":
+                    // zoom out
+                    if(map.getZoom() > minZoom) {
+                        map.setZoom(map.getZoom() - 0.1);
+                    }
+                    break;
+            }
+        });
+
+        // Make each node clickable to reveal a detailed menu
+        EventHandler<MouseEvent> clickedOnMapHandler = (MouseEvent event) -> {
+            //System.out.println("CLICKED ON MAP SCREEN AT "+event.getX()+" "+event.getY());
+
+            if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
+                areaPane.getChildren().remove(nodeInfo);
+                nodeInfo = null;
+            }
+
+            if(event.isControlDown()) { // check for a node and if there is one display the node info
+                generateNodePopUp(event);
+            } else {
+                pathfinding.genPathWithClicks(event);
+            }
         };
-        // If the stage is resized make the canvas fill
-        stage.widthProperty().addListener(stageSizeListener);
-        stage.heightProperty().addListener(stageSizeListener);
-        // If the pane is resized make the canvas fill
-        mapPane.heightProperty().addListener(stageSizeListener);
-        mapPane.widthProperty().addListener(stageSizeListener);
+        map.getUnderlyingCanvas().onMouseClickedProperty().set(clickedOnMapHandler);
 
-        this.stage = stage;
-
-    }
-
-    public void setScene(Scene scene) {
-        scene.setOnKeyPressed(ke -> {
-            if (ke.isControlDown()) { // When control down, flip a variable, otherwise flip it back
-                ctrlDown = true;
+        // When the map is resized the pop up must be taken off the screen
+        // TODO: Make the pop up move instead
+        ChangeListener<Number> removePopUpWhenResized = (ObservableValue<? extends Number> obsVal, Number oldVal, Number newVal) -> {
+            if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
+                areaPane.getChildren().remove(nodeInfo);
+                nodeInfo = null;
             }
+        };
+        areaPane.heightProperty().addListener(removePopUpWhenResized);
+        areaPane.widthProperty().addListener(removePopUpWhenResized);
+
+
+        // When the map is panned, remove the pop up
+        EventHandler<MouseEvent> panningMap = (MouseEvent event) -> {
+            if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
+                areaPane.getChildren().remove(nodeInfo);
+                nodeInfo = null;
+            }
+        };
+        mapScroll.onDragDetectedProperty().set(panningMap);
+
+        /*Canvas newMapCanvas = new Canvas(); Test to add another map as an inset (multi-floor pathfinding)
+        ScrollPane newMapPane = new ScrollPane(newMapCanvas);
+        MapDisplay newMap = new HospitalMapDisplay(newMapPane, newMapCanvas, imgs);
+        newMapPane.setMinWidth(300);
+        newMap.setGrow(true);
+        displayedMaps.addColumn(1, newMapPane);*/
+
+        // When the hamburger retracts, make it disappear, otherwise appear
+        hamOpnsTran.onFinishedProperty().set((ActionEvent e) -> {
+            drawer.setVisible(drawerExtended);
         });
 
-        scene.setOnKeyReleased(ke -> {
-            if (!ke.isControlDown()) {
-                ctrlDown = false; // when it is released, set the variable to false
+        // Handle the search bar, allow for autocomplete and fuzzy searching of nodes
+        searchBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+            searchBarController.matchFuzzySearchValues();
+        });
+
+        searchBarController.updateNodeListing(map.getCurrentFloor());
+        // When the floor is switched make it so the floor is changed in the search box
+        for(Node node : floorButtonBox.getChildren()) {
+            node.pressedProperty().addListener((Observable obs) -> {
+                searchBarController.updateNodeListing(map.getCurrentFloor());
+            });
+        }
+
+
+
+        // If the searchbutton is pressed, display a path to the selected/approximately matched node
+        searchButton.pressedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean before, Boolean after) -> {
+            if(!before && after) { // When button is pressed
+                System.out.println("SEARCH BUTTON PRESSED");
+                MapNode dest = mapSubsystem.getNodeByDescription(searchBar.getSelectionModel().getSelectedItem(), true);
+                pathfinding.genPath(dest);
             }
         });
     }
 
-    @FXML
-    private void requestClick(ActionEvent event) {
-        SceneEngine.display(RequestScreenController.class, null);
 
-        // DEBUG: draw all the edges on the map and then print out info to the console
+    private Parent nodeInfo;
 
+    /**
+     * Generates a node pop up if able from the given mouse event
+     * @param event
+     */
+    private void generateNodePopUp(MouseEvent event) {
+        System.out.println("CLICK ON NODE BUTTON");
+        // Get the id of the node clicked on (if any)
+        String id = map.pointAt(new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown"));
 
+        System.out.println("CLICKED ON "+id);
 
-        for (MapNodeData n : map.getFloorNodes(dMap.getCurFloor()).values()) {
-            System.out.print(n.getId() + " " + n.getShortDescription() + " ");
-            for (MapEdgeData e : n.getEdges()) {
-                System.out.print(e.getId() + " ");
-                dMap.drawEdge(mapCanvas, e, Color.BLACK);
+        if(id != null) {
+            MapNode clickedNode = mapSubsystem.getNode(id);
 
+            // Load the screen in and display it on the cursor
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/NodeInfoPopUp.fxml"));
+            try {
+                nodeInfo = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            System.out.println("");
+            NodeInfoPopUpController ni = loader.getController();
+            ni.setInfo(clickedNode, map, mapSubsystem);
+
+            // Create pane to load nodeInfo root node into
+            nodeInfo.toFront(); // bring to front of screen
+            areaPane.getChildren().add(nodeInfo);
+
+            // Display the pane next to the mouse cursor
+            double windowW = 140; // TODO: Pull these directly from the parent node itself.
+            double windowH = 225;
+
+            double newX = event.getSceneX()-windowW/2;
+            double newY = event.getSceneY()-windowH;
+
+            if(newX <= mapScroll.getWidth()-nodeInfo.getBoundsInParent().getWidth() && newX >= 0) {
+                nodeInfo.setTranslateX(newX);
+            } else if (newX > 0) {
+                nodeInfo.setTranslateX(mapScroll.getWidth()-nodeInfo.getBoundsInParent().getWidth()*1.2);
+            }
+
+            if(newY <= mapScroll.getHeight() && newY >= 0) {
+                System.out.println("MOVE Y");
+                nodeInfo.setTranslateY(newY);
+            }
         }
     }
 
-    @FXML
-    private void editMapClick(ActionEvent event) {
-        SceneEngine.display(MapEditorController.class, null);
-        //hideDirections();
+
+    public void hideLoginButton() {
+        login.setVisible(false);
     }
 
-    @FXML
-    private void goClick(ActionEvent event) {
-        dMap.reRender();
 
-        showDirections();
-
-        addDirection("DIRECTION!"); // Dummy add direction method (just adds sample text)
-
-        // draw the start and end nodes in a different size and color
-        Map<String, MapNodeData> curFloorMap = map.getFloorNodes(dMap.getCurFloor());
-        MapNodeData start = curFloorMap.get(startBox.getValue().getId());
-        MapNodeData end = curFloorMap.get(endBox.getValue().getId());
-
-        if (start == null || end == null) {
-            System.out.println("Invalid ID for start or end");
-            return;
-        }
-
-
-        Path shortestPath = map.getPathGenerator().generatePath(start, end);
-
-        // Draw the path between the two nodes
-        dMap.setPath(shortestPath);
-    }
-
-    @FXML
-    private void onLogoutClick(ActionEvent event){
-        SceneEngine.setAdminStatus(false);
-        hideBtn();
-
-    }
-
-    @FXML
-    private void logInClick(ActionEvent event) {
-        if(SceneEngine.isAdminStatus()){
-            alreadyLoginMsg.setText("Already login");
-
-        }else{
-            SceneEngine.display(StaffLoginController.class, SceneEngine.getLoginScene(), null);
-        }
-
-    }
-
-    @FXML
-    void exportToCSV(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-
-        //Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.*");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        //Show save file dialog
-        File file = fileChooser.showSaveDialog(stage);
-
-        if(file != null){
-            String path = file.getPath();
-            MapSubsystem.getInstance().exportToCSV(path+"_nodes.csv", path+"_edges.csv");
-        }
-    }
-
-    private void showBtn(){
-            request.setVisible(true);
-            editMap.setVisible(true);
-            logoutBtn.setVisible(true);
-            loginBtn.setVisible(false);
-    }
-    private void hideBtn(){
-            request.setVisible(false);
-            editMap.setVisible(false);
-            logoutBtn.setVisible(false);
-            loginBtn.setVisible(true);
-    }
-*/
 }
