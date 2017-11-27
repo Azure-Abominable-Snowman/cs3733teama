@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="624.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.FeatureAccdnController">
+<HBox xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FeatureAccdnController">
     <children>
         <Accordion prefHeight="400.0" prefWidth="400.0">
             <panes>
@@ -76,82 +76,78 @@
                                             <columnConstraints>
                                                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="117.0" />
                                                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="119.0" />
-                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
-                                            <children>
-                                                <JFXComboBox prefHeight="27.0" prefWidth="116.0" promptText="Building" />
-                                                <JFXComboBox prefHeight="27.0" prefWidth="153.0" promptText="Floor" GridPane.columnIndex="1" />
-                                                <JFXComboBox layoutX="127.0" layoutY="10.0" prefHeight="27.0" prefWidth="153.0" promptText="Location" GridPane.columnIndex="2" />
-                                            </children>
+                                 <children>
+                                    <JFXComboBox prefHeight="27.0" prefWidth="116.0" promptText="Building" />
+                                    <JFXComboBox prefHeight="27.0" prefWidth="153.0" promptText="Floor" GridPane.columnIndex="1" />
+                                    <JFXComboBox layoutX="127.0" layoutY="10.0" prefHeight="27.0" prefWidth="153.0" promptText="Location" GridPane.columnIndex="2" />
+                                 </children>
                                         </GridPane>
-                                        <JFXComboBox prefHeight="31.0" prefWidth="398.0" promptText="Type" />
-                                        <JFXTextArea prefHeight="160.0" prefWidth="398.0" promptText="Note" />
-                                        <GridPane prefHeight="62.0" prefWidth="398.0">
-                                            <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                            <children>
-                                                <JFXButton buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="199.0" text="Cancel" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
-                                                <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="200.0" text="Submit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
-                                            </children>
-                                        </GridPane>
+                              <JFXComboBox prefHeight="31.0" prefWidth="398.0" promptText="Type" />
+                              <JFXTextArea prefHeight="160.0" prefWidth="398.0" promptText="Note" />
+                              <GridPane prefHeight="62.0" prefWidth="398.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <JFXButton buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="199.0" text="Cancel" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
+                                    <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="200.0" text="Submit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
+                                 </children>
+                              </GridPane>
                                     </children>
                                 </VBox>
                             </children>
                         </AnchorPane>
                     </content>
                 </TitledPane>
-                <TitledPane animated="false" text="Create A Request">
-                    <content>
-                  <VBox fx:id="createReqBox">
+            <TitledPane animated="false" text="Create A Request">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                                <GridPane prefHeight="46.0" prefWidth="373.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    </rowConstraints>
-                                    <children>
-                                        <JFXComboBox fx:id="cmbBuilding" prefHeight="47.0" prefWidth="130.0" promptText="Building" />
-                                        <JFXComboBox fx:id="cmbFloor" layoutX="10.0" layoutY="10.0" prefHeight="46.0" prefWidth="144.0" promptText="Floor" GridPane.columnIndex="1" />
-                              <JFXComboBox fx:id="cmbLocation" prefHeight="46.0" prefWidth="197.0" promptText="Location" GridPane.columnIndex="2" GridPane.valignment="CENTER" />
-                                    </children>
-                                </GridPane>
-                                <JFXTextArea fx:id="txtAdditionalInfo" prefHeight="158.0" prefWidth="373.0" promptText="Additional Info" />
-                                <JFXComboBox fx:id="cmbType" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="396.0" promptText="Type">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </JFXComboBox>
+                        <GridPane layoutX="12.0" layoutY="44.0" prefHeight="46.0" prefWidth="373.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <JFXComboBox prefHeight="47.0" prefWidth="130.0" promptText="Building" />
+                              <JFXComboBox layoutX="10.0" layoutY="10.0" prefHeight="46.0" prefWidth="144.0" promptText="Floor" GridPane.columnIndex="1" />
+                              <JFXTextField prefHeight="45.0" prefWidth="208.0" text="Location" GridPane.columnIndex="2" />
+                           </children>
+                        </GridPane>
+                        <JFXComboBox layoutX="9.0" layoutY="14.0" prefHeight="27.0" prefWidth="377.0" promptText="Type" />
+                        <JFXTextArea layoutX="13.0" layoutY="100.0" prefHeight="158.0" prefWidth="373.0" promptText="Additional Info" />
                      </children>
-                  </VBox>
-                    </content>
-                </TitledPane>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
                 <TitledPane animated="false" text="Login">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <VBox layoutX="59.599998474121094" layoutY="87.5999984741211" prefHeight="299.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <JFXTextField prefHeight="27.0" prefWidth="278.0" promptText="Username">
+                                        <JFXTextField fx:id="username" prefHeight="27.0" prefWidth="278.0" promptText="Username">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
                                         </JFXTextField>
-                                        <JFXPasswordField prefHeight="27.0" prefWidth="279.0" promptText="Password">
+                                        <JFXPasswordField fx:id="password" prefHeight="27.0" prefWidth="279.0" promptText="Password">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
