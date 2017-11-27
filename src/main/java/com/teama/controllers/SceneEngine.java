@@ -53,7 +53,7 @@ public final class SceneEngine {
     public static void closeFillReq(){fillReqStage.close();}
 
 
-    public static void display(Class<? extends Controller> newController, Stage stage, ControllerInfo info) {
+    public static void display(Class<? extends Controller> newController, Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(System.class.getResource("/"+newController.newInstance().getFXMLFileName()));
@@ -61,11 +61,6 @@ public final class SceneEngine {
             Scene scene = new Scene(root);
             // Get newly created controller
             Controller c = (Controller) loader.getController();
-            if(info != null) {
-                // Pass it data
-                c.setControllerInfo(info);
-            }
-
             c.setStage(stage);
             c.setScene(scene);
             stage.setScene(scene);
@@ -80,7 +75,7 @@ public final class SceneEngine {
         }
     }
 
-    public static void display(Class<? extends Controller> newController, ControllerInfo info) {
-        display(newController, getPrimaryStage(), info);
+    public static void display(Class<? extends Controller> newController) {
+        display(newController, getPrimaryStage());
     }
 }

@@ -1,5 +1,6 @@
 package entities.PathRelated;
 
+import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.pathfinding.Path;
 import org.junit.Before;
@@ -9,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class PathTest {
     // Testing objects
-    MapNodeData[][] testNodes = new MapNodeData[20][20];
+    MapNode[][] testNodes = new MapNodeData[20][20];
     Path testPath = new Path();
 
 
@@ -35,10 +36,6 @@ public class PathTest {
         assertEquals(true, testPath.addNode(testNodes[1][1]));
         testPath.addNode(testNodes[1][2]);
         assertEquals(false, testPath.addNode(testNodes[1][2]));
-    }
-
-    @Test
-    public void addEdge() throws Exception {
     }
 
 }
