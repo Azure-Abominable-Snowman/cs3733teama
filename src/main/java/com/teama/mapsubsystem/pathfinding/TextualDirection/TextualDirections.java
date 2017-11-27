@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class TextualDirections implements DirectionsGenerator {
     ArrayList<MapNode> nodeList;
 
+
     TextualDirections()
     {
         nodeList = new ArrayList<>();
@@ -17,33 +18,22 @@ public class TextualDirections implements DirectionsGenerator {
     @Override
     public TextDirections generateDirections(Path path) {
         nodeList = path.getNodes();
-        ArrayList<turnPoint> turnPoints = new ArrayList<>(nodeList.size()-2);
+        ArrayList<RouteLink> turnPoints = new ArrayList<>(nodeList.size()-2);
 
         for(int i=1;i<nodeList.size()-1;++i)
         {
-           turnPoints.add(new turnPoint(nodeList.get(i-1),nodeList.get(i),nodeList.get(i+1) ));
+            RouteLink.add(new RouteLink(nodeList.get(i-1),nodeList.get(i),nodeList.get(i+1) ));
         }
 
+        for(){
+            //TODO Add to TextDirections, by shrinking the redundant text directions
 
-        return null;
-    }
+            //TextualDirections outputDir = new
 
-
-    private class turnPoint{
-        MapNode lastNode, thisNode, nextNode;
-        float turnAngle;
-
-        turnPoint(MapNode t,MapNode n ,MapNode l)
-        {
-            thisNode = t; nextNode = n; lastNode = l;
-            turnAngle = AngleGenerator.turnAngle(thisNode,nextNode,lastNode);
-            // TODO put these info into text.
         }
 
+        return outputDir;
     }
-
-
-
 
 
 
