@@ -36,6 +36,7 @@ public class JavaDatabaseSourceTest {
             stmt.execute("DROP TABLE TEST_NODETABLE");
             stmt.execute("DROP TABLE TEST_EDGETABLE");
             stmt.close();
+            System.out.println("Deleted previous tables.");
         } catch(SQLException e) {
             System.out.println("No previous table");
         }

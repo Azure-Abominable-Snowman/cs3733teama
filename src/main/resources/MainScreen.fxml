@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.ScrollPane?>
@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="areaPane" prefHeight="400.0" prefWidth="722.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.MainScreenController">
     <children>
@@ -51,15 +52,14 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                              <JFXTextField fx:id="searchBar" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="500.0" promptText="Search..." style="-fx-background-color: #eeeeee;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                  <JFXComboBox fx:id="searchBar" editable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" style="-fx-background-color: #FFFFFF;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                              <JFXButton fx:id="searchButton" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: rgba(10,25,100,1);" text="Search" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
-                  </JFXTextField>
-                              <JFXButton fx:id="searchButton" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: BLUE;" text="Search" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
                   </JFXButton>
                </children>
                <StackPane.margin>

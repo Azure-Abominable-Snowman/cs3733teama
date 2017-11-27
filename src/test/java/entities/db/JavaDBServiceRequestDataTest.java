@@ -1,10 +1,9 @@
 package entities.db;
-
+/*
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
-import com.teama.requestsubsystem.data.JavaDBServiceRequestData;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterRequestDB;
 import com.teama.requestsubsystem.PriorityLevel;
-import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestType;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,7 @@ public class JavaDBServiceRequestDataTest {
     String dbURL = "jdbc:derby:testdb;create=true";
     private Connection conn = null;
     private Statement stmt = null;
-    private JavaDBServiceRequestData db;
+    private InterpreterRequestDB db;
 
     @Before
     public void connect() {
@@ -40,7 +39,7 @@ public class JavaDBServiceRequestDataTest {
             e.printStackTrace();
         }
 
-        db = new JavaDBServiceRequestData(dbURL, "TEST_SERVICE");
+        db = new InterpreterRequestDB(dbURL, "TEST_SERVICE");
 
         // Populate with test data
     }
@@ -154,3 +153,4 @@ public class JavaDBServiceRequestDataTest {
         }
     }
 }
+*/

@@ -11,14 +11,14 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
     private Connection conn = null;
     private Statement stmt = null;
     private String dbURL, tablename;
-    PreparedStatement addLogin, checkLogin, updateLogin;
+    PreparedStatement addLogin, checkLogin, updateLogin, getLogin, removeUser, updatePW, updateUName;
 
     public JavaCredentialsDB(String dbURL, String tablename) {
         this.dbURL = dbURL;
         this.tablename = tablename;
 
         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             conn = DriverManager.getConnection(dbURL);
             stmt = conn.createStatement();
 
@@ -47,10 +47,14 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
 
         try {
             addLogin = conn.prepareStatement("INSERT INTO " + tablename + " VALUES (?, ?, ?)");
-            updateLogin = conn.prepareStatement("UPDATE " + tablename + " SET PASSWORD = ?, ACCESS = ?" + " WHERE USERNAME = ?",
-                    ResultSet.CONCUR_UPDATABLE);
-            checkLogin = conn.prepareStatement("SELECT * FROM " + tablename + " WHERE USERNAME = ? AND PASSWORD = ? AND ACCESS = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
+            getLogin = conn.prepareStatement("SELECT * FROM " + tablename + " WHERE USERNAME = ? ");
+            updateLogin = conn.prepareStatement("UPDATE " + tablename + " SET USERNAME = ?, PASSWORD = ?" + " WHERE USERNAME = ?",
+                    ResultSet.CONCUR_UPDATABLE); // can only update username/password, not privelege level
+            updatePW = conn.prepareStatement("UPDATE " + tablename + " SET PASSWORD = ?" + " WHERE USERNAME = ?");
+            updateUName = conn.prepareStatement("UPDATE " + tablename + " SET USERNAME = ?" + " WHERE USERNAME = ?");
+            checkLogin = conn.prepareStatement("SELECT * FROM " + tablename + " WHERE USERNAME = ? AND PASSWORD = ?", ResultSet.TYPE_SCROLL_INSENSITIVE,
                      ResultSet.CONCUR_UPDATABLE);
+            removeUser = conn.prepareStatement("DELETE FROM " + tablename + " WHERE USERNAME = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,8 +67,8 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
             }
         }
     }
-
-    public boolean addLoginInfo(LoginInfo p) {
+    @Override
+    public boolean addUser(SystemUser p) {
         //PreparedStatement pstmt = null;
         String uname = p.getUsername();
         String pw = p.getPassword();
@@ -88,81 +92,112 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
             //insert.close();
             // Update
         } catch (SQLException e) {
-            log.info("Login info already exists");
+            log.info("User with given username already exists");
             return false;
         }
         return true;
     }
-
-    @Override
-    public void updateLoginInfo(LoginInfo p) {
-        //PreparedStatement insert = null;
-        String uname = p.getUsername();
-        Integer pw_hash = p.getPassword().hashCode();
-        String access = p.getAccess().toString();
-        /*
-        String sql = "UPDATE " + tablename +
-                "(USERNAME, PASSWORD, ACCESS)" +
-                "VALUES (?, ?, ?)";
-        insert = conn.prepareStatement(sql);
-        insert.setString(1, uname);
-        insert.setInt(2, pw_hash);
-        insert.setString(3, access);
-        */
-
+    /*
+    private int basicHash(String s) {
+        int hash = 11;
+        for (int i = 0; i<s.length(); i++) {
+            hash += (s.charAt(i))
+        }
+    }
+    */
+    public SystemUser getUser(LoginInfo c) {
+        SystemUser found = null;
         try {
-            updateLogin.setInt(1, pw_hash);
-            updateLogin.setString(2, access);
-            updateLogin.setString(3, uname);
-            updateLogin.executeUpdate();
+            getLogin.setString(1,c.getUsername());
+            ResultSet rs = getLogin.executeQuery();
+            if (rs.next()) {
+                found = new SystemUser(new LoginInfo(rs.getString("USERNAME"), c.getPassword()), AccessType.getAccessType(rs.getString("ACCESS")));
+            }
         } catch (SQLException e) {
+            log.info("Failed to get the user with given login info, where username is " + c.getUsername());
             e.printStackTrace();
         }
+        return found;
+    }
 
-        //insert.close();
+    // TODO
+
+    @Override
+    public boolean updateLoginInfo(LoginInfo old, LoginInfo newLogin) {
+        //PreparedStatement insert = null;
+        boolean updatedUser = true;
+        boolean updatingUserName = false;
+        String oldUname = old.getUsername();
+        String newUname = newLogin.getUsername();
+        int oldHash = old.getPassword().hashCode();
+        int newHash = newLogin.getPassword().hashCode();
+        // updateUName = conn.prepareStatement("UPDATE " + tablename + " SET USERNAME = ?" + " WHERE USERNAME = ?");
+        SystemUser s = getUser(old);
+        if (s == null) {
+            return false;
+        }
+        if (!(oldUname.equals(newUname))) { //updating the username
+            updatingUserName = true;
+            try {
+                updateUName.setString(1, newUname);
+                updateUName.setString(2, oldUname);
+                updateUName.executeUpdate();
+                log.info("Updated the username for user with old username " + oldUname);
+            } catch (SQLException e) {
+                //e.printStackTrace();
+                updatedUser = false;
+            }
+        }
+        if (!(oldHash == newHash) && updatedUser) { //update the password, only if username update was successful (if username is updated)
+            // updatePW = conn.prepareStatement("UPDATE " + tablename + " SET PASSWORD = ?" + " WHERE USERNAME = ?");
+            try {
+                updatePW.setInt(1, newHash);
+                if (updatingUserName) {
+                    updatePW.setString(2, newUname);
+                }
+                else {
+                    updatePW.setString(2, oldUname);
+                }
+                updatePW.executeUpdate();
+                updatedUser = true;
+            } catch (SQLException e) {
+                log.info("Could not update the password for user.");
+                e.printStackTrace();
+                updatedUser = false;
+            }
+        }
+        return updatedUser;
     }
 
     @Override
-    public LoginInfo checkCredentials(LoginInfo p) {
+    // returns null if no SystemUser found for given user
+    public SystemUser checkCredentials(LoginInfo l) {
 
         //boolean authorized = false;
         //PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String uname = p.getUsername();
-        Integer pwHash = p.getPassword().hashCode();
-        String access = p.getAccess().toString();
+        SystemUser user = null;
+        String uname = l.getUsername();
+        Integer pwHash = l.getPassword().hashCode();
         try {
-            System.out.println(uname+" "+pwHash+" "+access);
             log.info("Searching for user " +uname);
             checkLogin.setString(1, uname);
             checkLogin.setInt(2, pwHash);
-            checkLogin.setString(3, access);
+            //checkLogin.setString(3, access);
             rs = checkLogin.executeQuery();
 
-            //rs = pstmt.executeQuery(search);
-            if (!rs.next()) {
-                log.info("No such user in system: " + uname);
-                rs.close();
-                return null;
-            }
-            else {
-                rs.beforeFirst();
-                while (rs.next()) {
-                    //System.out.println(rs.getString("PASSWORD"));
-                    //System.out.println(p.getPassword());
-                    if (rs.getString("PASSWORD").equals(p.getPassword())) {
-                        log.info("Correct password.");
-                        if (rs.getString("ACCESS").equals(p.getAccess().toString())) {
-                            log.info("Authorized Access for user " + uname);
-                            //authorized = true;
-                        } else {
-                            log.info("Illegal access by user " + uname);
-                        }
-                    } else {
-                        log.info("Password incorrect for user " + uname);
-                    }
+            if (rs.next()) {
+                if (rs.getInt("PASSWORD") == (l.getPassword().hashCode())) { // compare the hashes to see if password correct
+                    log.info("Correct password.");
+                    user = new SystemUser(l, AccessType.getAccessType(rs.getString("ACCESS")));
+                } else {
+                    log.info("Password incorrect for user " + uname);
                 }
             }
+            else {
+                  log.info("No such username, " + l.getUsername() + ", is in the system.");
+                }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -174,9 +209,21 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
                 //e.printStackTrace();
             }
         }
-        return p;
+        return user;
     }
 
+    @Override
+    public boolean removeUser(SystemUser p) {
+        try {
+            removeUser.setString(1, p.getUsername());
+            removeUser.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            log.info("User " + p.getUsername() + " could not be removed.");
+            return false;
+        }
+    }
 
     public Connection seeConnection() {
         return conn;
