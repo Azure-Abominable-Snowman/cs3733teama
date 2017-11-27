@@ -97,7 +97,7 @@ public class PathAlgorithmTest {
         assertTrue(result.getNodes().contains(map1[12][1]));// check the end
         assertTrue(result.getNodes().contains(map1[0][4])); // check some points in the path.
         assertTrue(result.getNodes().contains(map1[11][1]));
-        // if this one passed, means the queue size is big enough for this to be the same as A* in this map. 
+        // if this one passed, means the queue size is big enough for this to be the same as A* in this map.
         assertTrue(result.getNodes().contains(map1[11][4]));
 
         Path result2 = finder.generatePath(mapd[0][0],mapd[22][20]);
