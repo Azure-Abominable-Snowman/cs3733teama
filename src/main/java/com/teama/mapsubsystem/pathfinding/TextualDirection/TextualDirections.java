@@ -36,20 +36,14 @@ public class TextualDirections implements DirectionsGenerator {
         turnPoint(MapNode t,MapNode n ,MapNode l)
         {
             thisNode = t; nextNode = n; lastNode = l;
-            turnAngle = turnAngle(thisNode,nextNode,lastNode);
+            turnAngle = AngleGenerator.turnAngle(thisNode,nextNode,lastNode);
             // TODO put these info into text.
         }
 
     }
 
 
-    public static float turnAngle(MapNode start, MapNode thisNode, MapNode end) {
-        float angle = AngleGenerator.positionAngle(start,thisNode) - AngleGenerator.positionAngle(thisNode,end);
-        if(angle < 0){
-            angle += 360;
-        }
-        return angle;
-    }
+
 
 
 

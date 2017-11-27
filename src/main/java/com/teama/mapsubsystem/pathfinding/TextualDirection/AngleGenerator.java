@@ -28,6 +28,14 @@ public class AngleGenerator {
         return angle;
     }
 
+    public static float turnAngle(MapNode start, MapNode thisNode, MapNode end) {
+        float angle = AngleGenerator.positionAngle(start,thisNode) - AngleGenerator.positionAngle(thisNode,end);
+        if(angle < 0){
+            angle += 360;
+        }
+        return angle;
+    }
+
 
 
 }
