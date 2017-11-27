@@ -70,16 +70,20 @@ public class DisplayPathInstantly extends DisplayPath {
         // TODO: Highlight switches between floors clearly
     }
 
-    public void deleteFromScreen(MapDisplay display) {
+    public void deleteFromScreen(MapDisplay display, Floor floor) {
         // Delete all the edges from the screen
         for(MapEdge e : getConnectors()) {
             display.deleteLine(e.getId());
         }
-        // Redisplay all the visible nodes in the path on the screen
+        // Redisplay all of the visible nodes on the current floor
         for(MapNode n : getNodes()) {
-            if(n.getNodeType() != NodeType.HALL) {
+            if(n.getCoordinate().getLevel().equals(floor) && !n.getNodeType().equals(NodeType.HALL)) {
                 new DrawNodeInstantly(n).displayOnScreen(display);
             }
         }
+    }
+
+    public void deleteFromScreen(MapDisplay display) {
+        deleteFromScreen(display, display.getCurrentFloor());
     }
 }
