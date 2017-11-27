@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="624.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<HBox prefHeight="624.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.FeatureAccdnController">
     <children>
         <Accordion prefHeight="400.0" prefWidth="400.0">
             <panes>
@@ -113,30 +113,29 @@
                 </TitledPane>
                 <TitledPane animated="false" text="Create A Request">
                     <content>
-                  <VBox>
+                  <VBox fx:id="createReqBox">
                      <children>
                                 <GridPane prefHeight="46.0" prefWidth="373.0">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                                     </columnConstraints>
                                     <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <JFXComboBox prefHeight="47.0" prefWidth="130.0" promptText="Building" />
-                                        <JFXComboBox layoutX="10.0" layoutY="10.0" prefHeight="46.0" prefWidth="144.0" promptText="Floor" GridPane.columnIndex="1" />
-                                        <JFXTextField prefHeight="45.0" prefWidth="208.0" text="Location" GridPane.columnIndex="2" />
+                                        <JFXComboBox fx:id="cmbBuilding" prefHeight="47.0" prefWidth="130.0" promptText="Building" />
+                                        <JFXComboBox fx:id="cmbFloor" layoutX="10.0" layoutY="10.0" prefHeight="46.0" prefWidth="144.0" promptText="Floor" GridPane.columnIndex="1" />
+                              <JFXComboBox fx:id="cmbLocation" prefHeight="46.0" prefWidth="197.0" promptText="Location" GridPane.columnIndex="2" GridPane.valignment="CENTER" />
                                     </children>
                                 </GridPane>
-                                <JFXTextArea prefHeight="158.0" prefWidth="373.0" promptText="Additional Info" />
-                                <JFXComboBox prefHeight="27.0" prefWidth="396.0" promptText="Type">
+                                <JFXTextArea fx:id="txtAdditionalInfo" prefHeight="158.0" prefWidth="373.0" promptText="Additional Info" />
+                                <JFXComboBox fx:id="cmbType" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="396.0" promptText="Type">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </JFXComboBox>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                     </content>
@@ -147,12 +146,12 @@
                             <children>
                                 <VBox layoutX="59.599998474121094" layoutY="87.5999984741211" prefHeight="299.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <JFXTextField fx:id="username" prefHeight="27.0" prefWidth="278.0" promptText="Username">
+                                        <JFXTextField prefHeight="27.0" prefWidth="278.0" promptText="Username">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
                                         </JFXTextField>
-                                        <JFXPasswordField fx:id="password" prefHeight="27.0" prefWidth="279.0" promptText="Password">
+                                        <JFXPasswordField prefHeight="27.0" prefWidth="279.0" promptText="Password">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
