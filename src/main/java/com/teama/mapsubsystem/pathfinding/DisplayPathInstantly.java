@@ -2,6 +2,7 @@ package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.data.DrawEdgeInstantly;
+import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapEdge;
 
 public class DisplayPathInstantly extends DisplayPath {
@@ -15,8 +16,16 @@ public class DisplayPathInstantly extends DisplayPath {
             new DrawNodeInstantly(n).displayOnScreen(display);
         }*/
         for(MapEdge e : getConnectors()) {
-            System.out.println(e);
             new DrawEdgeInstantly(e).displayOnScreen(display);
+        }
+    }
+
+    @Override
+    public void displayOnScreen(MapDisplay display, Floor floor) {
+        for(MapEdge e : getConnectors()) {
+            if(e.getStart().getCoordinate().getLevel().equals(floor) &&
+                    e.getEnd().getCoordinate().getLevel().equals(floor))
+                new DrawEdgeInstantly(e).displayOnScreen(display);
         }
     }
 
@@ -25,7 +34,6 @@ public class DisplayPathInstantly extends DisplayPath {
             display.deleteLine(n.getId());
         }*/
         for(MapEdge e : getConnectors()) {
-            System.out.println(e);
             display.deleteLine(e.getId());
         }
     }

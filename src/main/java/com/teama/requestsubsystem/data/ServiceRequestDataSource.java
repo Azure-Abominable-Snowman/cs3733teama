@@ -1,38 +1,36 @@
+/*
 package com.teama.requestsubsystem.data;
 
-import com.teama.requestsubsystem.Request;
+import com.teama.requestsubsystem.RequestType;
 
 import java.util.ArrayList;
 
 public interface ServiceRequestDataSource {
 
-    default void submitRequest(Request request) {  }
+    void submitRequest(Request request);
 
-    /**
+
      * Returns true if the specified request object was successfully deleted
      * @param request
      * @return
-     */
-    default boolean cancelRequest(Request request) {
-        return false;
-    }
 
-    /**
+    boolean cancelRequest(Request request);
+
+
      * Returns true if the specified request id was successfully deleted
      * @param id
      * @return
-     */
-    default boolean cancelRequest(String id) {
-        return false;
-    }
 
-    default Request getRequest(String id) { return null; }
+    boolean cancelRequest(String id);
 
-    default ArrayList<Request> getRequest(){ return null; }
+    Request getRequest(String id);
 
-    default boolean fulfillRequest(String id) { return false; }
+    ArrayList<Request> getRequest(RequestType t);
 
-    default void close() { };
+    boolean fulfillRequest(String id);
 
-    default int getNextId() { return 0; }
+    void close();
+
+    int getNextId();
 }
+*/
