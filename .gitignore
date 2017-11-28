@@ -83,3 +83,16 @@ proguard/
 .gradle/
 build/
 bin/
+
+testdb/
+unittestdb/
+lib/javax.ejb.jar
+lib/javax.jms.jar
+lib/javax.persistence.jar
+lib/javax.resource.jar
+lib/javax.servlet.jar
+lib/javax.servlet.jsp.jar
+lib/javax.servlet.jsp.jstl.jar
+lib/javax.transaction.jar
+
+database/
