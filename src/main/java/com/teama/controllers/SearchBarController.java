@@ -68,48 +68,48 @@ public class SearchBarController {
         }
     }
 
-    public void handleOnKeyPressed(KeyEvent e) {
-        ObservableList<String> filteredList = FXCollections.observableArrayList();
-        KeyCode code = e.getCode();
-
-        if (code.isLetterKey()) {
-            filter += e.getText();
-        }
-        if (code == KeyCode.BACK_SPACE && filter.length() > 0) {
-            filter = filter.substring(0, filter.length() - 1);
-            inputField.getItems().setAll(originalItems);
-        }
-        if (code == KeyCode.ESCAPE) {
-            filter = "";
-        }
-        if (filter.length() == 0) {
-            filteredList = originalItems;
-            inputField.getTooltip().hide();
-        } else {
-            Stream<String> itens = inputField.getItems().stream();
-            String txtUsr = unaccent(filter.toString().toLowerCase());
-            itens.filter(el -> unaccent(el.toString().toLowerCase()).contains(txtUsr)).forEach(filteredList::add);
-            inputField.getTooltip().setText(txtUsr);
-            Window stage = inputField.getScene().getWindow();
-            double posX = stage.getX() + inputField.getBoundsInParent().getMinX();
-            double posY = stage.getY() + inputField.getBoundsInParent().getMinY();
-            inputField.getTooltip().show(stage, posX, posY);
-            inputField.show();
-        }
-        inputField.getItems().setAll(filteredList);
-    }
-    private String unaccent(String s) {
-        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(temp).replaceAll("");
-    }
-
-    public void handleOnHiding(Event e) {
-        filter = "";
-        inputField.getTooltip().hide();
-        String s = inputField.getSelectionModel().getSelectedItem();
-        inputField.getItems().setAll(originalItems);
-        inputField.getSelectionModel().select(s);
-    }
+//    public void handleOnKeyPressed(KeyEvent e) {
+//        ObservableList<String> filteredList = FXCollections.observableArrayList();
+//        KeyCode code = e.getCode();
+//
+//        if (code.isLetterKey()) {
+//            filter += e.getText();
+//        }
+//        if (code == KeyCode.BACK_SPACE && filter.length() > 0) {
+//            filter = filter.substring(0, filter.length() - 1);
+//            inputField.getItems().setAll(originalItems);
+//        }
+//        if (code == KeyCode.ESCAPE) {
+//            filter = "";
+//        }
+//        if (filter.length() == 0) {
+//            filteredList = originalItems;
+//            inputField.getTooltip().hide();
+//        } else {
+//            Stream<String> itens = inputField.getItems().stream();
+//            String txtUsr = unaccent(filter.toString().toLowerCase());
+//            itens.filter(el -> unaccent(el.toString().toLowerCase()).contains(txtUsr)).forEach(filteredList::add);
+//            inputField.getTooltip().setText(txtUsr);
+//            Window stage = inputField.getScene().getWindow();
+//            double posX = stage.getX() + inputField.getBoundsInParent().getMinX();
+//            double posY = stage.getY() + inputField.getBoundsInParent().getMinY();
+//            inputField.getTooltip().show(stage, posX, posY);
+//            inputField.show();
+//        }
+//        inputField.getItems().setAll(filteredList);
+//    }
+//    private String unaccent(String s) {
+//        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+//        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+//        return pattern.matcher(temp).replaceAll("");
+//    }
+//
+//    public void handleOnHiding(Event e) {
+//        filter = "";
+//        inputField.getTooltip().hide();
+//        String s = inputField.getSelectionModel().getSelectedItem();
+//        inputField.getItems().setAll(originalItems);
+//        inputField.getSelectionModel().select(s);
+//    }
 
 }
