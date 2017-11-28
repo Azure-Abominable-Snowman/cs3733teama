@@ -12,8 +12,11 @@ import java.util.Set;
 public class Path {
     private ArrayList<MapNode> nodes;
     private ArrayList<MapEdge> connectors;
+<<<<<<< HEAD
     private MapNode startNode; // @TODO do we need this? since the start of Arraylist could be start node.
     private MapEdge endNode;
+=======
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 
     public Path()
     {
@@ -38,6 +41,17 @@ public class Path {
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    public MapNode getStartNode() {
+        return getNodes().get(0);
+    }
+
+    public MapNode getEndNode() {
+        return getNodes().get(getNodes().size()-1);
+    }
+
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     public ArrayList<MapEdge> getConnectors() {
         return connectors;
     }

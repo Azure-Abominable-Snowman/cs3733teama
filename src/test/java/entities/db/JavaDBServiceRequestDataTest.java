@@ -1,9 +1,10 @@
 package entities.db;
-
-import entities.Location;
-import entities.servicerequests.PriorityLevel;
-import entities.servicerequests.Request;
-import entities.servicerequests.RequestType;
+/*
+import com.teama.mapsubsystem.data.Floor;
+import com.teama.mapsubsystem.data.Location;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterRequestDB;
+import com.teama.requestsubsystem.PriorityLevel;
+import com.teama.requestsubsystem.RequestType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class JavaDBServiceRequestDataTest {
     String dbURL = "jdbc:derby:testdb;create=true";
     private Connection conn = null;
     private Statement stmt = null;
-    private JavaDBServiceRequestData db;
+    private InterpreterRequestDB db;
 
     @Before
     public void connect() {
@@ -38,7 +39,7 @@ public class JavaDBServiceRequestDataTest {
             e.printStackTrace();
         }
 
-        db = new JavaDBServiceRequestData(dbURL, "TEST_SERVICE");
+        db = new InterpreterRequestDB(dbURL, "TEST_SERVICE");
 
         // Populate with test data
     }
@@ -46,7 +47,7 @@ public class JavaDBServiceRequestDataTest {
     @Test
     public void createRequest() throws Exception {
         // Try creating a basic request that is known to not already exist in the database
-        db.submitRequest(new Request("testid", new Location(5, 10, "L2", "45 Francis"), RequestType.SEC,
+        db.submitRequest(new Request("testid", new Location(5, 10, Floor.SUBBASEMENT, "45 Francis"), RequestType.SEC,
                 PriorityLevel.LOW, "testnote"));
         // Check the db to see if it's there
         try {
@@ -71,7 +72,7 @@ public class JavaDBServiceRequestDataTest {
     @Test
     public void deleteRequest() throws Exception {
         // Create request, verfiy it is there, then try to delete it, then see if it was deleted
-        db.submitRequest(new Request("testid", new Location(5, 10, "L2", "45 Francis"),
+        db.submitRequest(new Request("testid", new Location(5, 10, Floor.SUBBASEMENT, "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote"));
         try {
             // Verify it is in the db
@@ -99,23 +100,23 @@ public class JavaDBServiceRequestDataTest {
     @Test
     public void getRequest() throws Exception {
         // Create request and try to find it
-        Request before = new Request("testid", new Location(5, 10, "L2", "45 Francis"),
+        Request before = new Request("testid", new Location(5, 10, Floor.SUBBASEMENT, "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote");
         db.submitRequest(before);
         assertEquals(before.toSQLValues(), db.getRequest("testid").toSQLValues());
 
         // Try with fulfilled request
-        Request beforeTwo = new Request("testid7", new Location(5, 10, "L2", "45 Francis"),
+        Request beforeTwo = new Request("testid7", new Location(5, 10, Floor.SUBBASEMENT, "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote", true);
         db.submitRequest(beforeTwo);
         assertEquals(beforeTwo.toSQLValues(), db.getRequest("testid7").toSQLValues());
 
         // Have multiple similar looking requests in the db and find the correct one
-        db.submitRequest(new Request("testid2", new Location(5, 10, "L2", "45 Francis"),
+        db.submitRequest(new Request("testid2", new Location(5, 10, Floor.SUBBASEMENT, "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote"));
-        db.submitRequest(new Request("testid3", new Location(5, 10, "L2", "45 Francis"),
+        db.submitRequest(new Request("testid3", new Location(5, 10, Floor.SUBBASEMENT, "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote"));
-        db.submitRequest(new Request("testid4", new Location(5, 10, "L2", "45 Francis"),
+        db.submitRequest(new Request("testid4", new Location(5, 10, Floor.SUBBASEMENT, "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote"));
         assertEquals(before.toSQLValues(), db.getRequest("testid").toSQLValues());
     }
@@ -124,7 +125,7 @@ public class JavaDBServiceRequestDataTest {
     public void fulfillRequest() throws Exception {
         // Create a request, make sure it's in the database, then fulfill it
         // See if it's correct
-        Request before = new Request("testid", new Location(5, 10, "L2", "45 Francis"),
+        Request before = new Request("testid", new Location(5, 10, Floor.SUBBASEMENT, "45 Francis"),
                 RequestType.SEC, PriorityLevel.LOW, "testnote", false);
         db.submitRequest(before);
 
@@ -152,3 +153,4 @@ public class JavaDBServiceRequestDataTest {
         }
     }
 }
+*/

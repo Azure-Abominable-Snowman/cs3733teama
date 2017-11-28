@@ -19,7 +19,11 @@ public class BreathFirst implements PathAlgorithm {
 
         KnownPoint checking;
         for( checking = new KnownPoint(start, 0);
+<<<<<<< HEAD
             checking.getNode().getId()!=end.getId();
+=======
+            ! checking.getNode().getId().equals(end.getId());
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
             checking=open.poll())
         {
             putNodesIntoQueue(checking, checking.getLayer() + 1);
@@ -52,10 +56,19 @@ public class BreathFirst implements PathAlgorithm {
         output.push(lastPoint.getNode());
         for(;lastPoint.getLayer()!=0;) {
             for (MapNode node : lastPoint.getAdjacentNodes()) {
+<<<<<<< HEAD
                 if (visited.get(node.getId()).getLayer() == lastPoint.getLayer() - 1) {
                     output.push(node);
                     lastPoint = visited.get(node.getId());
                     break;
+=======
+                if(visited.get(node.getId())!=null) {
+                    if (visited.get(node.getId()).getLayer() == lastPoint.getLayer() - 1) {
+                        output.push(node);
+                        lastPoint = visited.get(node.getId());
+                        break;
+                    }
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
                 }
             }
         }

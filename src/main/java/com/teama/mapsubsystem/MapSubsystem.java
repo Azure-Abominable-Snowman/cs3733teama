@@ -4,6 +4,10 @@ import com.teama.Configuration;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.*;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
+<<<<<<< HEAD
+=======
+import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 
 import java.util.*;
 
