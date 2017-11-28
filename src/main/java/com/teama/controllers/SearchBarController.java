@@ -12,11 +12,18 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Window;
 import org.apache.commons.codec.language.DoubleMetaphone;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.text.Normalizer;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+
+import static java.awt.SystemColor.text;
 
 public class SearchBarController {
 
@@ -25,6 +32,32 @@ public class SearchBarController {
     private MapSubsystem mapSubsystem;
     String filter = "";
     private ObservableList<String> originalItems;
+    String[] words = {"Fenwood Road",
+            "Schlagler Stairs",
+            "Information Desk",
+            "Information Desk",
+            "Elevator S G",
+            "BTM Security Desk",
+            "Neuro Testing Waiting Area",
+            "Infusion Waiting Area",
+            "Schlagler Innovation Lobby",
+            "Test Lobby",
+            "Test Area1",
+            "Test Area2",
+            "Test Area3",
+            "Test Desk",
+            "Test Front Desk",
+            "Test Info Desk",
+            "Test Desk2",
+            "Test Desk3",
+            "Test Desk4",
+            "Test Desk5",
+            "Test Stairs2",
+    };
+    Set<String> possibleWordSet = new HashSet<>();
+    private AutoCompletionBinding<String> autoCompletionBinding;
+
+
 
 
     // Double metaphone fuzzy search algorithm
@@ -35,8 +68,40 @@ public class SearchBarController {
         this.searchButton = searchButton;
         this.mapSubsystem = mapSubsystem;
         doubleMetaphone = new DoubleMetaphone();
-    }
+        Collections.addAll(possibleWordSet, words);
+        autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
 
+        inputField.setEditable(true);
+
+
+        inputField.getEditor().setOnKeyPressed((KeyEvent e)->{
+            switch(e.getCode()){
+                case ENTER:
+                    learnWord(inputField.getEditor().getText());
+                    break;
+                default:
+                    break;
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+    }
+    private void learnWord(String text) {
+        possibleWordSet.add(text);
+
+        if(autoCompletionBinding != null)
+            autoCompletionBinding.dispose();
+
+        autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+    }
     /**
      * Function that uses the current inputField text to generate and display a list of
      * approximately matched strings below the text field
