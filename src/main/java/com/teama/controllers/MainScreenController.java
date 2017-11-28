@@ -109,15 +109,26 @@ public class MainScreenController implements Initializable {
 
     String[] words = {"Fenwood Road",
             "Schlagler Stairs",
-            "Information Desk#",
-            "Information Desk#",
+            "Information Desk",
+            "Information Desk",
             "Elevator S G",
             "BTM Security Desk",
             "Neuro Testing Waiting Area",
             "Infusion Waiting Area",
             "Schlagler Innovation Lobby",
             "Test Lobby",
-            "Test Area",
+            "Test Area1",
+            "Test Area2",
+            "Test Area3",
+            "Test Desk",
+            "Test Front Desk",
+            "Test Info Desk",
+            "Test Desk2",
+            "Test Desk3",
+            "Test Desk4",
+            "Test Desk5",
+            "Test Stairs2",
+
     };
     Set<String> possibleWordSet = new HashSet<>();
     private AutoCompletionBinding<String> autoCompletionBinding;
