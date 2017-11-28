@@ -673,13 +673,8 @@ public class HospitalMapDisplay implements MapDisplay {
         public void draw(GraphicsContext gc) {
             double x = convUnits(loc.getxCoord(), getMaxX(), canvas.getWidth());
             double y = convUnits(loc.getyCoord(), getMaxY(), canvas.getHeight());
-            /*double textW = text.length()*5;
-            double textH = f.getSize();
-            gc.setFill(Color.WHITE);
-            gc.fillRect(x-(textW/2), y-(textH/2), textW, textH);
-            gc.setFill(Color.ORANGE);
-            gc.fillOval(x-(textW/2), y-(textH/2), 5, 5);
-            gc.setFont(f);*/
+            // TODO: Draw a box around the text to make it stand out
+            gc.setFont(f);
             gc.setFill(Color.BLACK);
             gc.fillText(text, x, y);
         }
