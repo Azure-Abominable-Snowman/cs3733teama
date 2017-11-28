@@ -26,6 +26,7 @@ public class InterpreterSubsystem {
         return InterpreterHelper._instance;
     }
 
+    //adds an ArrayList
     // adds a given staff member to the database; done by admin
     public boolean addStaff(InterpreterStaff s) {
         return staffDB.addStaff(s);

@@ -24,7 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class StaffLoginController implements Controller {
+public class StaffLoginController implements Controller{
     private final BooleanProperty isLoggedIn = new SimpleBooleanProperty();
     //private MainScreenController parent;
     //private LoginInfo loginInfo = null;

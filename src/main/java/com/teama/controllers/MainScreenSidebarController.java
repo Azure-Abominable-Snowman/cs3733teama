@@ -3,7 +3,6 @@ package com.teama.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXRadioButton;
-import com.jfoenix.controls.JFXTreeTableView;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -26,8 +25,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class MainScreenSidebarController {
     private MapSubsystem mapSubsystem;
 
     private MapDisplay map;
-
+    private ObservableList<InterpreterTableAdapter> tableVals;
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
 
@@ -193,6 +194,13 @@ public class MainScreenSidebarController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void getSelectedItem(MouseEvent e){
+        System.out.println("here!");
+        InterpreterTableAdapter t = InterpInfoTable.getSelectionModel().selectedItemProperty().get();
+        //InterpreterTableAdapter t = e.getTableView().getItems().get(e.getTablePosition().getRow());
+        System.out.println(t.getLanguages());
+    }
     private void initInterpColumns(){
         firstCol.setCellValueFactory(
                 new PropertyValueFactory<>("firstName"));
@@ -206,13 +214,33 @@ public class MainScreenSidebarController {
                 new PropertyValueFactory<>("phone"));
         emailCol.setCellValueFactory(
                 new PropertyValueFactory<>("email"));
-        ObservableList<InterpreterTableAdapter> tableVals =  FXCollections.observableArrayList();
+
+        tableVals =  FXCollections.observableArrayList();
         for(InterpreterStaff interp: getInterpreterStaff()){
             tableVals.add(new InterpreterTableAdapter(interp));
         }
         InterpInfoTable.setItems(tableVals);
+        InterpInfoTable.setRowFactory(tv -> {
+            TableRow<InterpreterTableAdapter> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (! row.isEmpty()) {
+                    InterpreterTableAdapter clickedRow = row.getItem();
+                    System.out.println(clickedRow.getLanguages());
+                }
+            });
+            return row ;
+        });
         //TODO: get the table to have all of the values of the interpreters
     }
+    //This is called by the add/modify popout to allow the list to update based on the DB
+    public void updateInterpList(){
+        tableVals =  FXCollections.observableArrayList();
+        for(InterpreterStaff interp: getInterpreterStaff()){
+            tableVals.add(new InterpreterTableAdapter(interp));
+        }
+        InterpInfoTable.setItems(tableVals);
+    }
+    //TODO update the method to get all the interpreters from the DB
     private ArrayList<InterpreterStaff> getInterpreterStaff(){
         Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
         avail.add(ContactInfoTypes.EMAIL);
