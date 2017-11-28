@@ -1,6 +1,8 @@
 package com.teama.controllers;
 
+import java.util.Map;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXRadioButton;
 import com.teama.drawing.MapDisplay;
@@ -11,6 +13,8 @@ import com.teama.mapsubsystem.pathfinding.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
+import com.teama.requestsubsystem.RequestType;
+import com.teama.requestsubsystem.StaffType;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +24,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sun.misc.Request;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +51,32 @@ public class MainScreenSidebarController {
 
     @FXML
     private JFXButton login;
+
+    //@FXML
+    //private VBox generalInfo;
+
+    @FXML
+    private JFXComboBox<String> building = new JFXComboBox<>();
+
+    @FXML
+    private JFXComboBox<Floor> floor = new JFXComboBox<>();
+    private Floor floorName;
+
+    @FXML
+    private JFXComboBox<MapNode> longName = new JFXComboBox<>();
+
+    @FXML
+    private JFXComboBox<RequestType> typeOfRequest = new JFXComboBox<>();
+
+    //@FXML
+    //private JFXTextArea additionalInformation;
+
+    @FXML
+    private JFXButton cancelButton;
+
+    @FXML
+    private JFXButton submitButton;
+
 
     private ToggleGroup algoToggleGroup;
 
@@ -76,7 +107,41 @@ public class MainScreenSidebarController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
+
+        //Service Request TidlePane
+        building.getItems().clear();
+        building.getItems().add("BTM");
+
+        floor.getItems().clear();
+        floor.getItems().addAll(
+                Floor.SUBBASEMENT,Floor.BASEMENT, Floor.GROUND, Floor.ONE,  Floor.TWO, Floor.THREE);
+
+        typeOfRequest.getItems().clear();
+        typeOfRequest.getItems().addAll(
+                RequestType.FOOD, RequestType.INTR, RequestType.MAIN, RequestType.SEC, RequestType.TRANS);
+
+        longName.getItems().clear();
+
+
     }
+/*
+    public void setNodeData(){
+        floorName = floor.getSelectionModel().getSelectedItem();
+        longName.getItems().clear();
+
+        System.out.println(floorName);
+        Map<String, MapNode> nodes = HospitalMap.getInstance().getFloorNodes(floorName);
+        System.out.println(nodes.keySet());
+        for(MapNode n : nodes.values()) {
+            if(!n.getNodeType().equals(NodeType.HALL)) {
+                longName.getItems().add(n);
+            }
+        }
+
+
+
+    }
+    */
 
     /**
      * Sets the map display in this controller, must be ran before anything else is to be done regarding the map

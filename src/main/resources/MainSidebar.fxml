@@ -134,59 +134,59 @@
                            <children>
                               <VBox prefHeight="377.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <JFXTextField alignment="CENTER" editable="false" text="Create Request">
-                                       <font>
-                                          <Font name="System Bold" size="14.0" />
-                                       </font>
-                                    </JFXTextField>
-                                    <JFXTextField alignment="CENTER" editable="false" text="Location">
-                                       <VBox.margin>
-                                          <Insets bottom="2.0" />
-                                       </VBox.margin>
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </JFXTextField>
-                                    <HBox prefHeight="33.0" prefWidth="379.0">
+                                    <VBox fx:id="generalInfo">
                                        <children>
-                                          <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="Building" style="-fx-border-color: TRANSPARENT BLUE;" />
-                                          <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="120.0" promptText="Floor" style="-fx-border-color: TRANSPARENT BLUE;" HBox.hgrow="NEVER" />
-                                          <JFXComboBox prefHeight="27.0" prefWidth="189.0" promptText="Long Name" style="-fx-border-color: TRANSPARENT BLUE;" HBox.hgrow="ALWAYS" />
+                                          <JFXTextField alignment="CENTER" editable="false" text="Create Request">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextField alignment="CENTER" editable="false" text="Location">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <HBox prefHeight="33.0" prefWidth="379.0">
+                                             <children>
+                                                <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="Building" style="-fx-border-color: TRANSPARENT BLUE;" />
+                                                <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="81.0" promptText="Floor" style="-fx-border-color: TRANSPARENT BLUE;" HBox.hgrow="NEVER" />
+                                                <JFXComboBox fx:id="longName" prefHeight="27.0" prefWidth="189.0" promptText="Long Name" style="-fx-border-color: TRANSPARENT BLUE;" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <JFXTextField alignment="CENTER" editable="false" text="Type">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="120.0" promptText="Select Type:" style="-fx-border-color: TRANSPARENT BLUE;" />
+                                          <JFXTextField alignment="CENTER" editable="false" text="Note">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </JFXTextField>
+                                          <JFXTextArea fx:id="additionalInformation" prefHeight="50.0" prefWidth="379.0" style="-fx-background-color: #dddddd;" />
+                                       </children>
+                                    </VBox>
+                                    <HBox prefHeight="24.0" prefWidth="307.0">
+                                       <children>
+                                          <JFXButton fx:id="cancelButton" prefHeight="28.0" prefWidth="171.0" style="-fx-background-color: #ff0000;" text="Cancel" textFill="WHITE">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </JFXButton>
+                                          <JFXButton fx:id="submitButton" layoutX="10.0" layoutY="10.0" prefHeight="28.0" prefWidth="178.0" style="-fx-background-color: #39b44b;" text="Submit" textFill="WHITE">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </JFXButton>
                                        </children>
                                     </HBox>
-                                    <JFXTextField alignment="CENTER" editable="false" text="Type">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets bottom="2.0" />
-                                       </VBox.margin>
-                                    </JFXTextField>
-                                    <JFXComboBox maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="120.0" promptText="Select Type:" style="-fx-border-color: TRANSPARENT BLUE;" />
-                                    <JFXTextField alignment="CENTER" editable="false" text="Note">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets bottom="2.0" />
-                                       </VBox.margin>
-                                    </JFXTextField>
-                                    <JFXTextArea prefHeight="50.0" prefWidth="379.0" style="-fx-background-color: #dddddd;">
-                                       <VBox.margin>
-                                          <Insets bottom="6.0" />
-                                       </VBox.margin>
-                                    </JFXTextArea>
-                                    <JFXButton prefHeight="31.0" prefWidth="379.0" style="-fx-background-color: #39b44b;" text="Submit" textFill="WHITE">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </JFXButton>
                                     <JFXTextField alignment="CENTER" editable="false" text="Current Requests">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </JFXTextField>
-                                    <JFXListView prefHeight="268.0" prefWidth="379.0" VBox.vgrow="ALWAYS" />
+                                    <JFXListView prefHeight="149.0" prefWidth="307.0" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -195,7 +195,7 @@
                 </TitledPane>
               </panes>
             </Accordion>
-            <JFXButton fx:id="login" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onLogIn" style="-fx-background-color: #cfcfcf;" text="Log In" />
+            <JFXButton fx:id="login" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onLogIn" style="-fx-background-color: TRANSPARENT BLUE;" text="Log In" />
          </children>
       </VBox>
    </children>
