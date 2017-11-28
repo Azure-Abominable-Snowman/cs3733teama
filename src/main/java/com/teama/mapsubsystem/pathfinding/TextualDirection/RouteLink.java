@@ -14,6 +14,9 @@ public class RouteLink {
     private double pointingAngle;
     private RouteLink lastLink;
 
+
+    private double distance;
+
     private String textReturn;
 
 
@@ -54,61 +57,92 @@ public class RouteLink {
 
         if ( start.getCoordinate().getLevel().equals(next.getCoordinate().getLevel())) {
 
-            /*
-            if (start.getCoordinate().getxCoord() != end.getCoordinate().getxCoord()
-                    || start.getCoordinate().getyCoord() != end.getCoordinate().getyCoord()) {
-            }
-            */
+            double dx = start.getCoordinate().getxCoord() - next.getCoordinate().getxCoord();
+            double dy = start.getCoordinate().getyCoord() - next.getCoordinate().getyCoord();
+
+            distance = (double) Math.sqrt( dx*dx + dy*dy);
 
 
-            /*
-             if(turnAngle > 0){
-             turnAngle -= 360;
-             }
 
-            */
-
-            //TODO Add the angle if else generator
 
             if(-15 <= turnAngle && turnAngle <= 15){
-                textReturn = "Straight: + dis";
+                textReturn = "Straight: ";
             }
 
             else if(-105 <= turnAngle && turnAngle <= -75){
-                textReturn = " Turn Left";
+                textReturn = "Turn Left";
             }
 
             else if(-75 < turnAngle && turnAngle < -15){
-                textReturn = " Turn Left Slightly";
+                textReturn = "Turn Left Slightly";
             }
 
             else if(-165 < turnAngle && turnAngle < -105){
-                textReturn = " Turn Left Sharply";
+                textReturn = "Turn Left Sharply";
             }
 
             else if(75 <= turnAngle && turnAngle <= 105){
-                textReturn = " Turn Right";
+                textReturn = "Turn Right";
             }
 
             else if(15 < turnAngle && turnAngle < 75){
-                textReturn = " Turn Right Slightly";
+                textReturn = "Turn Right Slightly";
             }
 
             else if(105 < turnAngle && turnAngle < 165){
-                textReturn = " Turn Right Sharply";
+                textReturn = "Turn Right Sharply";
             }
-
-
-
-
+            else {
+                textReturn = "Moon Walk";
+            }
 
 
         }
         else{
             //If across multiple floors
             //Split between stairs and els
-        }
 
+
+            Integer eleNum;
+            eleNum = 2;
+
+            Integer stairNum;
+            stairNum = 2;
+
+
+            if(start.getCoordinate().getLevel().toString().equals("Elevator")){
+                textReturn = "Enter Elevator" + eleNum + "and go to Floor" + floor;
+            }
+
+            else if(start.getCoordinate().getLevel().toString().equals("Stairs")){
+                textReturn = "Enter Stairs" + stairNum + "and go to Floor" + floor;
+            }
+
+
+        }
+    }
+
+
+    //TODO Delete Extra code below
+
+    private Floor floor = Floor.G; // Default floor
+    //private String name = "";
+
+    public enum Floor {
+        SB, B, G, ONE, TWO, THREE;
+    }
+
+
+
+
+
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
 
