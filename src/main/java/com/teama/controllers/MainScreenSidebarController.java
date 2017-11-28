@@ -3,6 +3,7 @@ package com.teama.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTreeTableView;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -11,18 +12,28 @@ import com.teama.mapsubsystem.pathfinding.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
+import com.teama.messages.ContactInfo;
+import com.teama.messages.ContactInfoTypes;
+import com.teama.messages.Provider;
+import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class MainScreenSidebarController {
     @FXML
@@ -47,6 +58,12 @@ public class MainScreenSidebarController {
     @FXML
     private JFXButton login;
 
+    @FXML
+    private TableView<InterpreterTableAdapter> InterpInfoTable;
+    @FXML
+    private TableColumn<InterpreterTableAdapter,String> firstCol, lastCol, langCol;
+    @FXML
+    private TableColumn<InterpreterTableAdapter,String> certCol, phoneCol, emailCol;
     private ToggleGroup algoToggleGroup;
 
     private MapSubsystem mapSubsystem;
@@ -76,6 +93,7 @@ public class MainScreenSidebarController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
+        initInterpColumns();
     }
 
     /**
@@ -175,7 +193,57 @@ public class MainScreenSidebarController {
             e.printStackTrace();
         }
     }
+    private void initInterpColumns(){
+        firstCol.setCellValueFactory(
+                new PropertyValueFactory<>("firstName"));
+        lastCol.setCellValueFactory(
+                new PropertyValueFactory<>("lastName"));
+        langCol.setCellValueFactory(
+                new PropertyValueFactory<>("languages"));
+        certCol.setCellValueFactory(
+                new PropertyValueFactory<>("certification"));
+        phoneCol.setCellValueFactory(
+                new PropertyValueFactory<>("phone"));
+        emailCol.setCellValueFactory(
+                new PropertyValueFactory<>("email"));
+        ObservableList<InterpreterTableAdapter> tableVals =  FXCollections.observableArrayList();
+        for(InterpreterStaff interp: getInterpreterStaff()){
+            tableVals.add(new InterpreterTableAdapter(interp));
+        }
+        InterpInfoTable.setItems(tableVals);
+        //TODO: get the table to have all of the values of the interpreters
+    }
+    private ArrayList<InterpreterStaff> getInterpreterStaff(){
+        Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
+        avail.add(ContactInfoTypes.EMAIL);
+        avail.add(ContactInfoTypes.TEXT);
+        avail.add(ContactInfoTypes.PHONE);
+        ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
 
+        Set<Language> langs = new HashSet<>();
+        langs.add(Language.ASL);
+        langs.add(Language.French);
+        langs.add(Language.Moldovan);
+        langs.add(Language.JAVA);
+
+        Set<Language> langs2 = new HashSet<>();
+        langs2.add(Language.Moldovan);
+        langs2.add(Language.German);
+        InterpreterInfo i2 = new InterpreterInfo(langs2, CertificationType.CCHI);
+
+
+        GenericStaffInfo g = new GenericStaffInfo("William", "Wong", c);
+        InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
+        InterpreterStaff wilson = new InterpreterStaff(g, i);
+        GenericStaffInfo g2 = new GenericStaffInfo("Joe", "J", c);
+        InterpreterStaff joe = new InterpreterStaff(g2, i2);
+        ArrayList<InterpreterStaff> interpreters = new ArrayList<>();
+        interpreters.add(wilson);
+        interpreters.add(joe);
+        return interpreters;
+        //TODO: Add the dummy method for getting the interpreters
+
+    }
     public void hideLoginButton() {
         login.setVisible(false);
     }

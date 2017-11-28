@@ -9,6 +9,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -193,6 +195,27 @@
                         </AnchorPane>
                   </content>
                 </TitledPane>
+                  <TitledPane animated="false" text="Staff">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton layoutX="48.0" layoutY="430.0" prefHeight="41.0" prefWidth="229.0" text="Remove" AnchorPane.bottomAnchor="55.0" />
+                              <JFXButton layoutX="48.0" layoutY="471.0" prefHeight="41.0" prefWidth="229.0" text="Add" AnchorPane.bottomAnchor="10.0" />
+                              <JFXComboBox layoutX="114.0" layoutY="14.0" promptText="Staff Type" />
+                              <TableView fx:id="InterpInfoTable" layoutX="48.0" layoutY="92.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="45.0">
+                                <columns>
+                                  <TableColumn fx:id="firstCol" prefWidth="75.0" text="First Name" />
+                                  <TableColumn fx:id="lastCol" prefWidth="75.0" text="Last Name" />
+                                    <TableColumn fx:id="langCol" prefWidth="75.0" text="Language" />
+                                    <TableColumn fx:id="certCol" prefWidth="75.0" text="Certification" />
+                                    <TableColumn fx:id="phoneCol" prefWidth="93.5" text="Phone #" />
+                                    <TableColumn fx:id="emailCol" prefWidth="57.50006103515625" text="Email" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </TitledPane>
               </panes>
             </Accordion>
             <JFXButton fx:id="login" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onLogIn" style="-fx-background-color: #cfcfcf;" text="Log In" />
