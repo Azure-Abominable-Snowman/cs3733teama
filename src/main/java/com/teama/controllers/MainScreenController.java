@@ -96,6 +96,8 @@ public class MainScreenController implements Initializable {
     @FXML
     private GridPane displayedMaps;
 
+    private JFXButton currFloorButton;
+
     private MapDisplay map;
 
     private boolean drawerExtended = false;
@@ -114,6 +116,7 @@ public class MainScreenController implements Initializable {
         HBox box = loader.load();
         MainScreenSidebarController sidebar = loader.getController();
         sidebar.setMapDisplay(map);
+        sidebar.setCurFloorButton(currFloorButton);
         drawer.setSidePane(box);
         if(drawer.isShown()){
             drawer.close();
@@ -144,6 +147,7 @@ public class MainScreenController implements Initializable {
         map.setZoom(minZoom);
 
         PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, floorButtonBox);
+        currFloorButton = pathfinding.getCurFloorButton();
         SearchBarController searchBarController = new SearchBarController(searchBar, searchButton, mapSubsystem);
 
         // Zoom in and out using plus and minus keys
@@ -290,8 +294,16 @@ public class MainScreenController implements Initializable {
             }
         }
     }
+    // for map editor
+    public void setCurrFloorButton(JFXButton currFloor) {
+        this.currFloorButton = currFloor;
+    }
 
+    public JFXButton getCurrFloorButton() {
+        return this.currFloorButton;
+    }
 
+    //
     public void hideLoginButton() {
         login.setVisible(false);
     }

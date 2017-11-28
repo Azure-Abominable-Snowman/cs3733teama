@@ -28,6 +28,7 @@ public class PathfindingController {
     private ScrollPane mapScrollPane;
     private Canvas mapCanvas;
     private VBox floorButtonBox;
+    private JFXButton curFloorButton;
 
     private final String illuminatedFloorButtonClass = "illuminatedfloorbutton";
     private final String regularFloorButtonClass = "floorbutton";
@@ -55,7 +56,7 @@ public class PathfindingController {
 
         // Populate the floor button box
         for(Floor floor : Floor.values()) {
-            JFXButton curFloorButton = new JFXButton();
+            curFloorButton = new JFXButton();
             curFloorButton.setText(floor.toString());
             curFloorButton.getStylesheets().add("css/MainScreenStyle.css");
             curFloorButton.getStyleClass().add(regularFloorButtonClass);
@@ -68,6 +69,7 @@ public class PathfindingController {
             floorButtonBox.getChildren().add(curFloorButton);
         }
     }
+
 
     /**
      * Called when floors are switched
@@ -91,6 +93,9 @@ public class PathfindingController {
         }
     }
     private DisplayPath curPath;
+    public JFXButton getCurFloorButton() {
+        return this.curFloorButton;
+    }
 
     /**
      * Generates a path using a mouse event (x and y coordinates)
