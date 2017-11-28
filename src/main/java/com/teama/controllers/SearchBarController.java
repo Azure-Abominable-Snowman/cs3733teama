@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Window;
@@ -57,24 +58,31 @@ public class SearchBarController {
     Set<String> possibleWordSet = new HashSet<>();
     private AutoCompletionBinding<String> autoCompletionBinding;
 
-
-
-
     // Double metaphone fuzzy search algorithm
     private DoubleMetaphone doubleMetaphone;
+
+
+//    private Boolean DoubleMetaphoneMatched(String mata){
+//        //System.out.println("DOUBLE METAPHONE ENCODED: "+doubleMetaphone.doubleMetaphone(inputField.getSelectionModel().getSelectedItem(), false));
+//        return doubleMetaphone.doubleMetaphone(inputField.getSelectionModel().getSelectedItem(), true).equals(doubleMetaphone.doubleMetaphone(mata, true));
+//    }
 
     public SearchBarController(ComboBox<String> inputField, Button searchButton, MapSubsystem mapSubsystem) {
         this.inputField = inputField;
         this.searchButton = searchButton;
         this.mapSubsystem = mapSubsystem;
         doubleMetaphone = new DoubleMetaphone();
+        inputField.setEditable(true);
+
         Collections.addAll(possibleWordSet, words);
         autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
 
-        inputField.setEditable(true);
+//        if(doubleMetaphone.doubleMetaphone(input, true).equals(doubleMetaphone.doubleMetaphone(words[1], true))) {
+//            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+//        }
 
-
-        inputField.getEditor().setOnKeyPressed((KeyEvent e)->{
+        //if(!DoubleMetaphoneMatched(text))
+        inputField.getEditor().setOnKeyPressed((KeyEvent e) -> {
             switch(e.getCode()){
                 case ENTER:
                     learnWord(inputField.getEditor().getText());
@@ -83,24 +91,14 @@ public class SearchBarController {
                     break;
             }
         });
-
-
-
-
-
-
-
-
-
-
     }
     private void learnWord(String text) {
-        possibleWordSet.add(text);
+            possibleWordSet.add(text);
 
-        if(autoCompletionBinding != null)
-            autoCompletionBinding.dispose();
+            if (autoCompletionBinding != null)
+                autoCompletionBinding.dispose();
+            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
 
-        autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
     }
     /**
      * Function that uses the current inputField text to generate and display a list of
@@ -108,9 +106,21 @@ public class SearchBarController {
      */
     public void matchFuzzySearchValues() {
         String selected = inputField.getSelectionModel().getSelectedItem();
-        System.out.println("TRIGGERED FUZZY VALUES ON: "+inputField.getSelectionModel().getSelectedItem());
-        System.out.println("DOUBLE METAPHONE ENCODED: "+doubleMetaphone.doubleMetaphone(selected, false)+" "+
-                doubleMetaphone.doubleMetaphone(selected, true));
+
+        String input = inputField.getEditor().getText();
+
+
+
+        //if(doubleMetaphone.doubleMetaphone(input).equals(doubleMetaphone.doubleMetaphone(words[1]))) {
+            System.out.println("aaaafdsfdsfdsafdsafdsfs");
+//            Collections.addAll(possibleWordSet, words);
+//            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+
+            System.out.println("TRIGGERED FUZZY VALUES ON: " + inputField.getSelectionModel().getSelectedItem());
+            System.out.println("DOUBLE METAPHONE ENCODED: " + doubleMetaphone.doubleMetaphone(selected, false) + " " +
+                    doubleMetaphone.doubleMetaphone(selected, true));
+
+        //System.out.println("Test value is:" + DoubleMetaphoneMatched(words[1]));
 
         // TODO: Use built in DoubleMetaphone in order to do string matching with the typed values
         // TODO: Display these matched values below where the user is typing
@@ -132,49 +142,5 @@ public class SearchBarController {
             inputField.getItems().add(n.getLongDescription());
         }
     }
-
-//    public void handleOnKeyPressed(KeyEvent e) {
-//        ObservableList<String> filteredList = FXCollections.observableArrayList();
-//        KeyCode code = e.getCode();
-//
-//        if (code.isLetterKey()) {
-//            filter += e.getText();
-//        }
-//        if (code == KeyCode.BACK_SPACE && filter.length() > 0) {
-//            filter = filter.substring(0, filter.length() - 1);
-//            inputField.getItems().setAll(originalItems);
-//        }
-//        if (code == KeyCode.ESCAPE) {
-//            filter = "";
-//        }
-//        if (filter.length() == 0) {
-//            filteredList = originalItems;
-//            inputField.getTooltip().hide();
-//        } else {
-//            Stream<String> itens = inputField.getItems().stream();
-//            String txtUsr = unaccent(filter.toString().toLowerCase());
-//            itens.filter(el -> unaccent(el.toString().toLowerCase()).contains(txtUsr)).forEach(filteredList::add);
-//            inputField.getTooltip().setText(txtUsr);
-//            Window stage = inputField.getScene().getWindow();
-//            double posX = stage.getX() + inputField.getBoundsInParent().getMinX();
-//            double posY = stage.getY() + inputField.getBoundsInParent().getMinY();
-//            inputField.getTooltip().show(stage, posX, posY);
-//            inputField.show();
-//        }
-//        inputField.getItems().setAll(filteredList);
-//    }
-//    private String unaccent(String s) {
-//        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
-//        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-//        return pattern.matcher(temp).replaceAll("");
-//    }
-//
-//    public void handleOnHiding(Event e) {
-//        filter = "";
-//        inputField.getTooltip().hide();
-//        String s = inputField.getSelectionModel().getSelectedItem();
-//        inputField.getItems().setAll(originalItems);
-//        inputField.getSelectionModel().select(s);
-//    }
 
 }
