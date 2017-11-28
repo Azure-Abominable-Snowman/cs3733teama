@@ -5,6 +5,7 @@ import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class TextualDirections implements DirectionsGenerator {
     ArrayList<MapNode> nodeList;
@@ -19,13 +20,10 @@ public class TextualDirections implements DirectionsGenerator {
         nodeList = path.getNodes();
         ArrayList<turnPoint> turnPoints = new ArrayList<>(nodeList.size()-2);
 
-        for(int i=1;i<nodeList.size()-1;++i)
-        {
-           turnPoints.add(new turnPoint(nodeList.get(i-1),nodeList.get(i),nodeList.get(i+1) ));
+        for(int i=1;i<nodeList.size()-1;++i) {
+            turnPoints.add(new turnPoint(nodeList.get(i - 1), nodeList.get(i), nodeList.get(i + 1)));
         }
-
-
-        return null;
+    return null;
     }
 
 
@@ -41,12 +39,4 @@ public class TextualDirections implements DirectionsGenerator {
         }
 
     }
-
-
-
-
-
-
-
-
 }

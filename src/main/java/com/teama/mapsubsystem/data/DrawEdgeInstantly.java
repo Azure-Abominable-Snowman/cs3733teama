@@ -10,7 +10,7 @@ public class DrawEdgeInstantly extends DrawEdge {
 
     @Override
     public void displayOnScreen(MapDisplay display) {
-        display.drawLine(getId(), getStart().getCoordinate(), getEnd().getCoordinate(), 7, Color.CADETBLUE, false);
+        display.drawLine(getId(), getStart().getCoordinate(), getEnd().getCoordinate(), 5, Color.CADETBLUE, true,false);
     }
 
     public void removeFromScreen(MapDisplay display) {
