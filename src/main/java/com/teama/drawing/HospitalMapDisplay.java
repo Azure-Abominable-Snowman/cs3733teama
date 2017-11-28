@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +29,15 @@ public class HospitalMapDisplay implements MapDisplay {
     // Location in the center of the screen
     private Location displayedLocation;
 
-    // List of all the lines, and all the points
+    // Map of all the lines, and all the points
     private Map<String, Line> lineMap = new HashMap<>();
     private Map<String, Point> pointMap = new HashMap<>();
 
-    // List of all of the images
+    // Map of all of the images
     private Map<String, Img> imgMap = new HashMap<>();
+
+    // Map of all the text on the screen
+    private Map<String, Text> textMap = new HashMap<>();
 
     public HospitalMapDisplay(ScrollPane pane, Canvas canvas, Map<Floor, HospitalMap> maps) {
         this.pane = pane;
@@ -245,6 +249,11 @@ public class HospitalMapDisplay implements MapDisplay {
         for(Img i : imgMap.values()) {
             i.draw(gc);
         }
+
+        // Text
+        for(Text t : textMap.values()) {
+            t.draw(gc);
+        }
     }
 
     /**
@@ -304,6 +313,7 @@ public class HospitalMapDisplay implements MapDisplay {
         drawLine(id, start, end, weight, color, false, screenCoords);
     }
 
+    // TODO: This is a lot of repeated code, needs to be factored out somehow...
     @Override
     public void drawLine(String id, Location start, Location end, double weight, Color color, boolean arrow, boolean screenCoords) {
         if(screenCoords) {
@@ -327,6 +337,17 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     @Override
+    public void drawText(String id, String text, Location center, Font f, boolean screenCoords) {
+        if(screenCoords) {
+            center = convToImageCoords(center);
+        }
+
+        Text t = new Text(id, text, f, center);
+        textMap.put(id, t);
+        render();
+    }
+
+    @Override
     public void deletePoint(String id) {
         pointMap.remove(id);
         render();
@@ -341,6 +362,21 @@ public class HospitalMapDisplay implements MapDisplay {
     @Override
     public void deleteImage(String id) {
         imgMap.remove(id);
+        render();
+    }
+
+    @Override
+    public void deleteText(String id) {
+        textMap.remove(id);
+        render();
+    }
+
+    /**
+     * Clears all the text from the map
+     */
+    @Override
+    public void clearText() {
+        textMap.clear();
         render();
     }
 
@@ -617,6 +653,38 @@ public class HospitalMapDisplay implements MapDisplay {
 
         public Location getLoc() { return loc; }
 
+        public String getId() { return id; }
+    }
+
+    // Text drawn on the screen
+    private class Text {
+        private Location loc;
+        private String text;
+        private String id;
+        private Font f;
+
+        public Text(String id, String text, Font f, Location loc) {
+            this.loc = loc;
+            this.text = text;
+            this.id = id;
+            this.f = f;
+        }
+
+        public void draw(GraphicsContext gc) {
+            double x = convUnits(loc.getxCoord(), getMaxX(), canvas.getWidth());
+            double y = convUnits(loc.getyCoord(), getMaxY(), canvas.getHeight());
+            /*double textW = text.length()*5;
+            double textH = f.getSize();
+            gc.setFill(Color.WHITE);
+            gc.fillRect(x-(textW/2), y-(textH/2), textW, textH);
+            gc.setFill(Color.ORANGE);
+            gc.fillOval(x-(textW/2), y-(textH/2), 5, 5);
+            gc.setFont(f);*/
+            gc.setFill(Color.BLACK);
+            gc.fillText(text, x, y);
+        }
+
+        public Location getLoc() { return loc; }
         public String getId() { return id; }
     }
 }
