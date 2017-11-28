@@ -1,8 +1,8 @@
 package com.teama.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXRadioButton;
+
+import java.util.Map;
+import com.jfoenix.controls.*;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -11,6 +11,7 @@ import com.teama.mapsubsystem.pathfinding.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
+import com.teama.requestsubsystem.RequestType;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,7 +46,44 @@ public class MainScreenSidebarController {
     private Text selectedNode;
 
     @FXML
+    private JFXTextField createRequestLabel = new JFXTextField();
+
+    @FXML
+    private JFXTextField locationLabel = new JFXTextField();
+
+    @FXML
+    private JFXComboBox<String> building = new JFXComboBox<>();
+
+    @FXML
+    private JFXComboBox<Floor> floor = new JFXComboBox<>();
+    private Floor floorName;
+
+    @FXML
+    private JFXComboBox<MapNode> longName = new JFXComboBox<>();
+
+    @FXML
+    private JFXTextField typeLabel = new JFXTextField();
+
+    @FXML
+    private JFXComboBox<RequestType> typeOfRequest = new JFXComboBox<>();
+
+    @FXML
+    private JFXTextField noteLabel = new JFXTextField();
+
+    @FXML
+    private JFXTextArea additionalInfo;
+
+    @FXML
+    private JFXButton cancelButton;
+
+    @FXML
+    private JFXButton submitButton;
+
+
+    @FXML
     private JFXButton login;
+
+
 
     private ToggleGroup algoToggleGroup;
 
@@ -76,7 +114,41 @@ public class MainScreenSidebarController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
+
+        //set up for Service Request
+        building.getItems().clear();
+        building.getItems().add("BTM");
+
+        floor.getItems().clear();
+        floor.getItems().addAll(
+                Floor.SUBBASEMENT, Floor.BASEMENT, Floor.GROUND, Floor.ONE, Floor.TWO, Floor.THREE);
+
+        typeOfRequest.getItems().clear();
+        typeOfRequest.getItems().addAll(
+                RequestType.FOOD, RequestType.INTR, RequestType.MAIN, RequestType.SEC, RequestType.TRANS);
+
     }
+
+    @FXML
+    public void setNodeData(){
+    /*
+        floorName = floor.getSelectionModel().getSelectedItem();
+        longName.getItems().clear();
+
+        System.out.println(floorName);
+        //TODO find out how to do this
+        Map<String, MapNode> nodes = HospitalMap.getInstance().getFloorNodes(floorName);
+        System.out.println(nodes.keySet());
+        for(MapNode n : nodes.values()) {
+            if(!n.getNodeType().equals(NodeType.HALL)) {
+                longName.getItems().add(n);
+            }
+        }
+
+        */
+
+    }
+
 
     /**
      * Sets the map display in this controller, must be ran before anything else is to be done regarding the map
