@@ -22,9 +22,10 @@ public class TextualDirections implements DirectionsGenerator {
 
         for(int i=1;i<nodeList.size()-1;++i)
         {
-            RouteLink.add(new RouteLink(nodeList.get(i-1),nodeList.get(i),nodeList.get(i+1) ));
+            //RouteLink.add(new RouteLink(nodeList.get(i-1),nodeList.get(i),nodeList.get(i+1) ));
         }
 
+        /*
         for(){
             //TODO Add to TextDirections, by shrinking the redundant text directions
 
@@ -32,7 +33,9 @@ public class TextualDirections implements DirectionsGenerator {
 
         }
 
-        return outputDir;
+        */
+        return null;
+        //return outputDir;
     }
 
 
