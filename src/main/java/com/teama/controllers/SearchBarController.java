@@ -16,11 +16,9 @@ import org.apache.commons.codec.language.DoubleMetaphone;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
+import java.lang.reflect.Array;
 import java.text.Normalizer;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -33,28 +31,6 @@ public class SearchBarController {
     private MapSubsystem mapSubsystem;
     String filter = "";
     private ObservableList<String> originalItems;
-    String[] words = {"Fenwood Road",
-            "Schlagler Stairs",
-            "Information Desk",
-            "Information Desk",
-            "Elevator S G",
-            "BTM Security Desk",
-            "Neuro Testing Waiting Area",
-            "Infusion Waiting Area",
-            "Schlagler Innovation Lobby",
-            "Test Lobby",
-            "Test Area1",
-            "Test Area2",
-            "Test Area3",
-            "Test Desk",
-            "Test Front Desk",
-            "Test Info Desk",
-            "Test Desk2",
-            "Test Desk3",
-            "Test Desk4",
-            "Test Desk5",
-            "Test Stairs2",
-    };
     Set<String> possibleWordSet = new HashSet<>();
     private AutoCompletionBinding<String> autoCompletionBinding;
 
@@ -74,8 +50,13 @@ public class SearchBarController {
         doubleMetaphone = new DoubleMetaphone();
         inputField.setEditable(true);
 
-        Collections.addAll(possibleWordSet, words);
-        autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+//        Collection<MapNode> floorNodes = mapSubsystem.getVisibleFloorNodes(Floor.GROUND).values();
+//        possibleWordSet.clear();
+//        for(MapNode n : floorNodes){
+//            possibleWordSet.add(n.getLongDescription());
+//        }
+
+        //Collections.addAll(possibleWordSet, words);
 
 //        if(doubleMetaphone.doubleMetaphone(input, true).equals(doubleMetaphone.doubleMetaphone(words[1], true))) {
 //            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
@@ -93,11 +74,11 @@ public class SearchBarController {
         });
     }
     private void learnWord(String text) {
-            possibleWordSet.add(text);
+        possibleWordSet.add(text);
 
-            if (autoCompletionBinding != null)
-                autoCompletionBinding.dispose();
-            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+        if (autoCompletionBinding != null)
+            autoCompletionBinding.dispose();
+        autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
 
     }
     /**
@@ -110,15 +91,18 @@ public class SearchBarController {
         String input = inputField.getEditor().getText();
 
 
+        for(String n : possibleWordSet) {
+            if (doubleMetaphone.isDoubleMetaphoneEqual(input, n ))
+                autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+        }
 
         //if(doubleMetaphone.doubleMetaphone(input).equals(doubleMetaphone.doubleMetaphone(words[1]))) {
-            System.out.println("aaaafdsfdsfdsafdsafdsfs");
 //            Collections.addAll(possibleWordSet, words);
 //            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
 
-            System.out.println("TRIGGERED FUZZY VALUES ON: " + inputField.getSelectionModel().getSelectedItem());
-            System.out.println("DOUBLE METAPHONE ENCODED: " + doubleMetaphone.doubleMetaphone(selected, false) + " " +
-                    doubleMetaphone.doubleMetaphone(selected, true));
+        //System.out.println("TRIGGERED FUZZY VALUES ON: " + inputField.getSelectionModel().getSelectedItem());
+        //System.out.println("DOUBLE METAPHONE ENCODED: " + doubleMetaphone.doubleMetaphone(selected, false) + " " +
+               // doubleMetaphone.doubleMetaphone(selected, true));
 
         //System.out.println("Test value is:" + DoubleMetaphoneMatched(words[1]));
 
@@ -135,12 +119,19 @@ public class SearchBarController {
      * @param currentFloor
      */
     public void updateNodeListing(Floor currentFloor) {
+        //String selected = inputField.getSelectionModel().getSelectedItem();
+
         // Initially populate the list with all of the values (long descriptions)
         inputField.getItems().clear();
+        possibleWordSet.clear();
+
         Collection<MapNode> floorNodes = mapSubsystem.getVisibleFloorNodes(currentFloor).values();
         for(MapNode n : floorNodes) {
             inputField.getItems().add(n.getLongDescription());
+            possibleWordSet.add(n.getLongDescription());
+            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
         }
+
     }
 
 }
