@@ -134,6 +134,8 @@ public class InterpreterRequestDB implements InterpreterRequestInfoSource {
             addRequest.setString(4, request.getInfo().getLocation().getLevel().toString());
             addRequest.setString(5, request.getInfo().getLocation().getBuilding());
             //addRequest.setInt(5, request.getInfo().getPriority().getValue());
+            //changed to OPEN because requests are added as open originally and then the admin goes back
+            //assigns request
             addRequest.setString(6, RequestStatus.ASSIGNED.toString()); // a request only added to db if assigned to staff member
             addRequest.setInt(7, request.getFamilySize());
             addRequest.setString(8, request.getRequiredLanguage().toString());

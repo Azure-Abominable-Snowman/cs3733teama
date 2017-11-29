@@ -22,7 +22,7 @@ public class InterpreterSubsystem {
         private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
     }
 
-    public InterpreterSubsystem getInstance() {
+    public static synchronized InterpreterSubsystem getInstance() {
         return InterpreterHelper._instance;
     }
 
