@@ -12,7 +12,6 @@ import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +21,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -93,6 +92,13 @@ public class MainScreenSidebarController {
     private ArrayList<String> shownNodes;
     private ArrayList<String> shownEdges;
 
+    private boolean editingNodes = false;
+    private boolean editingEdges = false;
+    private Location selectedLoc;
+
+    private NodeEditorController nodeController = null;
+    private EdgeEditorController edgeController = null;
+
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
 
@@ -141,13 +147,20 @@ public class MainScreenSidebarController {
 
         editorToggles.selectedToggleProperty().addListener((Observable obs) -> {
             if (editNodes.isSelected()) {
+                map.deletePoint("selected");
+
+                editingNodes = true;
+                editingEdges = false;
+                this.edgeController = null;
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/NodeEditor.fxml"));
                     //loader.setLocation(getClass().getResource("/NodeEditor.fxml"));
                     Parent root = (Parent) loader.load(); // load in fxml
                     NodeEditorController nodeEditor = loader.getController();
+                    this.nodeController = nodeEditor;
                     nodeEditor.setButtons(add, edit);
                     nodeEditor.setMap(map);
+
                     infoPane.setContent(root);
 
 
@@ -158,9 +171,18 @@ public class MainScreenSidebarController {
                 }
             }
             else if (editEdges.isSelected()) {
+                map.deletePoint("selected");
+
+                editingEdges = true;
+                editingNodes = false;
+                this.nodeController = null;
                 try {
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/EdgeEditor.fxml"));
                     Parent root = (Parent) loader.load();
+                    EdgeEditorController edgeEditor = loader.getController();
+                    this.edgeController = edgeEditor;
+                    edgeEditor.setMap(map);
                     infoPane.setContent(root);
 
                 } catch (IOException e) {
@@ -168,7 +190,11 @@ public class MainScreenSidebarController {
                 }
             }
             else {
-                //infoPane.setContent(defaultInfo);
+                map.deletePoint("selected");
+                System.out.println("Exiting editor modes");
+                infoPane.setContent(new AnchorPane());
+                map.getUnderlyingCanvas().onMouseClickedProperty().set(null);
+
             }
         });
 
@@ -195,14 +221,10 @@ public class MainScreenSidebarController {
             }
         });
 
-        add.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-
-            }
-        });
 
     }
+
+
 
 
     /**

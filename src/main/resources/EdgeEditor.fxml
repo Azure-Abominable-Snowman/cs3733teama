@@ -10,7 +10,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="496.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.EdgeEditorController">
    <children>
       <GridPane prefHeight="57.0" prefWidth="300.0">
@@ -30,7 +29,7 @@
                   <Font size="20.0" />
                </font>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" wrappingWidth="289.63671875" GridPane.rowIndex="1">
+            <Text fx:id="startNodePrompt" strokeType="OUTSIDE" strokeWidth="0.0" text="yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" wrappingWidth="289.63671875" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -67,7 +66,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </Text>
-            <TextField prefHeight="30.0" prefWidth="192.0" GridPane.columnIndex="1">
+            <TextField fx:id="startNodeName" editable="false" prefHeight="30.0" prefWidth="192.0" GridPane.columnIndex="1">
                <font>
                   <Font size="14.0" />
                </font>
@@ -83,7 +82,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Show type, or combo box" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Text fx:id="startNodeType" strokeType="OUTSIDE" strokeWidth="0.0" text="Show type, or combo box" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="13.0" />
                </font>
@@ -91,7 +90,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </Text>
-            <GridPane gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane fx:id="startNodeLocInfo" gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.0" minWidth="10.0" prefWidth="66.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="91.0" minWidth="10.0" prefWidth="64.0" />
@@ -101,7 +100,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="startCoord" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                      <GridPane.margin>
                         <Insets left="5.0" right="5.0" />
                      </GridPane.margin>
@@ -109,7 +108,7 @@
                         <Font size="13.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="coord" wrappingWidth="73.0" GridPane.columnIndex="2">
+                  <Text fx:id="startFloorText" strokeType="OUTSIDE" strokeWidth="0.0" text="coord" wrappingWidth="73.0" GridPane.columnIndex="2">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -140,7 +139,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXButton style="-fx-background-color: grey;" text="Set" GridPane.halignment="RIGHT" />
+            <JFXButton fx:id="setStart" style="-fx-background-color: grey;" text="Set" GridPane.halignment="RIGHT" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />
@@ -166,7 +165,7 @@
                   <Insets />
                </GridPane.margin>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" wrappingWidth="289.63671875" GridPane.rowIndex="1">
+            <Text fx:id="endNodePrompt" strokeType="OUTSIDE" strokeWidth="0.0" text="yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" wrappingWidth="289.63671875" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -203,7 +202,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </Text>
-            <TextField prefHeight="30.0" prefWidth="192.0" GridPane.columnIndex="1">
+            <TextField fx:id="endNodeName" editable="false" prefHeight="30.0" prefWidth="192.0" GridPane.columnIndex="1">
                <font>
                   <Font size="14.0" />
                </font>
@@ -219,7 +218,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Show type, or combo box" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Text fx:id="endNodeType" strokeType="OUTSIDE" strokeWidth="0.0" text="Show type, or combo box" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="13.0" />
                </font>
@@ -227,7 +226,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </Text>
-            <GridPane gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane fx:id="endNodeLocInfo" gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.0" minWidth="10.0" prefWidth="73.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="91.0" minWidth="10.0" prefWidth="60.0" />
@@ -237,7 +236,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                  <Text fx:id="endCoord" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                      <GridPane.margin>
                         <Insets left="5.0" right="5.0" />
                      </GridPane.margin>
@@ -245,7 +244,7 @@
                         <Font size="13.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="coord" wrappingWidth="73.0" GridPane.columnIndex="2">
+                  <Text fx:id="endFloorText" strokeType="OUTSIDE" strokeWidth="0.0" text="coord" wrappingWidth="73.0" GridPane.columnIndex="2">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -276,7 +275,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXButton style="-fx-background-color: grey;" text="Set" GridPane.halignment="RIGHT" />
+            <JFXButton fx:id="setEnd" style="-fx-background-color: grey;" text="Set" GridPane.halignment="RIGHT" />
          </children>
       </GridPane>
    </children>

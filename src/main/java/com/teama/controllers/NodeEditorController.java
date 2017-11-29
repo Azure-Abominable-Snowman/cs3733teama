@@ -65,6 +65,7 @@ public class NodeEditorController {
     private String selectedLocID = "selected";
 
     public void initialize() {
+        System.out.println("Creating a new editor controller.");
         masterMap = MapSubsystem.getInstance();
 
         clearAllText();
@@ -278,9 +279,7 @@ public class NodeEditorController {
     }
 
     private void getLocationInfo(MouseEvent event) {
-        if (selectedNode != null) {
-            map.deletePoint(selectedLocID);
-        }
+
         selectedNode = null; // reset
         clearAllText();
         Location clicked = new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown");
@@ -330,8 +329,10 @@ public class NodeEditorController {
         c.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+
                 getLocationInfo(event);
                 updateNodeInfo();
+                c.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
             }
         });
     }
