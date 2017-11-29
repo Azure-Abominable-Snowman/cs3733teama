@@ -33,7 +33,7 @@ public class ViewStaffController {
 
     public void setRequestViewList(Language Lang){
         //fill ListView with Interpreter staff
-        ArrayList<InterpreterStaff> possibleStaff = InterpreterSubsystem.getInstance().findQualified(null);
+        ArrayList<InterpreterStaff> possibleStaff = InterpreterSubsystem.getInstance().findQualified(Lang);
         for (InterpreterStaff s : possibleStaff) {
             staffViewList.getItems().add(s);
         }
@@ -59,7 +59,8 @@ public class ViewStaffController {
 
     public void setLanguage(Language lang){
         this.language= lang;
-        for(InterpreterStaff interpreter : getStaff()){
+        staffViewList.getItems().clear();
+        for(InterpreterStaff interpreter : InterpreterSubsystem.getInstance().findQualified(lang)){
             staffViewList.getItems().add(interpreter);
         }
     }

@@ -74,7 +74,7 @@ public class InterpreterStaff  {
         for(Language l: getLanguages()){
             lang +=l.toString() + ", ";
         }
-        return getFirstName()+getLastName()+"\n"+lang;
+        return getFirstName()+" "+getLastName()+"\n"+lang;
     }
 
 
