@@ -26,6 +26,7 @@ public class TextualDirections implements DirectionsGenerator {
         RouteLink lastLink  = new RouteLink(nodeList.get(0),nodeList.get(1),null);
         routeLinks.add(lastLink);
         RouteLink thisLink ;
+
         for(int i=2;i<nodeList.size();++i)
         {
             thisLink = new RouteLink(nodeList.get(i-1),nodeList.get(i),lastLink);
@@ -40,13 +41,15 @@ public class TextualDirections implements DirectionsGenerator {
         RouteLink thisTurn = routeLinks.get(0);
         String temp = String.format( "Start walking towards %s",
                 thisTurn.getNext().getLongDescription());
+
         dirList.add(new Direction(0,
                 thisTurn.getStart().getCoordinate()
                 ,thisTurn.getNext().getCoordinate(),
                 temp));
 
+        thisTurn= routeLinks.get(1);
         RouteLink nextLink;
-        for(int i=1;i<routeLinks.size();i++) {
+        for(int i=2;i<routeLinks.size();i++) {
             nextLink=routeLinks.get(i);
             // in the case of two stair links next to each other combing all the stair situation
             if( (thisTurn.getTextReturn().contains("Elevator") || thisTurn.getTextReturn().contains("Stairs"))){
@@ -87,11 +90,11 @@ public class TextualDirections implements DirectionsGenerator {
     {
         String discription = routeLink.getTextReturn();
         if (discription.contains("Elevator")){ // elevator text
-            discription = String.format("Enter Elevator and exit on %s",
+            discription = String.format("Enter Elevator and exit on floor %s",
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Stairs")){ // Stairs text
-            discription = String.format("Enter Stair and exit on %s",
+            discription = String.format("Enter Stair and exit on floor %s",
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Straight")){// going Straight
@@ -104,7 +107,7 @@ public class TextualDirections implements DirectionsGenerator {
         }
 
         if(routeLink.isEndFlag()) {
-            discription= String.format("%s you will reach your destination %s",
+            discription= String.format("%s \nyou will reach your destination %s",
                     discription,routeLink.getNext().getLongDescription());
         }
 

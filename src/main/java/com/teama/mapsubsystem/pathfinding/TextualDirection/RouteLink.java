@@ -2,6 +2,7 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 
@@ -9,8 +10,6 @@ import java.awt.geom.FlatteningPathIterator;
 
 public class RouteLink {
 
-    private MapNode thisNode, nextNode;
-    private int link;
     private MapNode start;
     private MapNode next;
     private double turnAngle;
@@ -31,12 +30,14 @@ public class RouteLink {
 
         this.start = start;
         this.next = next;
-
+        this.lastLink=lastLink;
         pointingAngle = AngleGenerator.vectorAngle(start, next);
 
         if(lastLink != null) {
 
-            turnAngle =  pointingAngle - lastLink.getPointingAngle();
+            turnAngle =  lastLink.getPointingAngle()- pointingAngle ;
+            for(;turnAngle>=180;turnAngle-=360); // keep the angles below 180
+            for (;turnAngle<-180;turnAngle+=360);   // keep the angles above -180
             genText();
 
         }
@@ -66,8 +67,8 @@ public class RouteLink {
         // in the case of the same floor.
         if ( start.getCoordinate().getLevel().equals(next.getCoordinate().getLevel())) {
 
-            double dx = start.getCoordinate().getxCoord() - next.getCoordinate().getxCoord();
-            double dy = start.getCoordinate().getyCoord() - next.getCoordinate().getyCoord();
+            double dx = next.getCoordinate().getxCoord() - start.getCoordinate().getxCoord();
+            double dy = next.getCoordinate().getyCoord() - start.getCoordinate().getyCoord();
             distance = (double) Math.sqrt( dx*dx + dy*dy);
 
 
@@ -81,27 +82,27 @@ public class RouteLink {
                 textReturn = "Straight: ";
             }
 
-            else if(-105 <= turnAngle && turnAngle <= -75){
+            else if(-120 <= turnAngle && turnAngle <= -60){
                 textReturn = "Turn Left";
             }
 
-            else if(-75 < turnAngle && turnAngle < -15){
+            else if(-60 < turnAngle && turnAngle < -15){
                 textReturn = "Turn Left Slightly";
             }
 
-            else if(-165 < turnAngle && turnAngle < -105){
+            else if(-165 < turnAngle && turnAngle < -120){
                 textReturn = "Turn Left Sharply";
             }
 
-            else if(75 <= turnAngle && turnAngle <= 105){
+            else if(60 <= turnAngle && turnAngle <= 120){
                 textReturn = "Turn Right";
             }
 
-            else if(15 < turnAngle && turnAngle < 75){
+            else if(15 < turnAngle && turnAngle < 60){
                 textReturn = "Turn Right Slightly";
             }
 
-            else if(105 < turnAngle && turnAngle < 165){
+            else if(120 < turnAngle && turnAngle < 165){
                 textReturn = "Turn Right Sharply";
             }
             else {
@@ -117,7 +118,7 @@ public class RouteLink {
             eleNum = 2;
             Integer stairNum;
             stairNum = 2;
-            if(start.getCoordinate().getLevel().toString().equals("Elevator")){
+            if(start.getNodeType().equals(NodeType.ELEV)){
                 textReturn = "Enter Elevator";
             }
             else{

@@ -8,8 +8,8 @@ public class AngleGenerator {
 
 
     public static float vectorAngle (MapNode start, MapNode end) {
-        float angle = (float) Math.toDegrees(Math.atan2(start.getCoordinate().getyCoord() - end.getCoordinate().getyCoord(),
-                start.getCoordinate().getxCoord() - end.getCoordinate().getxCoord()));
+        float angle = (float) Math.toDegrees(Math.atan2(end.getCoordinate().getyCoord() - start.getCoordinate().getyCoord(),
+                end.getCoordinate().getxCoord() - start.getCoordinate().getxCoord()));
 
         for(;angle>=180;angle-=360); // keep the angles below 180
         for (;angle<-180;angle+=360);   // keep the angles above -180
