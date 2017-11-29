@@ -55,4 +55,5 @@ public class SearchBarController {
             inputField.getItems().add(n.getLongDescription());
         }
     }
+
 }

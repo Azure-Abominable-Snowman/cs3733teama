@@ -1,4 +1,4 @@
-package com.teama.mapsubsystem.pathfinding;
+package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
 import java.util.ArrayList;
 
@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class TextDirections {
     private ArrayList<Direction> directions;
 
-    public TextDirections() {
-
+    public TextDirections(ArrayList<Direction> list) {
+        directions=list;
     }
 
     public ArrayList<Direction> getDirections() {
