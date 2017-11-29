@@ -41,21 +41,20 @@ public class TextualDirections implements DirectionsGenerator {
         RouteLink nextLink;
         int i=0;
         nextLink = routeLinks.get(i);
-        for(;i<routeLinks.size();) {
-            // combing all the stair situation
-            if(nextLink.getTextReturn().contains("Elevator") || nextLink.getTextReturn().contains("Stairs"))
-            {
-
-            }
-            if()
-            {
-
+        for(;i<routeLinks.size();routeLinks.get(i++)) {
+            // in the case of two stair links next to each other combing all the stair situation
+            if( (thisTurn.getTextReturn().contains("Elevator") || thisTurn.getTextReturn().contains("Stairs"))){
+                if((nextLink.getTextReturn().contains("Elevator")|| nextLink.getTextReturn().contains("Stairs"))){
+                    combineFloorChange(thisTurn,nextLink); // combine the next one into this.
+                    continue;
+                }
             }
 
             if (nextLink.getTextReturn().contains("Straight")) {
-                addDistance(thisTurn, nextLink);
+                addDistance(thisTurn, nextLink); // combine the next one into this.
                 continue;
             }
+
             formDirection(thisTurn);
             thisTurn=nextLink;
         }
@@ -71,6 +70,11 @@ public class TextualDirections implements DirectionsGenerator {
     }
 
     private Direction formDirection (RouteLink routeLink)
+    {
+        return null;
+    }
+
+    private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)
     {
         return null;
     }
