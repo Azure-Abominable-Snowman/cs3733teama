@@ -9,9 +9,9 @@ import java.util.LinkedList;
 
 public class BeamSearch extends AStar {
 
-    protected HashMap<String,KnownPoint> checkedPoints;
+    private HashMap<String,KnownPoint> checkedPoints;
     private LimitedPriorityQueue limitedQueue;
-    protected MapNode start, end;
+    private MapNode start, end;
 
     public BeamSearch(int queueSize)
     {
@@ -84,7 +84,7 @@ public class BeamSearch extends AStar {
     private class LimitedPriorityQueue
     {
         private int size;
-        LinkedList<KnownPoint> list ;
+        private  LinkedList<KnownPoint> list ;
 
         LimitedPriorityQueue(int size)
         {
