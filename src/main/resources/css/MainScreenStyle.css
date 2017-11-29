@@ -7,3 +7,7 @@
     -fx-background-color: dodgerblue;
     -fx-border-color: lightgray;
 }
+
+.normalButton {
+    -fx-background-color: gray;
+}

@@ -10,6 +10,11 @@ public interface MapDataSource {
      */
     MapNode getNode(String id);
 
+    default MapNode getNode(String description, boolean longDescription) {
+        System.out.println("Cannot search by description in this data source");
+        return null;
+    }
+
     /**
      * Adds a node to the data source
      * @param node
