@@ -18,7 +18,7 @@ public class MapSubsystem {
     private MapDataSource javaDBSource; // link to javaDB -- see MapDataSource interface to call functions that update DB
     private MapDataSource csvSource;
     private PathGenerator pathGenerator;
-    private MapNode kioskNode; // Default origin (1st floor info desk)
+    private MapNode originNode; // Default origin (1st floor info desk)
 
     private static class MapSubsystemGetter {
         private static final MapSubsystem instance = new MapSubsystem();
@@ -46,8 +46,8 @@ public class MapSubsystem {
         //javaDBSource.addAll(csvSource);
 
         // Populate the kiosknode with a default value
-        if(kioskNode == null) {
-           kioskNode = getNode("AINFO0020G");
+        if(originNode == null) {
+           originNode = getNode("AINFO0020G");
         }
     }
 
@@ -142,18 +142,18 @@ public class MapSubsystem {
         return null;
     }
 
-    public MapNode getKioskNode() {
-        return kioskNode;
+    public MapNode getOriginNode() {
+        return originNode;
     }
 
-    public void setKioskNode(String id) {
-        kioskNode = getNode(id);
+    public void setOriginNode(String id) {
+        originNode = getNode(id);
     }
 
     // TODO: Should we be able to find a node by any descriptive attribute?
     // TODO: Implement this along with lower level methods in the data sources
     public MapNode getNodeByDescription(String description, boolean longDescription) {
         System.out.println("FIND: "+description);
-        return getNode("BDEPT00302"); // Dummy value
+        return javaDBSource.getNode(description, longDescription);
     }
 }

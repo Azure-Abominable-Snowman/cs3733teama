@@ -7,7 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import org.apache.commons.codec.language.DoubleMetaphone;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class SearchBarController {
 
@@ -41,19 +42,32 @@ public class SearchBarController {
     }
 
     /**
-     * Updates the node listing for the current floor.
+     * Updates the node listing for the building
      *
      * This might also need to be called when fuzzy search matching ends
      *
-     * @param currentFloor
      */
-    public void updateNodeListing(Floor currentFloor) {
+    public void updateNodeListing(Floor floor) {
         // Initially populate the list with all of the values (long descriptions)
         inputField.getItems().clear();
-        Collection<MapNode> floorNodes = mapSubsystem.getVisibleFloorNodes(currentFloor).values();
+        ArrayList<MapNode> floorNodes = new ArrayList<>();
+        floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(floor).values());
+
+        // Alphabetize by long description
+        floorNodes.sort(new Comparator<MapNode>() {
+            @Override
+            public int compare(MapNode o1, MapNode o2) {
+                return o1.getLongDescription().compareTo(o2.getLongDescription());
+            }
+        });
+
         for(MapNode n : floorNodes) {
             inputField.getItems().add(n.getLongDescription());
         }
+    }
+
+    public MapNode getSelectedNode() {
+        return mapSubsystem.getNodeByDescription(inputField.getSelectionModel().getSelectedItem(), true);
     }
 
 }

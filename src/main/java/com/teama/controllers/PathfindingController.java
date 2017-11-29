@@ -17,6 +17,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class PathfindingController {
     private final String pressedFloorButtonClass = "pressedfloorbutton";
 
 
-    public PathfindingController(MapSubsystem mapSubsystem, MapDisplay map, AnchorPane mapAreaPane, VBox floorButtonBox) {
+    public PathfindingController(MapSubsystem mapSubsystem, MapDisplay map, AnchorPane mapAreaPane, VBox floorButtonBox, Text floorDisplay) {
         this.map = map;
         this.mapAreaPane = mapAreaPane;
         this.mapSubsystem = mapSubsystem;
@@ -45,6 +46,7 @@ public class PathfindingController {
         // Stuff for the node pop up window
 
         switchFloor(Floor.GROUND);
+        floorDisplay.setText(Floor.GROUND.toString());
 
         /*for(MapNode n : mapSubsystem.getFloorNodes(map.getCurrentFloor()).values()) {
             // Display all edges (DEBUG)
@@ -63,6 +65,7 @@ public class PathfindingController {
             curFloorButton.setPrefWidth(35);
             curFloorButton.pressedProperty().addListener((Observable obs) -> {
                 switchFloor(floor);
+                floorDisplay.setText(floor.toString());
             });
 
             floorButtonBox.getChildren().add(curFloorButton);
@@ -114,7 +117,11 @@ public class PathfindingController {
      * @param dest
      */
     public void genPath(MapNode dest) {
-        Path path = mapSubsystem.getPathGenerator().generatePath(mapSubsystem.getKioskNode(), dest);
+        genPath(mapSubsystem.getOriginNode(), dest);
+    }
+
+    public void genPath(MapNode origin, MapNode dest) {
+        Path path = mapSubsystem.getPathGenerator().generatePath(origin, dest);
         if(curPath != null) {
             curPath.deleteFromScreen(map);
             // unlight floors traveled on the button box
