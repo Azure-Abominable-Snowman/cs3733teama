@@ -48,8 +48,7 @@ public class MainScreenSidebarController {
     @FXML
     private JFXRadioButton beamSearch;
 
-    @FXML
-    private Text selectedNode;
+
 
     @FXML
     private JFXButton login;
@@ -90,6 +89,8 @@ public class MainScreenSidebarController {
     private Map<String, MapEdge> floorEdges;
     private FXMLLoader loader;
     private JFXButton curFloorButton;
+    private MapNode selectedNode;
+    private MapEdge selectedEdge;
 
 
     //
@@ -99,6 +100,7 @@ public class MainScreenSidebarController {
 
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
+
 
         // Add all of the radio buttons to a toggle group
         algoToggleGroup = new ToggleGroup();
@@ -114,6 +116,8 @@ public class MainScreenSidebarController {
 
         // Select the default algorithm
         mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
+
+        //
 
         // When the toggle group changes, make the algorithm reflect that
         algoToggleGroup.selectedToggleProperty().addListener((Observable obs) -> {
@@ -150,6 +154,10 @@ public class MainScreenSidebarController {
                     nodeEditor.setButtons(add, edit);
                     nodeEditor.setMap(map);
                     infoPane.setContent(root);
+
+
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -174,6 +182,8 @@ public class MainScreenSidebarController {
             if (viewNodes.isSelected()) {
                 drawAllNodes();
                 System.out.println("User selected View Nodes");
+
+
             }
             else { //viewNodes turned off, delete
                 removeHiddenNodes();
