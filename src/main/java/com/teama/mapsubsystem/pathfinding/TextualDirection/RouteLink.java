@@ -1,8 +1,7 @@
 package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
+import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
-import com.teama.mapsubsystem.pathfinding.Path;
 
 public class RouteLink {
 
@@ -15,6 +14,9 @@ public class RouteLink {
     private RouteLink lastLink;
     private double distance;
     private String textReturn;
+
+    private Floor startFloor;
+    private  Floor nextFloor; // Can't have an end floor since there is only a start and next, therefore no end
 
 
     RouteLink(MapNode start, MapNode next, RouteLink lastLink) {
@@ -103,31 +105,20 @@ public class RouteLink {
         else{
             //If across multiple floors
             //Split between stairs and els
-            Integer eleNum;
-            eleNum = 2;
-            Integer stairNum;
-            stairNum = 2;
             if(start.getCoordinate().getLevel().toString().equals("Elevator")){
-                textReturn = "Enter Elevator" + eleNum + "and go to Floor" + floor;
+                textReturn = "Enter Elevator";
+                startFloor = start.getCoordinate().getLevel();
+                nextFloor = next.getCoordinate().getLevel();
             }
 
-            else if(start.getCoordinate().getLevel().toString().equals("Stairs")){
-                textReturn = "Enter Stairs" + stairNum + "and go to Floor" + floor;
+            else{
+                textReturn = "Enter Stairs";
+                startFloor = start.getCoordinate().getLevel();
+                nextFloor = next.getCoordinate().getLevel();
             }
-            
+
         }
     }
-
-
-    //TODO Delete Extra code below
-
-    private Floor floor = Floor.G; // Default floor
-    //private String name = "";
-
-    public enum Floor {
-        SB, B, G, ONE, TWO, THREE;
-    }
-
 
 
     //TODO Add to textual Directions
