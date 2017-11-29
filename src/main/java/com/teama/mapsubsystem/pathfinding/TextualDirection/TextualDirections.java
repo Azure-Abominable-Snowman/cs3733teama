@@ -7,9 +7,9 @@ import com.teama.mapsubsystem.pathfinding.Path;
 import java.util.ArrayList;
 
 public class TextualDirections implements DirectionsGenerator {
-    ArrayList<MapNode> nodeList;
-    ArrayList<RouteLink> routeLinks ;
-    ArrayList<Direction> dirList;
+    private ArrayList<MapNode> nodeList;
+    private ArrayList<RouteLink> routeLinks ;
+    private ArrayList<Direction> dirList;
 
     public TextualDirections()
     {

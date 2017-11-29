@@ -3,10 +3,6 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
-import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
-import com.teama.mapsubsystem.pathfinding.Path;
-
-import java.awt.geom.FlatteningPathIterator;
 
 public class RouteLink {
 
@@ -17,7 +13,6 @@ public class RouteLink {
     private RouteLink lastLink;
     private double distance;
     private String textReturn;
-
     private Floor startFloor;
     private  Floor nextFloor; // Can't have an end floor since there is only a start and next, therefore no end
 
@@ -31,7 +26,7 @@ public class RouteLink {
         this.start = start;
         this.next = next;
         this.lastLink=lastLink;
-        pointingAngle = AngleGenerator.vectorAngle(start, next);
+        pointingAngle = vectorAngle(start, next);
 
         if(lastLink != null) {
 
@@ -130,6 +125,17 @@ public class RouteLink {
             nextFloor = next.getCoordinate().getLevel();
 
         }
+
+
+    private static float vectorAngle (MapNode start, MapNode end) {
+        float angle = (float) Math.toDegrees(Math.atan2(end.getCoordinate().getyCoord() - start.getCoordinate().getyCoord(),
+                end.getCoordinate().getxCoord() - start.getCoordinate().getxCoord()));
+
+        for(;angle>=180;angle-=360); // keep the angles below 180
+        for (;angle<-180;angle+=360);   // keep the angles above -180
+        return angle;
+    }
+
 
     public double getDistance() {
         return distance;
