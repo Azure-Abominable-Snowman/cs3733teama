@@ -9,6 +9,8 @@ import com.teama.mapsubsystem.pathfinding.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -33,7 +35,7 @@ import java.util.*;
 
 public class MainScreenSidebarController {
     @FXML
-    private JFXListView directions;
+    private JFXTextArea directions;
     @FXML
     private TitledPane algorithmSelect;
     @FXML
@@ -47,8 +49,6 @@ public class MainScreenSidebarController {
 
     @FXML
     private JFXRadioButton beamSearch;
-
-
 
     @FXML
     private JFXButton login;
@@ -230,9 +230,6 @@ public class MainScreenSidebarController {
 
             }
         });
-
-
-
     }
 
 
@@ -258,6 +255,13 @@ public class MainScreenSidebarController {
             button.pressedProperty().addListener((Observable obs) -> {
                 updateHiddenNodesEdges();
             });
+        }
+    }
+
+    public void setDirections(TextDirections directions) {
+        this.directions.clear();
+        for(Direction dir : directions.getDirections()) {
+            this.directions.appendText(dir.getDescription()+"\n");
         }
     }
 
