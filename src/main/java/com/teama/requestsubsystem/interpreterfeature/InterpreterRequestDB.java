@@ -240,7 +240,8 @@ public class InterpreterRequestDB implements InterpreterRequestInfoSource {
             log.info("Could not mark Request " + r.getRequestID() + " as Closed...");
             return false;
         }
-        try {
+        //commented out, will be implemented for Iteration3
+        /*try {
             addReport.setInt(1, r.getRequestID());
             addReport.setDouble(2, r.getServiceTime());
             addReport.setString(3, r.getTranslType().toString());
@@ -250,7 +251,7 @@ public class InterpreterRequestDB implements InterpreterRequestInfoSource {
             e.printStackTrace();
             log.info("Tried to add a report for request " + r.getRequestID() + " but failed.");
             return false;
-        }
+        }*/
         return true;
         // fill in the report table with newly-entered info
     }
