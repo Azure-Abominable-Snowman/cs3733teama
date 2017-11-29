@@ -94,7 +94,7 @@ public class SearchBarController {
         for(String n : possibleWordSet) {
             if (doubleMetaphone.isDoubleMetaphoneEqual(input, n ))
                 autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
-        }
+        } //f
 
         //if(doubleMetaphone.doubleMetaphone(input).equals(doubleMetaphone.doubleMetaphone(words[1]))) {
 //            Collections.addAll(possibleWordSet, words);
