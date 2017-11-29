@@ -9,11 +9,11 @@ import com.teama.mapsubsystem.pathfinding.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
-import com.teama.messages.ContactInfo;
-import com.teama.messages.ContactInfoTypes;
-import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
-import com.teama.requestsubsystem.interpreterfeature.*;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -47,7 +47,7 @@ import java.util.*;
 
 public class MainScreenSidebarController {
     @FXML
-    private JFXListView directions;
+    private JFXTextArea directions;
     @FXML
     private TitledPane algorithmSelect;
     @FXML
@@ -61,6 +61,8 @@ public class MainScreenSidebarController {
 
     @FXML
     private JFXRadioButton beamSearch;
+
+
 
     @FXML
     private JFXButton login;
@@ -105,7 +107,9 @@ public class MainScreenSidebarController {
     private TableColumn<InterpreterTableAdapter,String> certCol, phoneCol, emailCol;
     private ToggleGroup algoToggleGroup;
     private SimpleBooleanProperty floorChange = new SimpleBooleanProperty(false);
-    private SimpleBooleanProperty isLoggedInProperty = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty isLoggedInProperty;
+    private SimpleBooleanProperty showLoginButton;
+
 
     private MapSubsystem mapSubsystem;
 
@@ -117,6 +121,8 @@ public class MainScreenSidebarController {
     private MapNode selectedNode;
     private MapEdge selectedEdge;
 
+
+    //
     private ArrayList<String> shownNodes;
     private ArrayList<String> shownEdges;
     private VBox floorButtonBox;
@@ -126,10 +132,6 @@ public class MainScreenSidebarController {
     private ObservableList<InterpreterTableAdapter> tableVals;
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
-        selectAlg.visibleProperty().bind(isLoggedInProperty);
-        mapTools.visibleProperty().bind(isLoggedInProperty);
-        serviceReqs.visibleProperty().bind(isLoggedInProperty);
-        staff.visibleProperty().bind(isLoggedInProperty);
 
 
 
@@ -268,6 +270,10 @@ public class MainScreenSidebarController {
         oldNodeEditorHandler = map.getUnderlyingCanvas().getOnMouseClicked();
     }
 
+    public EventHandler<MouseEvent> getOldNodeEditorHanlder() {
+        return this.oldNodeEditorHandler;
+    }
+
     /**
      * Sets the floor button vbox, must be ran before anything else
      * @param floorButtonBox
@@ -281,6 +287,13 @@ public class MainScreenSidebarController {
             button.pressedProperty().addListener((Observable obs) -> {
                 updateHiddenNodesEdges();
             });
+        }
+    }
+
+    public void setDirections(TextDirections textDir) {
+        directions.clear();
+        for(Direction dir : textDir.getDirections()) {
+            directions.appendText(dir.getDescription()+"\n");
         }
     }
 
@@ -378,6 +391,17 @@ public class MainScreenSidebarController {
         tempEdges.clear();
     }
 
+    public void setLoggedInProperty(SimpleBooleanProperty b, SimpleBooleanProperty button) {
+        this.isLoggedInProperty = b;
+
+        this.showLoginButton = button;
+        selectAlg.visibleProperty().bind(isLoggedInProperty);
+        mapTools.visibleProperty().bind(isLoggedInProperty);
+        serviceReqs.visibleProperty().bind(isLoggedInProperty);
+        staff.visibleProperty().bind(isLoggedInProperty);
+        login.visibleProperty().bind(showLoginButton);
+    }
+
     @FXML
     public void onLoginClick() {
         ///Dialog d = new Dialog();
@@ -395,16 +419,16 @@ public class MainScreenSidebarController {
             loginController.getLoggedInProperty().addListener((obs, before, now) -> {
                 if (now) {
                     loginPopup.hide();
-                    login.setVisible(false);
+
                     btnAdd.setVisible(true);
                     isLoggedInProperty.set(true);
+                    showLoginButton.set(false);
                 }
                 else {
-                    login.setVisible(true);
                     isLoggedInProperty.set(false);
+                    showLoginButton.set(true);
                 }
             });
-
 
             loginPopup.setScene(loginScene);
             loginPopup.show();

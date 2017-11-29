@@ -33,9 +33,9 @@
                         <TitledPane animated="false" text="Directions">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                    <children>
-                                        <JFXListView fx:id="directions" layoutX="87.0" layoutY="52.0" prefHeight="564.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    </children>
+                           <children>
+                              <JFXTextArea fx:id="directions" layoutX="-75.0" layoutY="21.0" prefHeight="521.0" prefWidth="327.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
                                 </AnchorPane>
                             </content>
                             <font>

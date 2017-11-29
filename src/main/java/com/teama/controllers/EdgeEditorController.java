@@ -247,6 +247,8 @@ public class EdgeEditorController {
 
         addMode.setVisible(true);
         deleteMode.setVisible(true);
+        addMode.setDisable(false);
+        deleteMode.setDisable(false);
 
         delete.setVisible(false);
         editConfirm.setVisible(false);
@@ -287,8 +289,10 @@ public class EdgeEditorController {
             restoreToDefault();
             inAddMode = true;
             inEditMode = false;
-            addMode.setVisible(false);
-            deleteMode.setVisible(false);
+            //addMode.setVisible(false);
+            //deleteMode.setVisible(false);
+            addMode.setDisable(true);
+            deleteMode.setDisable(true);
             setButtonsForAddMode();
             startNodePrompt.setText("To add an edge, select Start and End Nodes, then Confirm.");
         });
@@ -298,11 +302,12 @@ public class EdgeEditorController {
         this.deleteMode.setOnAction((ActionEvent e) -> {
             restoreToDefault();
             startNodePrompt.setText("Select the start and end nodes of the edge to Edit or Delete.");
-
+            addMode.setDisable(true);
+            deleteMode.setDisable(true);
             inAddMode = false;
             inEditMode = true;
-            addMode.setVisible(false);
-            deleteMode.setVisible(false);
+            //addMode.setVisible(false);
+            //deleteMode.setVisible(false);
             setButtonsForDeleteMode();
             });
 
