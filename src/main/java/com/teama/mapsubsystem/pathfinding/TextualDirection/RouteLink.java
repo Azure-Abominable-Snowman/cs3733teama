@@ -2,6 +2,8 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
+import com.teama.mapsubsystem.pathfinding.Path;
 
 public class RouteLink {
 
@@ -17,6 +19,9 @@ public class RouteLink {
 
     private Floor startFloor;
     private  Floor nextFloor; // Can't have an end floor since there is only a start and next, therefore no end
+
+
+
 
 
     RouteLink(MapNode start, MapNode next, RouteLink lastLink) {
@@ -105,27 +110,22 @@ public class RouteLink {
         else{
             //If across multiple floors
             //Split between stairs and els
+            Integer eleNum;
+            eleNum = 2;
+            Integer stairNum;
+            stairNum = 2;
             if(start.getCoordinate().getLevel().toString().equals("Elevator")){
                 textReturn = "Enter Elevator";
             }
             else{
                 textReturn = "Enter Stairs";
             }
-
+            
+        }
             startFloor = start.getCoordinate().getLevel();
             nextFloor = next.getCoordinate().getLevel();
 
         }
-    }
-
-
-    //TODO Add to textual Directions
-    private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
-    {
-        turnLink.setDistance(turnLink.getDistance()+ straightLink.getDistance());
-        return turnLink;
-    }
-
 
     public double getDistance() {
         return distance;
@@ -135,8 +135,27 @@ public class RouteLink {
         this.distance = distance;
     }
 
+    public Floor getStartFloor() {
+        return startFloor;
+    }
 
+    public void setStartFloor(Floor startFloor) {
+        this.startFloor = startFloor;
+    }
 
+    public Floor getNextFloor() {
+        return nextFloor;
+    }
 
+    public void setNextFloor(Floor nextFloor) {
+        this.nextFloor = nextFloor;
+    }
 
+    public MapNode getStart() {
+        return start;
+    }
+
+    public MapNode getNext() {
+        return next;
+    }
 }
