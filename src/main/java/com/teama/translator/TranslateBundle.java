@@ -1,4 +1,4 @@
-package com.teama.Translator;
+package com.teama.translator;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
