@@ -227,14 +227,14 @@ public class MainScreenController implements Initializable {
         toSearchBar.valueProperty().addListener((observable, oldValue, newValue) -> {
             toSearchController.matchFuzzySearchValues();
         });
-        fromSearchController.updateNodeListing(map.getCurrentFloor());
-        toSearchController.updateNodeListing(map.getCurrentFloor());
+        fromSearchController.updateNodeListing(true, map.getCurrentFloor());
+        toSearchController.updateNodeListing(false, map.getCurrentFloor());
 
         // When the floor is switched make it so the floor is changed in the search box
         for(Node node : floorButtonBox.getChildren()) {
             node.pressedProperty().addListener((Observable obs) -> {
-                toSearchController.updateNodeListing(map.getCurrentFloor());
-                fromSearchController.updateNodeListing(map.getCurrentFloor());
+                toSearchController.updateNodeListing(false, map.getCurrentFloor());
+                fromSearchController.updateNodeListing(true, map.getCurrentFloor());
             });
         }
 

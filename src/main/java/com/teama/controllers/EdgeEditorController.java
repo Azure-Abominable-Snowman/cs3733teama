@@ -81,6 +81,20 @@ public class EdgeEditorController {
         endNodeLocInfo.add(endFloor, 2, 0);
         endFloor.setVisible(false);
 
+        setStart.setDisable(true);
+        setEnd.setDisable(true);
+
+        delete.setVisible(false);
+        editConfirm.setVisible(false);
+        cancel.setVisible(false);
+
+        delete.getStylesheets().add("css/MainScreenStyle.css");
+        delete.getStyleClass().add("normalButton");
+        editConfirm.getStylesheets().add("css/MainScreenStyle.css");
+        editConfirm.getStyleClass().add("normalButton");
+        cancel.getStylesheets().add("css/MainScreenStyle.css");
+        cancel.getStyleClass().add("normalButton");
+
         setStart.setOnMouseClicked((MouseEvent e) -> {
 
             if (setStart.getText().equals("Edit")) {
@@ -125,7 +139,7 @@ public class EdgeEditorController {
                       if (endNode != null) {
                           MapEdge newEdge = masterMap.addEdge(new MapEdgeData("", startNode, endNode));
                           if (newEdge != null) {
-                              new DrawEdgeInstantly(newEdge).displayOnScreen(map);
+                              //new DrawEdgeInstantly(newEdge).displayOnScreen(map);
                           }
                       }
                       else {
@@ -171,6 +185,21 @@ public class EdgeEditorController {
 
         cancel.setOnAction((ActionEvent e) -> {
             restoreToDefault();
+        });
+
+        delete.setOnMouseClicked((MouseEvent e) -> {
+            System.out.println("DELETING");
+            if(startNode != null && endNode != null) {
+                System.out.println("Deleting "+startNode.getId()+" connection to "+endNode.getId());
+                // Try deleting both possible id's start_end and end_start
+                // From both the screen and the database
+                masterMap.deleteEdge(startNode.getId()+"_"+endNode.getId());
+                masterMap.deleteEdge(endNode.getId()+"_"+startNode.getId());
+                map.deleteLine(startNode.getId()+"_"+endNode.getId());
+                map.deleteLine(endNode.getId()+"_"+startNode.getId());
+
+                restoreToDefault();
+            }
         });
 
     }
@@ -219,6 +248,12 @@ public class EdgeEditorController {
         addMode.setVisible(true);
         deleteMode.setVisible(true);
 
+        delete.setVisible(false);
+        editConfirm.setVisible(false);
+        cancel.setVisible(false);
+
+        setStart.setDisable(true);
+        setEnd.setDisable(true);
     }
     /*
     private MapNode nodeFromUser(boolean startNode) {
@@ -255,7 +290,6 @@ public class EdgeEditorController {
             addMode.setVisible(false);
             deleteMode.setVisible(false);
             setButtonsForAddMode();
-
             startNodePrompt.setText("To add an edge, select Start and End Nodes, then Confirm.");
         });
 
@@ -269,21 +303,28 @@ public class EdgeEditorController {
             inEditMode = true;
             addMode.setVisible(false);
             deleteMode.setVisible(false);
-            setButtonsForEditMode();
+            setButtonsForDeleteMode();
             });
 
     }
 
     private void setButtonsForAddMode() {
         editConfirm.setText("Confirm");
+        editConfirm.setVisible(true);
         cancel.setVisible(true);
         delete.setVisible(false);
+
+        setStart.setDisable(false);
+        setEnd.setDisable(false);
     }
 
-    private void setButtonsForEditMode() {
-        editConfirm.setText("Edit");
+    private void setButtonsForDeleteMode() {
+        editConfirm.setVisible(false);
         cancel.setVisible(true);
         delete.setVisible(true);
+
+        setStart.setDisable(false);
+        setEnd.setDisable(false);
     }
 
     private void hideAllButtons() {

@@ -88,7 +88,7 @@ public class DisplayPathInstantly extends DisplayPath {
                 } else {
                     // For other floor -> start floor
                     // For loop must be reversed
-                    for(int j = i-1; j < getConnectors().size(); j--) {
+                    for(int j = i; j < getConnectors().size(); j--) {
                         MapEdge checkEdge = getConnectors().get(j);
                         if(checkEdge.getStart().getCoordinate().getLevel().equals(checkEdge.getEnd().getCoordinate().getLevel())) {
                             annoText = "From " + checkEdge.getStart().getCoordinate().getLevel().toString();

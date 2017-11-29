@@ -179,6 +179,9 @@ public class NodeEditorController {
         isDeleting = false;
         nodeTypeSelector.setVisible(false);
         nodeType.setVisible(true);
+
+        addMode.setVisible(true);
+        editMode.setVisible(true);
     }
 
     private MapNode nodeFromUser() {
