@@ -92,11 +92,18 @@ public class SearchBarController {
      */
     public void matchFuzzySearchValues() {
         String toMatch = inputField.getEditor().getText();
+        System.out.println(toMatch);
         if(toMatch.equals("")) {
             inputField.getItems().clear();
             inputField.getItems().addAll(originalComboValues);
             inputField.hide();
         } else {
+            /*List<String> tmp = inputField.getItems();
+            ArrayList<String> fieldNode = new ArrayList<>();
+            for(String s : tmp){
+                fieldNode.add(s);
+            }*/
+
             inputField.getItems().clear();
             inputField.show();
             System.out.println("MATCHING:");
@@ -106,7 +113,47 @@ public class SearchBarController {
                     inputField.getItems().add(des);
                 }
             }
-            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+
+            System.out.println("DOOOOOOOOOOOOo");
+            for(String node : originalComboValues){
+                System.out.println(node);
+                int index;
+                String n = node;
+                String tM = toMatch;
+
+                n = n.toLowerCase();
+                tM = tM.toLowerCase();
+
+                System.out.println(n);
+                System.out.println(tM);
+
+                ArrayList<String> aNode = new ArrayList<>();
+                while(!n.equals("")){
+                    index = n.indexOf(" ");
+                    if(index < 0){
+                        aNode.add(n);
+                        break;
+                    }
+                    else{
+                        aNode.add(n.substring(0, index));
+                        if(index + 1 >= n.length())
+                            break;
+                        n = n.substring(index+1);
+                    }
+                }
+
+                for(String s : aNode){
+                    if(tM.equals(s)){
+                        System.out.println("1111111111111111111111111111111111111111111111111111111111111111");
+                        if(!inputField.getItems().contains(node)){
+                            inputField.getItems().add(node);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            //autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
             /*int autoCount = autoCompletionBinding.getVisibleRowCount();
             if(inputField.getItems().size() < autoCount){
                 inputField.getItems().clear();
