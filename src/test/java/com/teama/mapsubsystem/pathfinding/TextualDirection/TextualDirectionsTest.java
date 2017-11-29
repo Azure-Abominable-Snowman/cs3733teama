@@ -28,8 +28,11 @@ public class TextualDirectionsTest {
 
         TextualDirections textGenerator = new TextualDirections();
         TextDirections output = textGenerator.generateDirections(testPath);
+        ArrayList<Direction> directions = output.getDirections();
+        assertTrue(directions.get(0).getDescription().contains("Start walking towards X:12 Y:87"));
+        assertTrue(directions.get(directions.size()-1).getDescription().contains("you will reach your destination X:26 Y:15"));
         printEverything(output.getDirections());
-        assertEquals(true, true);
+
     }
 
 

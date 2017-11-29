@@ -107,7 +107,7 @@ public class TextualDirections implements DirectionsGenerator {
         }
 
         if(routeLink.isEndFlag()) {
-            discription= String.format("%s you will reach your destination %s",
+            discription= String.format("%s \nyou will reach your destination %s",
                     discription,routeLink.getNext().getLongDescription());
         }
 

@@ -82,27 +82,27 @@ public class RouteLink {
                 textReturn = "Straight: ";
             }
 
-            else if(-105 <= turnAngle && turnAngle <= -75){
+            else if(-120 <= turnAngle && turnAngle <= -60){
                 textReturn = "Turn Left";
             }
 
-            else if(-75 < turnAngle && turnAngle < -15){
+            else if(-60 < turnAngle && turnAngle < -15){
                 textReturn = "Turn Left Slightly";
             }
 
-            else if(-165 < turnAngle && turnAngle < -105){
+            else if(-165 < turnAngle && turnAngle < -120){
                 textReturn = "Turn Left Sharply";
             }
 
-            else if(75 <= turnAngle && turnAngle <= 105){
+            else if(60 <= turnAngle && turnAngle <= 120){
                 textReturn = "Turn Right";
             }
 
-            else if(15 < turnAngle && turnAngle < 75){
+            else if(15 < turnAngle && turnAngle < 60){
                 textReturn = "Turn Right Slightly";
             }
 
-            else if(105 < turnAngle && turnAngle < 165){
+            else if(120 < turnAngle && turnAngle < 165){
                 textReturn = "Turn Right Sharply";
             }
             else {
