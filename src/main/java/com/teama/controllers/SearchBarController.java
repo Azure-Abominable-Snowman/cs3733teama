@@ -82,6 +82,10 @@ public class SearchBarController {
 //        }
 
         //if(!DoubleMetaphoneMatched(text))
+
+        if(doubleMetaphone.isDoubleMetaphoneEqual(inputField.getEditor().getText(), words[1],true)){
+                autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+        }
         inputField.getEditor().setOnKeyPressed((KeyEvent e) -> {
             switch(e.getCode()){
                 case ENTER:
