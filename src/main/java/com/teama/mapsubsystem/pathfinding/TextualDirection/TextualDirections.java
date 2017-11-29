@@ -1,5 +1,6 @@
 package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
+import com.teama.Translator.TranslateBundle;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
@@ -33,17 +34,21 @@ public class TextualDirections implements DirectionsGenerator {
             routeLinks.add(lastLink);
         }
 
+
          dirList = new ArrayList<>();
-
         // put RouteLinks into Direction formate and refactor the same RouteLinks.
-
-        // todo make the start and end direction
+        // make the start Direction and push it into list.
         RouteLink thisTurn = routeLinks.get(0);
-        RouteLink nextLink;
-        int i=0;
-        nextLink = routeLinks.get(i);
+        String temp = String.format( "Start walking towards %s",
+                thisTurn.getNext().getLongDescription());
+        dirList.add(new Direction(0,
+                thisTurn.getStart().getCoordinate()
+                ,thisTurn.getNext().getCoordinate(),
+                temp));
 
-        for(;i<routeLinks.size();routeLinks.get(i++)) {
+        RouteLink nextLink;
+        for(int i=1;i<routeLinks.size();i++) {
+            nextLink=routeLinks.get(i);
             // in the case of two stair links next to each other combing all the stair situation
             if( (thisTurn.getTextReturn().contains("Elevator") || thisTurn.getTextReturn().contains("Stairs"))){
                 if((nextLink.getTextReturn().contains("Elevator")|| nextLink.getTextReturn().contains("Stairs"))){
@@ -51,24 +56,26 @@ public class TextualDirections implements DirectionsGenerator {
                     continue;
                 }
             }
-
             // case of the link right out of the elevator, ignore this for now.
             if( thisTurn.getTextReturn().contains("No") )
             {
                 thisTurn= nextLink;
                 continue;
             }
-
             if (nextLink.getTextReturn().contains("Straight")) {
                 addDistance(thisTurn, nextLink); // combine the next one into this.
                 continue;
             }
-
-            formDirection(thisTurn);
+            // condenced turn and floor change case.
+            dirList.add(formDirection(thisTurn));
             thisTurn=nextLink;
         }
+        // create the end link.
+        thisTurn.setEndFlag(true);
+        dirList.add(formDirection(thisTurn));
 
-    return null;
+        //warp the list into the TextDirection and return it.
+        return new TextDirections(dirList);
     }
 
     private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
@@ -95,6 +102,11 @@ public class TextualDirections implements DirectionsGenerator {
         else{ // actually turning.
             discription=String.format("%s and walk for %f distance",
                     discription,routeLink.getDistance());
+        }
+
+        if(routeLink.isEndFlag()) {
+            discription= String.format("%s you will reach your destination %s",
+                    discription,routeLink.getNext().getLongDescription());
         }
 
         // create and return the new formed Direction object.
