@@ -37,10 +37,12 @@ public class TextualDirections implements DirectionsGenerator {
 
         // put RouteLinks into Direction formate and refactor the same RouteLinks.
 
+        // todo make the start and end direction
         RouteLink thisTurn = routeLinks.get(0);
         RouteLink nextLink;
         int i=0;
         nextLink = routeLinks.get(i);
+
         for(;i<routeLinks.size();routeLinks.get(i++)) {
             // in the case of two stair links next to each other combing all the stair situation
             if( (thisTurn.getTextReturn().contains("Elevator") || thisTurn.getTextReturn().contains("Stairs"))){
@@ -66,10 +68,6 @@ public class TextualDirections implements DirectionsGenerator {
             thisTurn=nextLink;
         }
 
-
-
-
-
     return null;
     }
 
@@ -81,7 +79,29 @@ public class TextualDirections implements DirectionsGenerator {
 
     private Direction formDirection (RouteLink routeLink)
     {
-        return null;
+        String discription = routeLink.getTextReturn();
+        if (discription.contains("Elevator")){ // elevator text
+            discription = String.format("Enter Elevator and exit on %s",
+                    routeLink.getNextFloor().toString());
+        }
+        else if(discription.contains("Stairs")){ // Stairs text
+            discription = String.format("Enter Stair and exit on %s",
+                    routeLink.getNextFloor().toString());
+        }
+        else if(discription.contains("Straight")){// going Straight
+            discription = String.format("Walk Straight for %f distance",
+                    routeLink.getDistance());
+        }
+        else{ // actually turning.
+            discription=String.format("%s and walk for %f distance",
+                    discription,routeLink.getDistance());
+        }
+
+        // create and return the new formed Direction object.
+        return new Direction(0,
+                routeLink.getStart().getCoordinate(),
+                routeLink.getNext().getCoordinate(),
+                discription);
     }
 
     private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)

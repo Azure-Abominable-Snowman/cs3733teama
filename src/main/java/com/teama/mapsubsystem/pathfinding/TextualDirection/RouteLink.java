@@ -151,5 +151,11 @@ public class RouteLink {
         this.nextFloor = nextFloor;
     }
 
+    public MapNode getStart() {
+        return start;
+    }
 
+    public MapNode getNext() {
+        return next;
+    }
 }
