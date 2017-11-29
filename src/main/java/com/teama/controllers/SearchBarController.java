@@ -36,6 +36,8 @@ public class SearchBarController {
         System.out.println("DOUBLE METAPHONE ENCODED: "+doubleMetaphone.doubleMetaphone(selected, false)+" "+
                 doubleMetaphone.doubleMetaphone(selected, true));
 
+        System.out.println("DMETA EQUAL: "+doubleMetaphone.isDoubleMetaphoneEqual("testval", selected));
+
         // TODO: Use built in DoubleMetaphone in order to do string matching with the typed values
         // TODO: Display these matched values below where the user is typing
         // TODO: Allow the user to select from this menu
