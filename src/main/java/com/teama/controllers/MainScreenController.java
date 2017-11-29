@@ -55,7 +55,6 @@ import java.util.ResourceBundle;
 public class MainScreenController implements Initializable {
     private int animRate=-1;
     private HamburgerBackArrowBasicTransition hamOpnsTran;
-    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty();
     public BooleanProperty getLoggedInProperty() {
         return isLoggedIn;
     }
@@ -113,6 +112,9 @@ public class MainScreenController implements Initializable {
     private MapSubsystem mapSubsystem;
 
     private PathfindingController pathfinding;
+    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty showLoginButton = new SimpleBooleanProperty(true);
+    private EventHandler<MouseEvent> originalMouseClick;
 
     @FXML
     void onHamburgerButtonClick(MouseEvent event) throws IOException {
@@ -124,10 +126,14 @@ public class MainScreenController implements Initializable {
         MainScreenSidebarController sidebar = loader.getController();
         sidebar.setMapDisplay(map);
         sidebar.setFloorButtonVBox(floorButtonBox);
+        sidebar.setLoggedInProperty(this.isLoggedIn, this.showLoginButton);
+        //this.originalMouseClick = sidebar.getOldNodeEditorHanlder();
         drawer.setSidePane(box);
         if(drawer.isShown()){
             drawer.close();
             drawerExtended = false;
+            map.getUnderlyingCanvas().setOnMouseClicked(originalMouseClick);
+            map.deletePoint("selected");
         } else {
             drawer.setPrefWidth(box.getPrefWidth());
             drawerExtended = true;
@@ -182,10 +188,12 @@ public class MainScreenController implements Initializable {
             if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
                 areaPane.getChildren().remove(nodeInfo);
                 nodeInfo = null;
+                System.out.println("Restored to default.");
             }
             generateNodePopUp(event);
         };
         map.getUnderlyingCanvas().onMouseClickedProperty().set(clickedOnMapHandler);
+        this.originalMouseClick = clickedOnMapHandler;
 
         // When the map is resized the pop up must be taken off the screen
         // TODO: Make the pop up move instead
