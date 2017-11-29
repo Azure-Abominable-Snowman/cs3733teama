@@ -13,19 +13,16 @@ public class RouteLink {
     private double turnAngle;
     private double pointingAngle;
     private RouteLink lastLink;
-
-
     private double distance;
-
     private String textReturn;
 
 
-    private RouteLink(MapNode start, MapNode next, RouteLink lastLink) {
+    RouteLink(MapNode start, MapNode next, RouteLink lastLink) {
 
         this.start = start;
         this.next = next;
 
-        pointingAngle = AngleGenerator.positionAngle(start, next);
+        pointingAngle = AngleGenerator.vectorAngle(start, next);
 
         if(lastLink != null) {
 
@@ -55,15 +52,12 @@ public class RouteLink {
 
     private void genText(){
 
+        // in the case of the same floor.
         if ( start.getCoordinate().getLevel().equals(next.getCoordinate().getLevel())) {
 
             double dx = start.getCoordinate().getxCoord() - next.getCoordinate().getxCoord();
             double dy = start.getCoordinate().getyCoord() - next.getCoordinate().getyCoord();
-
             distance = (double) Math.sqrt( dx*dx + dy*dy);
-
-
-
 
             if(-15 <= turnAngle && turnAngle <= 15){
                 textReturn = "Straight: ";
@@ -101,15 +95,10 @@ public class RouteLink {
         else{
             //If across multiple floors
             //Split between stairs and els
-
-
             Integer eleNum;
             eleNum = 2;
-
             Integer stairNum;
             stairNum = 2;
-
-
             if(start.getCoordinate().getLevel().toString().equals("Elevator")){
                 textReturn = "Enter Elevator" + eleNum + "and go to Floor" + floor;
             }
@@ -135,6 +124,10 @@ public class RouteLink {
 
 
 
+    private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
+    {
+        return null;
+    }
 
 
     public double getDistance() {
