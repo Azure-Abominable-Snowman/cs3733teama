@@ -286,6 +286,8 @@ public class EdgeEditorController {
     public void setButtons(JFXButton add, JFXButton delete) {
         this.addMode = add;
         this.deleteMode = delete;
+        addMode.setDisable(false);
+        delete.setDisable(false);
         this.addMode.setOnAction((ActionEvent e) -> {
             restoreToDefault();
             inAddMode = true;

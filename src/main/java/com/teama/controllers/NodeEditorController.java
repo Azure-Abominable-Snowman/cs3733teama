@@ -240,6 +240,9 @@ public class NodeEditorController {
     public void setButtons(JFXButton add, JFXButton edit) {
         this.addMode = add;
         this.editMode = edit;
+        add.setDisable(false);
+        edit.setDisable(false
+        );
         this.addMode.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
