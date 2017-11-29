@@ -316,7 +316,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
                 log.info("Found a language " + rsLangs.getString("LANGUAGE"));
 
             }
-            ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.valueOf(rs.getString("PROVIDER")));
+            ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.getFromString(rs.getString("PROVIDER")));
             found = new InterpreterStaff(new GenericStaffInfo(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
                     new InterpreterInfo(rs.getInt("STAFFID"), langs, CertificationType.valueOf(rs.getString("CERTIFICATION"))));
 
