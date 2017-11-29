@@ -9,6 +9,8 @@ import com.teama.mapsubsystem.pathfinding.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -33,7 +35,7 @@ import java.util.*;
 
 public class MainScreenSidebarController {
     @FXML
-    private JFXListView directions;
+    private JFXTextArea directions;
     @FXML
     private TitledPane algorithmSelect;
     @FXML
@@ -47,8 +49,6 @@ public class MainScreenSidebarController {
 
     @FXML
     private JFXRadioButton beamSearch;
-
-
 
     @FXML
     private JFXButton login;
@@ -84,7 +84,9 @@ public class MainScreenSidebarController {
 
     private ToggleGroup algoToggleGroup;
     private SimpleBooleanProperty floorChange = new SimpleBooleanProperty(false);
-    private SimpleBooleanProperty isLoggedInProperty = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty isLoggedInProperty;
+    private SimpleBooleanProperty showLoginButton;
+
 
     private MapSubsystem mapSubsystem;
 
@@ -106,9 +108,7 @@ public class MainScreenSidebarController {
 
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
-        selectAlg.visibleProperty().bind(isLoggedInProperty);
-        mapTools.visibleProperty().bind(isLoggedInProperty);
-        serviceReqs.visibleProperty().bind(isLoggedInProperty);
+
 
 
         // Add all of the radio buttons to a toggle group
@@ -230,9 +230,6 @@ public class MainScreenSidebarController {
 
             }
         });
-
-
-
     }
 
 
@@ -243,6 +240,10 @@ public class MainScreenSidebarController {
     public void setMapDisplay(MapDisplay map) {
         this.map = map;
         oldNodeEditorHandler = map.getUnderlyingCanvas().getOnMouseClicked();
+    }
+
+    public EventHandler<MouseEvent> getOldNodeEditorHanlder() {
+        return this.oldNodeEditorHandler;
     }
 
     /**
@@ -258,6 +259,13 @@ public class MainScreenSidebarController {
             button.pressedProperty().addListener((Observable obs) -> {
                 updateHiddenNodesEdges();
             });
+        }
+    }
+
+    public void setDirections(TextDirections directions) {
+        this.directions.clear();
+        for(Direction dir : directions.getDirections()) {
+            this.directions.appendText(dir.getDescription()+"\n");
         }
     }
 
@@ -355,6 +363,16 @@ public class MainScreenSidebarController {
         tempEdges.clear();
     }
 
+    public void setLoggedInProperty(SimpleBooleanProperty b, SimpleBooleanProperty button) {
+        this.isLoggedInProperty = b;
+
+        this.showLoginButton = button;
+        selectAlg.visibleProperty().bind(isLoggedInProperty);
+        mapTools.visibleProperty().bind(isLoggedInProperty);
+        serviceReqs.visibleProperty().bind(isLoggedInProperty);
+        login.visibleProperty().bind(showLoginButton);
+    }
+
     @FXML
     public void onLoginClick() {
         ///Dialog d = new Dialog();
@@ -372,12 +390,14 @@ public class MainScreenSidebarController {
             loginController.getLoggedInProperty().addListener((obs, before, now) -> {
                 if (now) {
                     loginPopup.hide();
-                    login.setVisible(false);
+                    //login.setVisible(false);
                     isLoggedInProperty.set(true);
+                    showLoginButton.set(false);
                 }
                 else {
-                    login.setVisible(true);
+                    //login.setVisible(true);
                     isLoggedInProperty.set(false);
+                    showLoginButton.set(true);
                 }
             });
 

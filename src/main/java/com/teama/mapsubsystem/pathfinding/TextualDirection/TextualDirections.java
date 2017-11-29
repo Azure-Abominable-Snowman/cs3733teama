@@ -5,14 +5,13 @@ import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class TextualDirections implements DirectionsGenerator {
     private ArrayList<MapNode> nodeList;
     private ArrayList<RouteLink> routeLinks ;
     private ArrayList<Direction> dirList;
 
-    TextualDirections()
+    public TextualDirections()
     {
         nodeList = new ArrayList<>();
     }
