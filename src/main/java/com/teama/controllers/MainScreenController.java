@@ -13,6 +13,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -33,6 +34,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,7 +56,6 @@ import java.util.ResourceBundle;
 public class MainScreenController implements Initializable {
     private int animRate=-1;
     private HamburgerBackArrowBasicTransition hamOpnsTran;
-    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty();
     public BooleanProperty getLoggedInProperty() {
         return isLoggedIn;
     }
@@ -82,10 +83,10 @@ public class MainScreenController implements Initializable {
     private JFXHamburger hamburgerButton;
 
     @FXML
-    private JFXComboBox<String> searchBar;
+    private JFXComboBox<String> fromSearchBar;
 
     @FXML
-    private JFXButton searchButton;
+    private JFXComboBox<String> toSearchBar;
 
     @FXML
     private AnchorPane areaPane;
@@ -96,6 +97,12 @@ public class MainScreenController implements Initializable {
     @FXML
     private GridPane displayedMaps;
 
+    @FXML
+    private Text floorNumberDisplay;
+
+    @FXML
+    private JFXButton searchButton;
+
     private MapDisplay map;
 
     private boolean drawerExtended = false;
@@ -105,6 +112,13 @@ public class MainScreenController implements Initializable {
 
     private MapSubsystem mapSubsystem;
 
+    private PathfindingController pathfinding;
+    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty showLoginButton = new SimpleBooleanProperty(true);
+    private EventHandler<MouseEvent> originalMouseClick;
+
+    private MainScreenSidebarController sidebar;
+
     @FXML
     void onHamburgerButtonClick(MouseEvent event) throws IOException {
         hamOpnsTran.setRate(animRate*=-1);
@@ -112,12 +126,17 @@ public class MainScreenController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/MainSidebar.fxml"));
         HBox box = loader.load();
-        MainScreenSidebarController sidebar = loader.getController();
+        sidebar = loader.getController();
         sidebar.setMapDisplay(map);
+        sidebar.setFloorButtonVBox(floorButtonBox);
+        sidebar.setLoggedInProperty(this.isLoggedIn, this.showLoginButton);
+        //this.originalMouseClick = sidebar.getOldNodeEditorHanlder();
         drawer.setSidePane(box);
         if(drawer.isShown()){
             drawer.close();
             drawerExtended = false;
+            map.getUnderlyingCanvas().setOnMouseClicked(originalMouseClick);
+            map.deletePoint("selected");
         } else {
             drawer.setPrefWidth(box.getPrefWidth());
             drawerExtended = true;
@@ -143,8 +162,9 @@ public class MainScreenController implements Initializable {
         map.setGrow(true);
         map.setZoom(minZoom);
 
-        PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, floorButtonBox);
-        SearchBarController searchBarController = new SearchBarController(searchBar, searchButton, mapSubsystem);
+        pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, floorButtonBox, floorNumberDisplay);
+        SearchBarController fromSearchController = new SearchBarController(fromSearchBar, searchButton, mapSubsystem);
+        SearchBarController toSearchController = new SearchBarController(toSearchBar, searchButton, mapSubsystem);
 
         // Zoom in and out using plus and minus keys
         mapScroll.onKeyTypedProperty().set((KeyEvent event) -> {
@@ -171,15 +191,12 @@ public class MainScreenController implements Initializable {
             if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
                 areaPane.getChildren().remove(nodeInfo);
                 nodeInfo = null;
+                System.out.println("Restored to default.");
             }
-
-            if(event.isControlDown()) { // check for a node and if there is one display the node info
-                generateNodePopUp(event);
-            } else {
-                pathfinding.genPathWithClicks(event);
-            }
+            generateNodePopUp(event);
         };
         map.getUnderlyingCanvas().onMouseClickedProperty().set(clickedOnMapHandler);
+        this.originalMouseClick = clickedOnMapHandler;
 
         // When the map is resized the pop up must be taken off the screen
         // TODO: Make the pop up move instead
@@ -215,26 +232,37 @@ public class MainScreenController implements Initializable {
         });
 
         // Handle the search bar, allow for autocomplete and fuzzy searching of nodes
-        searchBar.valueProperty().addListener((observable, oldValue, newValue) -> {
-            searchBarController.matchFuzzySearchValues();
+        fromSearchBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+            fromSearchController.matchFuzzySearchValues();
         });
+        toSearchBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+            toSearchController.matchFuzzySearchValues();
+        });
+        fromSearchController.updateNodeListing(true, map.getCurrentFloor());
+        toSearchController.updateNodeListing(false, map.getCurrentFloor());
 
-        searchBarController.updateNodeListing(map.getCurrentFloor());
         // When the floor is switched make it so the floor is changed in the search box
         for(Node node : floorButtonBox.getChildren()) {
             node.pressedProperty().addListener((Observable obs) -> {
-                searchBarController.updateNodeListing(map.getCurrentFloor());
+                toSearchController.updateNodeListing(false, map.getCurrentFloor());
+                fromSearchController.updateNodeListing(true, map.getCurrentFloor());
             });
         }
-
-
 
         // If the searchbutton is pressed, display a path to the selected/approximately matched node
         searchButton.pressedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean before, Boolean after) -> {
             if(!before && after) { // When button is pressed
                 System.out.println("SEARCH BUTTON PRESSED");
-                MapNode dest = mapSubsystem.getNodeByDescription(searchBar.getSelectionModel().getSelectedItem(), true);
-                pathfinding.genPath(dest);
+                MapNode origin = fromSearchController.getSelectedNode();
+                MapNode dest = toSearchController.getSelectedNode();
+                if(origin == null) {
+                    origin = mapSubsystem.getOriginNode();
+                }
+                System.out.println("SEARCH RESULTS: GO TO "+dest.getId()+" FROM "+origin.getId());
+                TextDirections directions = pathfinding.genPath(origin, dest);
+                if(sidebar != null) {
+                    sidebar.setDirections(directions);
+                }
             }
         });
     }
@@ -265,15 +293,16 @@ public class MainScreenController implements Initializable {
                 e.printStackTrace();
             }
             NodeInfoPopUpController ni = loader.getController();
-            ni.setInfo(clickedNode, map, mapSubsystem);
+            ni.setInfo(clickedNode, map, mapSubsystem, pathfinding, sidebar);
 
             // Create pane to load nodeInfo root node into
             nodeInfo.toFront(); // bring to front of screen
             areaPane.getChildren().add(nodeInfo);
 
             // Display the pane next to the mouse cursor
-            double windowW = 140; // TODO: Pull these directly from the parent node itself.
-            double windowH = 225;
+            double windowW = 140;
+            double windowH = nodeInfo.prefHeight(windowW)+35;
+            System.out.println("WINDOWH "+windowH);
 
             double newX = event.getSceneX()-windowW/2;
             double newY = event.getSceneY()-windowH;
@@ -290,7 +319,6 @@ public class MainScreenController implements Initializable {
             }
         }
     }
-
 
     public void hideLoginButton() {
         login.setVisible(false);

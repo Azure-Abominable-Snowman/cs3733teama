@@ -7,7 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import org.apache.commons.codec.language.DoubleMetaphone;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class SearchBarController {
 
@@ -35,25 +36,46 @@ public class SearchBarController {
         System.out.println("DOUBLE METAPHONE ENCODED: "+doubleMetaphone.doubleMetaphone(selected, false)+" "+
                 doubleMetaphone.doubleMetaphone(selected, true));
 
+        System.out.println("DMETA EQUAL: "+doubleMetaphone.isDoubleMetaphoneEqual("testval", selected));
+
         // TODO: Use built in DoubleMetaphone in order to do string matching with the typed values
         // TODO: Display these matched values below where the user is typing
         // TODO: Allow the user to select from this menu
     }
 
     /**
-     * Updates the node listing for the current floor.
+     * Updates the node listing for the building
      *
      * This might also need to be called when fuzzy search matching ends
      *
-     * @param currentFloor
      */
-    public void updateNodeListing(Floor currentFloor) {
+    public void updateNodeListing(boolean onlyThis, Floor floor) {
         // Initially populate the list with all of the values (long descriptions)
         inputField.getItems().clear();
-        Collection<MapNode> floorNodes = mapSubsystem.getVisibleFloorNodes(currentFloor).values();
+        ArrayList<MapNode> floorNodes = new ArrayList<>();
+        if(!onlyThis) {
+            for (Floor f : Floor.values()) {
+                floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(f).values());
+            }
+        } else {
+            floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(floor).values());
+        }
+
+        // Alphabetize by long description
+        floorNodes.sort(new Comparator<MapNode>() {
+            @Override
+            public int compare(MapNode o1, MapNode o2) {
+                return o1.getLongDescription().compareTo(o2.getLongDescription());
+            }
+        });
+
         for(MapNode n : floorNodes) {
             inputField.getItems().add(n.getLongDescription());
         }
+    }
+
+    public MapNode getSelectedNode() {
+        return mapSubsystem.getNodeByDescription(inputField.getSelectionModel().getSelectedItem(), true);
     }
 
 }
