@@ -22,10 +22,11 @@ public class InterpreterSubsystem {
         private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
     }
 
-    public InterpreterSubsystem getInstance() {
+    public static InterpreterSubsystem getInstance() {
         return InterpreterHelper._instance;
     }
 
+    //adds an ArrayList
     // adds a given staff member to the database; done by admin
     public boolean addStaff(InterpreterStaff s) {
         return staffDB.addStaff(s);

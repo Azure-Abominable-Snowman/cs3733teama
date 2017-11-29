@@ -11,8 +11,13 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,6 +25,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -31,6 +39,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import java.util.*;
 
 public class MainScreenSidebarController {
@@ -50,6 +62,8 @@ public class MainScreenSidebarController {
     @FXML
     private JFXRadioButton beamSearch;
 
+
+
     @FXML
     private JFXButton login;
 
@@ -60,7 +74,7 @@ public class MainScreenSidebarController {
     private JFXButton add, edit;
 
     @FXML
-    private TitledPane selectAlg, mapTools, serviceReqs;
+    private TitledPane selectAlg, mapTools, serviceReqs, staff;
 
     @FXML
     private Text nodePrompt;
@@ -82,6 +96,15 @@ public class MainScreenSidebarController {
     @FXML
     private JFXSlider beamSearchQueue;
 
+    @FXML
+    private JFXButton btnAdd;
+
+    @FXML
+    private TableView<InterpreterTableAdapter> InterpInfoTable;
+    @FXML
+    private TableColumn<InterpreterTableAdapter,String> firstCol, lastCol, langCol;
+    @FXML
+    private TableColumn<InterpreterTableAdapter,String> certCol, phoneCol, emailCol;
     private ToggleGroup algoToggleGroup;
     private SimpleBooleanProperty floorChange = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty isLoggedInProperty;
@@ -106,6 +129,7 @@ public class MainScreenSidebarController {
 
     private EventHandler oldNodeEditorHandler;
 
+    private ObservableList<InterpreterTableAdapter> tableVals;
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
 
@@ -121,7 +145,7 @@ public class MainScreenSidebarController {
         aStar.setUserData(new AStar());
         breadthFirst.setUserData(new BreathFirst());
         dijkstra.setUserData(new Dijkstras());
-        beamSearch.setUserData(new BeamSearch(20)); // TODO: make queue size editable
+        beamSearch.setUserData(new BeamSearch((int)beamSearchQueue.getValue())); // TODO: make queue size editable
 
         // Select the default algorithm
         mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
@@ -133,7 +157,8 @@ public class MainScreenSidebarController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
-
+        btnAdd.setVisible(false);
+        initInterpColumns();
 
         //Map Editor
         /*
@@ -230,6 +255,9 @@ public class MainScreenSidebarController {
 
             }
         });
+
+
+
     }
 
 
@@ -262,10 +290,10 @@ public class MainScreenSidebarController {
         }
     }
 
-    public void setDirections(TextDirections directions) {
-        this.directions.clear();
-        for(Direction dir : directions.getDirections()) {
-            this.directions.appendText(dir.getDescription()+"\n");
+    public void setDirections(TextDirections textDir) {
+        directions.clear();
+        for(Direction dir : textDir.getDirections()) {
+            directions.appendText(dir.getDescription()+"\n");
         }
     }
 
@@ -370,6 +398,7 @@ public class MainScreenSidebarController {
         selectAlg.visibleProperty().bind(isLoggedInProperty);
         mapTools.visibleProperty().bind(isLoggedInProperty);
         serviceReqs.visibleProperty().bind(isLoggedInProperty);
+        staff.visibleProperty().bind(isLoggedInProperty);
         login.visibleProperty().bind(showLoginButton);
     }
 
@@ -390,12 +419,12 @@ public class MainScreenSidebarController {
             loginController.getLoggedInProperty().addListener((obs, before, now) -> {
                 if (now) {
                     loginPopup.hide();
-                    //login.setVisible(false);
+
+                    btnAdd.setVisible(true);
                     isLoggedInProperty.set(true);
                     showLoginButton.set(false);
                 }
                 else {
-                    //login.setVisible(true);
                     isLoggedInProperty.set(false);
                     showLoginButton.set(true);
                 }
@@ -409,5 +438,84 @@ public class MainScreenSidebarController {
         }
     }
 
+    @FXML
+    private void onAddStaff(ActionEvent event){
+        popUpInterpInfo(null);
+    }
+    private void popUpInterpInfo(InterpreterStaff staff){
+        Stage InterpPopUp = new Stage();
+        try {
+            InterpPopUp.setTitle("View B&W Interpreters");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InterpreterModScreen.fxml"));
 
+            Scene InterpModScene = new Scene(loader.load());
+            InterpreterModController interpreterModController = loader.getController();
+            interpreterModController.setInterpreter(staff);
+            interpreterModController.setEditing(true);
+            interpreterModController.setCompleted(false);
+            interpreterModController.getCompleted().addListener((obs, before, completed) -> {
+                if (completed) {
+                    if(interpreterModController.getEditing()){
+                        updateInterpList();
+                    }
+                    InterpPopUp.hide();
+                }
+            });
+            InterpPopUp.setScene(InterpModScene);
+            InterpPopUp.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void initInterpColumns(){
+        firstCol.setCellValueFactory(
+                new PropertyValueFactory<>("firstName"));
+        lastCol.setCellValueFactory(
+                new PropertyValueFactory<>("lastName"));
+        langCol.setCellValueFactory(
+                new PropertyValueFactory<>("languages"));
+        certCol.setCellValueFactory(
+                new PropertyValueFactory<>("certification"));
+        phoneCol.setCellValueFactory(
+                new PropertyValueFactory<>("phone"));
+        emailCol.setCellValueFactory(
+                new PropertyValueFactory<>("email"));
+
+        tableVals =  FXCollections.observableArrayList();
+        for(InterpreterStaff interp: getInterpreterStaff()){
+            tableVals.add(new InterpreterTableAdapter(interp));
+        }
+        InterpInfoTable.setItems(tableVals);
+        InterpInfoTable.setRowFactory(tv -> {
+            TableRow<InterpreterTableAdapter> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (! row.isEmpty()) {
+
+                    InterpreterTableAdapter clickedRow = row.getItem();
+                    //System.out.println(clickedRow.getInterpreter());
+                    popUpInterpInfo(clickedRow.getInterpreter());
+                }
+            });
+            return row ;
+        });
+    }
+    //This is called by the add/modify popout to allow the list to update based on the DB
+    public void updateInterpList(){
+        System.out.println("updating list");
+        tableVals =  FXCollections.observableArrayList();
+        for(InterpreterStaff interp: getInterpreterStaff()){
+            tableVals.add(new InterpreterTableAdapter(interp));
+        }
+        InterpInfoTable.setItems(tableVals);
+    }
+    //TODO update the method to get all the interpreters from the DB
+    private ArrayList<InterpreterStaff> getInterpreterStaff(){
+        return InterpreterSubsystem.getInstance().getAllStaff();
+    }
+    public void hideLoginButton() {
+        login.setVisible(false);
+    }
 }
