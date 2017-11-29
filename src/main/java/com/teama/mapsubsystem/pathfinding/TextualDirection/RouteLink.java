@@ -5,6 +5,8 @@ import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 
+import java.awt.geom.FlatteningPathIterator;
+
 public class RouteLink {
 
     private MapNode thisNode, nextNode;
@@ -20,6 +22,7 @@ public class RouteLink {
     private Floor startFloor;
     private  Floor nextFloor; // Can't have an end floor since there is only a start and next, therefore no end
 
+    private  boolean endFlag = false;
 
 
 
@@ -157,5 +160,13 @@ public class RouteLink {
 
     public MapNode getNext() {
         return next;
+    }
+
+    public boolean isEndFlag() {
+        return endFlag;
+    }
+
+    public void setEndFlag(boolean endFlag) {
+        this.endFlag = endFlag;
     }
 }
