@@ -251,7 +251,14 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             log.info("Staff member successfully updated.");
              try {
                  removeStaffLangTable.setInt(1, s.getStaffID()); // first remove all languages, then re-add
+                 System.out.println(s.getStaffID());
                  removeStaffLangTable.executeUpdate();
+                 log.info("Executed delete languages");
+                 getQualifiedStaffLangs.setInt(1, s.getStaffID());
+                 ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
+                 while (rsLangs.next()) {
+                     log.info("Should have deleted, but Found a language " + rsLangs.getString("LANGUAGE"));
+                 }
              }
              catch (SQLException e) {
                  log.info("Failed to clear existing languages...");
@@ -263,10 +270,15 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             for (Language l: langs) {
 
                 try {
-                    updateStaffLangTable.setString(1, l.toString());
-                    updateStaffLangTable.setInt(2, s.getStaffID());
-                    updateStaffLangTable.executeUpdate();
-                    log.info("Added lanuage " + l.toString());
+                    addStaffLangTable.setInt(1, s.getStaffID());
+                    addStaffLangTable.setString(2, l.toString());
+                    addStaffLangTable.executeUpdate();
+                    log.info("Added language " + l.toString());
+                    getQualifiedStaffLangs.setInt(1, s.getStaffID());
+                    ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
+                    while (rsLangs.next()) {
+                        log.info("After re-adding, Found a language " + rsLangs.getString("LANGUAGE"));
+                    }
                 }
                 catch (SQLException e) {
                     log.info("Failed to update staff member Language Table.");
@@ -307,6 +319,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.valueOf(rs.getString("PROVIDER")));
             found = new InterpreterStaff(new GenericStaffInfo(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
                     new InterpreterInfo(rs.getInt("STAFFID"), langs, CertificationType.valueOf(rs.getString("CERTIFICATION"))));
+
             log.info("Found staff member with ID " + rs.getInt("STAFFID"));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -321,6 +334,11 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             ResultSet rs = getStaff.executeQuery();
             if (rs.next()) {
                 found = rsToStaff(rs);
+                /*
+                for (Language l: found.getLanguages()) {
+                    System.out.print(l.toString());
+                }
+                */
                 /*
                 Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
                 avail.add(ContactInfoTypes.EMAIL);
