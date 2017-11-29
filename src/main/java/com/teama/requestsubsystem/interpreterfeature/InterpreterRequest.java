@@ -23,7 +23,7 @@ public class InterpreterRequest {
 
     public InterpreterRequest(GenericRequestInfo g, int familySize, Language requiredLanguage) {
         this.info = g;
-        this.r = RequestStatus.ASSIGNED;
+        this.r = RequestStatus.OPEN;
         this.requiredLanguage = requiredLanguage;
         this.familySize = familySize;
 
@@ -98,6 +98,10 @@ public class InterpreterRequest {
 
     public void updateStatus(RequestStatus newStatus) {
         r = newStatus;
+    }
+
+    public String toString(){
+        return "Type: Interpreter \n" + "Location: " + getLocation().toString() + "\n" + "RequestStatus: "+ r.toString() + "\n" + "Staff ID: "+ Integer.toString(getInfo().getStaffID());
     }
 
 
