@@ -60,6 +60,9 @@ public class MainScreenSidebarController {
     private JFXButton add, edit;
 
     @FXML
+    private TitledPane selectAlg, mapTools, serviceReqs;
+
+    @FXML
     private Text nodePrompt;
     @FXML
     private TextField nodeName;
@@ -81,6 +84,7 @@ public class MainScreenSidebarController {
 
     private ToggleGroup algoToggleGroup;
     private SimpleBooleanProperty floorChange = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty isLoggedInProperty = new SimpleBooleanProperty(false);
 
     private MapSubsystem mapSubsystem;
 
@@ -100,6 +104,9 @@ public class MainScreenSidebarController {
 
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
+        selectAlg.visibleProperty().bind(isLoggedInProperty);
+        mapTools.visibleProperty().bind(isLoggedInProperty);
+        serviceReqs.visibleProperty().bind(isLoggedInProperty);
 
 
         // Add all of the radio buttons to a toggle group
@@ -211,6 +218,8 @@ public class MainScreenSidebarController {
 
             }
         });
+
+
 
     }
 
@@ -351,9 +360,11 @@ public class MainScreenSidebarController {
                 if (now) {
                     loginPopup.hide();
                     login.setVisible(false);
+                    isLoggedInProperty.set(true);
                 }
                 else {
                     login.setVisible(true);
+                    isLoggedInProperty.set(false);
                 }
             });
 

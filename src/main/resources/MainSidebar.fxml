@@ -40,7 +40,7 @@
                         <Font name="Calibri" size="15.0" />
                      </font>
                   </TitledPane>
-                <TitledPane animated="false" prefHeight="581.0" prefWidth="313.0" text="Select Algorithm">
+                <TitledPane fx:id="selectAlg" animated="false" prefHeight="581.0" prefWidth="313.0" text="Select Algorithm">
                   <content>
                         <ScrollPane hbarPolicy="NEVER" prefHeight="552.0" prefWidth="328.0">
                            <content>
@@ -100,7 +100,7 @@
                         <Font name="Calibri" size="15.0" />
                      </font>
                 </TitledPane>
-                  <TitledPane animated="false" text="Map Tools">
+                  <TitledPane fx:id="mapTools" animated="false" text="Map Tools">
                     <content>
                         <ScrollPane>
                            <content>
@@ -194,7 +194,7 @@
                         <Font name="Calibri" size="15.0" />
                      </font>
                   </TitledPane>
-                <TitledPane animated="false" text="Service Requests">
+                <TitledPane fx:id="serviceReqs" animated="false" text="Service Requests">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
