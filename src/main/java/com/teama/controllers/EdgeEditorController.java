@@ -67,13 +67,13 @@ public class EdgeEditorController {
         startFloor.getItems().clear();
         startFloor.getItems().addAll(Floor.values());
 
-        startNodeLocInfo.add(startFloor, 0, 2);
+        startNodeLocInfo.add(startFloor, 2, 0);
         startFloor.setVisible(false);
 
         endFloor = new JFXComboBox<>();
         endFloor.getItems().clear();
         endFloor.getItems().addAll(Floor.values());
-        endNodeLocInfo.add(endFloor, 0, 2);
+        endNodeLocInfo.add(endFloor, 2, 0);
         endFloor.setVisible(false);
 
         setStart.setOnMouseClicked((MouseEvent e) -> {

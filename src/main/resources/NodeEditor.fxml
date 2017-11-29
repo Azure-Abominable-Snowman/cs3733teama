@@ -154,7 +154,7 @@
                   <Font size="14.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="removeNode" buttonType="RAISED" onAction="#onDeleteClick" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Delete" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <JFXButton fx:id="removeNode" buttonType="RAISED" onAction="#onDeleteClick" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Delete" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
