@@ -1,10 +1,16 @@
 package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.drawing.MapDisplay;
+<<<<<<< HEAD
+import com.teama.mapsubsystem.data.DrawEdgeInstantly;
+import com.teama.mapsubsystem.data.Floor;
+import com.teama.mapsubsystem.data.MapEdge;
+=======
 import com.teama.mapsubsystem.data.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 
 public class DisplayPathInstantly extends DisplayPath {
     public DisplayPathInstantly(Path path) {
@@ -23,6 +29,22 @@ public class DisplayPathInstantly extends DisplayPath {
 
     @Override
     public void displayOnScreen(MapDisplay display, Floor floor) {
+<<<<<<< HEAD
+        for(MapEdge e : getConnectors()) {
+            if(e.getStart().getCoordinate().getLevel().equals(floor) &&
+                    e.getEnd().getCoordinate().getLevel().equals(floor))
+                new DrawEdgeInstantly(e).displayOnScreen(display);
+        }
+    }
+
+    public void deleteFromScreen(MapDisplay display) {
+        /*for(MapNode n : getNodes()) {
+            display.deleteLine(n.getId());
+        }*/
+        for(MapEdge e : getConnectors()) {
+            display.deleteLine(e.getId());
+        }
+=======
         // Clear all previous annotations from the screen
         display.clearText();
         // boolean to highlight the start of a path on the floor special
@@ -124,5 +146,6 @@ public class DisplayPathInstantly extends DisplayPath {
 
     public void deleteFromScreen(MapDisplay display) {
         deleteFromScreen(display, display.getCurrentFloor());
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     }
 }

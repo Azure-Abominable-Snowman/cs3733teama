@@ -32,6 +32,11 @@ public abstract class DisplayPath {
         return path.getConnectors();
     }
 
+<<<<<<< HEAD
+    public abstract void displayOnScreen(MapDisplay display);
+    public abstract void displayOnScreen(MapDisplay display, Floor floor);
+    public abstract void deleteFromScreen(MapDisplay display);
+=======
     public MapNode getStartNode() { return path.getStartNode(); }
 
     public MapNode getEndNode() { return path.getEndNode(); }
@@ -40,4 +45,5 @@ public abstract class DisplayPath {
     public abstract void displayOnScreen(MapDisplay display, Floor floor);
     public abstract void deleteFromScreen(MapDisplay display);
     public abstract void deleteFromScreen(MapDisplay display, Floor floor);
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 }

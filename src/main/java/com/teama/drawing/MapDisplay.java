@@ -4,13 +4,22 @@ import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
+<<<<<<< HEAD
+import javafx.scene.paint.Color;
+=======
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 
 public interface MapDisplay {
     void drawPoint(String id, Location loc, double size, Color color, boolean screenCoords);
     void drawLine(String id, Location start, Location end, double weight, Color color, boolean screenCoords);
+<<<<<<< HEAD
+
+    void deletePoint(String id);
+    void deleteLine(String id);
+=======
     void drawLine(String id, Location start, Location end, double weight, Color color, boolean arrow, boolean screenCoords);
     void drawImage(String id, Image img, Location center, boolean screenCoords);
     void drawText(String id, String text, Location center, Font f, boolean screenCoords);
@@ -21,6 +30,7 @@ public interface MapDisplay {
     void deleteText(String id);
 
     void clearText();
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 
     String pointAt(Location loc);
     String lineAt(Location loc);

@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.sun.javafx.scene.control.skin.TextFieldSkin;
 import com.teama.drawing.HospitalMap;
 import com.teama.drawing.HospitalMapDisplay;
 import com.teama.drawing.MapDisplay;
@@ -27,18 +28,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Delegates tasks to the other controllers on the main screen
@@ -105,6 +107,32 @@ public class MainScreenController implements Initializable {
 
     private MapSubsystem mapSubsystem;
 
+//    String[] words = {"Fenwood Road",
+//            "Schlagler Stairs",
+//            "Information Desk",
+//            "Information Desk",
+//            "Elevator S G",
+//            "BTM Security Desk",
+//            "Neuro Testing Waiting Area",
+//            "Infusion Waiting Area",
+//            "Schlagler Innovation Lobby",
+//            "Test Lobby",
+//            "Test Area1",
+//            "Test Area2",
+//            "Test Area3",
+//            "Test Desk",
+//            "Test Front Desk",
+//            "Test Info Desk",
+//            "Test Desk2",
+//            "Test Desk3",
+//            "Test Desk4",
+//            "Test Desk5",
+//            "Test Stairs2",
+//    };
+//    Set<String> possibleWordSet = new HashSet<>();
+//    private AutoCompletionBinding<String> autoCompletionBinding;
+
+
     @FXML
     void onHamburgerButtonClick(MouseEvent event) throws IOException {
         hamOpnsTran.setRate(animRate*=-1);
@@ -131,6 +159,11 @@ public class MainScreenController implements Initializable {
         drawer.setSidePane();
         hamOpnsTran = new HamburgerBackArrowBasicTransition(hamburgerButton);
 
+//        Collections.addAll(possibleWordSet, words);
+
+
+        //String[] possibleWords = {"test", "test2"};
+
         Map<Floor, HospitalMap> imgs = new HashMap<>();
         imgs.put(Floor.SUBBASEMENT, new ProxyMap("/maps/L2.png"));
         imgs.put(Floor.BASEMENT, new ProxyMap("/maps/L1.png"));
@@ -145,6 +178,20 @@ public class MainScreenController implements Initializable {
 
         PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, floorButtonBox);
         SearchBarController searchBarController = new SearchBarController(searchBar, searchButton, mapSubsystem);
+
+//        searchBar.setEditable(true);
+//        //autoCompletionBinding = TextFields.bindAutoCompletion(searchBar.getEditor(), possibleWordSet);
+//        //TextFields.bindAutoCompletion(searchBar.getEditor(), possibleWordSet);
+//
+//        searchBar.getEditor().setOnKeyPressed((KeyEvent e)->{
+//            switch(e.getCode()){
+//                case ENTER:
+//                    learnWord(searchBar.getEditor().getText());
+//                    break;
+//                default:
+//                    break;
+//            }
+//        });
 
         // Zoom in and out using plus and minus keys
         mapScroll.onKeyTypedProperty().set((KeyEvent event) -> {
@@ -238,6 +285,15 @@ public class MainScreenController implements Initializable {
             }
         });
     }
+
+//    private void learnWord(String text) {
+//        possibleWordSet.add(text);
+//
+//        if(autoCompletionBinding != null)
+//            autoCompletionBinding.dispose();
+//
+//                autoCompletionBinding = TextFields.bindAutoCompletion(searchBar.getEditor(), possibleWordSet);
+//    }
 
 
     private Parent nodeInfo;

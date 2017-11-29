@@ -6,9 +6,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
+<<<<<<< HEAD
+import javafx.scene.paint.Color;
+=======
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +33,12 @@ public class HospitalMapDisplay implements MapDisplay {
     // Location in the center of the screen
     private Location displayedLocation;
 
+<<<<<<< HEAD
+    // List of all the lines, and all the points
+    private Map<String, Line> lineMap = new HashMap<>();
+    private Map<String, Point> pointMap = new HashMap<>();
+
+=======
     // Map of all the lines, and all the points
     private Map<String, Line> lineMap = new HashMap<>();
     private Map<String, Point> pointMap = new HashMap<>();
@@ -39,6 +49,7 @@ public class HospitalMapDisplay implements MapDisplay {
     // Map of all the text on the screen
     private Map<String, Text> textMap = new HashMap<>();
 
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     public HospitalMapDisplay(ScrollPane pane, Canvas canvas, Map<Floor, HospitalMap> maps) {
         this.pane = pane;
         this.canvas = canvas;
@@ -244,6 +255,8 @@ public class HospitalMapDisplay implements MapDisplay {
         for(Point p : pointMap.values()) {
             p.draw(gc);
         }
+<<<<<<< HEAD
+=======
 
         // Images
         for(Img i : imgMap.values()) {
@@ -254,6 +267,7 @@ public class HospitalMapDisplay implements MapDisplay {
         for(Text t : textMap.values()) {
             t.draw(gc);
         }
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     }
 
     /**
@@ -310,22 +324,31 @@ public class HospitalMapDisplay implements MapDisplay {
      */
     @Override
     public void drawLine(String id, Location start, Location end, double weight, Color color, boolean screenCoords) {
+<<<<<<< HEAD
+=======
         drawLine(id, start, end, weight, color, false, screenCoords);
     }
 
     // TODO: This is a lot of repeated code, needs to be factored out somehow...
     @Override
     public void drawLine(String id, Location start, Location end, double weight, Color color, boolean arrow, boolean screenCoords) {
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
         if(screenCoords) {
             start = convToImageCoords(start);
             end = convToImageCoords(end);
         }
+<<<<<<< HEAD
+        Line l = new Line(id, start, end, weight, color);
+=======
         Line l = new Line(id, start, end, weight, color, arrow);
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
         lineMap.put(id, l);
         render();
     }
 
     @Override
+<<<<<<< HEAD
+=======
     public void drawImage(String id, Image img, Location center, boolean screenCoords) {
         if(screenCoords) {
             center = convToImageCoords(center);
@@ -348,6 +371,7 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     @Override
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     public void deletePoint(String id) {
         pointMap.remove(id);
         render();
@@ -360,6 +384,8 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     @Override
+<<<<<<< HEAD
+=======
     public void deleteImage(String id) {
         imgMap.remove(id);
         render();
@@ -381,6 +407,7 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     @Override
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     public Floor getCurrentFloor() {
         return curFloor;
     }
@@ -527,14 +554,23 @@ public class HospitalMapDisplay implements MapDisplay {
         private double weight;
         private Color color;
         private String id;
+<<<<<<< HEAD
+        public Line(String id, Location start, Location end, double weight, Color color) {
+=======
         private boolean arrow;
 
         public Line(String id, Location start, Location end, double weight, Color color, boolean arrow) {
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
             this.start = start;
             this.end = end;
             this.weight = weight;
             this.color = color;
             this.id = id;
+<<<<<<< HEAD
+        }
+
+        public void draw(GraphicsContext gc) {
+=======
             this.arrow = arrow;
         }
 
@@ -552,10 +588,13 @@ public class HospitalMapDisplay implements MapDisplay {
         }
 
         public void draw(GraphicsContext gc, boolean arrow) {
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
             double width = canvas.getWidth();
             double height = canvas.getHeight();
             gc.setLineWidth(weight);
             gc.setStroke(color);
+<<<<<<< HEAD
+=======
             double node1X =  convUnits(start.getxCoord(), getMaxX(), width);
             double node1Y = convUnits(start.getyCoord(), getMaxY(), height);
             double node2X = convUnits(end.getxCoord(), getMaxX(), width);
@@ -574,6 +613,7 @@ public class HospitalMapDisplay implements MapDisplay {
                 gc.strokeLine(node2X, node2Y, x1, y1);
                 gc.strokeLine(node2X, node2Y, x2, y2);
             }
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
             gc.strokeLine(
                     convUnits(start.getxCoord(), getMaxX(), width),
                     convUnits(start.getyCoord(), getMaxY(), height),
@@ -632,6 +672,8 @@ public class HospitalMapDisplay implements MapDisplay {
             return id;
         }
     }
+<<<<<<< HEAD
+=======
 
     // Stores location data for an image so it can be easily redrawn
     private class Img {
@@ -682,4 +724,5 @@ public class HospitalMapDisplay implements MapDisplay {
         public Location getLoc() { return loc; }
         public String getId() { return id; }
     }
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 }

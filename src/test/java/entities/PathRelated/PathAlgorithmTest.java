@@ -14,7 +14,10 @@ import static org.junit.Assert.*;
 public class PathAlgorithmTest {
     MapNode[][] map1 = new MapNode[20][20];
     MapNode[][] mapd = new MapNode[30][30];
+<<<<<<< HEAD
+=======
     MapNode[][] map2 = new MapNode[100][100];
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     PathAlgorithm finder;
 
     @Before
@@ -22,16 +25,22 @@ public class PathAlgorithmTest {
         GenerateMap g = new GenerateMap();
         map1=g.GenerateNewMap(1);
         mapd=g.GenerateNewMap('d');
+<<<<<<< HEAD
+=======
         map2=g.GenerateNewMap(2);
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
         g.printMap(map1,20,20);
         System.out.println();
         System.out.println();
         System.out.println();
         g.printMap(mapd,25,25);
+<<<<<<< HEAD
+=======
         System.out.println();
         System.out.println();
         System.out.println();
         g.printMap(map2,100,100);
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     }
 
     @Test
@@ -75,17 +84,25 @@ public class PathAlgorithmTest {
     @Test
     public void BFSGeneratePath() throws Exception{
         finder = new BreathFirst();
+<<<<<<< HEAD
+        Path result =  finder.generatePath(map1[0][0], map1[12][1]);
+        assertTrue(result.getNodes().contains(map1[0][0]));    //check the start
+=======
         //Path result =  finder.generatePath(map1[0][0], map1[12][1]);
         Path result3 = finder.generatePath(map2[0][0], map2[99][99]);
         assertTrue(result3.getNodes().contains(map2[0][0]));
         assertTrue(result3.getNodes().contains(map2[99][99]));
 
       /*  assertTrue(result.getNodes().contains(map1[0][0]));    //check the start
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
         assertTrue(result.getNodes().contains(map1[12][1]));   //check the end
         assertTrue(result.getNodes().contains(map1[1][1]));    //check some points in the path
         assertTrue(result.getNodes().contains(map1[6][1]));
         assertTrue(result.getNodes().contains(map1[11][1]));
+<<<<<<< HEAD
+=======
         */
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 
         Path result2 = finder.generatePath(mapd[0][0],mapd[22][20]);
         result2 = finder.generatePath(mapd[0][0],mapd[13][14]);
@@ -108,7 +125,11 @@ public class PathAlgorithmTest {
         assertTrue(result.getNodes().contains(map1[12][1]));// check the end
         assertTrue(result.getNodes().contains(map1[0][4])); // check some points in the path.
         assertTrue(result.getNodes().contains(map1[11][1]));
+<<<<<<< HEAD
+        // if this one passed, means the queue size is big enough for this to be the same as A* in this map. 
+=======
         // if this one passed, means the queue size is big enough for this to be the same as A* in this map.
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
         assertTrue(result.getNodes().contains(map1[11][4]));
 
         Path result2 = finder.generatePath(mapd[0][0],mapd[22][20]);

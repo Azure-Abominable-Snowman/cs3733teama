@@ -3,7 +3,10 @@ package com.teama.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXRadioButton;
+<<<<<<< HEAD
+=======
 import com.jfoenix.controls.JFXSlider;
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -48,9 +51,12 @@ public class MainScreenSidebarController {
     @FXML
     private JFXButton login;
 
+<<<<<<< HEAD
+=======
     @FXML
     private JFXSlider beamSearchQueue;
 
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
     private ToggleGroup algoToggleGroup;
 
     private MapSubsystem mapSubsystem;
@@ -70,7 +76,11 @@ public class MainScreenSidebarController {
         aStar.setUserData(new AStar());
         breadthFirst.setUserData(new BreathFirst());
         dijkstra.setUserData(new Dijkstras());
+<<<<<<< HEAD
+        beamSearch.setUserData(new BeamSearch(20)); // TODO: make queue size editable
+=======
         beamSearch.setUserData(new BeamSearch((int)beamSearchQueue.getValue())); // TODO: make queue size editable
+>>>>>>> debd930a63094ba67f16d534fdf245a250150458
 
         // Select the default algorithm
         mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
