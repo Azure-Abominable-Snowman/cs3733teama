@@ -10,8 +10,6 @@ import java.awt.geom.FlatteningPathIterator;
 
 public class RouteLink {
 
-    private MapNode thisNode, nextNode;
-    private int link;
     private MapNode start;
     private MapNode next;
     private double turnAngle;
@@ -32,12 +30,14 @@ public class RouteLink {
 
         this.start = start;
         this.next = next;
-
+        this.lastLink=lastLink;
         pointingAngle = AngleGenerator.vectorAngle(start, next);
 
         if(lastLink != null) {
 
-            turnAngle =  pointingAngle - lastLink.getPointingAngle();
+            turnAngle =  lastLink.getPointingAngle()- pointingAngle ;
+            for(;turnAngle>=180;turnAngle-=360); // keep the angles below 180
+            for (;turnAngle<-180;turnAngle+=360);   // keep the angles above -180
             genText();
 
         }
@@ -67,8 +67,8 @@ public class RouteLink {
         // in the case of the same floor.
         if ( start.getCoordinate().getLevel().equals(next.getCoordinate().getLevel())) {
 
-            double dx = start.getCoordinate().getxCoord() - next.getCoordinate().getxCoord();
-            double dy = start.getCoordinate().getyCoord() - next.getCoordinate().getyCoord();
+            double dx = next.getCoordinate().getxCoord() - start.getCoordinate().getxCoord();
+            double dy = next.getCoordinate().getyCoord() - start.getCoordinate().getyCoord();
             distance = (double) Math.sqrt( dx*dx + dy*dy);
 
 
