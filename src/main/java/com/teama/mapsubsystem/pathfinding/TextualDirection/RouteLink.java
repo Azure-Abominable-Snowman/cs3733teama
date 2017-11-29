@@ -21,6 +21,9 @@ public class RouteLink {
     private  Floor nextFloor; // Can't have an end floor since there is only a start and next, therefore no end
 
 
+
+
+
     RouteLink(MapNode start, MapNode next, RouteLink lastLink) {
 
         this.start = start;
@@ -119,13 +122,10 @@ public class RouteLink {
             }
             
         }
-    }
-
             startFloor = start.getCoordinate().getLevel();
             nextFloor = next.getCoordinate().getLevel();
 
         }
-    }
 
     public double getDistance() {
         return distance;
@@ -135,8 +135,21 @@ public class RouteLink {
         this.distance = distance;
     }
 
+    public Floor getStartFloor() {
+        return startFloor;
+    }
 
+    public void setStartFloor(Floor startFloor) {
+        this.startFloor = startFloor;
+    }
 
+    public Floor getNextFloor() {
+        return nextFloor;
+    }
+
+    public void setNextFloor(Floor nextFloor) {
+        this.nextFloor = nextFloor;
+    }
 
 
 }

@@ -86,8 +86,8 @@ public class TextualDirections implements DirectionsGenerator {
 
     private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)
     {
-        return null;
+        baseLink.setNextFloor(nextLink.getNextFloor());
+        return baseLink;
     }
-
 
 }
