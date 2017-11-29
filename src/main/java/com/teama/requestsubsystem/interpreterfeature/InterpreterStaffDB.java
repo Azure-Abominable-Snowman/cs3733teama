@@ -20,7 +20,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
     private String staffTableLanguages;
     private Connection conn = null;
     private Statement stmt = null;
-    PreparedStatement addStaff, removeStaffTable, updateStaffTable, getStaff, getQualifiedStaff, getQualifiedStaffInfo;
+    PreparedStatement addStaff, removeStaffTable, updateStaffTable, getStaff, getQualifiedStaff, getQualifiedStaffInfo, getAllStaff;
     PreparedStatement addStaffLangTable, updateStaffLangTable, getQualifiedStaffLangs, removeStaffLangTable;
 
     public InterpreterStaffDB(String dbURL, String staffTableName, String languageTableName) {
@@ -99,6 +99,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
         try {
             addStaff = conn.prepareStatement("INSERT INTO " + staffTable + " (FIRSTNAME, LASTNAME, PHONENUMBER, EMAIL, PROVIDER, CERTIFICATION) VALUES(?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             getStaff = conn.prepareStatement("SELECT * FROM " + staffTable + " WHERE STAFFID = ?");
+            getAllStaff = conn.prepareStatement("SELECT * FROM " + staffTable);
             /*
             getQualifiedStaff = conn.prepareStatement("SELECT * FROM " + staffTable + " AS T1, " +
                     staffTableLanguages + " AS T2 WHERE T1.STAFFID = T2.STAFFID AND T2.LANGUAGE = ?");
@@ -215,15 +216,28 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             return false;
         }
     }
-/*
-           updateStaffTable = conn.prepareStatement("UPDATE " + staffTable + " SET FIRSTNAME = ?, LASTNAME = ?, PHONENUMBER = ?, EMAIL = ?, PROVIDER = ?" +
-                    " CERTIFICATION = ?, WHERE STAFFID = ?");
-            updateStaffLangTable = conn.prepareStatement("UPDATE " + staffTableLanguages + " SET LANGUAGE = ? WHERE STAFFID = ?");
-
- */
-
+    /*
+               updateStaffTable = conn.prepareStatement("UPDATE " + staffTable + " SET FIRSTNAME = ?, LASTNAME = ?, PHONENUMBER = ?, EMAIL = ?, PROVIDER = ?" +
+                        " CERTIFICATION = ?, WHERE STAFFID = ?");
+                updateStaffLangTable = conn.prepareStatement("UPDATE " + staffTableLanguages + " SET LANGUAGE = ? WHERE STAFFID = ?");
+     */
+    public ArrayList<InterpreterStaff> getAllStaff() {
+        ArrayList<InterpreterStaff> allStaff = new ArrayList<>();
+        try {
+            ResultSet all = getAllStaff.executeQuery();
+            while (all.next()) {
+                InterpreterStaff gottenStaff = rsToStaff(all);
+                if (gottenStaff != null) {
+                    allStaff.add(gottenStaff);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allStaff;
+    }
     public boolean updateStaff(InterpreterStaff s) {
-         try {
+        try {
             updateStaffTable.setString(1, s.getFirstName());
             updateStaffTable.setString(2, s.getLastName());
             updateStaffTable.setString(3, s.getPhone());
@@ -233,23 +247,23 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             updateStaffTable.setInt(7, s.getStaffID());
             updateStaffTable.executeUpdate();
             log.info("Staff member successfully updated.");
-             try {
-                 removeStaffLangTable.setInt(1, s.getStaffID()); // first remove all languages, then re-add
-                 removeStaffLangTable.executeUpdate();
-             }
-             catch (SQLException e) {
-                 log.info("Failed to clear existing languages...");
-                 e.printStackTrace();
-             }
+            try {
+                removeStaffLangTable.setInt(1, s.getStaffID()); // first remove all languages, then re-add
+                removeStaffLangTable.executeUpdate();
+            }
+            catch (SQLException e) {
+                log.info("Failed to clear existing languages...");
+                e.printStackTrace();
+            }
 
             // add to Language Table
             Set<Language> langs = s.getLanguages();
             for (Language l: langs) {
 
-                try {
-                    updateStaffLangTable.setString(1, l.toString());
-                    updateStaffLangTable.setInt(2, s.getStaffID());
-                    updateStaffLangTable.executeUpdate();
+                try { // readd all languages
+                    addStaffLangTable.setInt(1, s.getStaffID());
+                    addStaffLangTable.setString(2, l.toString());
+                    addStaffLangTable.executeUpdate();
                 }
                 catch (SQLException e) {
                     log.info("Failed to update staff member Language Table.");
@@ -269,8 +283,30 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
     /*
                getStaff = conn.prepareStatement("SELECT T1.*, T2.* FROM " + staffTable + " AS T1, " +
                     staffTableLanguages + " AS T2 WHERE T1.STAFFID = ? AND T1.STAFFID = T2.STAFFID");
-
      */
+    private InterpreterStaff rsToStaff(ResultSet rs) {
+        InterpreterStaff found = null;
+
+        try {
+            Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
+            avail.add(ContactInfoTypes.EMAIL);
+            avail.add(ContactInfoTypes.TEXT);
+            avail.add(ContactInfoTypes.PHONE);
+            Set<Language> langs = new HashSet<>();
+            getQualifiedStaffLangs.setInt(1, rs.getInt("STAFFID"));
+            ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
+            while (rsLangs.next()) {
+                langs.add(Language.getLanguage(rsLangs.getString("LANGUAGE")));
+            }
+            ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.getFromString(rs.getString("PROVIDER")));
+            found = new InterpreterStaff(new GenericStaffInfo(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
+                    new InterpreterInfo(rs.getInt("STAFFID"), langs, CertificationType.valueOf(rs.getString("CERTIFICATION"))));
+            log.info("Found staff member with ID " + rs.getInt("STAFFID"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return found;
+    }
     // finds staff by ID
     public InterpreterStaff getStaff(int id) {
         InterpreterStaff found = null;
@@ -278,6 +314,8 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             getStaff.setInt(1, id);
             ResultSet rs = getStaff.executeQuery();
             if (rs.next()) {
+                found = rsToStaff(rs);
+                /*
                 Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
                 avail.add(ContactInfoTypes.EMAIL);
                 avail.add(ContactInfoTypes.TEXT);
@@ -293,6 +331,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
                         new InterpreterInfo(rs.getInt("STAFFID"), langs, CertificationType.valueOf(rs.getString("CERTIFICATION"))));
                 log.info("Found staff member with ID " + rs.getInt("STAFFID"));
                 // perform another query to find contact info types
+                */
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -303,7 +342,6 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
     }
 /*
             removeStaffReqTable = conn.prepareStatement("DELETE FROM " + staffTable + " WHERE STAFFID = ?");
-
  */
 
     public boolean deleteStaff(int id) {
@@ -335,6 +373,3 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
         }
     }
 }
-
-
-

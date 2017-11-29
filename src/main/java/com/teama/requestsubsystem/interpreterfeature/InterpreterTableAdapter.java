@@ -15,6 +15,7 @@ public class InterpreterTableAdapter {
     private StringProperty certification;
     private StringProperty phone;
     private StringProperty email;
+    private InterpreterStaff interpreterBase;
 
     public InterpreterTableAdapter(InterpreterStaff interpreter){
         firstName= new SimpleStringProperty(interpreter.getFirstName());
@@ -27,6 +28,7 @@ public class InterpreterTableAdapter {
         certification=new SimpleStringProperty(interpreter.getCertification().toString());
         phone=new SimpleStringProperty(interpreter.getPhone());
         email = new SimpleStringProperty(interpreter.getEmail());
+        this.interpreterBase=interpreter;
     }
     public String getFirstName(){
         return firstName.get();
@@ -36,12 +38,14 @@ public class InterpreterTableAdapter {
     public String getCertification(){return certification.get();}
     public String getPhone(){return phone.get();}
     public String getEmail(){return email.get();}
+    public InterpreterStaff getInterpreter(){return interpreterBase;}
     public void setCertification(CertificationType certification){this.certification.set(certification.toString());}
     public void setLanguages(Set<Language> languages){
         String langsToAdd ="";
         for(Language l : languages){
             langsToAdd+=l.toString()+"\n";
         }
+        this.languages.set(langsToAdd);
     }
     public void setFirstName(String firstName){
         this.firstName.set(firstName);

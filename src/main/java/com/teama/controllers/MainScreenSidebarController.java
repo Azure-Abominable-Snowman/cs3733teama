@@ -60,6 +60,9 @@ public class MainScreenSidebarController {
     private JFXButton login;
 
     @FXML
+    private JFXButton btnAdd;
+
+    @FXML
     private TableView<InterpreterTableAdapter> InterpInfoTable;
     @FXML
     private TableColumn<InterpreterTableAdapter,String> firstCol, lastCol, langCol;
@@ -94,7 +97,9 @@ public class MainScreenSidebarController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
+        btnAdd.setVisible(false);
         initInterpColumns();
+
     }
 
     /**
@@ -169,13 +174,13 @@ public class MainScreenSidebarController {
             Stage loginPopup = new Stage();
 
             loginPopup.setTitle("B&W Login");
-            FXMLLoader loader = new FXMLLoader();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LogInScreen.fxml"));
             //StaffLoginController loginController = loader.getController();
 
 
-            Scene loginScene = new Scene(loader.load(getClass().getResource("/LogInScreen.fxml")));
+            Scene loginScene = new Scene(loader.load());
             //loginPopup.setScene((AnchorPane)));
-            StaffLoginController loginController = new StaffLoginController();
+            StaffLoginController loginController = loader.getController();
 
             loginController.setLoggedIn(false);
 
@@ -183,6 +188,7 @@ public class MainScreenSidebarController {
                 if (nowLoggedIn) {
                     loginPopup.hide();
                     login.setVisible(false);
+                    btnAdd.setVisible(true);
                 }
             });
 
@@ -194,13 +200,39 @@ public class MainScreenSidebarController {
             e.printStackTrace();
         }
     }
+
     @FXML
-    private void getSelectedItem(MouseEvent e){
-        System.out.println("here!");
-        InterpreterTableAdapter t = InterpInfoTable.getSelectionModel().selectedItemProperty().get();
-        //InterpreterTableAdapter t = e.getTableView().getItems().get(e.getTablePosition().getRow());
-        System.out.println(t.getLanguages());
+    private void onAddStaff(ActionEvent event){
+        popUpInterpInfo(null);
     }
+    private void popUpInterpInfo(InterpreterStaff staff){
+        Stage InterpPopUp = new Stage();
+        try {
+            InterpPopUp.setTitle("View B&W Interpreters");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InterpreterModScreen.fxml"));
+
+            Scene InterpModScene = new Scene(loader.load());
+            InterpreterModController interpreterModController = loader.getController();
+            interpreterModController.setInterpreter(staff);
+            interpreterModController.setEditing(true);
+            interpreterModController.setCompleted(false);
+            interpreterModController.getCompleted().addListener((obs, before, completed) -> {
+                if (completed) {
+                    if(interpreterModController.getEditing()){
+                        updateInterpList();
+                    }
+                    InterpPopUp.hide();
+                }
+            });
+            InterpPopUp.setScene(InterpModScene);
+            InterpPopUp.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void initInterpColumns(){
         firstCol.setCellValueFactory(
                 new PropertyValueFactory<>("firstName"));
@@ -224,16 +256,18 @@ public class MainScreenSidebarController {
             TableRow<InterpreterTableAdapter> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (! row.isEmpty()) {
+
                     InterpreterTableAdapter clickedRow = row.getItem();
-                    System.out.println(clickedRow.getLanguages());
+                    //System.out.println(clickedRow.getInterpreter());
+                    popUpInterpInfo(clickedRow.getInterpreter());
                 }
             });
             return row ;
         });
-        //TODO: get the table to have all of the values of the interpreters
     }
     //This is called by the add/modify popout to allow the list to update based on the DB
     public void updateInterpList(){
+        System.out.println("updating list");
         tableVals =  FXCollections.observableArrayList();
         for(InterpreterStaff interp: getInterpreterStaff()){
             tableVals.add(new InterpreterTableAdapter(interp));
@@ -242,7 +276,8 @@ public class MainScreenSidebarController {
     }
     //TODO update the method to get all the interpreters from the DB
     private ArrayList<InterpreterStaff> getInterpreterStaff(){
-        Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
+        return InterpreterSubsystem.getInstance().getAllStaff();
+        /*Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
         avail.add(ContactInfoTypes.EMAIL);
         avail.add(ContactInfoTypes.TEXT);
         avail.add(ContactInfoTypes.PHONE);
@@ -269,8 +304,7 @@ public class MainScreenSidebarController {
         interpreters.add(wilson);
         interpreters.add(joe);
         return interpreters;
-        //TODO: Add the dummy method for getting the interpreters
-
+*/
     }
     public void hideLoginButton() {
         login.setVisible(false);

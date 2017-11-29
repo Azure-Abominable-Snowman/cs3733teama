@@ -22,7 +22,7 @@ public class InterpreterSubsystem {
         private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
     }
 
-    public InterpreterSubsystem getInstance() {
+    public static InterpreterSubsystem getInstance() {
         return InterpreterHelper._instance;
     }
 
@@ -49,7 +49,7 @@ public class InterpreterSubsystem {
     // TODO
     // returns a list of all Interpreters in the system
     public ArrayList<InterpreterStaff> getAllStaff() {
-        return null;
+        return staffDB.getAllStaff();
     }
 
     // adds an Interpreter request to the database
