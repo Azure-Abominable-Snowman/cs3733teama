@@ -65,7 +65,7 @@ public class BreathFirst implements PathAlgorithm {
         return output;
     }
 
-    protected Path formatOutput(Stack<MapNode> finalPath)
+    private Path formatOutput(Stack<MapNode> finalPath)
     {
         Path output = new Path();
         MapNode currentNode = finalPath.pop(); // extract the first Node of the list.

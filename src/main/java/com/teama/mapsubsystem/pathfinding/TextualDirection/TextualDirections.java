@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class TextualDirections implements DirectionsGenerator {
-    ArrayList<MapNode> nodeList;
-    ArrayList<RouteLink> routeLinks ;
-    ArrayList<Direction> dirList;
+    private ArrayList<MapNode> nodeList;
+    private ArrayList<RouteLink> routeLinks ;
+    private ArrayList<Direction> dirList;
 
     TextualDirections()
     {
