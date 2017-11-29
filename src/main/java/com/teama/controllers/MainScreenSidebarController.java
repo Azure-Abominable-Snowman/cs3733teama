@@ -166,7 +166,11 @@ public class MainScreenSidebarController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/EdgeEditor.fxml"));
                     Parent root = (Parent) loader.load();
+                    EdgeEditorController edgeEditor = loader.getController();
+                    edgeEditor.setMap(map);
+                    edgeEditor.setButtons(add, edit);
                     infoPane.setContent(root);
+
 
                 } catch (IOException e) {
                     e.printStackTrace();

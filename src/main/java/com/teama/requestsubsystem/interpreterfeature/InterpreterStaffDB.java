@@ -142,6 +142,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
                     ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
                     while (rsLangs.next()) {
                         langs.add(Language.getLanguage(rsLangs.getString("LANGUAGE")));
+                        log.info("Found a language " + rsLangs.getString("LANGUAGE"));
                     }
                     ContactInfo c = new ContactInfo(avail, info.getString("PHONENUMBER"), info.getString("EMAIL"), Provider.valueOf(info.getString("PROVIDER")));
                     found = new InterpreterStaff(new GenericStaffInfo(info.getString("FIRSTNAME"), info.getString("LASTNAME"), c),
@@ -265,6 +266,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
                     updateStaffLangTable.setString(1, l.toString());
                     updateStaffLangTable.setInt(2, s.getStaffID());
                     updateStaffLangTable.executeUpdate();
+                    log.info("Added lanuage " + l.toString());
                 }
                 catch (SQLException e) {
                     log.info("Failed to update staff member Language Table.");
@@ -299,6 +301,8 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
             while (rsLangs.next()) {
                 langs.add(Language.getLanguage(rsLangs.getString("LANGUAGE")));
+                log.info("Found a language " + rsLangs.getString("LANGUAGE"));
+
             }
             ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.valueOf(rs.getString("PROVIDER")));
             found = new InterpreterStaff(new GenericStaffInfo(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
