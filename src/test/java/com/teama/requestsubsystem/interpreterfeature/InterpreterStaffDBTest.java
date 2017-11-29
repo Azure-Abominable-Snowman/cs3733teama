@@ -187,10 +187,13 @@ public class InterpreterStaffDBTest {
         db.addStaff(wilson);
         assertEquals(wilson.getFirstName(), db.getStaff(1).getFirstName());
         InterpreterStaff retrieved = db.getStaff(1);
+        langs.add(Language.German);
         retrieved.setFirstName("Wilson");
+        retrieved.setLanguages(langs);
         db.updateStaff(retrieved);
         assertEquals("Wong", db.getStaff(1).getLastName());
         assertEquals(retrieved.getFirstName(), db.getStaff(1).getFirstName());
+        assertEquals(retrieved.getLanguages().size(), db.getStaff(1).getLanguages().size());
 
 
     }

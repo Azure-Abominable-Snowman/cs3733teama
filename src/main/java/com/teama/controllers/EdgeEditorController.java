@@ -29,7 +29,7 @@ public class EdgeEditorController {
     @FXML
     private Text startNodeType, endNodeType;
     @FXML
-    private JFXButton removeEdge, confirm, cancel;
+    private JFXButton delete, editConfirm, cancel;
     @FXML
     private GridPane startNodeLocInfo, endNodeLocInfo,buttonGrid;
     @FXML
@@ -42,7 +42,9 @@ public class EdgeEditorController {
     private MapSubsystem masterMap;
     private Canvas c;
     private boolean inAddMode = false;
-    private boolean inDeleteMode = false;
+    private boolean inEditMode = false;
+    private boolean isDeleting = false;
+    private boolean isEditing = false;
 
     private MapNode startNode = null; // populated when user clicks set
     private MapNode endNode = null; // populated when user clicks set
@@ -59,13 +61,16 @@ public class EdgeEditorController {
     private String endLocID = "endLoc";
     private String selectedEdgeID = "selectedEdge";
 
-
+    private String defaultPrompt = "Select Add New to add an edge or Edit Existing to edit or delete an edge.";
 
     public void initialize() {
         masterMap = MapSubsystem.getInstance();
         startFloor = new JFXComboBox<>();
         startFloor.getItems().clear();
         startFloor.getItems().addAll(Floor.values());
+
+        clearAllText();
+        startNodePrompt.setText(defaultPrompt);
 
         startNodeLocInfo.add(startFloor, 2, 0);
         startFloor.setVisible(false);
@@ -77,40 +82,142 @@ public class EdgeEditorController {
         endFloor.setVisible(false);
 
         setStart.setOnMouseClicked((MouseEvent e) -> {
-            if (selectedNode != null) {
-                    startNode = selectedNode;
-                    startLoc = startNode.getCoordinate();
-                    map.drawPoint(startLocID, startLoc, 8, Color.BLUE, false);
-                    selectedNode = null;
-                    System.out.println("Set a start node.");
-            }
+
             if (setStart.getText().equals("Edit")) {
                 setStart.setText("Set");
+                map.deletePoint(selectedLocID);
+                map.deleteLine(selectedEdgeID);
+
+                startNode = null;
+                startLoc = null;
             }
             else if (setStart.getText().equals("Set")) {
                 setStart.setText("Edit");
+                if (selectedNode != null) {
+                    if (endLoc!= null) {
+                        map.deletePoint(startLocID);
+                    }
+                    startNode = selectedNode;
+                    startLoc = startNode.getCoordinate();
+                    map.drawPoint(startLocID, startLoc, 8, Color.GREEN, false);
+                    selectedNode = null;
+                    System.out.println("Set a start node.");
+                    if (endLoc != null) {
+                        map.drawLine(selectedEdgeID, startLoc, endLoc, 7, Color.GREEN, false);
+                    }
+                }
             }
 
+
+
+        });
+
+        editConfirm.setOnAction((ActionEvent e) -> {
+          if (editConfirm.getText().equals("Edit")) {
+              isEditing = true;
+              isDeleting = false;
+              setButtonsForAddMode();
+
+          }
+          else if (editConfirm.getText().equals("Confirm")) {
+              if (inAddMode) {
+                  if (startNode != null) {
+                      if (endNode != null) {
+                          MapEdge newEdge = masterMap.addEdge(new MapEdgeData("", startNode, endNode));
+                          if (newEdge != null) {
+                              new DrawEdgeInstantly(newEdge).displayOnScreen(map);
+                          }
+                      }
+                      else {
+                          startNodePrompt.setText("Select valid start and end nodes");
+                      }
+                  }
+                  else {
+                      startNodePrompt.setText("Select valid start and end nodes.");
+                  }
+              }
+              restoreToDefault();
+          }
         });
 
         setEnd.setOnMouseClicked((MouseEvent e) -> {
-            if (selectedNode != null) {
-                endNode = selectedNode;
-                endLoc = endNode.getCoordinate();
-                map.drawPoint(endLocID, endLoc, 8, Color.BLUE, false);
-
-                selectedNode = null;
-                System.out.println("Set an End node.");
-
-                map.drawLine(selectedEdgeID, startLoc, endLoc, 7, Color.GREEN, false);
-            }
             if (setEnd.getText().equals("Edit")) {
+                endNode = null;
+                endLoc = null;
                 setEnd.setText("Set");
+                map.deletePoint(selectedLocID);
+                map.deleteLine(selectedEdgeID);
             }
             else if (setEnd.getText().equals("Set")) {
                 setEnd.setText("Edit");
+                if (selectedNode != null) {
+                    if (endLoc != null) {
+                        map.deletePoint(endLocID);
+                        map.deleteLine(selectedEdgeID);
+                    }
+
+                    endNode = selectedNode;
+                    endLoc = endNode.getCoordinate();
+                    map.drawPoint(endLocID, endLoc, 8, Color.BLUE, false);
+                    map.drawPoint(startLocID, startLoc, 8, Color.BLUE, false);
+
+                    selectedNode = null;
+                    System.out.println("Set an End node.");
+
+                    map.drawLine(selectedEdgeID, startLoc, endLoc, 7, Color.GREEN, false);
+                }
             }
         });
+
+        cancel.setOnAction((ActionEvent e) -> {
+            restoreToDefault();
+        });
+
+    }
+    private void clearAllText() {
+        startNodePrompt.setText("");
+        //endNodePrompt.setText("");
+        startNodeName.setText("");
+        endNodeName.setText("");
+        startNodeType.setText("");
+        endNodeType.setText("");
+        startCoord.setText("");
+        endCoord.setText("");
+        startFloorText.setText("");
+        endFloorText.setText("");
+    }
+
+    private void restoreToDefault() {
+        clearAllText();
+        startNodePrompt.setText(defaultPrompt);
+
+
+        if (selectedLocation != null) {
+            map.deletePoint(selectedLocID);
+        }
+
+        startNode = null; // populated when user clicks set
+        endNode = null; // populated when user clicks set
+        selectedNode = null;
+
+        selectedLocation = null;
+        startLoc = null;
+        endLoc = null;
+
+        inAddMode = false;
+        inEditMode = false;
+        isDeleting = false;
+        isEditing = false;
+
+        setStart.setText("Set");
+        setEnd.setText("Set");
+        map.deletePoint(selectedLocID);
+        map.deleteLine(selectedEdgeID);
+        map.deletePoint(startLocID);
+        map.deletePoint(endLocID);
+
+        addMode.setVisible(true);
+        deleteMode.setVisible(true);
 
     }
     /*
@@ -142,18 +249,48 @@ public class EdgeEditorController {
         this.addMode = add;
         this.deleteMode = delete;
         this.addMode.setOnAction((ActionEvent e) -> {
+            restoreToDefault();
             inAddMode = true;
-            inDeleteMode = false;
+            inEditMode = false;
+            addMode.setVisible(false);
+            deleteMode.setVisible(false);
+            setButtonsForAddMode();
 
+            startNodePrompt.setText("To add an edge, select Start and End Nodes, then Confirm.");
         });
+
+
+
         this.deleteMode.setOnAction((ActionEvent e) -> {
+            restoreToDefault();
+            startNodePrompt.setText("Select the start and end nodes of the edge to Edit or Delete.");
+
             inAddMode = false;
-            inDeleteMode = true;
-        });
+            inEditMode = true;
+            addMode.setVisible(false);
+            deleteMode.setVisible(false);
+            setButtonsForEditMode();
+            });
 
     }
 
+    private void setButtonsForAddMode() {
+        editConfirm.setText("Confirm");
+        cancel.setVisible(true);
+        delete.setVisible(false);
+    }
 
+    private void setButtonsForEditMode() {
+        editConfirm.setText("Edit");
+        cancel.setVisible(true);
+        delete.setVisible(true);
+    }
+
+    private void hideAllButtons() {
+        editConfirm.setVisible(false);
+        cancel.setVisible(false);
+        delete.setVisible(false);
+    }
 
     private void setNodeInfo(boolean startNode) {
 

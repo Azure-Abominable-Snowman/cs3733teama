@@ -20,6 +20,8 @@ public class MapSubsystem {
     private PathGenerator pathGenerator;
     private MapNode originNode; // Default origin (1st floor info desk)
 
+
+
     private static class MapSubsystemGetter {
         private static final MapSubsystem instance = new MapSubsystem();
     }
@@ -82,7 +84,15 @@ public class MapSubsystem {
         return newNode;
     }
 
-
+    public MapEdge addEdge(MapEdge e) {
+        MapEdge newEdge = null;
+        if (e != null) {
+            String ID = DatabaseUUID.generateID(e.getStartID(), e.getEndID());
+            newEdge = new MapEdgeData(ID, e.getStart(), e.getEnd());
+            javaDBSource.addEdge(newEdge);
+        }
+        return newEdge;
+    }
 
     public void deleteEdge(String id) {
         javaDBSource.removeEdge(id);
