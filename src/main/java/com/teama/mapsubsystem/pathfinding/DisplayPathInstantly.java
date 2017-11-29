@@ -81,23 +81,23 @@ public class DisplayPathInstantly extends DisplayPath {
                         // If they are then this is the destination floor
                         MapEdge checkEdge = getConnectors().get(j);
                         if(checkEdge.getStart().getCoordinate().getLevel().equals(checkEdge.getEnd().getCoordinate().getLevel())) {
-                            annoText = checkEdge.getStart().getCoordinate().getLevel().toString();
+                            annoText = "To " + checkEdge.getStart().getCoordinate().getLevel().toString();
                             break;
                         }
                     }
                 } else {
                     // For other floor -> start floor
                     // For loop must be reversed
-                    for(int j = i-1; j < getConnectors().size(); j--) {
+                    for(int j = i; j < getConnectors().size(); j--) {
                         MapEdge checkEdge = getConnectors().get(j);
                         if(checkEdge.getStart().getCoordinate().getLevel().equals(checkEdge.getEnd().getCoordinate().getLevel())) {
-                            annoText = checkEdge.getStart().getCoordinate().getLevel().toString();
+                            annoText = "From " + checkEdge.getStart().getCoordinate().getLevel().toString();
                             break;
                         }
                     }
                 }
                 //System.out.println("DRAW "+annoText+" AS AN ANNOTATION WITH ID "+chFloorNode.getId());
-                display.drawText(chFloorNode.getId(), "To "+annoText, chFloorNode.getCoordinate(), Font.font("Courier", FontWeight.BOLD, 16), false);
+                display.drawText(chFloorNode.getId(), annoText, chFloorNode.getCoordinate(), Font.font("Courier", FontWeight.BOLD, 16), false);
             }
 
         }
