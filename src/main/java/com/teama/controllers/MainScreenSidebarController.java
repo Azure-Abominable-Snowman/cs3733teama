@@ -19,11 +19,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -75,7 +75,7 @@ public class MainScreenSidebarController {
     @FXML
     JFXComboBox nodeTypes;
     @FXML
-    private ScrollPane infoPane;
+    private Pane infoPane;
     private ToggleGroup editorToggles;
     private Canvas c;
 
@@ -101,6 +101,8 @@ public class MainScreenSidebarController {
     private ArrayList<String> shownNodes;
     private ArrayList<String> shownEdges;
     private VBox floorButtonBox;
+
+    private EventHandler oldNodeEditorHandler;
 
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
@@ -149,22 +151,20 @@ public class MainScreenSidebarController {
         editNodes.setToggleGroup(editorToggles);
         editEdges.setToggleGroup(editorToggles);
 
-
-
         editorToggles.selectedToggleProperty().addListener((Observable obs) -> {
+            add.setVisible(true);
+            edit.setVisible(true);
             if (editNodes.isSelected()) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/NodeEditor.fxml"));
                     //loader.setLocation(getClass().getResource("/NodeEditor.fxml"));
                     Parent root = (Parent) loader.load(); // load in fxml
                     NodeEditorController nodeEditor = loader.getController();
+                    edit.setText("Edit Existing");
                     nodeEditor.setButtons(add, edit);
                     nodeEditor.setMap(map);
-                    infoPane.setContent(root);
-
-
-
-
+                    infoPane.getChildren().clear();
+                    infoPane.getChildren().add(root);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -175,16 +175,28 @@ public class MainScreenSidebarController {
                     Parent root = (Parent) loader.load();
                     EdgeEditorController edgeEditor = loader.getController();
                     edgeEditor.setMap(map);
+                    edit.setText("Delete");
                     edgeEditor.setButtons(add, edit);
-                    infoPane.setContent(root);
-
-
+                    infoPane.getChildren().clear();
+                    infoPane.getChildren().add(root);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             else {
-                //infoPane.setContent(defaultInfo);
+                // Delete the cursor
+                map.deletePoint(NodeEditorController.selectedLocID);
+
+
+                // Restore the old node editor handler so the pop ups keep appearing
+                map.getUnderlyingCanvas().setOnMouseClicked(oldNodeEditorHandler);
+
+                if(!editNodes.isSelected()) {
+                    System.out.println("STOP EDITING NODES");
+                }
+
+                // Remove whatever is in the infopane
+                infoPane.getChildren().clear();
             }
         });
 
@@ -230,6 +242,7 @@ public class MainScreenSidebarController {
      */
     public void setMapDisplay(MapDisplay map) {
         this.map = map;
+        oldNodeEditorHandler = map.getUnderlyingCanvas().getOnMouseClicked();
     }
 
     /**

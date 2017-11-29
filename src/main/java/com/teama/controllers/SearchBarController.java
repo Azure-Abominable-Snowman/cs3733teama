@@ -36,6 +36,8 @@ public class SearchBarController {
         System.out.println("DOUBLE METAPHONE ENCODED: "+doubleMetaphone.doubleMetaphone(selected, false)+" "+
                 doubleMetaphone.doubleMetaphone(selected, true));
 
+        System.out.println("DMETA EQUAL: "+doubleMetaphone.isDoubleMetaphoneEqual("testval", selected));
+
         // TODO: Use built in DoubleMetaphone in order to do string matching with the typed values
         // TODO: Display these matched values below where the user is typing
         // TODO: Allow the user to select from this menu
@@ -47,11 +49,17 @@ public class SearchBarController {
      * This might also need to be called when fuzzy search matching ends
      *
      */
-    public void updateNodeListing(Floor floor) {
+    public void updateNodeListing(boolean onlyThis, Floor floor) {
         // Initially populate the list with all of the values (long descriptions)
         inputField.getItems().clear();
         ArrayList<MapNode> floorNodes = new ArrayList<>();
-        floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(floor).values());
+        if(!onlyThis) {
+            for (Floor f : Floor.values()) {
+                floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(f).values());
+            }
+        } else {
+            floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(floor).values());
+        }
 
         // Alphabetize by long description
         floorNodes.sort(new Comparator<MapNode>() {

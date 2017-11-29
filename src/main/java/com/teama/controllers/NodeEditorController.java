@@ -62,7 +62,7 @@ public class NodeEditorController {
     private boolean isDeleting = false;
 
     private String defaultPrompt = "Select an existing node to Edit or Delete it. Click 'Add New' to add a new node.";
-    private String selectedLocID = "selected";
+    public final static String selectedLocID = "selected";
 
     public void initialize() {
         System.out.println("Creating a new editor controller.");
@@ -70,8 +70,8 @@ public class NodeEditorController {
 
         clearAllText();
         nodePrompt.setText(defaultPrompt);
-        nodeName.setEditable(false);
-        nodeLongName.setEditable(false);
+        nodeName.setDisable(true);
+        nodeLongName.setDisable(true);
 
         nodeTypeSelector = new JFXComboBox<>();
         nodeTypeSelector.getItems().clear(); // reset any defaults
@@ -104,21 +104,25 @@ public class NodeEditorController {
 
         confirm.setOnMouseClicked((MouseEvent event) ->{
                 if (selectedLocation != null) {
-                    if (addingNew.get()) {
+                    if (addingNew.get()) { // Adding node
                         MapNode toAdd = nodeFromUser();
                         if (toAdd != null) {
                             MapNode added = masterMap.addNode(toAdd);
                             restoreToDefault();
+                            nodeName.setDisable(true);
+                            nodeLongName.setDisable(true);
                             if (added != null) {
                                 new DrawNodeInstantly(added).displayOnScreen(map);
                             }
                         }
                     }
-                    else if (isEditEditing) {
+                    else if (isEditEditing) { // Editing node
                         MapNode toUpdate = nodeFromUser();
                         if (toUpdate != null && selectedNode != null) {
                             System.out.println();
-                            MapNode edited = masterMap.addNode(new MapNodeData(selectedNode.getId(), toUpdate.getCoordinate(), toUpdate.getNodeType(),toUpdate.getLongDescription(), toUpdate.getShortDescription(), selectedNode.getTeamAssignment(), selectedNode.getEdges()));
+                            MapNode edited = masterMap.addNode(new MapNodeData(selectedNode.getId(), toUpdate.getCoordinate(),
+                                    toUpdate.getNodeType(),toUpdate.getLongDescription(), toUpdate.getShortDescription(),
+                                    selectedNode.getTeamAssignment(), selectedNode.getEdges()));
                             if (edited != null) {
                                 map.deletePoint(selectedNode.getId());
                                 new DrawNodeInstantly(edited).displayOnScreen(map);
@@ -127,10 +131,10 @@ public class NodeEditorController {
 
                         }
                         else {
-                            System.out.println("Something is WRONG.");
+                            System.out.println("Something is WONG.");
                         }
                     }
-                    else if (isDeleting) {
+                    else if (isDeleting) { // Deleting node
                         if (selectedNode != null) {
                             masterMap.deleteNode(selectedNode.getId());
                             map.deletePoint(selectedNode.getId());
@@ -175,25 +179,25 @@ public class NodeEditorController {
         isDeleting = false;
         nodeTypeSelector.setVisible(false);
         nodeType.setVisible(true);
-        //map.
 
+        addMode.setVisible(true);
+        editMode.setVisible(true);
     }
+
     private MapNode nodeFromUser() {
         MapNode newNode = null;
         nodePrompt.setText("");
         String name = nodeName.getText();
-        String longName = nodeLongName.getText();
+        String longDes = nodeLongName.getText();
         String floor = curFloor.getText();
-        Location loc = selectedLocation;
-        String nodeType = "";
-        if (nodeTypeSelector.getValue() != null) {
-            nodeType = nodeTypeSelector.getValue().name();
+        String nType = nodeType.getText();
+        if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
+            nType = nodeTypeSelector.getSelectionModel().getSelectedItem().toString();
         }
-        if (name.equals("") || floor.equals("") || nodeType.equals("")) {
+        if (name.equals("") || floor.equals("") || nType.equals("")) {
             nodePrompt.setText("Please fill in all fields.");
         } else {
-            newNode = new MapNodeData("", selectedLocation, (NodeType) nodeTypeSelector.getValue(), longName, name, "A");
-
+            newNode = new MapNodeData("", selectedLocation, NodeType.fromValue(nType), longDes, name, "Team A");
         }
 
         return newNode;
@@ -225,6 +229,7 @@ public class NodeEditorController {
         nodeCoord.setText("");
         curFloor.setText("");
         nodeType.setText("");
+        nodeLongName.setText("");
     }
 
     public void setButtons(JFXButton add, JFXButton edit) {
@@ -249,7 +254,8 @@ public class NodeEditorController {
                 nodeTypeSelector.setPromptText("Select a Node Type");
                 nodeTypeSelector.setVisible(true);
 
-                nodeName.setEditable(true);
+                nodeName.setDisable(false);
+                nodeLongName.setDisable(false);
 
                 setButtonsForAddMode();
 
@@ -267,7 +273,8 @@ public class NodeEditorController {
                     setButtonsForEditMode();
                     nodeTypeSelector.setVisible(false);
                     nodeType.setVisible(true);
-                    nodeName.setEditable(false);
+                    nodeName.setDisable(false);
+                    nodeLongName.setDisable(false);
                 }
 
 
@@ -277,7 +284,8 @@ public class NodeEditorController {
 
     private void updateNodeInfo() {
         if (selectedNode != null) {
-            nodeName.setText(selectedNode.getLongDescription());
+            nodeName.setText(selectedNode.getShortDescription());
+            nodeLongName.setText(selectedNode.getLongDescription());
             nodeCoord.setText("(" + selectedNode.getCoordinate().getxCoord() + ", " + selectedNode.getCoordinate().getyCoord() + ")");
             curFloor.setText(map.getCurrentFloor().toString());
             nodeType.setText(selectedNode.getNodeType().toString());
@@ -286,7 +294,6 @@ public class NodeEditorController {
     }
 
     private void getLocationInfo(MouseEvent event) {
-
         selectedNode = null; // reset
         clearAllText();
         Location clicked = new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown");
@@ -327,7 +334,7 @@ public class NodeEditorController {
                 curFloor.setText(clicked.getLevel().toString());
             }
         }
-        map.drawPoint(selectedLocID, selectedLocation, 8, Color.GREEN, false);
+        map.drawPoint(selectedLocID, selectedLocation, 8, Color.GREEN, false,false);
     }
 
     public void setMap(MapDisplay m) {
@@ -346,7 +353,8 @@ public class NodeEditorController {
     @FXML
     public void onDeleteClick(ActionEvent e) {
         showConfirmCancelEditMode();
-        nodeName.setEditable(false);
+        nodeName.setDisable(true);
+        nodeLongName.setDisable(true);
         isDeleting = true;
         isEditEditing = false;
         if (selectedNode!= null) {
@@ -359,11 +367,13 @@ public class NodeEditorController {
     }
     @FXML
     public void onEditClick(ActionEvent e) {
-        nodeName.setEditable(true);
+        System.out.println("EDIT");
+        nodeName.setDisable(true);
+        nodeLongName.setDisable(true);
         showConfirmCancelEditMode();
         if (selectedNode != null) {
             nodePrompt.setVisible(false);
-            nodeTypeSelector.setVisible(true);
+            nodeTypeSelector.setVisible(false);
             editNode.setVisible(false);
             removeNode.setVisible(false);
             confirm.setVisible(true);

@@ -28,6 +28,15 @@ public enum NodeType {
         throw new IllegalArgumentException("No such NodeType " + name);
     }
 
+    public static NodeType fromValue(String val) {
+        for(NodeType type : NodeType.values()) {
+            if(type.toString().equals(val)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
     public String toString() {
         return this.name;
     }

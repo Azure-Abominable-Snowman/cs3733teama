@@ -126,7 +126,7 @@ public class PathfindingController {
     }
 
     public void genPath(MapNode origin, MapNode dest) {
-        Path path = mapSubsystem.getPathGenerator().generatePath(origin, dest);
+        Path path = mapSubsystem.getPathGenerator().generatePath(mapSubsystem.getNode(origin.getId()), mapSubsystem.getNode(dest.getId()));
         if(curPath != null) {
             curPath.deleteFromScreen(map);
             // unlight floors traveled on the button box
