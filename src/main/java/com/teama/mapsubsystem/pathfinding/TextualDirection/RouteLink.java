@@ -2,6 +2,7 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 
@@ -117,7 +118,7 @@ public class RouteLink {
             eleNum = 2;
             Integer stairNum;
             stairNum = 2;
-            if(start.getCoordinate().getLevel().toString().equals("Elevator")){
+            if(start.getNodeType().equals(NodeType.ELEV)){
                 textReturn = "Enter Elevator";
             }
             else{
