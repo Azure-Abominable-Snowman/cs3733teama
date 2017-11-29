@@ -33,6 +33,8 @@ public class SearchBarController {
     private ObservableList<String> originalItems;
     Set<String> possibleWordSet = new HashSet<>();
     private AutoCompletionBinding<String> autoCompletionBinding;
+    private AutoCompletionBinding<String> autoCompletionBinding2;
+
 
     // Double metaphone fuzzy search algorithm
     private DoubleMetaphone doubleMetaphone;
@@ -81,21 +83,99 @@ public class SearchBarController {
         autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
 
     }
+
+    private ArrayList<String> originalComboValues = new ArrayList<>();
+
     /**
      * Function that uses the current inputField text to generate and display a list of
      * approximately matched strings below the text field
      */
     public void matchFuzzySearchValues() {
-        String selected = inputField.getSelectionModel().getSelectedItem();
+        String toMatch = inputField.getEditor().getText();
+        System.out.println(toMatch);
+        if(toMatch.equals("")) {
+            inputField.getItems().clear();
+            inputField.getItems().addAll(originalComboValues);
+            inputField.hide();
+        } else {
+            /*List<String> tmp = inputField.getItems();
+            ArrayList<String> fieldNode = new ArrayList<>();
+            for(String s : tmp){
+                fieldNode.add(s);
+            }*/
+
+            inputField.getItems().clear();
+            inputField.show();
+            System.out.println("MATCHING:");
+            for(String des : originalComboValues) {
+                System.out.println(doubleMetaphone.doubleMetaphone(des)+" "+doubleMetaphone.doubleMetaphone(toMatch));
+                if(doubleMetaphone.isDoubleMetaphoneEqual(des, toMatch)) {
+                    inputField.getItems().add(des);
+                }
+            }
+
+            System.out.println("DOOOOOOOOOOOOo");
+            for(String node : originalComboValues){
+                System.out.println(node);
+                int index;
+                String n = node;
+                String tM = toMatch;
+
+                n = n.toLowerCase();
+                tM = tM.toLowerCase();
+
+                System.out.println(n);
+                System.out.println(tM);
+
+                ArrayList<String> aNode = new ArrayList<>();
+                while(!n.equals("")){
+                    index = n.indexOf(" ");
+                    if(index < 0){
+                        aNode.add(n);
+                        break;
+                    }
+                    else{
+                        aNode.add(n.substring(0, index));
+                        if(index + 1 >= n.length())
+                            break;
+                        n = n.substring(index+1);
+                    }
+                }
+
+                for(String s : aNode){
+                    if(tM.equals(s)){
+                        System.out.println("1111111111111111111111111111111111111111111111111111111111111111");
+                        if(!inputField.getItems().contains(node)){
+                            inputField.getItems().add(node);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            //autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+            /*int autoCount = autoCompletionBinding.getVisibleRowCount();
+            if(inputField.getItems().size() < autoCount){
+                inputField.getItems().clear();
+
+            }*/
+        }
+
+        /*String selected = inputField.getSelectionModel().getSelectedItem();
 
         String input = inputField.getEditor().getText();
 
+        Set<String> possibleWordSet2 = new HashSet<>();
+
 
         for(String n : possibleWordSet) {
-            if (doubleMetaphone.isDoubleMetaphoneEqual(input, n ))
-                autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
-        } //f
-
+            possibleWordSet2.clear();
+            possibleWordSet2.add(n);
+            if (doubleMetaphone.isDoubleMetaphoneEqual(input, n)) {
+                System.out.println("aaa");
+                //autoCompletionBinding2 = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet2);
+            }
+        }*/
         //if(doubleMetaphone.doubleMetaphone(input).equals(doubleMetaphone.doubleMetaphone(words[1]))) {
 //            Collections.addAll(possibleWordSet, words);
 //            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
@@ -124,12 +204,19 @@ public class SearchBarController {
         // Initially populate the list with all of the values (long descriptions)
         inputField.getItems().clear();
         possibleWordSet.clear();
+        originalComboValues.clear();
 
         Collection<MapNode> floorNodes = mapSubsystem.getVisibleFloorNodes(currentFloor).values();
         for(MapNode n : floorNodes) {
-            inputField.getItems().add(n.getLongDescription());
+            originalComboValues.add(n.getLongDescription());
             possibleWordSet.add(n.getLongDescription());
-            autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+            //autoCompletionBinding = TextFields.bindAutoCompletion(inputField.getEditor(), possibleWordSet);
+
+        }
+        if(inputField.getEditor().getText().equals("")) {
+            inputField.getItems().addAll(originalComboValues);
+        } else {
+            matchFuzzySearchValues();
         }
 
     }
