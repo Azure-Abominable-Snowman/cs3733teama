@@ -71,6 +71,7 @@ public class NodeEditorController {
         clearAllText();
         nodePrompt.setText(defaultPrompt);
         nodeName.setEditable(false);
+        nodeLongName.setEditable(false);
 
         nodeTypeSelector = new JFXComboBox<>();
         nodeTypeSelector.getItems().clear(); // reset any defaults
@@ -181,6 +182,7 @@ public class NodeEditorController {
         MapNode newNode = null;
         nodePrompt.setText("");
         String name = nodeName.getText();
+        String longName = nodeLongName.getText();
         String floor = curFloor.getText();
         Location loc = selectedLocation;
         String nodeType = "";
@@ -190,7 +192,7 @@ public class NodeEditorController {
         if (name.equals("") || floor.equals("") || nodeType.equals("")) {
             nodePrompt.setText("Please fill in all fields.");
         } else {
-            newNode = new MapNodeData("", selectedLocation, (NodeType) nodeTypeSelector.getValue(), name, "", "A");
+            newNode = new MapNodeData("", selectedLocation, (NodeType) nodeTypeSelector.getValue(), longName, name, "A");
 
         }
 
