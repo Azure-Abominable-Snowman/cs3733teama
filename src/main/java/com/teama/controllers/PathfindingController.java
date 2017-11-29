@@ -7,9 +7,12 @@ import com.teama.mapsubsystem.data.DrawNodeInstantly;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.DisplayPath;
 import com.teama.mapsubsystem.pathfinding.DisplayPathInstantly;
 import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.TextualDirections;
 import javafx.beans.Observable;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -121,11 +124,11 @@ public class PathfindingController {
      * Generates a path using the destination node specified
      * @param dest
      */
-    public void genPath(MapNode dest) {
-        genPath(mapSubsystem.getOriginNode(), dest);
+    public TextDirections genPath(MapNode dest) {
+        return genPath(mapSubsystem.getOriginNode(), dest);
     }
 
-    public void genPath(MapNode origin, MapNode dest) {
+    public TextDirections genPath(MapNode origin, MapNode dest) {
         Path path = mapSubsystem.getPathGenerator().generatePath(mapSubsystem.getNode(origin.getId()), mapSubsystem.getNode(dest.getId()));
         if(curPath != null) {
             curPath.deleteFromScreen(map);
@@ -148,6 +151,11 @@ public class PathfindingController {
             }
         }
 
+        // Generate directions
+        DirectionsGenerator directionsGenerator = new TextualDirections();
+
         curPath = dpi;
+
+        return directionsGenerator.generateDirections(path);
     }
 }
