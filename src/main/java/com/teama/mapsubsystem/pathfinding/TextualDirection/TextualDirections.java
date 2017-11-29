@@ -50,6 +50,13 @@ public class TextualDirections implements DirectionsGenerator {
                 }
             }
 
+            // case of the link right out of the elevator, ignore this for now.
+            if( thisTurn.getTextReturn().contains("No") )
+            {
+                thisTurn= nextLink;
+                continue;
+            }
+
             if (nextLink.getTextReturn().contains("Straight")) {
                 addDistance(thisTurn, nextLink); // combine the next one into this.
                 continue;
@@ -61,12 +68,15 @@ public class TextualDirections implements DirectionsGenerator {
 
 
 
+
+
     return null;
     }
 
-    private RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
+    private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
     {
-        return null;
+        turnLink.setDistance(turnLink.getDistance()+ straightLink.getDistance());
+        return turnLink;
     }
 
     private Direction formDirection (RouteLink routeLink)

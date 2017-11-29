@@ -128,16 +128,6 @@ public class RouteLink {
         SB, B, G, ONE, TWO, THREE;
     }
 
-
-
-    //TODO Add to textual Directions
-    private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
-    {
-        turnLink.setDistance(turnLink.getDistance()+ straightLink.getDistance());
-        return turnLink;
-    }
-
-
     public double getDistance() {
         return distance;
     }
