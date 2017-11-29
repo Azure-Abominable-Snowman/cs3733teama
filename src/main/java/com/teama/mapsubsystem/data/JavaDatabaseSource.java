@@ -14,7 +14,9 @@ public class JavaDatabaseSource implements MapDataSource {
     private String nodeTable, edgeTable;
     private Connection conn = null;
     private Statement stmt = null;
-    private PreparedStatement addEdgeStmt, addNodeStmt, selectNodeStmt, selectNodeEdgesStmt, selectEdgeStmt, removeNodeStmt, removeEdgeStmt, updateEdgeStmt, updateNodeStmt;
+    private PreparedStatement addEdgeStmt, addNodeStmt, selectNodeStmt, selectNodeEdgesStmt,
+            selectEdgeStmt, removeNodeStmt, removeEdgeStmt, updateEdgeStmt, updateNodeStmt,
+            getByLongDescriptionStmt, getByShortDescriptionStmt;
 
     public JavaDatabaseSource(String dbURL, String nodeTable, String edgeTable) {
         this.dbURL = dbURL;
@@ -105,6 +107,8 @@ public class JavaDatabaseSource implements MapDataSource {
             this.selectEdgeStmt = conn.prepareStatement("SELECT * FROM "+edgeTable+" WHERE EDGEID = ?");
             this.removeNodeStmt = conn.prepareStatement("DELETE FROM " + nodeTable + " WHERE NODEID = ?");
             this.removeEdgeStmt = conn.prepareStatement("DELETE FROM " + edgeTable + " WHERE EDGEID = ?");
+            this.getByLongDescriptionStmt = conn.prepareStatement("SELECT * FROM "+nodeTable+" WHERE LONGNAME = ?");
+            this.getByShortDescriptionStmt = conn.prepareStatement("SELECT * FROM "+nodeTable+" WHERE SHORTNAME = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -304,6 +308,7 @@ public class JavaDatabaseSource implements MapDataSource {
             //stmt = conn.createStatement();
             removeNodeStmt.setString(1, id);
             removeNodeStmt.executeUpdate();
+            log.info("Goodbye node.");
             //stmt.execute("DELETE FROM " + nodeTable + " WHERE NODEID='"+id+"'");
             //stmt.close();
         }
@@ -427,6 +432,30 @@ public class JavaDatabaseSource implements MapDataSource {
             result.close();
             stmt.close();
             return edges;
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public MapNode getNode(String description, boolean longDescription) {
+        try
+        {
+            ResultSet result;
+            if(longDescription) {
+                getByLongDescriptionStmt.setString(1, description);
+                result = getByLongDescriptionStmt.executeQuery();
+            } else {
+                getByShortDescriptionStmt.setString(1, description);
+                result = getByShortDescriptionStmt.executeQuery();
+            }
+            if(!result.next()) {
+                log.info("Not found in the database");
+                return null;
+            }
+            return getNode(result.getString("NODEID"));
         }
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
