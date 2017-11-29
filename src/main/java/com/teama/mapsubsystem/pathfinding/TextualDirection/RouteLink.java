@@ -107,15 +107,13 @@ public class RouteLink {
             //Split between stairs and els
             if(start.getCoordinate().getLevel().toString().equals("Elevator")){
                 textReturn = "Enter Elevator";
-                startFloor = start.getCoordinate().getLevel();
-                nextFloor = next.getCoordinate().getLevel();
             }
-
             else{
                 textReturn = "Enter Stairs";
-                startFloor = start.getCoordinate().getLevel();
-                nextFloor = next.getCoordinate().getLevel();
             }
+
+            startFloor = start.getCoordinate().getLevel();
+            nextFloor = next.getCoordinate().getLevel();
 
         }
     }
