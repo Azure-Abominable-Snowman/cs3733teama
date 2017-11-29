@@ -719,6 +719,7 @@ public class MainScreenSidebarController {
                 Scene staffPopUpScene = new Scene(loader.load());
                 ViewStaffController viewStaffController = loader.getController();
                 viewStaffController.setLanguage(controller.getLanguage());
+               // viewStaffController.setRequestViewList(controller.getLanguage());
                 viewStaffController.setIsComplete(false);
                 viewStaffController.getIsComplete().addListener((obs, before, isComplete) -> {
                     staffToFulfill=viewStaffController.getStaffToFulfill();
