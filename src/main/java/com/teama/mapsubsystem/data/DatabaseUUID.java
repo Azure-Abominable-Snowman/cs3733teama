@@ -26,9 +26,14 @@ public class DatabaseUUID {
             for(String id = ids.next(); ids.hasNext(); id = ids.next()) {
                 System.out.println(type.name());
                 if(id.substring(0, 1).equals(team) && id.substring(1, 5).equals(type.name()) && id.substring(8, 10).equals(currentFloor)) {
-                    int curId = Integer.parseInt(id.substring(5, 8));
-                    if (curId > maxId) {
-                        maxId = curId;
+                    try {
+                        int curId = Integer.parseInt(id.substring(5, 8));
+                        if (curId > maxId) {
+                            maxId = curId;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println(team+type.name()+id.substring(5,8)+currentFloor);
+                        return team+type.name()+id.substring(5,8)+currentFloor;
                     }
                 }
             }
