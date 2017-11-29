@@ -128,7 +128,7 @@ public class RouteLink {
 
 
     private static float vectorAngle (MapNode start, MapNode end) {
-        float angle = (float) Math.toDegrees(Math.atan2(end.getCoordinate().getyCoord() - start.getCoordinate().getyCoord(),
+        float angle = (float) Math.toDegrees(Math.atan2(start.getCoordinate().getyCoord() - end.getCoordinate().getyCoord(),
                 end.getCoordinate().getxCoord() - start.getCoordinate().getxCoord()));
 
         for(;angle>=180;angle-=360); // keep the angles below 180
