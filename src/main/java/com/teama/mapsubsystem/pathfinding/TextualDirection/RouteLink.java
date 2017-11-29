@@ -11,7 +11,7 @@ public class RouteLink {
     private MapNode start;
     private MapNode next;
     private double turnAngle;
-    private double pointingAngle;
+    private double pointingAngle = 0;
     private RouteLink lastLink;
     private double distance;
     private String textReturn;
@@ -27,6 +27,7 @@ public class RouteLink {
         if(lastLink != null) {
 
             turnAngle =  pointingAngle - lastLink.getPointingAngle();
+            genText();
 
         }
         else {
@@ -58,6 +59,13 @@ public class RouteLink {
             double dx = start.getCoordinate().getxCoord() - next.getCoordinate().getxCoord();
             double dy = start.getCoordinate().getyCoord() - next.getCoordinate().getyCoord();
             distance = (double) Math.sqrt( dx*dx + dy*dy);
+
+
+            if(lastLink.getTextReturn().contains("Elevator") || lastLink.getTextReturn().contains("Stairs")){
+                textReturn = "No Text";
+                return;
+            }
+
 
             if(-15 <= turnAngle && turnAngle <= 15){
                 textReturn = "Straight: ";
@@ -106,8 +114,7 @@ public class RouteLink {
             else if(start.getCoordinate().getLevel().toString().equals("Stairs")){
                 textReturn = "Enter Stairs" + stairNum + "and go to Floor" + floor;
             }
-
-
+            
         }
     }
 
