@@ -151,7 +151,7 @@ public class InterpreterStaffDBTest {
         langs.add(Language.French);
         langs.add(Language.Moldovan);
         langs.add(Language.JAVA);
-        ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.VERIZON);
+        ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
         GenericStaffInfo g = new GenericStaffInfo("William", "Wong", c);
         InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
         InterpreterStaff wilson = new InterpreterStaff(g, i);
@@ -163,7 +163,10 @@ public class InterpreterStaffDBTest {
         assertNotNull(db.getStaff(2));
         assertEquals(joe.getLastName(), db.getStaff(1).getLastName());
         assertEquals(wilson.getFirstName(), db.getStaff(2).getFirstName());
-        assertEquals(wilson.getProvider().toString(),db.getAllStaff().get(1).getProvider().toString());
+        for (InterpreterStaff s : db.getAllStaff()) {
+            System.out.println(s.getLastName());
+        }
+
     }
 
     @Test
@@ -184,13 +187,13 @@ public class InterpreterStaffDBTest {
         db.addStaff(wilson);
         assertEquals(wilson.getFirstName(), db.getStaff(1).getFirstName());
         InterpreterStaff retrieved = db.getStaff(1);
+        langs.add(Language.German);
         retrieved.setFirstName("Wilson");
-        langs.add(Language.Spanish);
         retrieved.setLanguages(langs);
         db.updateStaff(retrieved);
         assertEquals("Wong", db.getStaff(1).getLastName());
         assertEquals(retrieved.getFirstName(), db.getStaff(1).getFirstName());
-        assertEquals(retrieved.getLanguages().size(), langs.size());
+        assertEquals(retrieved.getLanguages().size(), db.getStaff(1).getLanguages().size());
 
 
     }

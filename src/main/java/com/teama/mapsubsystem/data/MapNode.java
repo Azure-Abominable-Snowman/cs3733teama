@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface MapNode {
     String getId();
-    Enum<NodeType> getNodeType();
+    NodeType getNodeType();
     ArrayList<MapEdge> getEdges();
     void setEdges(ArrayList<MapEdge> edges);
     void addEdge(MapEdge edge);
