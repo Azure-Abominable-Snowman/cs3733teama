@@ -13,6 +13,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -116,6 +117,8 @@ public class MainScreenController implements Initializable {
     private SimpleBooleanProperty showLoginButton = new SimpleBooleanProperty(true);
     private EventHandler<MouseEvent> originalMouseClick;
 
+    private MainScreenSidebarController sidebar;
+
     @FXML
     void onHamburgerButtonClick(MouseEvent event) throws IOException {
         hamOpnsTran.setRate(animRate*=-1);
@@ -123,7 +126,7 @@ public class MainScreenController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/MainSidebar.fxml"));
         HBox box = loader.load();
-        MainScreenSidebarController sidebar = loader.getController();
+        sidebar = loader.getController();
         sidebar.setMapDisplay(map);
         sidebar.setFloorButtonVBox(floorButtonBox);
         sidebar.setLoggedInProperty(this.isLoggedIn, this.showLoginButton);
@@ -256,7 +259,10 @@ public class MainScreenController implements Initializable {
                     origin = mapSubsystem.getOriginNode();
                 }
                 System.out.println("SEARCH RESULTS: GO TO "+dest.getId()+" FROM "+origin.getId());
-                pathfinding.genPath(origin, dest);
+                TextDirections directions = pathfinding.genPath(origin, dest);
+                if(sidebar != null) {
+                    sidebar.setDirections(directions);
+                }
             }
         });
     }
@@ -287,7 +293,7 @@ public class MainScreenController implements Initializable {
                 e.printStackTrace();
             }
             NodeInfoPopUpController ni = loader.getController();
-            ni.setInfo(clickedNode, map, mapSubsystem, pathfinding);
+            ni.setInfo(clickedNode, map, mapSubsystem, pathfinding, sidebar);
 
             // Create pane to load nodeInfo root node into
             nodeInfo.toFront(); // bring to front of screen
