@@ -163,6 +163,10 @@ public class InterpreterStaffDBTest {
         assertNotNull(db.getStaff(2));
         assertEquals(joe.getLastName(), db.getStaff(1).getLastName());
         assertEquals(wilson.getFirstName(), db.getStaff(2).getFirstName());
+        for (InterpreterStaff s : db.getAllStaff()) {
+            System.out.println(s.getLastName());
+        }
+
     }
 
     @Test

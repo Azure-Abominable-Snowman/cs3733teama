@@ -45,5 +45,7 @@ public interface MapDisplay {
     Canvas getUnderlyingCanvas();
     ScrollPane getUnderlyingScrollPane();
 
+    public Location convToImageCoords(Location loc);
+
     void clear();
 }

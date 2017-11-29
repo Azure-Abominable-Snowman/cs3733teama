@@ -89,9 +89,6 @@ public class MainScreenController implements Initializable {
     private JFXComboBox<String> toSearchBar;
 
     @FXML
-    private JFXButton searchButton;
-
-    @FXML
     private AnchorPane areaPane;
 
     @FXML
@@ -102,6 +99,9 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private Text floorNumberDisplay;
+
+    @FXML
+    private JFXButton searchButton;
 
     private MapDisplay map;
 
@@ -182,14 +182,6 @@ public class MainScreenController implements Initializable {
                 areaPane.getChildren().remove(nodeInfo);
                 nodeInfo = null;
             }
-
-            /*if(event.isControlDown()) { // check for a node and if there is one display the node info
-                generateNodePopUp(event);
-            } else {
-                pathfinding.genPathWithClicks(event);
-            }*/
-
-            // When a node is pressed, generate the pop up
             generateNodePopUp(event);
         };
         map.getUnderlyingCanvas().onMouseClickedProperty().set(clickedOnMapHandler);
@@ -312,7 +304,6 @@ public class MainScreenController implements Initializable {
             }
         }
     }
-
 
     public void hideLoginButton() {
         login.setVisible(false);

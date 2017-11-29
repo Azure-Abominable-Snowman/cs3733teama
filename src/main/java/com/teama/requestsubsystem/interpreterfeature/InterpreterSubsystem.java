@@ -45,10 +45,9 @@ public class InterpreterSubsystem {
         return staffDB.findQualified(language);
     }
 
-    // TODO
     // returns a list of all Interpreters in the system
     public ArrayList<InterpreterStaff> getAllStaff() {
-        return null;
+        return staffDB.getAllStaff();
     }
 
     // adds an Interpreter request to the database
