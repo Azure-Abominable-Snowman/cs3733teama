@@ -254,6 +254,9 @@ public class EdgeEditorController {
 
         setStart.setDisable(true);
         setEnd.setDisable(true);
+
+        addMode.setDisable(false);
+        deleteMode.setDisable(false);
     }
     /*
     private MapNode nodeFromUser(boolean startNode) {
