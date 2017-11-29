@@ -98,6 +98,8 @@ public class MainScreenSidebarController {
     private ArrayList<String> shownEdges;
     private VBox floorButtonBox;
 
+    private EventHandler oldNodeEditorHandler;
+
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
 
@@ -143,10 +145,10 @@ public class MainScreenSidebarController {
         editEdges.setToggleGroup(editorToggles);
 
 
-
         editorToggles.selectedToggleProperty().addListener((Observable obs) -> {
             if (editNodes.isSelected()) {
                 try {
+                    oldNodeEditorHandler = map.getUnderlyingCanvas().getOnMouseClicked();
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/NodeEditor.fxml"));
                     //loader.setLocation(getClass().getResource("/NodeEditor.fxml"));
                     Parent root = (Parent) loader.load(); // load in fxml
@@ -154,10 +156,6 @@ public class MainScreenSidebarController {
                     nodeEditor.setButtons(add, edit);
                     nodeEditor.setMap(map);
                     infoPane.setContent(root);
-
-
-
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -173,7 +171,19 @@ public class MainScreenSidebarController {
                 }
             }
             else {
-                //infoPane.setContent(defaultInfo);
+                // Delete the cursor
+                map.deletePoint(NodeEditorController.selectedLocID);
+
+                // check to see if editNodes is deselected, and if it is then
+                // make it so the mouse cursor thing doesn't appear and the pop ups
+                // start appearing again
+                if(!editNodes.isSelected()) {
+                    System.out.println("STOP EDITING NODES");
+                    map.getUnderlyingCanvas().setOnMouseClicked(oldNodeEditorHandler);
+                }
+
+                // Remove whatever is in the infopane
+                infoPane.setContent(null);
             }
         });
 
