@@ -304,6 +304,7 @@ public class JavaDatabaseSource implements MapDataSource {
             //stmt = conn.createStatement();
             removeNodeStmt.setString(1, id);
             removeNodeStmt.executeUpdate();
+            log.info("Goodbye node.");
             //stmt.execute("DELETE FROM " + nodeTable + " WHERE NODEID='"+id+"'");
             //stmt.close();
         }

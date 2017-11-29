@@ -12,6 +12,7 @@ import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -131,6 +132,7 @@ public class MainScreenSidebarController {
         c.onMouseClickedProperty().set(onMapClicked);
         */
         loader = new FXMLLoader();
+        //loader.setController(this);
         editorToggles = new ToggleGroup();
         editNodes.setToggleGroup(editorToggles);
         editEdges.setToggleGroup(editorToggles);
@@ -138,18 +140,17 @@ public class MainScreenSidebarController {
 
 
         editorToggles.selectedToggleProperty().addListener((Observable obs) -> {
-            Parent root;
             if (editNodes.isSelected()) {
                 try {
-                    loader.setLocation(getClass().getResource("/NodeEditor.fxml"));
-                    root = (Parent) loader.load();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/NodeEditor.fxml"));
+                    //loader.setLocation(getClass().getResource("/NodeEditor.fxml"));
+                    Parent root = (Parent) loader.load(); // load in fxml
+                    NodeEditorController nodeEditor = loader.getController();
+                    nodeEditor.setButtons(add, edit);
+                    nodeEditor.setMap(map);
                     infoPane.setContent(root);
-                    nodePrompt.setText("");
-                    nodeName.setText("");
-                    nodeCoord.setText("");
-                    curFloor.setText("");
-                    nodeType.setText("");
-                    
+
+
 
 
                 } catch (IOException e) {
@@ -158,8 +159,8 @@ public class MainScreenSidebarController {
             }
             else if (editEdges.isSelected()) {
                 try {
-                    loader.setLocation(getClass().getResource("/EdgeEditor.fxml"));
-                    root = (Parent) loader.load();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/EdgeEditor.fxml"));
+                    Parent root = (Parent) loader.load();
                     infoPane.setContent(root);
 
                 } catch (IOException e) {
@@ -194,6 +195,13 @@ public class MainScreenSidebarController {
             }
         });
 
+        add.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+            }
+        });
+
     }
 
 
@@ -224,6 +232,7 @@ public class MainScreenSidebarController {
         });
 
     }
+    /*
     private void updateNodeInfo() {
         if (selectedNode != null) {
             nodePrompt.setText("To edit or delete this node, select the Edit button above.");
@@ -250,6 +259,7 @@ public class MainScreenSidebarController {
         }
 
     }
+    */
 
 
     @FXML

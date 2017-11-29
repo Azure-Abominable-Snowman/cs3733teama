@@ -254,7 +254,7 @@ public class HospitalMapDisplay implements MapDisplay {
      * @param loc
      * @return
      */
-    private Location convToImageCoords(Location loc) {
+    public Location convToImageCoords(Location loc) {
         return new Location((int)convUnits(loc.getxCoord(), canvas.getWidth(), getMaxX()),
                 (int)convUnits(loc.getyCoord(), canvas.getHeight(), getMaxY()),
                 loc.getLevel(), loc.getBuilding());

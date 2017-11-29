@@ -71,6 +71,18 @@ public class MapSubsystem {
         return javaDBSource.getEdge(id);
     }
 
+    public MapNode addNode(MapNode m) {
+        MapNode newNode = null;
+        if (m!= null) {
+            String ID = DatabaseUUID.generateID(m.getNodeType(), m.getCoordinate().getLevel());
+            newNode = new MapNodeData(ID, m.getCoordinate(), m.getNodeType(), m.getLongDescription(), m.getShortDescription(), m.getTeamAssignment());
+            javaDBSource.addNode(newNode);
+        }
+        return newNode;
+    }
+
+
+
     public void deleteEdge(String id) {
         javaDBSource.removeEdge(id);
     }
