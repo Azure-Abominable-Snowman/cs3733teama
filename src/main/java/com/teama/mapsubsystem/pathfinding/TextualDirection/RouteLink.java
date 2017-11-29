@@ -123,10 +123,11 @@ public class RouteLink {
 
 
 
-
+    //TODO Add to textual Directions
     private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
     {
-        return null;
+        turnLink.setDistance(turnLink.getDistance()+ straightLink.getDistance());
+        return turnLink;
     }
 
 
