@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -23,13 +24,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MainScreenSidebarController {
     @FXML
@@ -86,8 +86,8 @@ public class MainScreenSidebarController {
     private MapSubsystem mapSubsystem;
 
     private MapDisplay map;
-    private Map<String, MapNode> allNodes;
-    private Map<String, MapEdge> allEdges;
+    private Map<String, MapNode> floorNodes;
+    private Map<String, MapEdge> floorEdges;
     private FXMLLoader loader;
     private JFXButton curFloorButton;
 
@@ -95,6 +95,7 @@ public class MainScreenSidebarController {
     //
     private ArrayList<String> shownNodes;
     private ArrayList<String> shownEdges;
+    private VBox floorButtonBox;
 
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
@@ -173,20 +174,19 @@ public class MainScreenSidebarController {
             if (viewNodes.isSelected()) {
                 drawAllNodes();
                 System.out.println("User selected View Nodes");
-
-
             }
             else { //viewNodes turned off, delete
-                deleteAllNodes();
+                removeHiddenNodes();
             }
-                }
+        }
+
         );
 
         viewEdges.setOnAction((ActionEvent e) -> {
             if (viewEdges.isSelected()) {
                 System.out.println("User selected View Edges");
                 drawAllEdges();
-            }else {
+            } else {
                 deleteAllEdges();
             }
         });
@@ -209,25 +209,22 @@ public class MainScreenSidebarController {
         this.map = map;
     }
 
-    // sets the curFloorButton to listen to floor switches and to draw appropriate nodes/edges
-    // TODO: doesn't work
-    public void setCurFloorButton(JFXButton curFloor) {
-        this.curFloorButton = curFloor;
-        // DISPLAYING NODES AND EDGES
-        curFloorButton.onMouseClickedProperty().addListener((Observable obs) -> {
-            System.out.println("Floor is changed to" + (map.getCurrentFloor().toString()));
-            deleteAllEdges();
-            deleteAllNodes();
-            updateCurrentNodesEdges();
-            if (viewEdges.isSelected()) {
-                drawAllEdges();
-            }
-            if (viewNodes.isSelected()) {
-                drawAllNodes();
-            }
-        });
+    /**
+     * Sets the floor button vbox, must be ran before anything else
+     * @param floorButtonBox
+     */
+    public void setFloorButtonVBox(VBox floorButtonBox) {
+        this.floorButtonBox = floorButtonBox;
 
+        // Listen for floor button changes to switch what hidden nodes
+        // are displayed if the toggle buttons are selected
+        for(Node button : floorButtonBox.getChildren()) {
+            button.pressedProperty().addListener((Observable obs) -> {
+                updateHiddenNodesEdges();
+            });
+        }
     }
+
     /*
     private void updateNodeInfo() {
         if (selectedNode != null) {
@@ -258,57 +255,26 @@ public class MainScreenSidebarController {
     */
 
 
-    @FXML
-    void onAddEdge(ActionEvent event) {
-        // TODO: After the user clicks this button the user should be able to click on another node to add an edge from
-        // TODO: the selected node to that one
-    }
-
-    @FXML
-    void onAddNew(ActionEvent event) {
-        if (editNodes.isSelected()) {
-
-        }
-    }
-
-    @FXML
-    void onSelectNode(ActionEvent event) {
-        // TODO: After the button is clicked the user should be able to select a node with the mouse cursor
-        // TODO: and it should display in the selectedNode text
-    }
-
-
-    void onToggleNodesEdges() { // controls what is shown on the map based on the toggle currently selected by user
-        //allNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
-        //allEdges = getAllEdges(allNodes);
+    private void updateHiddenNodesEdges() { // controls what is shown on the map based on the toggle currently selected by user
         updateCurrentNodesEdges();
+
+        // If viewnodes is selected, view all the invisible nodes
         if (viewNodes.isSelected()) {
-            for (MapNode m: allNodes.values()) {
-                new DrawNodeInstantly(m).displayOnScreen(map);
-            }
-        } else if (!viewNodes.isSelected()) {
-            for (String id: mapSubsystem.getInvisibleFloorNodes(map.getCurrentFloor()).keySet()) {
-                map.deletePoint(id);
-            }
+            drawAllNodes();
         }
+
+        // If viewedges is selected, view all invisible edges
         if (viewEdges.isSelected()) {
-            for (MapEdge e: allEdges.values()) {
-                new DrawEdgeInstantly(e).displayOnScreen(map);
-            }
-        } else if (!viewEdges.isSelected()) {
-            for (MapEdge e: allEdges.values()) {
-                map.deleteLine(e.getId());
-            }
+            drawAllEdges();
         }
     }
-
-
 
     // when floor is changed, update the current Maps of Nodes and Edges
     private void updateCurrentNodesEdges() {
-        allNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
-        allEdges = getAllEdges(allNodes);
+        floorNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
+        floorEdges = getAllEdges(floorNodes);
     }
+
     // helper to add all the edges to draw
     private Map<String, MapEdge> getAllEdges(Map<String, MapNode> allNodes) {
         Map<String, MapEdge> allEdges = new HashMap<>();
@@ -324,64 +290,34 @@ public class MainScreenSidebarController {
 
     private void drawAllNodes() {
         updateCurrentNodesEdges();
-        for (MapNode m: allNodes.values()) {
+        for (MapNode m: floorNodes.values()) {
             new DrawNodeInstantly(m).displayOnScreen(map);
         }
     }
 
-    private void deleteAllNodes() {
-        for (MapNode m: allNodes.values()) {
-            map.deletePoint(m.getId());
+    private void removeHiddenNodes() {
+        for (String id : mapSubsystem.getInvisibleFloorNodes(map.getCurrentFloor()).keySet()) {
+            map.deletePoint(id);
         }
     }
 
+    private Set<String> tempEdges = new HashSet<>();
+
     private void drawAllEdges() {
         updateCurrentNodesEdges();
-        for (MapEdge e: allEdges.values()) {
-            new DrawEdgeInstantly(e).displayOnScreen(map);
+        for (MapEdge e: floorEdges.values()) {
+            // To make sure we don't overwrite real edges that may be displayed on the screen for pathfinding, add _FAKE at the end of the id.
+            new DrawEdgeInstantly(new MapEdgeData(e.getId()+"_FAKE", e.getStartID(), e.getEndID())).displayOnScreen(map);
+            tempEdges.add(e.getId()+"_FAKE");
         }
     }
 
     private void deleteAllEdges() {
-        for (MapEdge e: allEdges.values()) {
-            map.deleteLine(e.getId());
+        for (String id : tempEdges) {
+            map.deleteLine(id);
         }
+        tempEdges.clear();
     }
-
-   private boolean shownHiddenNodesAndEdges = false;
-
-   // private ArrayList<String> shownNodes;
-   // private ArrayList<String> shownEdges;
-    private Floor hiddenDispFloor;
-
-    @FXML
-    void onToggleHiddenNodesAndEdges() {
-        if(!shownHiddenNodesAndEdges || !map.getCurrentFloor().equals(hiddenDispFloor)) {
-            // Show all hidden nodes and edges
-            shownNodes = new ArrayList<>();
-            shownEdges = new ArrayList<>();
-            for (MapNode n : mapSubsystem.getInvisibleFloorNodes(map.getCurrentFloor()).values()) {
-                new DrawNodeInstantly(n).displayOnScreen(map);
-                shownNodes.add(n.getId());
-                for (MapEdge e : n.getEdges()) {
-                    new DrawEdgeInstantly(e).displayOnScreen(map);
-                    shownEdges.add(e.getId());
-                }
-            }
-            shownHiddenNodesAndEdges = true;
-            hiddenDispFloor = map.getCurrentFloor();
-        } else {
-            // Hide all hidden nodes and edges
-            for(String id : shownNodes) {
-                map.deletePoint(id);
-            }
-            for(String id : shownEdges) {
-                map.deleteLine(id);
-            }
-            shownHiddenNodesAndEdges = false;
-        }
-    }
-
 
     @FXML
     public void onLoginClick() {

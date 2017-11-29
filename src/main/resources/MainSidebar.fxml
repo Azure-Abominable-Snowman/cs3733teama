@@ -91,18 +91,6 @@
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>
                                     </VBox>
-                                    <VBox>
-                                       <children>
-                                          <HBox>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </VBox.margin>
-                                          </HBox>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets left="5.0" />
-                                       </VBox.margin>
-                                    </VBox>
                                  </children>
                               </VBox>
                            </content>
@@ -114,7 +102,7 @@
                 </TitledPane>
                   <TitledPane animated="false" text="Map Tools">
                     <content>
-                        <ScrollPane hbarPolicy="NEVER">
+                        <ScrollPane>
                            <content>
                               <VBox>
                                  <children>

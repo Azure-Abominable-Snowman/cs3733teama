@@ -123,6 +123,7 @@ public class MainScreenController implements Initializable {
         HBox box = loader.load();
         MainScreenSidebarController sidebar = loader.getController();
         sidebar.setMapDisplay(map);
+        sidebar.setFloorButtonVBox(floorButtonBox);
         drawer.setSidePane(box);
         if(drawer.isShown()){
             drawer.close();
