@@ -247,8 +247,6 @@ public class EdgeEditorController {
 
         addMode.setVisible(true);
         deleteMode.setVisible(true);
-        addMode.setDisable(false);
-        deleteMode.setDisable(false);
 
         delete.setVisible(false);
         editConfirm.setVisible(false);
@@ -256,6 +254,9 @@ public class EdgeEditorController {
 
         setStart.setDisable(true);
         setEnd.setDisable(true);
+
+        addMode.setDisable(false);
+        deleteMode.setDisable(false);
     }
     /*
     private MapNode nodeFromUser(boolean startNode) {
@@ -302,10 +303,11 @@ public class EdgeEditorController {
         this.deleteMode.setOnAction((ActionEvent e) -> {
             restoreToDefault();
             startNodePrompt.setText("Select the start and end nodes of the edge to Edit or Delete.");
-            addMode.setDisable(true);
-            deleteMode.setDisable(true);
+
             inAddMode = false;
             inEditMode = true;
+            addMode.setDisable(true);
+            deleteMode.setDisable(true);
             //addMode.setVisible(false);
             //deleteMode.setVisible(false);
             setButtonsForDeleteMode();
