@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleButton?>
@@ -39,15 +40,15 @@
                         <Font name="Calibri" size="15.0" />
                      </font>
                   </TitledPane>
-                <TitledPane animated="false" text="Select Algorithm">
+                <TitledPane animated="false" prefHeight="581.0" prefWidth="313.0" text="Select Algorithm">
                   <content>
-                        <ScrollPane>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="552.0" prefWidth="328.0">
                            <content>
-                              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="325.0">
                                  <children>
                                 <AnchorPane minHeight="0.0" minWidth="0.0">
                                        <children>
-                                          <VBox prefHeight="75.0" prefWidth="140.0">
+                                          <VBox prefHeight="134.0" prefWidth="329.0">
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding Algorithm" textAlignment="CENTER">
                                                    <VBox.margin>
@@ -81,16 +82,13 @@
                                           </VBox>
                                        </children>
                                     </AnchorPane>
-                                    <VBox>
+                                    <VBox alignment="CENTER" prefHeight="88.0" prefWidth="174.0">
                                        <children>
-                                          <HBox>
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </VBox.margin>
-                                          </HBox>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Beam Search Queue Size:" textAlignment="CENTER" />
+                                          <JFXSlider fx:id="beamSearchQueue" blockIncrement="5.0" majorTickUnit="40.0" max="200.0" min="10.0" minorTickCount="5" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="40.0" />
                                        </children>
                                        <VBox.margin>
-                                          <Insets left="5.0" />
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </VBox.margin>
                                     </VBox>
                                  </children>

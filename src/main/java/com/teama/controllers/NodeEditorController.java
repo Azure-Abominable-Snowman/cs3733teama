@@ -2,6 +2,7 @@ package com.teama.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -11,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -28,7 +28,7 @@ public class NodeEditorController {
     @FXML
     private Text nodePrompt;
     @FXML
-    private TextField nodeName;
+    private JFXTextField nodeName, nodeLongName;
     @FXML
     private Text nodeCoord, curFloor;
     @FXML
@@ -38,7 +38,7 @@ public class NodeEditorController {
     @FXML
     private GridPane nodeInfo, buttonGrid;
 
-    JFXComboBox<Enum<NodeType>> nodeTypeSelector;
+    private JFXComboBox<NodeType> nodeTypeSelector;
     private ToggleGroup editorToggles;
     private Canvas c;
     private MapSubsystem masterMap;
@@ -72,13 +72,14 @@ public class NodeEditorController {
         nodePrompt.setText(defaultPrompt);
         nodeName.setEditable(false);
 
-        nodeTypeSelector = new JFXComboBox();
+        nodeTypeSelector = new JFXComboBox<>();
         nodeTypeSelector.getItems().clear(); // reset any defaults
         nodeTypeSelector.getItems().addAll(NodeType.values());
         nodeTypeSelector.setPromptText("Select a Node Type");
 
 
-        nodeInfo.add(nodeTypeSelector, 1,2);
+        // Add to the right part of the gridpane
+        nodeInfo.add(nodeTypeSelector, 1,3);
 
         nodeTypeSelector.setVisible(false);
 
@@ -88,6 +89,10 @@ public class NodeEditorController {
         confirm.setText("Confirm");
         cancel = new JFXButton();
         cancel.setText("Cancel");
+        confirm.getStylesheets().add("css/MainScreenStyle.css");
+        cancel.getStylesheets().add("css/MainScreenStyle.css");
+        confirm.getStyleClass().add("normalButton");
+        cancel.getStyleClass().add("normalButton");
 
         cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
