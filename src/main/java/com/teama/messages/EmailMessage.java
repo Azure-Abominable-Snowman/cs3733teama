@@ -50,7 +50,9 @@ public class EmailMessage implements SendMessage {
 
         try {
             mimeMessage.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(contactInfo.getEmailAddress()));
-            mimeMessage.setSubject(message.getSubject());
+            if(!contactInfo.getAvailableContactInfoTypes().contains(ContactInfoTypes.TEXT)){
+                mimeMessage.setSubject(message.getSubject());
+            }
             mimeMessage.setText(message.getMessageContents());
 
             Transport.send(mimeMessage);
