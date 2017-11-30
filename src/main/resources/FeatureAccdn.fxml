@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="624.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.FeatureAccdnController">
+    <children>
+        <Accordion prefHeight="400.0" prefWidth="400.0">
+            <panes>
+                <TitledPane animated="false" text="Directions">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox prefHeight="299.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <GridPane maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="379.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <children>
+                                                <JFXComboBox prefHeight="25.0" prefWidth="227.0" promptText="Start" style="-fx-border-color: TRANSPARENT BLUE  TRANSPARENT BLUE;" GridPane.halignment="CENTER" />
+                                                <JFXComboBox prefHeight="25.0" prefWidth="200.0" promptText="End" style="-fx-border-color: TRANSPARENT BLUE  TRANSPARENT BLUE;" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                        </GridPane>
+                                        <JFXTextField alignment="CENTER" editable="false" prefHeight="18.0" prefWidth="379.0" text="Directions">
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </JFXTextField>
+                                        <ListView prefHeight="210.0" prefWidth="379.0">
+                                            <VBox.margin>
+                                                <Insets top="10.0" />
+                                            </VBox.margin>
+                                        </ListView>
+                                    </children>
+                                </VBox>
+                            </children></AnchorPane>
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Editor">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" prefHeight="313.0" prefWidth="400.0" text="Service Requests">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox prefHeight="299.0" prefWidth="398.0">
+                                    <children>
+                                        <GridPane>
+                                            <columnConstraints>
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="117.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="119.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                            <children>
+                                                <JFXComboBox prefHeight="27.0" prefWidth="116.0" promptText="Building" />
+                                                <JFXComboBox prefHeight="27.0" prefWidth="153.0" promptText="Floor" GridPane.columnIndex="1" />
+                                                <JFXComboBox layoutX="127.0" layoutY="10.0" prefHeight="27.0" prefWidth="153.0" promptText="Location" GridPane.columnIndex="2" />
+                                            </children>
+                                        </GridPane>
+                                        <JFXComboBox prefHeight="31.0" prefWidth="398.0" promptText="Type" />
+                                        <JFXTextArea prefHeight="160.0" prefWidth="398.0" promptText="Note" />
+                                        <GridPane prefHeight="62.0" prefWidth="398.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <children>
+                                                <JFXButton buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="199.0" text="Cancel" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
+                                                <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="200.0" text="Submit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
+                                            </children>
+                                        </GridPane>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Create A Request">
+                    <content>
+                  <VBox fx:id="createReqBox">
+                     <children>
+                                <GridPane prefHeight="46.0" prefWidth="373.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <JFXComboBox fx:id="cmbBuilding" prefHeight="47.0" prefWidth="130.0" promptText="Building" />
+                                        <JFXComboBox fx:id="cmbFloor" layoutX="10.0" layoutY="10.0" prefHeight="46.0" prefWidth="144.0" promptText="Floor" GridPane.columnIndex="1" />
+                              <JFXComboBox fx:id="cmbLocation" prefHeight="46.0" prefWidth="197.0" promptText="Location" GridPane.columnIndex="2" GridPane.valignment="CENTER" />
+                                    </children>
+                                </GridPane>
+                                <JFXTextArea fx:id="txtAdditionalInfo" prefHeight="158.0" prefWidth="373.0" promptText="Additional Info" />
+                                <JFXComboBox fx:id="cmbType" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="396.0" promptText="Type">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </JFXComboBox>
+                     </children>
+                  </VBox>
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Login">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox layoutX="59.599998474121094" layoutY="87.5999984741211" prefHeight="299.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <JFXTextField prefHeight="27.0" prefWidth="278.0" promptText="Username">
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                        </JFXTextField>
+                                        <JFXPasswordField prefHeight="27.0" prefWidth="279.0" promptText="Password">
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                        </JFXPasswordField>
+                                        <GridPane>
+                                            <columnConstraints>
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <children>
+                                                <JFXButton buttonType="RAISED" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Cancel" textFill="WHITE" />
+                                                <JFXButton buttonType="RAISED" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Login" textFill="WHITE" GridPane.columnIndex="1" />
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets top="15.0" />
+                                            </VBox.margin>
+                                        </GridPane>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </TitledPane>
+            </panes>
+        </Accordion>
+    </children>
+</HBox>

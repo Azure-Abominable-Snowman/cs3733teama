@@ -1,6 +1,15 @@
 package com.teama.controllers;
 
 import com.jfoenix.controls.*;
+import com.teama.messages.EmailMessage;
+import com.teama.messages.SMSMessage;
+import com.teama.requestsubsystem.GenericRequestInfo;
+import com.teama.requestsubsystem.RequestStatus;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
+import com.teama.requestsubsystem.interpreterfeature.Language;
+
+import java.util.Map;
+import com.jfoenix.controls.*;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -11,26 +20,58 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
+import com.teama.requestsubsystem.RequestType;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import com.teama.messages.Message;
+import com.teama.requestsubsystem.RequestType;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+
+import static com.teama.requestsubsystem.RequestType.*;
+import java.util.HashSet;
+import java.util.Set;
+
 import java.util.*;
 
 public class MainScreenSidebarController {
@@ -51,7 +92,63 @@ public class MainScreenSidebarController {
     private JFXRadioButton beamSearch;
 
     @FXML
+    private VBox addToThis;
+
+    @FXML
+    private JFXTextField createRequestLabel;
+
+    @FXML
+    private JFXTextField locationLabel;
+
+    @FXML
+    private JFXComboBox<String> building = new JFXComboBox<>();
+
+    @FXML
+    private JFXComboBox<Floor> floor = new JFXComboBox<>();
+
+    @FXML
+    private JFXComboBox<MapNode> longName = new JFXComboBox<>();
+
+    @FXML
+    private JFXTextField typeLabel;
+
+    @FXML
+    private JFXComboBox<RequestType> typeOfRequest = new JFXComboBox<>();
+
+    @FXML
+    private JFXTextField noteLabel;
+
+    @FXML
+    private JFXTextArea additionalInfo;
+
+    @FXML
+    private JFXButton viewStaffButton;
+
+    @FXML
+    private JFXButton cancelButton;
+
+    @FXML
+    private JFXButton submitButton;
+
+    @FXML
+    private JFXListView<InterpreterRequest> requestView;
+
+    @FXML
     private JFXButton login;
+
+
+    private String buildingName;
+    private Floor floorName;
+    private MapNode mapNodeName;
+    private RequestType requestType;
+    private String additionalInfoMessage;
+    private InterpreterStaff staffToFulfill;
+    private Message message;
+
+    private InterpReqController controller;
+
+
+    private AnchorPane curReqPane;
 
     // MAP EDITOR TOOLS
     @FXML
@@ -60,7 +157,7 @@ public class MainScreenSidebarController {
     private JFXButton add, edit;
 
     @FXML
-    private TitledPane selectAlg, mapTools, serviceReqs;
+    private TitledPane selectAlg, mapTools, serviceReqs, staff, viewReqs;
 
     @FXML
     private Text nodePrompt;
@@ -82,6 +179,15 @@ public class MainScreenSidebarController {
     @FXML
     private JFXSlider beamSearchQueue;
 
+    @FXML
+    private JFXButton btnAdd;
+
+    @FXML
+    private TableView<InterpreterTableAdapter> InterpInfoTable;
+    @FXML
+    private TableColumn<InterpreterTableAdapter,String> firstCol, lastCol, langCol;
+    @FXML
+    private TableColumn<InterpreterTableAdapter,String> certCol, phoneCol, emailCol;
     private ToggleGroup algoToggleGroup;
     private SimpleBooleanProperty floorChange = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty isLoggedInProperty;
@@ -98,6 +204,9 @@ public class MainScreenSidebarController {
     private MapNode selectedNode;
     private MapEdge selectedEdge;
 
+    private ArrayList<InterpreterRequest> requests;
+    private InterpreterRequest curRequest;
+
 
     //
     private ArrayList<String> shownNodes;
@@ -106,6 +215,7 @@ public class MainScreenSidebarController {
 
     private EventHandler oldNodeEditorHandler;
 
+    private ObservableList<InterpreterTableAdapter> tableVals;
     public void initialize() {
         mapSubsystem = MapSubsystem.getInstance();
 
@@ -121,12 +231,10 @@ public class MainScreenSidebarController {
         aStar.setUserData(new AStar());
         breadthFirst.setUserData(new BreathFirst());
         dijkstra.setUserData(new Dijkstras());
-        beamSearch.setUserData(new BeamSearch(20)); // TODO: make queue size editable
+        beamSearch.setUserData(new BeamSearch((int)beamSearchQueue.getValue()));
 
         // Select the default algorithm
-        mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
-
-        //
+        mapSubsystem.setPathGeneratorStrategy((PathAlgorithm) algoToggleGroup.getSelectedToggle().getUserData());
 
         // When the toggle group changes, make the algorithm reflect that
         algoToggleGroup.selectedToggleProperty().addListener((Observable obs) -> {
@@ -134,6 +242,26 @@ public class MainScreenSidebarController {
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
 
+        //set up for Service Request
+        building.getItems().clear();
+        building.getItems().add("BTM");
+
+        floor.getItems().clear();
+        floor.getItems().addAll(
+                Floor.SUBBASEMENT, Floor.BASEMENT, Floor.GROUND, Floor.ONE, Floor.TWO, Floor.THREE);
+
+        typeOfRequest.getItems().clear();
+        typeOfRequest.getItems().addAll(
+                FOOD, INTR, MAIN, SEC, TRANS);
+
+        //set up requestViewList
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+
+
+
+        btnAdd.setVisible(false);
+        initInterpColumns();
 
         //Map Editor
         /*
@@ -200,6 +328,7 @@ public class MainScreenSidebarController {
             }
         });
 
+
         viewNodes.setOnAction((ActionEvent e) -> {
             updateCurrentNodesEdges();
             if (viewNodes.isSelected()) {
@@ -214,6 +343,7 @@ public class MainScreenSidebarController {
         }
 
         );
+
 
         viewEdges.setOnAction((ActionEvent e) -> {
             if (viewEdges.isSelected()) {
@@ -230,6 +360,9 @@ public class MainScreenSidebarController {
 
             }
         });
+
+
+
     }
 
 
@@ -262,43 +395,71 @@ public class MainScreenSidebarController {
         }
     }
 
-    public void setDirections(TextDirections directions) {
-        this.directions.clear();
-        for(Direction dir : directions.getDirections()) {
-            this.directions.appendText(dir.getDescription()+"\n");
+    public void setDirections(TextDirections textDir) {
+        directions.clear();
+        for(Direction dir : textDir.getDirections()) {
+            directions.appendText(dir.getDescription()+"\n");
         }
     }
 
-    /*
-    private void updateNodeInfo() {
-        if (selectedNode != null) {
-            nodePrompt.setText("To edit or delete this node, select the Edit button above.");
-            nodeName.setText(selectedNode.getLongDescription());
-            nodeCoord.setText("(" + selectedNode.getCoordinate().getxCoord() + ", " + selectedNode.getCoordinate().getyCoord() + ")");
-            curFloor.setText(map.getCurrentFloor().toString());
-            nodeType.setText(selectedNode.getNodeType().toString());
+    public void setLoggedInProperty(SimpleBooleanProperty b, SimpleBooleanProperty button) {
+        this.isLoggedInProperty = b;
+
+        this.showLoginButton = button;
+        selectAlg.visibleProperty().bind(isLoggedInProperty);
+        mapTools.visibleProperty().bind(isLoggedInProperty);
+        serviceReqs.visibleProperty().bind(isLoggedInProperty);
+        staff.visibleProperty().bind(isLoggedInProperty);
+        login.visibleProperty().bind(showLoginButton);
+        viewReqs.visibleProperty().bind(isLoggedInProperty);
+    }
+    @FXML
+    public void onLoginClick() {
+        ///Dialog d = new Dialog();
+        try {
+            /*
+            d.getDialogPane().setContent(FXMLLoader.load(getClass().getResource("/StaffLogIn.fxml")));
+            d.show();
+            */
+            Stage loginPopup = new Stage();
+
+
+            loginPopup.setTitle("B&W Login");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LogInScreen.fxml"));
+            Parent root = (Parent) loader.load();
+            //loader.setLocation(getClass().getResource("/LogInScreen.fxml"));
+            StaffLoginController loginController = loader.getController();
+            loginController.initialize();
+
+            Scene loginScene = new Scene(root);
+            loginController.getLoggedInProperty().addListener((obs, before, now) -> {
+                if (now) {
+                    loginPopup.hide();
+
+                    btnAdd.setVisible(true);
+                    isLoggedInProperty.set(true);
+                    showLoginButton.set(false);
+                }
+                else {
+                    isLoggedInProperty.set(false);
+                    showLoginButton.set(true);
+                }
+            });
+
+            loader.setController(loginController);
+
+            loginPopup.setScene(loginScene);
+            loginPopup.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void getLocationInfo(MouseEvent event) {
-        if (editNodes.isSelected()) {
-            String id = map.pointAt(new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown"));
-            if(id != null) {
-                System.out.println("User selected a node!");
-                MapNode clickedNode = mapSubsystem.getNode(id);
-                selectedNode = clickedNode;
-                updateNodeInfo();
-        }
-        else {
-                selectedNode = null;
-            }
-
-        }
-
+    @FXML
+    private void onAddStaff(ActionEvent event){
+        popUpInterpInfo(null);
     }
-    */
-
-
     private void updateHiddenNodesEdges() { // controls what is shown on the map based on the toggle currently selected by user
         updateCurrentNodesEdges();
 
@@ -312,13 +473,6 @@ public class MainScreenSidebarController {
             drawAllEdges();
         }
     }
-
-    // when floor is changed, update the current Maps of Nodes and Edges
-    private void updateCurrentNodesEdges() {
-        floorNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
-        floorEdges = getAllEdges(floorNodes);
-    }
-
     // helper to add all the edges to draw
     private Map<String, MapEdge> getAllEdges(Map<String, MapNode> allNodes) {
         Map<String, MapEdge> allEdges = new HashMap<>();
@@ -363,47 +517,222 @@ public class MainScreenSidebarController {
         tempEdges.clear();
     }
 
-    public void setLoggedInProperty(SimpleBooleanProperty b, SimpleBooleanProperty button) {
-        this.isLoggedInProperty = b;
+    // when floor is changed, update the current Maps of Nodes and Edges
+    private void updateCurrentNodesEdges() {
+        floorNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
+        floorEdges = getAllEdges(floorNodes);
+    }
+    private void popUpInterpInfo(InterpreterStaff staff){
+        Stage InterpPopUp = new Stage();
+        try {
+            InterpPopUp.setTitle("View B&W Interpreters");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InterpreterModScreen.fxml"));
 
-        this.showLoginButton = button;
-        selectAlg.visibleProperty().bind(isLoggedInProperty);
-        mapTools.visibleProperty().bind(isLoggedInProperty);
-        serviceReqs.visibleProperty().bind(isLoggedInProperty);
-        login.visibleProperty().bind(showLoginButton);
+            Scene InterpModScene = new Scene(loader.load());
+            InterpreterModController interpreterModController = loader.getController();
+            interpreterModController.setInterpreter(staff);
+            interpreterModController.setEditing(true);
+            interpreterModController.setCompleted(false);
+            interpreterModController.getCompleted().addListener((obs, before, completed) -> {
+                if (completed) {
+                    if(interpreterModController.getEditing()){
+                        updateInterpList();
+                    }
+                    InterpPopUp.hide();
+                }
+            });
+            InterpPopUp.setScene(InterpModScene);
+            InterpPopUp.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void initInterpColumns(){
+        firstCol.setCellValueFactory(
+                new PropertyValueFactory<>("firstName"));
+        lastCol.setCellValueFactory(
+                new PropertyValueFactory<>("lastName"));
+        langCol.setCellValueFactory(
+                new PropertyValueFactory<>("languages"));
+        certCol.setCellValueFactory(
+                new PropertyValueFactory<>("certification"));
+        phoneCol.setCellValueFactory(
+                new PropertyValueFactory<>("phone"));
+        emailCol.setCellValueFactory(
+                new PropertyValueFactory<>("email"));
+
+        tableVals =  FXCollections.observableArrayList();
+        for(InterpreterStaff interp: getInterpreterStaff()){
+            tableVals.add(new InterpreterTableAdapter(interp));
+        }
+        InterpInfoTable.setItems(tableVals);
+        InterpInfoTable.setRowFactory(tv -> {
+            TableRow<InterpreterTableAdapter> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (! row.isEmpty()) {
+
+                    InterpreterTableAdapter clickedRow = row.getItem();
+                    //System.out.println(clickedRow.getInterpreter());
+                    popUpInterpInfo(clickedRow.getInterpreter());
+                }
+            });
+            return row ;
+        });
+    }
+    //This is called by the add/modify popout to allow the list to update based on the DB
+    public void updateInterpList(){
+        System.out.println("updating list");
+        tableVals =  FXCollections.observableArrayList();
+        for(InterpreterStaff interp: getInterpreterStaff()){
+            tableVals.add(new InterpreterTableAdapter(interp));
+        }
+        InterpInfoTable.setItems(tableVals);
+    }
+    //TODO update the method to get all the interpreters from the DB
+    private ArrayList<InterpreterStaff> getInterpreterStaff(){
+        return InterpreterSubsystem.getInstance().getAllStaff();
+    }
+    public void hideLoginButton() {
+        login.setVisible(false);
+    }
+
+
+    //Methods for Service Request TidlePane
+
+
+    @FXML
+    public void setNodeData() {
+        floorName = floor.getSelectionModel().getSelectedItem();
+        longName.getItems().clear();
+        Map<String, MapNode> nodes = MapSubsystem.getInstance().getFloorNodes(floorName);
+        System.out.println(nodes.keySet());
+        for (MapNode n : nodes.values()) {
+            if (!n.getNodeType().equals(NodeType.HALL)) {
+                longName.getItems().add(n);
+            }
+        }
     }
 
     @FXML
-    public void onLoginClick() {
-        ///Dialog d = new Dialog();
+    public void clearRequest(ActionEvent e) {
+        building.getSelectionModel().clearSelection();
+        floor.getSelectionModel().clearSelection();
+        longName.getSelectionModel().clearSelection();
+        typeOfRequest.getSelectionModel().clearSelection();
+        additionalInfo.clear();
+        //controller.
+    }
+
+    @FXML
+    public void submitRequest(ActionEvent e) {
+        Language lang = null;
+        String familySize = null;
+        buildingName = building.getSelectionModel().getSelectedItem();
+        floorName = floor.getSelectionModel().getSelectedItem();
+        mapNodeName = longName.getSelectionModel().getSelectedItem();
+        requestType = typeOfRequest.getSelectionModel().getSelectedItem();
+        additionalInfoMessage = additionalInfo.getText();
+
+        switch (requestType) {
+            case FOOD:
+                break;
+            case INTR:
+                lang = controller.getLanguage();
+                familySize = controller.getFamilySize();
+                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
+                        Integer.parseInt(familySize),
+                        lang);
+                InterpreterSubsystem.getInstance().addRequest(curRequest);
+                System.out.println("It was successful");
+                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
+                    EmailMessage message2 = new EmailMessage();
+                    message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
+                }
+                break;
+            case MAIN:
+                break;
+            case SEC:
+                break;
+            case TRANS:
+                break;
+            default:
+                break;
+        }
+
+        System.out.println(buildingName);
+        System.out.println(floorName);
+        System.out.println(mapNodeName);
+        System.out.println(requestType);
+        System.out.println(additionalInfoMessage);
+        System.out.println(familySize);
+        System.out.println(lang);
+
+    }
+
+    @FXML
+    public void onRequestSelected() {
         try {
-            Stage loginPopup = new Stage();
-
-            loginPopup.setTitle("B&W Login");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LogInScreen.fxml"));
-            Parent root = (Parent) loader.load();
-            //loader.setLocation(getClass().getResource("/LogInScreen.fxml"));
-            StaffLoginController loginController = loader.getController();
-            loginController.initialize();
-
-            Scene loginScene = new Scene(root);
-            loginController.getLoggedInProperty().addListener((obs, before, now) -> {
-                if (now) {
-                    loginPopup.hide();
-                    //login.setVisible(false);
-                    isLoggedInProperty.set(true);
-                    showLoginButton.set(false);
+            System.out.println("Firing");
+            if (typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.INTR)) {
+                System.out.println("Firing");
+                loader.setLocation(getClass().getResource("/InterpreterReq.fxml"));
+                AnchorPane interpParent = loader.load();
+                if (curReqPane != interpParent) {
+                    addToThis.getChildren().remove(curReqPane);
+                    addToThis.getChildren().add(interpParent);
+                    curReqPane = interpParent;
+                    InterpReqController temp = loader.getController();
+                    controller = temp;
                 }
-                else {
-                    //login.setVisible(true);
-                    isLoggedInProperty.set(false);
-                    showLoginButton.set(true);
-                }
-            });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-            loginPopup.setScene(loginScene);
-            loginPopup.show();
+    public Message createTextMessage(){
+        message = new Message("Needed: "+ requestType.toString()+ "\n"+
+                "Where: "+ buildingName +", "+ floorName.toString()+", "+mapNodeName.getLongDescription()+ "\n"
+                + "Language: " + controller.getLanguage().toString()+"\n"+
+                "Size of Family:" + controller.getFamilySize().toString()+"\n"+
+                "Additional Info: "+additionalInfoMessage);
+        return message;
+    }
 
+    public Message createEmailMessage(){
+        return message = new Message("Interpreter Help", additionalInfoMessage);
+    }
+
+    @FXML
+    public void showStaffPopUp(ActionEvent event) {
+
+        Stage staffPopUp = new Stage();
+        try {
+            if(controller.getLanguage()!=null) {
+                staffPopUp.setTitle("View B&W Staff");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
+
+                Scene staffPopUpScene = new Scene(loader.load());
+                ViewStaffController viewStaffController = loader.getController();
+                viewStaffController.setLanguage(controller.getLanguage());
+               // viewStaffController.setRequestViewList(controller.getLanguage());
+                viewStaffController.setIsComplete(false);
+                viewStaffController.getIsComplete().addListener((obs, before, isComplete) -> {
+                    staffToFulfill=viewStaffController.getStaffToFulfill();
+                    System.out.println(staffToFulfill);
+                    if (isComplete&&staffToFulfill!=null){
+                        System.out.println(staffToFulfill);
+                        staffPopUp.close();
+                        System.out.println("done");
+                    }
+                });
+                staffPopUp.setScene(staffPopUpScene);
+                staffPopUp.show();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

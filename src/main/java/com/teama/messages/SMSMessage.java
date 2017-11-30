@@ -25,8 +25,9 @@ public class SMSMessage implements SendMessage {
         providers.put(Provider.SPRINT, "@messaging.sprintpcs.com");
     }
 
-    public SMSMessage(Provider prov){
+    public SMSMessage(Provider prov, String num){
         this.provider = prov;
+        this.phoneNumber = num;
 
         setMap();
 
@@ -41,7 +42,7 @@ public class SMSMessage implements SendMessage {
             return false;
         }
 
-        ContactInfo phoneCI = new ContactInfo();
+        ContactInfo phoneCI = contactInfo;
         phoneCI.setEmailAddress(workingAddress);
 
         return  emailMessage.sendMessage(phoneCI, message);
