@@ -22,10 +22,11 @@ public class InterpreterSubsystem {
         private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
     }
 
-    public InterpreterSubsystem getInstance() {
+    public static synchronized InterpreterSubsystem getInstance() {
         return InterpreterHelper._instance;
     }
 
+    //adds an ArrayList
     // adds a given staff member to the database; done by admin
     public boolean addStaff(InterpreterStaff s) {
         return staffDB.addStaff(s);
@@ -45,6 +46,7 @@ public class InterpreterSubsystem {
         return staffDB.findQualified(language);
     }
 
+    // TODO
     // returns a list of all Interpreters in the system
     public ArrayList<InterpreterStaff> getAllStaff() {
         return staffDB.getAllStaff();

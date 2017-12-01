@@ -254,6 +254,9 @@ public class EdgeEditorController {
 
         setStart.setDisable(true);
         setEnd.setDisable(true);
+
+        addMode.setDisable(false);
+        deleteMode.setDisable(false);
     }
     /*
     private MapNode nodeFromUser(boolean startNode) {
@@ -287,8 +290,10 @@ public class EdgeEditorController {
             restoreToDefault();
             inAddMode = true;
             inEditMode = false;
-            addMode.setVisible(false);
-            deleteMode.setVisible(false);
+            //addMode.setVisible(false);
+            //deleteMode.setVisible(false);
+            addMode.setDisable(true);
+            deleteMode.setDisable(true);
             setButtonsForAddMode();
             startNodePrompt.setText("To add an edge, select Start and End Nodes, then Confirm.");
         });
@@ -301,8 +306,10 @@ public class EdgeEditorController {
 
             inAddMode = false;
             inEditMode = true;
-            addMode.setVisible(false);
-            deleteMode.setVisible(false);
+            addMode.setDisable(true);
+            deleteMode.setDisable(true);
+            //addMode.setVisible(false);
+            //deleteMode.setVisible(false);
             setButtonsForDeleteMode();
             });
 

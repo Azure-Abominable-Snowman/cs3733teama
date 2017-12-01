@@ -94,6 +94,7 @@ public class NodeEditorController {
         cancel.getStylesheets().add("css/MainScreenStyle.css");
         confirm.getStyleClass().add("normalButton");
         cancel.getStyleClass().add("normalButton");
+        cancel.setPrefSize(confirm.getPrefWidth(),confirm.getPrefHeight());
 
         cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -182,6 +183,10 @@ public class NodeEditorController {
 
         addMode.setVisible(true);
         editMode.setVisible(true);
+        nodeLongName.setDisable(true);
+        nodeName.setDisable(true);
+        addMode.setDisable(false);
+        editMode.setDisable(false);
     }
 
     private MapNode nodeFromUser() {
@@ -256,7 +261,8 @@ public class NodeEditorController {
 
                 nodeName.setDisable(false);
                 nodeLongName.setDisable(false);
-
+                addMode.setDisable(true);
+                editMode.setDisable(true);
                 setButtonsForAddMode();
 
             }
@@ -273,10 +279,12 @@ public class NodeEditorController {
                     setButtonsForEditMode();
                     nodeTypeSelector.setVisible(false);
                     nodeType.setVisible(true);
-                    nodeName.setDisable(false);
-                    nodeLongName.setDisable(false);
+                    nodeName.setDisable(true);
+                    nodeLongName.setDisable(true);
                 }
-
+                addMode.setDisable(true);
+                editMode.setDisable(true);
+                setButtonsForEditMode();
 
             }
         });
@@ -368,8 +376,8 @@ public class NodeEditorController {
     @FXML
     public void onEditClick(ActionEvent e) {
         System.out.println("EDIT");
-        nodeName.setDisable(true);
-        nodeLongName.setDisable(true);
+        nodeName.setDisable(false);
+        nodeLongName.setDisable(false);
         showConfirmCancelEditMode();
         if (selectedNode != null) {
             nodePrompt.setVisible(false);
@@ -379,6 +387,7 @@ public class NodeEditorController {
             confirm.setVisible(true);
             isEditEditing = true;
             isDeleting = false;
+
         }
         else {
             clearAllText();
