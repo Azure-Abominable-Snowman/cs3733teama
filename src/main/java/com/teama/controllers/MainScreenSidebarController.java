@@ -134,6 +134,12 @@ public class MainScreenSidebarController {
     private JFXListView<InterpreterRequest> requestView;
 
     @FXML
+    private JFXButton deleteButton;
+
+    @FXML
+    private JFXButton completeButton;
+
+    @FXML
     private JFXButton login;
 
 
@@ -652,6 +658,10 @@ public class MainScreenSidebarController {
                     EmailMessage message2 = new EmailMessage();
                     message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
                 }
+
+                requestView.getItems().clear();
+                requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+                System.out.println("It was added");
                 break;
             case MAIN:
                 break;
@@ -737,6 +747,25 @@ public class MainScreenSidebarController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void deleteRequest(ActionEvent event) {
+        InterpreterSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+        System.out.println("It was deleted");
+
+    }
+
+    @FXML
+    void changeRequestStatus(ActionEvent event) {
+        System.out.println(requestView.getSelectionModel().getSelectedItem());
+        InterpreterSubsystem.getInstance().fulfillRequest(requestView.getSelectionModel().getSelectedItem());
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+
+    }
+
 
 
 }
