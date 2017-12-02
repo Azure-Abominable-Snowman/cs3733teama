@@ -1,15 +1,7 @@
 package com.teama.controllers;
 
 import com.jfoenix.controls.*;
-import com.teama.messages.EmailMessage;
-import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequestInfo;
-import com.teama.requestsubsystem.RequestStatus;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.Language;
-
-import java.util.Map;
-import com.jfoenix.controls.*;
+import com.teama.controllers_refactor.PopOutController;
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -20,61 +12,44 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
-import com.teama.requestsubsystem.RequestType;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
+import com.teama.messages.SMSMessage;
+import com.teama.requestsubsystem.GenericRequestInfo;
+import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
+import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-
-import static com.teama.requestsubsystem.RequestType.*;
-import java.util.HashSet;
-import java.util.Set;
-
 import java.util.*;
 
-public class MainScreenSidebarController {
+import static com.teama.requestsubsystem.RequestType.*;
+
+public class MainScreenSidebarController extends PopOutController {
+    @FXML
+    private HBox hbxRoot;
+
     @FXML
     private JFXTextArea directions;
     @FXML
@@ -132,12 +107,6 @@ public class MainScreenSidebarController {
 
     @FXML
     private JFXListView<InterpreterRequest> requestView;
-
-    @FXML
-    private JFXButton deleteButton;
-
-    @FXML
-    private JFXButton completeButton;
 
     @FXML
     private JFXButton login;
@@ -226,7 +195,7 @@ public class MainScreenSidebarController {
         mapSubsystem = MapSubsystem.getInstance();
 
 
-
+        //NAVIGATION STUFF
         // Add all of the radio buttons to a toggle group
         algoToggleGroup = new ToggleGroup();
         aStar.setToggleGroup(algoToggleGroup);
@@ -247,7 +216,7 @@ public class MainScreenSidebarController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
-
+        //SERVICE REQUEST STUFF
         //set up for Service Request
         building.getItems().clear();
         building.getItems().add("BTM");
@@ -265,11 +234,11 @@ public class MainScreenSidebarController {
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
 
 
-
+        //STAFF STUFF
         btnAdd.setVisible(false);
         initInterpColumns();
 
-        //Map Editor
+        //MAP EDITOR
         /*
         EventHandler<MouseEvent> onMapClicked = (MouseEvent e) -> {
             if (editNodes.isSelected()) {
@@ -371,7 +340,7 @@ public class MainScreenSidebarController {
 
     }
 
-
+    //MAP DISPLAY CODE?
     /**
      * Sets the map display in this controller, must be ran before anything else is to be done regarding the map
      * @param map
@@ -462,10 +431,6 @@ public class MainScreenSidebarController {
         }
     }
 
-    @FXML
-    private void onAddStaff(ActionEvent event){
-        popUpInterpInfo(null);
-    }
     private void updateHiddenNodesEdges() { // controls what is shown on the map based on the toggle currently selected by user
         updateCurrentNodesEdges();
 
@@ -528,6 +493,14 @@ public class MainScreenSidebarController {
         floorNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
         floorEdges = getAllEdges(floorNodes);
     }
+
+    //Staff screen start
+
+    @FXML
+    private void onAddStaff(ActionEvent event){
+        popUpInterpInfo(null);
+    }
+
     private void popUpInterpInfo(InterpreterStaff staff){
         Stage InterpPopUp = new Stage();
         try {
@@ -606,8 +579,8 @@ public class MainScreenSidebarController {
     }
 
 
-    //Methods for Service Request TidlePane
-
+    //Methods for Service Request TitlePane
+    //SERVICE REQUEST STUFF
 
     @FXML
     public void setNodeData() {
@@ -658,10 +631,6 @@ public class MainScreenSidebarController {
                     EmailMessage message2 = new EmailMessage();
                     message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
                 }
-
-                requestView.getItems().clear();
-                requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
-                System.out.println("It was added");
                 break;
             case MAIN:
                 break;
@@ -748,24 +717,14 @@ public class MainScreenSidebarController {
         }
     }
 
-    @FXML
-    void deleteRequest(ActionEvent event) {
-        InterpreterSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
-        requestView.getItems().clear();
-        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
-        System.out.println("It was deleted");
+    public HBox getHbxRoot(){return hbxRoot;}
+
+    @Override
+    public void onOpen(){
 
     }
-
-    @FXML
-    void changeRequestStatus(ActionEvent event) {
-        System.out.println(requestView.getSelectionModel().getSelectedItem());
-        InterpreterSubsystem.getInstance().fulfillRequest(requestView.getSelectionModel().getSelectedItem());
-        requestView.getItems().clear();
-        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+    @Override
+    public void onClose() {
 
     }
-
-
-
 }
