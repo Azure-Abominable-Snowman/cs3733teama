@@ -1,5 +1,7 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
+import com.teama.messages.ContactInfo;
+import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
 import com.teama.requestsubsystem.GenericStaffInfo;
 
@@ -61,6 +63,18 @@ public class InterpreterStaff  {
 
     public void setPhone(String phone) {
         info.setPhoneNumber(phone);
+    }
+
+    public ContactInfo getContactInfo(){
+        return info.getContactInfo();
+    }
+
+    public String toString(){
+        String lang = "";
+        for(Language l: getLanguages()){
+            lang +=l.toString() + ", ";
+        }
+        return getFirstName()+" "+getLastName()+"\n"+lang;
     }
 
 

@@ -46,6 +46,6 @@ public class KnownPoint  {
 
     @Override
     public boolean equals(Object obj) {
-        return (this.getNode().getId() == ((KnownPoint) obj).getNode().getId());
+        return (this.getNode().getId().equals(((KnownPoint) obj).getNode().getId()) );
     }
 }
