@@ -293,7 +293,13 @@
                            <children>
                               <VBox layoutX="103.0" layoutY="116.0" prefHeight="517.0" prefWidth="327.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <JFXListView fx:id="requestView" prefHeight="496.0" prefWidth="307.0" />
+                                    <JFXListView fx:id="requestView" prefHeight="390.0" prefWidth="307.0" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <JFXButton fx:id="deleteButton" onAction="#deleteRequest" prefHeight="89.0" prefWidth="147.0" style="-fx-background-color: #4c4cff;" text="Delete" />
+                                          <JFXButton fx:id="completeButton" layoutX="10.0" layoutY="10.0" onAction="#changeRequestStatus" prefHeight="89.0" prefWidth="160.0" style="-fx-background-color: #b2b2ff;" text="Complete" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
                            </children>

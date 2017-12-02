@@ -104,6 +104,10 @@ public class InterpreterRequest {
         return "Type: Interpreter \n" + "Location: " + getLocation().toString() + "\n" + "RequestStatus: "+ r.toString() + "\n" + "Staff ID: "+ Integer.toString(getInfo().getStaffID());
     }
 
+    public void setRequestStatus(RequestStatus r){
+        this.r = r;
+    }
+
 
 
 
