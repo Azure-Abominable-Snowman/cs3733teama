@@ -4,7 +4,10 @@ import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class TextualDirections implements DirectionsGenerator {
     private ArrayList<MapNode> nodeList;
@@ -18,6 +21,12 @@ public class TextualDirections implements DirectionsGenerator {
 
     @Override
     public TextDirections generateDirections(Path path) {
+        //TODO maybe make a singleton for lang so no need to keep pass in variable all the time.
+        String lang = "en";
+        Locale locale = new Locale(lang);
+        ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
+
+
         nodeList = path.getNodes();
          routeLinks = new ArrayList<>(nodeList.size()-1);
 
@@ -38,8 +47,10 @@ public class TextualDirections implements DirectionsGenerator {
         // put RouteLinks into Direction formate and refactor the same RouteLinks.
         // make the start Direction and push it into list.
         RouteLink thisTurn = routeLinks.get(0);
-        String temp = String.format( "Start walking towards %s",
+        String temp = String.format( "%s %s",
+                bundle.getString("pathstart"),
                 thisTurn.getNext().getLongDescription());
+        // small change to try the translator. 
 
         dirList.add(new Direction(0,
                 thisTurn.getStart().getCoordinate()
@@ -107,7 +118,7 @@ public class TextualDirections implements DirectionsGenerator {
 
         if(routeLink.isEndFlag()) {
             discription= String.format("%s \nyou will reach your destination %s",
-                    discription,routeLink.getNext().getLongDescription());
+            discription,routeLink.getNext().getLongDescription());
         }
 
         // create and return the new formed Direction object.
