@@ -727,4 +727,9 @@ public class MainScreenSidebarController extends PopOutController {
     public void onClose() {
 
     }
+
+    @Override
+    public String getFXMLPath() {
+        return null;
+    }
 }
