@@ -5,6 +5,9 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.teama.controllers_refactor.PopOutController;
+import com.teama.controllers_refactor.PopOutFactory;
+import com.teama.controllers_refactor.PopOutType;
 import com.teama.drawing.HospitalMap;
 import com.teama.drawing.HospitalMapDisplay;
 import com.teama.drawing.MapDisplay;
@@ -32,7 +35,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -118,19 +120,23 @@ public class MainScreenController implements Initializable {
     private EventHandler<MouseEvent> originalMouseClick;
 
     private MainScreenSidebarController sidebar;
+    private PopOutFactory popOutFactory = new PopOutFactory();
 
     @FXML
     void onHamburgerButtonClick(MouseEvent event) throws IOException {
-        hamOpnsTran.setRate(animRate*=-1);
+        /*hamOpnsTran.setRate(animRate*=-1);
         hamOpnsTran.play();
-        FXMLLoader loader = new FXMLLoader();
+       /* FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/MainSidebar.fxml"));
-        HBox box = loader.load();
-        sidebar = loader.getController();
+        HBox box = loader.load();*//*
+        sidebar = (MainScreenSidebarController) popOutFactory.makePopOut(PopOutType.TEST);
+        System.out.println(sidebar);
+        //sidebar = loader.getController();
         sidebar.setMapDisplay(map);
         sidebar.setFloorButtonVBox(floorButtonBox);
         sidebar.setLoggedInProperty(this.isLoggedIn, this.showLoginButton);
         //this.originalMouseClick = sidebar.getOldNodeEditorHanlder();
+        HBox box = sidebar.getHbxRoot();
         drawer.setSidePane(box);
         if(drawer.isShown()){
             drawer.close();
@@ -141,6 +147,23 @@ public class MainScreenController implements Initializable {
             drawer.setPrefWidth(box.getPrefWidth());
             drawerExtended = true;
             drawer.open();
+        }*/
+
+        // TEST: Have the hamburger button set the popout factory
+        PopOutFactory popOutFactory = new PopOutFactory();
+        PopOutController controller = popOutFactory.makePopOut(PopOutType.STAFF);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(controller.getFXMLPath()));
+        loader.setController(controller);
+        controller.onOpen();
+        Node sidebar = loader.load();
+        drawer.setSidePane(sidebar);
+        if(drawer.isShown()){
+            drawer.close();
+            drawerExtended = false;
+            map.getUnderlyingCanvas().setOnMouseClicked(originalMouseClick);
+            map.deletePoint("selected");
+            controller.onClose();
         }
     }
 
@@ -149,7 +172,6 @@ public class MainScreenController implements Initializable {
         mapSubsystem = MapSubsystem.getInstance();
         drawer.setSidePane();
         hamOpnsTran = new HamburgerBackArrowBasicTransition(hamburgerButton);
-
         Map<Floor, HospitalMap> imgs = new HashMap<>();
         imgs.put(Floor.SUBBASEMENT, new ProxyMap("/maps/L2.png"));
         imgs.put(Floor.BASEMENT, new ProxyMap("/maps/L1.png"));
