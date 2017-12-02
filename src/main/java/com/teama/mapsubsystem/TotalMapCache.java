@@ -5,11 +5,17 @@ import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TotalMapCache extends MapCache {
     public TotalMapCache(MapDataSource dataSource) {
         super(dataSource);
+        nodeCash = new HashMap<>();
+        edgeCash = new HashMap<>();
     }
+
+    HashMap<String,MapNode> nodeCash ;
+    HashMap<String,MapEdge> edgeCash ;
 
     @Override
     public MapNode getNode(String id) {

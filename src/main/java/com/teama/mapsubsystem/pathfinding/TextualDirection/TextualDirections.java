@@ -21,7 +21,10 @@ public class TextualDirections implements DirectionsGenerator {
 
     @Override
     public TextDirections generateDirections(Path path) {
+
+
         //TODO maybe make a singleton for lang so no need to keep pass in variable all the time.
+
         String lang = "en";
         Locale locale = new Locale(lang);
         ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
