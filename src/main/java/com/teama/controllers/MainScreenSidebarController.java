@@ -1,6 +1,7 @@
 package com.teama.controllers;
 
 import com.jfoenix.controls.*;
+import com.teama.controllers_refactor.PopOutController;
 import com.teama.messages.EmailMessage;
 import com.teama.messages.SMSMessage;
 import com.teama.requestsubsystem.GenericRequestInfo;
@@ -26,8 +27,7 @@ import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import com.teama.messages.Message;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
@@ -57,7 +57,6 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -74,7 +73,10 @@ import java.util.Set;
 
 import java.util.*;
 
-public class MainScreenSidebarController {
+public class MainScreenSidebarController extends PopOutController {
+    @FXML
+    private HBox hbxRoot;
+
     @FXML
     private JFXTextArea directions;
     @FXML
@@ -220,7 +222,7 @@ public class MainScreenSidebarController {
         mapSubsystem = MapSubsystem.getInstance();
 
 
-
+        //NAVIGATION STUFF
         // Add all of the radio buttons to a toggle group
         algoToggleGroup = new ToggleGroup();
         aStar.setToggleGroup(algoToggleGroup);
@@ -241,7 +243,7 @@ public class MainScreenSidebarController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
-
+        //SERVICE REQUEST STUFF
         //set up for Service Request
         building.getItems().clear();
         building.getItems().add("BTM");
@@ -259,11 +261,11 @@ public class MainScreenSidebarController {
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
 
 
-
+        //STAFF STUFF
         btnAdd.setVisible(false);
         initInterpColumns();
 
-        //Map Editor
+        //MAP EDITOR
         /*
         EventHandler<MouseEvent> onMapClicked = (MouseEvent e) -> {
             if (editNodes.isSelected()) {
@@ -365,7 +367,7 @@ public class MainScreenSidebarController {
 
     }
 
-
+    //MAP DISPLAY CODE?
     /**
      * Sets the map display in this controller, must be ran before anything else is to be done regarding the map
      * @param map
@@ -456,10 +458,6 @@ public class MainScreenSidebarController {
         }
     }
 
-    @FXML
-    private void onAddStaff(ActionEvent event){
-        popUpInterpInfo(null);
-    }
     private void updateHiddenNodesEdges() { // controls what is shown on the map based on the toggle currently selected by user
         updateCurrentNodesEdges();
 
@@ -522,6 +520,14 @@ public class MainScreenSidebarController {
         floorNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
         floorEdges = getAllEdges(floorNodes);
     }
+
+    //Staff screen start
+
+    @FXML
+    private void onAddStaff(ActionEvent event){
+        popUpInterpInfo(null);
+    }
+
     private void popUpInterpInfo(InterpreterStaff staff){
         Stage InterpPopUp = new Stage();
         try {
@@ -600,8 +606,8 @@ public class MainScreenSidebarController {
     }
 
 
-    //Methods for Service Request TidlePane
-
+    //Methods for Service Request TitlePane
+    //SERVICE REQUEST STUFF
 
     @FXML
     public void setNodeData() {
@@ -738,5 +744,14 @@ public class MainScreenSidebarController {
         }
     }
 
+    public HBox getHbxRoot(){return hbxRoot;}
 
+    @Override
+    public void onOpen(){
+
+    }
+    @Override
+    public void onClose() {
+
+    }
 }
