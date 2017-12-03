@@ -4,6 +4,9 @@ import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class RouteLink {
 
     private MapNode start;
@@ -18,7 +21,9 @@ public class RouteLink {
 
     private  boolean endFlag = false;
 
-
+    String lang = "en";
+    Locale locale = new Locale(lang);
+    ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
 
 
     RouteLink(MapNode start, MapNode next, RouteLink lastLink) {
@@ -78,30 +83,30 @@ public class RouteLink {
             }
 
             else if(-120 <= turnAngle && turnAngle <= -60){
-                textReturn = "Turn Left";
+                textReturn = String.format("%s", bundle.getString("turnleft"));
             }
 
             else if(-60 < turnAngle && turnAngle < -15){
-                textReturn = "Turn Left Slightly";
+                textReturn = String.format("%s", bundle.getString("turnleftslight"));
             }
 
             else if(-165 < turnAngle && turnAngle < -120){
-                textReturn = "Turn Left Sharply";
+                textReturn = String.format("%s", bundle.getString("turnleftsharp"));
             }
 
             else if(60 <= turnAngle && turnAngle <= 120){
-                textReturn = "Turn Right";
+                textReturn = String.format("%s", bundle.getString("turnright"));
             }
 
             else if(15 < turnAngle && turnAngle < 60){
-                textReturn = "Turn Right Slightly";
+                textReturn = String.format("%s", bundle.getString("turnrightslight"));
             }
 
             else if(120 < turnAngle && turnAngle < 165){
-                textReturn = "Turn Right Sharply";
+                textReturn = String.format("%s", bundle.getString("turnrightsharp"));
             }
             else {
-                textReturn = "Moon Walk";
+                textReturn = String.format("%s", bundle.getString("reverse"));
             }
 
 
@@ -114,10 +119,10 @@ public class RouteLink {
             Integer stairNum;
             stairNum = 2;
             if(start.getNodeType().equals(NodeType.ELEV)){
-                textReturn = "Enter Elevator";
+                textReturn = String.format("%s", bundle.getString("elevat"));
             }
             else{
-                textReturn = "Enter Stairs";
+                textReturn = String.format("%s", bundle.getString("stairs"));
             }
             
         }

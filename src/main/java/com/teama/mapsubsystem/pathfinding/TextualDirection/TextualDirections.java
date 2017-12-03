@@ -103,24 +103,23 @@ public class TextualDirections implements DirectionsGenerator {
         String discription = routeLink.getTextReturn();
         if (discription.contains("Elevator")){ // elevator text
             discription = String.format("%s %s",
-                    bundle.getString("elevatorEnter"),
+                    bundle.getString("elevatorenter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Stairs")){ // Stairs text
-            discription = String.format("%s %s", bundle.getString("stairEnter"),
+            discription = String.format("%s %s", bundle.getString("stairenter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Straight")){// going Straight
-            discription = String.format("%s %s", bundle.getString("straightLine"),
-                    routeLink.getDistance());
+            discription = String.format("%s", bundle.getString("straightline")); //haven't added distance yet
         }
         else{ // actually turning.
             discription=String.format("%s %s", bundle.getString("turning"),
-                    discription,routeLink.getDistance());
+                    discription); //haven't put distance in yet
         }
 
         if(routeLink.isEndFlag()) {
-            discription= String.format("%s %s", bundle.getString("pathend"),
+            discription= String.format("%s %s %s", bundle.getString("pathend"),
             discription,routeLink.getNext().getLongDescription());
         }
 
