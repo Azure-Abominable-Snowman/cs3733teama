@@ -60,8 +60,13 @@ public class ViewStaffController {
     public void setLanguage(Language lang){
         this.language= lang;
         staffViewList.getItems().clear();
-        for(InterpreterStaff interpreter : InterpreterSubsystem.getInstance().findQualified(lang)){
-            staffViewList.getItems().add(interpreter);
+        try {
+            ArrayList<InterpreterStaff> staff = InterpreterSubsystem.getInstance().findQualified(lang);
+            for (InterpreterStaff interpreter : staff) {
+                staffViewList.getItems().add(interpreter);
+            }
+        } catch(NullPointerException e) {
+            return;
         }
     }
 
