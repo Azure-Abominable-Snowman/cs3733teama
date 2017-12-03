@@ -80,7 +80,8 @@ public class TotalMapCache extends MapCache {
 
     @Override
     public MapNode getNode(String description, boolean longDescription) {
-        return null;
+        if(longDescription) return longDescribeToNode.get(description);
+        else return describeToNode.get(description);
     }
 
     @Override
