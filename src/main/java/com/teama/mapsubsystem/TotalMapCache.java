@@ -40,6 +40,8 @@ public class TotalMapCache extends MapCache {
         initialCash ();
     }
 
+
+
     private void initialCash ()
     {
         // node related.
@@ -72,20 +74,29 @@ public class TotalMapCache extends MapCache {
     }
 
 
+    // TODO: do a check in all the gets to prevent case of missing.
 
     @Override
     public MapNode getNode(String id) {
+        MapNode result = nodeCash.get(id);
+        if( result == null ) {
+            result = dataSource.getNode(id);
+
+        }
+
         return nodeCash.get(id);
     }
 
     @Override
     public MapNode getNode(String description, boolean longDescription) {
-        if(longDescription) return longDescribeToNode.get(description);
+        if(longDescription) return longDescribeToNode.get(description); // todo check the meaning for the boolean pram.
         else return describeToNode.get(description);
     }
 
     @Override
     public void addNode(MapNode node) {
+        dataSource.addNode(node); // first add into dataSource.
+        // adding to cache list. //TODO not done.
 
     }
 
@@ -111,17 +122,12 @@ public class TotalMapCache extends MapCache {
 
     @Override
     public ArrayList<String> getEdgeIds() {
-        return null;
+        return edgeIds;
     }
 
     @Override
     public MapEdge getEdge(String id) {
-        return null;
-    }
-
-    @Override
-    public void close() {
-        dataSource.close();
+        return edgeCash.get(id);
     }
 
     @Override
@@ -133,4 +139,39 @@ public class TotalMapCache extends MapCache {
     public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
         return floorEdge.get(floor);
     }
+
+    @Override
+    public void close() {
+        dataSource.close();
+    }
+
+
+    /**
+     * this will reset the dataSource, then rerun the initialCash
+     * @param newSource the new source that the cache will rely on.
+     */
+    public void reset(MapDataSource newSource)
+    {
+        dataSource  = newSource;
+        initialCash();
+    }
+
+    /**
+     * In the case of dataSource contains it but cache doesn't.
+     * @param node the node that is missed.
+     */
+    private void addmissedNode(MapNode node)
+    {
+        //TODO poplate this, maybe add node can reuse this.
+    }
+
+    /**
+     * In the case of dataSource contains it but cache doesn't.
+     * @param edge the node that is missed.
+     */
+    private void addmissedEdge(MapEdge edge)
+    {
+        //TODO poplate this, maybe add edge can reuse this.
+    }
+
 }
