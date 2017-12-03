@@ -6,7 +6,7 @@ import com.teama.mapsubsystem.data.Location;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
+// TODO : may want to build a custom Filter enum and build custom pstatement
 /**
  * Created by aliss on 12/2/2017.
  */
@@ -17,13 +17,13 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
     private String reportTableName;
     private Connection conn = null;
     private Statement stmt = null;
-    private PreparedStatement addRequest, getRequest, deleteRequest, selectRequestByStatus, updateRequest, markStatus, getRequestID; //for request table
+    private PreparedStatement addRequest, getRequest, deleteRequest, updateRequest, markStatus, getRequestReqTypeStatus, getRequestByStatus;
     private PreparedStatement addReport, updateReport, deleteReport, getReport;
 
-    public GeneralRequestDB(String dbURL, String reqTableName, String reportTableName) {
+    public GeneralRequestDB(String dbURL, String reqTableName) {
 
         this.requestTableName = reqTableName;
-        this.reportTableName = reportTableName;
+        //this.reportTableName = reportTableName;
         this.dbURL = dbURL;
 
         try {
@@ -38,7 +38,7 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
         // This request table stores the info of an interpreter request made by a staff or admin member
         // Already has an assigned staff member, location, status, as well as extra info for filling request - family size, language, note
         // Admin will later access the table to pull up a request and mark it as fulfilled by filling out the form
-        // database sets ID of request; this ID links to database of InterpreterReports
+        // database sets ID of request;
 
 
 
@@ -95,13 +95,17 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
             deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
             updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STAFFID = ?, XCOORD = ?, YCOORD = ?, LVL = ?, BUILDING = ?, " +
-                    " STATUS = ?, FAMSIZE = ?, LANG = ?, NOTE = ? WHERE REQUESTID = ?");
-            selectRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
+                    "REQTYPE = ?, STATUS = ?, NOTE = ? WHERE REQUESTID = ?");
 
             markStatus = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ? WHERE REQUESTID = ?", ResultSet.CONCUR_UPDATABLE);
+            getRequestReqTypeStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQTYPE = ? AND STATUS = ?");
+            getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
+
+            /*
             addReport = conn.prepareStatement("INSERT INTO " + reportTableName + " VALUES(?, ?, ?)");
             deleteReport = conn.prepareStatement("DELETE FROM " + reportTableName + " WHERE REQUESTID = ?");
             getReport = conn.prepareStatement("SELECT * FROM " + reportTableName + " WHERE REQUESTID = ?");
+            */
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,6 +120,7 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
     @Override
     public Request addRequest(Request request) {
         GenericRequest newReq = null;
+        ResultSet rs = null;
         try {
             addRequest.setInt(1, request.getStaffID());
             addRequest.setInt(2, request.getLocation().getxCoord());
@@ -126,7 +131,7 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
             addRequest.setString(7, request.getStatus().toString());
             addRequest.setString(8, request.getNote());
             addRequest.executeUpdate();
-            ResultSet rs = addRequest.getGeneratedKeys();
+            rs = addRequest.getGeneratedKeys();
             int ID = 0;
             if (rs.next()) {
                 ID = rs.getInt("REQUESTID");
@@ -135,23 +140,38 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
                 log.info("Added request with ID " + ID);
 
             }
-
-
         } catch (SQLException e) {
             //e.printStackTrace();
             log.info("Failed to add new Request to the generic Request table.");
+        }
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                //e.printStackTrace();
+            }
         }
         return newReq;
     }
 
     /**
-     * Deletes a Request from the General Request Table
+     * Deletes a Request from the General Request Table -- call GeneralRequest DB Manager and first delete request in Request Table
+     * pertaining to the given request type
+     * deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
      * @param requestID
      * @return
      */
     public boolean deleteRequest(int requestID) {
-        //TODO
-        return false;
+        try {
+            deleteRequest.setInt(1, requestID);
+            deleteRequest.executeUpdate();
+            log.info("Deleted the request with ID " + requestID + " from the generic table.");
+            return true;
+        } catch (SQLException e) {
+            log.info("Failed to delete the Request with ID " + requestID + " from the generic table.");
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private GenericRequest reqFromRS(ResultSet rs) {
@@ -164,8 +184,10 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
         } catch (SQLException e) {
             //e.printStackTrace();
         }
+
         return found;
     }
+
     /**
      * Retrieves a Request by input requestID
      *             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
@@ -175,14 +197,22 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
      */
     public Request getRequest(int requestID) {
         GenericRequest found = null;
+        ResultSet rs = null;
         log.info("Looking for request with ID " + requestID);
         try {
             getRequest.setInt(1, requestID);
-            ResultSet rs = getRequest.executeQuery();
+            rs = getRequest.executeQuery();
             if (rs.next()) {
                 found = reqFromRS(rs);
                 if (found != null) {
                     log.info("Retrieved an " + found.getReqType().toString() + " request with ID " + rs.getInt("REQUESTID"));
+                }
+            }
+            if (rs!= null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    //e.printStackTrace();
                 }
             }
         } catch (SQLException e) {
@@ -194,34 +224,129 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
     }
 
     /**
+     * returns an ArrayList of Request based on input status
      *
+     getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?")
      * @param status
      * @return
      */
+
     public ArrayList<Request> getAllRequests(RequestStatus status) {
-        //TODO
-        return null;
-    } // get all requests by given RequestStatus
-    public ArrayList<Request> getAllRequests(RequestStatus status, RequestType type) {
-        //TODO
-        return null;
-    } // get all requests by given RequestStatus and Request Type
+        ArrayList<Request> requests = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            getRequestByStatus.setString(1, status.toString());
+            rs = getRequestByStatus.executeQuery();
+            while (rs.next()) {
+                GenericRequest found = reqFromRS(rs);
+                if (found != null) {
+                    requests.add(found);
+                }
+                else {
+                    log.info("Failed to create a request from result set in getAllRequests (Generic Table)");
+                }
+            }
+            if (rs!= null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    //e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return requests;
+    }
 
     /**
-     *  Marks the request as Closed.
+     * returns and Arraylist of Request based on staffID and Status
+     getRequestReqTypeStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQTYPE = ? AND STATUS = ?");
+     * @param status
+     * @param type
+     * @return
+     */
+    public ArrayList<Request> getAllRequests(RequestStatus status, RequestType type) {
+        ArrayList<Request> requests = new ArrayList<>();
+        ResultSet rs = null;
+        try {
+            getRequestReqTypeStatus.setString(1, type.toString());
+            getRequestReqTypeStatus.setString(2, status.toString());
+            rs = getRequest.executeQuery();
+            while (rs.next()) {
+                GenericRequest found = reqFromRS(rs);
+                if (found != null) {
+                    requests.add(found);
+                }
+                else {
+                    log.info("Failed to create a request from result set in getAllRequests by status and type (Generic Table)");
+                }
+            }
+            if (rs!= null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    //e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return requests;
+    }
+
+    /**
+     *  Marks the request as Closed. Returns true on success, false on failure.
      *              markStatus= conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ? WHERE REQUESTID = ?", ResultSet.CONCUR_UPDATABLE);
 
+     * @param id
+     * @return
+     */
+    public boolean fulfillRequest(int id) {
+        try {
+            markStatus.setString(1, RequestStatus.CLOSED.toString());
+            markStatus.setInt(2, id);
+            markStatus.executeUpdate();
+            log.info("Marked Request with ID " + id + " as Closed.");
+            return true;
+        } catch (SQLException e) {
+            log.info("Failed to Close the Request with ID " + id);
+            //e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Updates the input request, returns boolean (true on success, false on failure)
+     * updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STAFFID = ?, XCOORD = ?, YCOORD = ?, LVL = ?, BUILDING = ?, " +
+     "REQTYPE = ?, STATUS = ?, NOTE = ? WHERE REQUESTID = ?");
      * @param r
      * @return
      */
-    public boolean fulfillRequest(Request r) {
-        
-        return false;
-    }// generate report for given request; mark request as closed
     public  boolean updateRequest(Request r) {
-        //TODO
+        try {
+            updateRequest.setInt(1, r.getStaffID());
+            updateRequest.setInt(2, r.getLocation().getxCoord());
+            updateRequest.setInt(3, r.getLocation().getyCoord());
+            updateRequest.setString(4, r.getLocation().getLevel().toString());
+            updateRequest.setString(5, r.getLocation().getBuilding());
+            updateRequest.setString(6, r.getReqType().toString());
+            updateRequest.setString(7, r.getStatus().toString());
+            updateRequest.setString(8, r.getNote());
+            updateRequest.setInt(9, r.getRequestID());
+            updateRequest.executeUpdate();
+
+            log.info("Successfully updated Request with ID " + r.getRequestID());
+        } catch (SQLException e) {
+            log.info("Failed to update Request with ID " + r.getRequestID());
+            //e.printStackTrace();
+        }
         return true;
     }
+
+
     public void close() {
         try {
             conn.close();

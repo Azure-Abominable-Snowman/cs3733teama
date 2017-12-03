@@ -2,18 +2,18 @@ package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.messages.ContactInfo;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaff;
 import com.teama.requestsubsystem.ServiceStaff;
+import com.teama.requestsubsystem.StaffType;
 
 import java.util.Set;
 
 public class InterpreterStaff  implements ServiceStaff {
-    private GenericStaff genInfo;
+    private ServiceStaff genInfo;
     //private InterpreterInfo interpSpecs;
     private Set<Language> languages;
     private CertificationType certification;
     //TODO: specify hours on duty perhaps
-    public InterpreterStaff(GenericStaff i, Set<Language> langs, CertificationType certification) {
+    public InterpreterStaff(ServiceStaff i, Set<Language> langs, CertificationType certification) {
         genInfo = i;
         languages = langs;
         this.certification = certification;
@@ -39,18 +39,35 @@ public class InterpreterStaff  implements ServiceStaff {
         return interpSpecs.getStaffID();
     }
     */
-    public String getPhone() {
-        return genInfo.getContactInfo().getPhoneNumber();
+    public String getPhoneNumber() {
+        return genInfo.getPhoneNumber();
     }
     public String getEmail() {
-        return genInfo.getContactInfo().getEmailAddress();
+        return genInfo.getEmail();
     }
     public Provider getProvider() {
-        return genInfo.getContactInfo().getProvider();
+        return genInfo.getProvider();
     }
 
     public CertificationType getCertification() {
         return certification;
+    }
+    public String getUsername() {
+        return genInfo.getUsername();
+    }
+
+    public void setUsername(String uname) {
+        genInfo.setUsername(uname);
+    }
+    public void setPhoneNumber(String num) {
+        genInfo.setPhoneNumber(num);
+    }
+    public StaffType getStaffType() {
+        return genInfo.getStaffType();
+    }
+
+    public void setStaffType(StaffType t) {
+        genInfo.setStaffType(t);
     }
 
     public Set<Language> getLanguages() {
@@ -83,6 +100,9 @@ public class InterpreterStaff  implements ServiceStaff {
 
     public ContactInfo getContactInfo(){
         return genInfo.getContactInfo();
+    }
+    public int getStaffID() {
+        return genInfo.getStaffID();
     }
 
     public String toString(){

@@ -11,7 +11,7 @@ public interface ServiceRequestDataSource {
     Request getRequest(int requestID);
     ArrayList<Request> getAllRequests(RequestStatus status); // get all requests by given RequestStatus
     ArrayList<Request> getAllRequests(RequestStatus status, RequestType type); // get all requests by given RequestStatus and Request Type
-    boolean fulfillRequest(Request r); // generate report for given request; mark request as closed
+    boolean fulfillRequest(int r); // generate report for given request; mark request as closed
     boolean updateRequest(Request r);
     void close();
 }

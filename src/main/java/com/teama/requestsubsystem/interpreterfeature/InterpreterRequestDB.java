@@ -174,6 +174,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @param requestID
      * @return
      */
+    @Override
     public Request getRequest(int requestID) {
         return generalInfo.getRequest(requestID);
     }
@@ -183,6 +184,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @param status
      * @return
      */
+    @Override
     public ArrayList<Request> getAllRequests(RequestStatus status) {
         return generalInfo.getAllRequests(status);
     }
@@ -193,6 +195,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @param type
      * @return
      */
+    @Override
     public ArrayList<Request> getAllRequests(RequestStatus status, RequestType type) {
         return generalInfo.getAllRequests(status, type);
     } // get all requests by given RequestStatus and Request Type
@@ -202,7 +205,8 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @param r
      * @return
      */
-    public boolean fulfillRequest(Request r) {
+    @Override
+    public boolean fulfillRequest(int r) {
         return generalInfo.fulfillRequest(r);
     }
 
@@ -211,6 +215,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @param r
      * @return
      */
+    @Override
     public  boolean updateRequest(Request r) {
         return generalInfo.updateRequest(r);
     }
@@ -380,7 +385,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             log.info("Tried to fulfill a request that was not created.");
             return false;
         }
-        generalInfo.fulfillRequest(r);
+        generalInfo.fulfillRequest(r.getRequestID());
         try { //mark the request as closed in the Interpreter table
             fulfillRequest.setString(1, RequestStatus.CLOSED.toString());
             fulfillRequest.setString(2, r.getRequiredLanguage().toString());

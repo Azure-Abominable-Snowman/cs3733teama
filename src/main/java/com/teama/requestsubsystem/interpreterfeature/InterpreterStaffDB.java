@@ -3,10 +3,7 @@ package com.teama.requestsubsystem.interpreterfeature;
 import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenRequestDBManager;
-import com.teama.requestsubsystem.GenericStaff;
-import com.teama.requestsubsystem.ServiceStaff;
-import com.teama.requestsubsystem.StaffDataSource;
+import com.teama.requestsubsystem.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -407,6 +404,12 @@ public class InterpreterStaffDB implements StaffDataSource {
             return false;
         }
 
+    }
+
+    @Override
+    public ArrayList<ServiceStaff> getStaffByType(StaffType t){
+        // TODO
+        return null;
     }
 
     public void close() {
