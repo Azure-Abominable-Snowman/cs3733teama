@@ -31,11 +31,27 @@
 .jfx-button:hover,
 .jfx-button:focused,
 .jfx-button {
-    -fx-background-color: TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT;
+
     -fx-background-radius: 3px;
     -fx-background-insets: 0px;
 }
-
+.jfx-view-more-button{
+    -fx-background-color: #4678b2;
+    -fx-font-size: 14px;
+    -fx-text-fill: WHITE;
+}
+.jfx-accept-button{
+    -fx-background-color: #21c251;
+}
+.jfx-accept-button .jfx-rippler{
+    -jfx-rippler-fill: #9ddfa8;
+}
+.jfx-cancel-button{
+    -fx-background-color: #e14c1c;
+}
+.jfx-cancel-button .jfx-rippler{
+    -jfx-rippler-fill: #e0c2bc
+}
 .jfx-check-box {
     -jfx-unchecked-color: #5A5A5A;
     -jfx-checked-color: #0F9D58;
@@ -110,6 +126,7 @@
     -jfx-focus-color: #4059A9;
     -jfx-unfocus-color: #4d4d4d;
     -fx-prompt-text-fill: #4d4d4d;
+    -fx-font-size: 13px;
 }
 
 .jfx-combo-box,

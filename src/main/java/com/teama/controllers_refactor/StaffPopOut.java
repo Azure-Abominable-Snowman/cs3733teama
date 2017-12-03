@@ -1,6 +1,14 @@
 package com.teama.controllers_refactor;
 
+
 import javafx.beans.property.ReadOnlyDoubleProperty;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static com.teama.requestsubsystem.RequestType.*;
+import static com.teama.requestsubsystem.RequestType.TRANS;
 
 public class StaffPopOut extends PopOutController {
     private int xOffset, yOffset;
@@ -26,4 +34,6 @@ public class StaffPopOut extends PopOutController {
     public String getFXMLPath() {
         return "/StaffPopOut.fxml";
     }
+
+
 }

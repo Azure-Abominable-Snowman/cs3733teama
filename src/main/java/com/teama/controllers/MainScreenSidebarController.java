@@ -66,7 +66,7 @@ public class MainScreenSidebarController extends PopOutController {
 
     @FXML
     private JFXRadioButton beamSearch;
-
+//START OF REQUEST STUFF
     @FXML
     private VBox addToThis;
 
@@ -112,7 +112,6 @@ public class MainScreenSidebarController extends PopOutController {
     @FXML
     private JFXButton login;
 
-
     private String buildingName;
     private Floor floorName;
     private MapNode mapNodeName;
@@ -125,7 +124,7 @@ public class MainScreenSidebarController extends PopOutController {
 
 
     private AnchorPane curReqPane;
-
+//END OF REQUEST STUFF
     // MAP EDITOR TOOLS
     @FXML
     private JFXToggleButton viewNodes, viewEdges, editNodes, editEdges;
@@ -581,7 +580,7 @@ public class MainScreenSidebarController extends PopOutController {
 
 
     //Methods for Service Request TitlePane
-    //SERVICE REQUEST STUFF
+
 
     @FXML
     public void setNodeData() {
@@ -595,7 +594,7 @@ public class MainScreenSidebarController extends PopOutController {
             }
         }
     }
-
+    //SERVICE REQUEST STUFF
     @FXML
     public void clearRequest(ActionEvent e) {
         building.getSelectionModel().clearSelection();
@@ -717,7 +716,7 @@ public class MainScreenSidebarController extends PopOutController {
             e.printStackTrace();
         }
     }
-
+    //END REQEUST STUFF
     public HBox getHbxRoot(){return hbxRoot;}
 
     @Override
