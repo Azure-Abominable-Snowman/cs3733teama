@@ -131,6 +131,6 @@ public class TotalMapCache extends MapCache {
 
     @Override
     public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
-        return null;
+        return floorEdge.get(floor);
     }
 }
