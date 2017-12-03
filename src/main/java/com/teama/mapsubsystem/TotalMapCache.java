@@ -1,5 +1,6 @@
 package com.teama.mapsubsystem;
 
+import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapDataSource;
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
@@ -54,7 +55,19 @@ public class TotalMapCache extends MapCache {
             longDescribeToNode.put(mapNode.getLongDescription(),mapNode);
         }
 
+        // edge related.
+        edgeIds=dataSource.getEdgeIds();
+        for (String edgeId : edgeIds) {
+            edgeCash.put(edgeId,dataSource.getEdge(edgeId));
+        }
 
+        for (Floor floor : Floor.values()) {
+            floorNode.put(floor.toString(),dataSource.getNodesOnFloor(floor.toString()));
+        }
+
+        for (Floor floor : Floor.values()) {
+            floorEdge.put(floor.toString(),dataSource.getEdgesOnFloor(floor.toString()));
+        }
 
     }
 
