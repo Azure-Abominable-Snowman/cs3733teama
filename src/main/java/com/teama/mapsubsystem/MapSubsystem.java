@@ -2,8 +2,10 @@ package com.teama.mapsubsystem;
 
 import com.teama.Configuration;
 import com.teama.mapsubsystem.data.*;
-import com.teama.mapsubsystem.pathfinding.*;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
+import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
+import com.teama.mapsubsystem.pathfinding.PathGenerator;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 
 import java.util.*;
@@ -18,7 +20,9 @@ public class MapSubsystem {
     private MapDataSource javaDBSource; // link to javaDB -- see MapDataSource interface to call functions that update DB
     private MapDataSource csvSource;
     private PathGenerator pathGenerator;
-    private MapNode kioskNode; // Default origin (1st floor info desk)
+    private MapNode originNode; // Default origin (1st floor info desk)
+
+
 
     private static class MapSubsystemGetter {
         private static final MapSubsystem instance = new MapSubsystem();
@@ -39,6 +43,7 @@ public class MapSubsystem {
         //TODO: Automatically detect to see if we need to populate the database with the CSV files
         //csvSource = new CSVDatabaseSource(nList, eList, null, null); // Don't specify output files
         javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
+        //javaDBSource = new TotalMapCache(javaDBSource);
 
         pathGenerator = new PathGenerator(new AStar());
 
@@ -46,8 +51,8 @@ public class MapSubsystem {
         //javaDBSource.addAll(csvSource);
 
         // Populate the kiosknode with a default value
-        if(kioskNode == null) {
-           kioskNode = getNode("AINFO0020G");
+        if(originNode == null) {
+           originNode = getNode("AINFO0020G");
         }
     }
 
@@ -70,6 +75,26 @@ public class MapSubsystem {
 
     public MapEdge getEdge(String id) {
         return javaDBSource.getEdge(id);
+    }
+
+    public MapNode addNode(MapNode m) {
+        MapNode newNode = null;
+        if (m!= null) {
+            String ID = DatabaseUUID.generateID(m.getNodeType(), m.getCoordinate().getLevel());
+            newNode = new MapNodeData(ID, m.getCoordinate(), m.getNodeType(), m.getLongDescription(), m.getShortDescription(), m.getTeamAssignment());
+            javaDBSource.addNode(newNode);
+        }
+        return newNode;
+    }
+
+    public MapEdge addEdge(MapEdge e) {
+        MapEdge newEdge = null;
+        if (e != null) {
+            String ID = DatabaseUUID.generateID(e.getStartID(), e.getEndID());
+            newEdge = new MapEdgeData(ID, e.getStart(), e.getEnd());
+            javaDBSource.addEdge(newEdge);
+        }
+        return newEdge;
     }
 
     public void deleteEdge(String id) {
@@ -142,18 +167,18 @@ public class MapSubsystem {
         return null;
     }
 
-    public MapNode getKioskNode() {
-        return kioskNode;
+    public MapNode getOriginNode() {
+        return originNode;
     }
 
-    public void setKioskNode(String id) {
-        kioskNode = getNode(id);
+    public void setOriginNode(String id) {
+        originNode = getNode(id);
     }
 
     // TODO: Should we be able to find a node by any descriptive attribute?
     // TODO: Implement this along with lower level methods in the data sources
     public MapNode getNodeByDescription(String description, boolean longDescription) {
         System.out.println("FIND: "+description);
-        return getNode("BDEPT00302"); // Dummy value
+        return javaDBSource.getNode(description, longDescription);
     }
 }

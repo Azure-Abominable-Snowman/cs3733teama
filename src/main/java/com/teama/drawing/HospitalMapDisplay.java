@@ -272,7 +272,7 @@ public class HospitalMapDisplay implements MapDisplay {
      * @param loc
      * @return
      */
-    private Location convToImageCoords(Location loc) {
+    public Location convToImageCoords(Location loc) {
         return new Location((int)convUnits(loc.getxCoord(), canvas.getWidth(), getMaxX()),
                 (int)convUnits(loc.getyCoord(), canvas.getHeight(), getMaxY()),
                 loc.getLevel(), loc.getBuilding());
@@ -289,11 +289,16 @@ public class HospitalMapDisplay implements MapDisplay {
      */
     @Override
     public void drawPoint(String id, Location loc, double size, Color color, boolean screenCoords) {
+        drawPoint(id, loc, size, color, true, screenCoords);
+    }
+
+    @Override
+    public void drawPoint(String id, Location loc, double size, Color color, boolean clickable, boolean screenCoords) {
         if(screenCoords) {
             loc = convToImageCoords(loc);
         }
 
-        Point p = new Point(id, loc, size, color);
+        Point p = new Point(id, loc, size, color, clickable);
         pointMap.put(id, p);
         render();
     }
@@ -446,7 +451,7 @@ public class HospitalMapDisplay implements MapDisplay {
     @Override
     public String pointAt(Location loc) {
         for (Point p : pointMap.values()) {
-            if (isPointOnLoc(loc, p)) {
+            if (p.getClickable() && isPointOnLoc(loc, p)) {
                 return p.getId();
             }
         }
@@ -604,11 +609,14 @@ public class HospitalMapDisplay implements MapDisplay {
         private double weight;
         private Color color;
         private String id;
-        public Point(String id, Location loc, double weight, Color color) {
+        private boolean clickable;
+
+        public Point(String id, Location loc, double weight, Color color, boolean clickable) {
             this.loc = loc;
             this.weight = weight;
             this.color = color;
             this.id = id;
+            this.clickable = clickable;
         }
 
         public void draw(GraphicsContext gc) {
@@ -631,6 +639,8 @@ public class HospitalMapDisplay implements MapDisplay {
         public String getId() {
             return id;
         }
+
+        public boolean getClickable() { return clickable; }
     }
 
     // Stores location data for an image so it can be easily redrawn

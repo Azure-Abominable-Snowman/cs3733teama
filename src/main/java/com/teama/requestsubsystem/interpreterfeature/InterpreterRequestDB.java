@@ -134,6 +134,8 @@ public class InterpreterRequestDB implements InterpreterRequestInfoSource {
             addRequest.setString(4, request.getInfo().getLocation().getLevel().toString());
             addRequest.setString(5, request.getInfo().getLocation().getBuilding());
             //addRequest.setInt(5, request.getInfo().getPriority().getValue());
+            //changed to OPEN because requests are added as open originally and then the admin goes back
+            //assigns request
             addRequest.setString(6, RequestStatus.ASSIGNED.toString()); // a request only added to db if assigned to staff member
             addRequest.setInt(7, request.getFamilySize());
             addRequest.setString(8, request.getRequiredLanguage().toString());
@@ -238,7 +240,8 @@ public class InterpreterRequestDB implements InterpreterRequestInfoSource {
             log.info("Could not mark Request " + r.getRequestID() + " as Closed...");
             return false;
         }
-        try {
+        //commented out, will be implemented for Iteration3
+        /*try {
             addReport.setInt(1, r.getRequestID());
             addReport.setDouble(2, r.getServiceTime());
             addReport.setString(3, r.getTranslType().toString());
@@ -248,7 +251,7 @@ public class InterpreterRequestDB implements InterpreterRequestInfoSource {
             e.printStackTrace();
             log.info("Tried to add a report for request " + r.getRequestID() + " but failed.");
             return false;
-        }
+        }*/
         return true;
         // fill in the report table with newly-entered info
     }

@@ -14,4 +14,13 @@ public enum Provider {
     public String toString() {
         return this.provider;
     }
+
+    public static Provider getFromString(String val) {
+        for(Provider p : Provider.values()) {
+            if(p.toString().equals(val)) {
+                return p;
+            }
+        }
+        return null;
+    }
 }

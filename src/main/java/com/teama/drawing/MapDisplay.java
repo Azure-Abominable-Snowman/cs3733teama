@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 
 public interface MapDisplay {
     void drawPoint(String id, Location loc, double size, Color color, boolean screenCoords);
+    void drawPoint(String id, Location loc, double size, Color color, boolean clickable, boolean screenCoords);
     void drawLine(String id, Location start, Location end, double weight, Color color, boolean screenCoords);
     void drawLine(String id, Location start, Location end, double weight, Color color, boolean arrow, boolean screenCoords);
     void drawImage(String id, Image img, Location center, boolean screenCoords);
@@ -44,6 +45,8 @@ public interface MapDisplay {
 
     Canvas getUnderlyingCanvas();
     ScrollPane getUnderlyingScrollPane();
+
+    public Location convToImageCoords(Location loc);
 
     void clear();
 }
