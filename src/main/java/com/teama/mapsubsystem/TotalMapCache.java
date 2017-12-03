@@ -126,7 +126,7 @@ public class TotalMapCache extends MapCache {
 
     @Override
     public ArrayList<MapNode> getNodesOnFloor(String floor) {
-        return null;
+        return floorNode.get(floor);
     }
 
     @Override
