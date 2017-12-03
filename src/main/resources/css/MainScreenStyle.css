@@ -7,3 +7,14 @@
     -fx-background-color: dodgerblue;
     -fx-border-color: lightgray;
 }
+
+.normalButton {
+    -fx-background-color: gray;
+}
+
+.popOutPaneStyle {
+    -fx-background-size: 1200 900;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-background-color: #ededed;
+}

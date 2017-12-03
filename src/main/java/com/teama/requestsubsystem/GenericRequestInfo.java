@@ -21,6 +21,8 @@ public class GenericRequestInfo {
         this.additionalInfo = note; // for any additional details an admin may want to add about situation
     }
 
+
+
     public Location getLocation() {
         return location;
     }

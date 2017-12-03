@@ -1,21 +1,21 @@
 package com.teama.mapsubsystem.data;
 
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 
 import java.util.ArrayList;
 
 public class MapNodeData implements MapNode {
     private Location coordinate;
     private String id, shortDescription, longDescription, teamAssignment;
-    private Enum<NodeType> nodeType;
+    private NodeType nodeType;
     private ArrayList<MapEdge> edges;
 
-    public MapNodeData(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
+    public MapNodeData(String id, Location coordinate, NodeType nodeType, String longDescription,
                    String shortDescription, String teamAssignment) {
         this(id, coordinate, nodeType, longDescription, shortDescription, teamAssignment, new ArrayList<>());
     }
 
-    public MapNodeData(String id, Location coordinate, Enum<NodeType> nodeType, String longDescription,
+    public MapNodeData(String id, Location coordinate, NodeType nodeType, String longDescription,
                    String shortDescription, String teamAssignment, ArrayList<MapEdge> edges) {
         this.coordinate = coordinate;
         this.id = id;
@@ -39,7 +39,7 @@ public class MapNodeData implements MapNode {
         return id;
     }
 
-    public Enum<NodeType> getNodeType() {
+    public NodeType getNodeType() {
         return nodeType;
     }
 

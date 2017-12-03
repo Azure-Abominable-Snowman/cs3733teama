@@ -24,8 +24,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class StaffLoginController implements Controller {
-    private final BooleanProperty isLoggedIn = new SimpleBooleanProperty();
+public class StaffLoginController implements Controller{
+    private final BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
     //private MainScreenController parent;
     //private LoginInfo loginInfo = null;
 
@@ -139,7 +139,7 @@ public class StaffLoginController implements Controller {
         return isLoggedIn;
     }
 
-    public final boolean isLoggedIn() {
+    public final boolean getLoggedIn() {
         return isLoggedIn.get();
     }
 
@@ -199,6 +199,7 @@ public class StaffLoginController implements Controller {
             vbox.getScene().getWindow().hide();
         }
         else {
+            setLoggedIn(false);
             errorMsg.setText("Incorrect username or password.");
             errorMsg.setVisible(true);
         }

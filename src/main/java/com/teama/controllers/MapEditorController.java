@@ -1,13 +1,21 @@
 package com.teama.controllers;
 
-import com.teama.mapsubsystem.data.NodeType;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.teama.mapdrawingsubsystem.MapDisplay;
+import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.MapEdge;
+import com.teama.mapsubsystem.data.MapNode;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Map;
 
-public class MapEditorController implements Controller {
-    @FXML
+public class MapEditorController  {
+    /*
     private Canvas canvas;
     @FXML
     private ScrollPane mapPane;
@@ -26,11 +34,56 @@ public class MapEditorController implements Controller {
     //private Spinner<String> floor;
     //private SpinnerValueFactory.ListSpinnerValueFactory<String> floors;
     private SpinnerValueFactory.IntegerSpinnerValueFactory values;
+*/
+    @FXML
+    private Text nodePrompt;
+    @FXML
+    private TextField nodeName;
+    @FXML
+    private Text nodeCoord, curFloor;
+    @FXML
+    private Text nodeType;
 
-    @Override
-    public String getFXMLFileName() {
-        return null;
+
+    @FXML
+    JFXComboBox nodeTypes;
+
+    private Canvas canvas;
+    private MapDisplay map;
+    private MapSubsystem masterMap;
+    private JFXButton currFloorButton;
+    private Map<String, MapNode> allNodes;
+    private Map<String, MapEdge> allEdges;
+    private boolean editNodes = false;
+    private boolean editEdges = false;
+
+
+    public void initialize() {
+        masterMap = MapSubsystem.getInstance();
+
+
+
     }
+    public MapEditorController(MapDisplay map) {
+        this.map = map;
+        //this.currFloorButton = curFloorButton;
+        masterMap = MapSubsystem.getInstance();
+        allNodes = masterMap.getFloorNodes(map.getCurrentFloor());
+        for (String id : allNodes.keySet()) {
+            MapNode m = allNodes.get(id);
+            ArrayList<MapEdge> mEdges = m.getEdges();
+            for (MapEdge e : mEdges) {
+                allEdges.put(e.getId(), e);
+            }
+        }
+    }
+
+
+
+
+
+
+
   /*  private ToggleGroup group = new ToggleGroup();
     private ToggleGroup editorAction = new ToggleGroup();
     private DrawMap editorMap;
@@ -470,10 +523,10 @@ public class MapEditorController implements Controller {
 
     private boolean ctrlDown = false;
 */
-    /**
-     * Resizes the map when needed
-     * @param stage
-     */
+        /**
+         * Resizes the map when needed
+         * @param stage
+         */
     /*
     @Override
     public void setStage(Stage stage) {
@@ -503,6 +556,7 @@ public class MapEditorController implements Controller {
         });
     }*/
 
-}
+    }
+
 
 

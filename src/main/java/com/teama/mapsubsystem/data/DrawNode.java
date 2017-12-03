@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem.data;
 
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ public abstract class DrawNode implements MapNode {
     }
 
     @Override
-    public Enum<NodeType> getNodeType() {
+    public NodeType getNodeType() {
         return mapNode.getNodeType();
     }
 

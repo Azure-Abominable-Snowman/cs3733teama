@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="393.0" prefWidth="479.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="479.0" stylesheets="@css/DirectionPopOut.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="299.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <GridPane maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="379.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <JFXComboBox prefHeight="25.0" prefWidth="227.0" promptText="Start" style="-fx-border-color: TRANSPARENT BLUE  TRANSPARENT BLUE;" stylesheets="@css/DirectionPopOut.css" GridPane.halignment="CENTER">
+                           <styleClass>
+                              <String fx:value="StartButton" />
+                              <String fx:value="contrast" />
+                              <String fx:value="track" />
+                           </styleClass></JFXComboBox>
+                        <JFXComboBox prefHeight="25.0" prefWidth="200.0" promptText="End" style="-fx-border-color: TRANSPARENT BLUE  TRANSPARENT BLUE;" stylesheets="@css/DirectionPopOut.css" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                           <styleClass>
+                              <String fx:value="EndButton" />
+                              <String fx:value="contrast" />
+                              <String fx:value="track" />
+                           </styleClass></JFXComboBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <JFXTextField alignment="CENTER" editable="false" prefHeight="18.0" prefWidth="379.0" stylesheets="@css/DirectionPopOut.css" text="Directions">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="text" />
+                        <String fx:value="styled-select" />
+                     </styleClass>
+                  </JFXTextField>
+                  <ListView prefHeight="210.0" prefWidth="379.0" stylesheets="@css/DirectionPopOut.css">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="contrast" />
+                        <String fx:value="list-cell" />
+                        <String fx:value="text" />
+                        <String fx:value="touch-sizes" />
+                        <String fx:value="thumb" />
+                        <String fx:value="track" />
+                     </styleClass>
+                  </ListView>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem.data;
 
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import javafx.scene.paint.Color;
 
 public class DrawNodeInstantly extends DrawNode {
@@ -10,7 +10,11 @@ public class DrawNodeInstantly extends DrawNode {
 
     @Override
     public void displayOnScreen(MapDisplay display) {
-        display.drawPoint(getId(),getCoordinate(),9, Color.BLACK,false);
+        display.drawPoint(getId(),getCoordinate(),8, Color.BLACK,false);
+    }
+
+    public void displayOnScreen(MapDisplay display, int size, Color color) {
+        display.drawPoint(getId(), getCoordinate(), size, color, false);
     }
 
     @Override

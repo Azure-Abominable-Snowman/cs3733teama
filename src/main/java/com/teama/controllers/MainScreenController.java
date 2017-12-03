@@ -3,20 +3,21 @@ package com.teama.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import com.teama.drawing.HospitalMap;
-import com.teama.drawing.HospitalMapDisplay;
-import com.teama.drawing.MapDisplay;
-import com.teama.drawing.ProxyMap;
+import com.jfoenix.controls.JFXSlider;
+import com.teama.controllers_refactor.PopOutController;
+import com.teama.controllers_refactor.PopOutFactory;
+import com.teama.controllers_refactor.PopOutType;
+import com.teama.mapdrawingsubsystem.ClickedListener;
+import com.teama.mapdrawingsubsystem.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
-import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,12 +26,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,24 +42,17 @@ import java.util.ResourceBundle;
 
 /**
  * Delegates tasks to the other controllers on the main screen
- *
- * PathfindingController is for pathfinding and navigation between floors
- * MainScreenSidebarController controls the sidebar hamburger on the main screen
- * NodeInfoPopUpController controls the popup when you ctrl+click on a node
- * SearchBarController controls how the search bar parses and displays its intermediate results for pathfinding
- *
- * (Not yet implemented)
- * MapEditorController handles editing of the map edges/nodes
  */
 public class MainScreenController implements Initializable {
-    private int animRate=-1;
-    private HamburgerBackArrowBasicTransition hamOpnsTran;
+
+    @FXML
+    private AnchorPane areaPane;
+
+    @FXML
+    private GridPane displayedMaps;
 
     @FXML
     private ScrollPane mapScroll;
-
-    @FXML
-    private JFXButton login;
 
     @FXML
     private Canvas mapCanvas;
@@ -66,22 +61,38 @@ public class MainScreenController implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
-    private JFXHamburger hamburgerButton;
-
-    @FXML
     private JFXComboBox<String> searchBar;
 
     @FXML
     private JFXButton searchButton;
 
     @FXML
-    private AnchorPane areaPane;
+    private Text floorNumberDisplay;
+
+    @FXML
+    private ImageView loginButton;
+
+    @FXML
+    private ImageView directoryButton;
+
+    @FXML
+    private ImageView mapEditorButton;
+
+    @FXML
+    private ImageView serviceRequestButton;
+
+    @FXML
+    private JFXSlider zoomSlider;
 
     @FXML
     private VBox floorButtonBox;
 
     @FXML
-    private GridPane displayedMaps;
+    private ImageView directionsButton;
+
+    @FXML
+    private GridPane mainSidebarGrid;
+
 
     private MapDisplay map;
 
@@ -92,138 +103,135 @@ public class MainScreenController implements Initializable {
 
     private MapSubsystem mapSubsystem;
 
-    @FXML
-    void onHamburgerButtonClick(MouseEvent event) throws IOException {
-        hamOpnsTran.setRate(animRate*=-1);
-        hamOpnsTran.play();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/MainSidebar.fxml"));
-        HBox box = loader.load();
-        MainScreenSidebarController sidebar = loader.getController();
-        sidebar.setMapDisplay(map);
-        drawer.setSidePane(box);
-        if(drawer.isShown()){
-            drawer.close();
-            drawerExtended = false;
-        } else {
-            drawer.setPrefWidth(box.getPrefWidth());
-            drawerExtended = true;
-            drawer.open();
-        }
-    }
+    private MapDrawingSubsystem mapDrawing;
+
+    private PathfindingController pathfinding;
+    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty showLoginButton = new SimpleBooleanProperty(true);
+    private EventHandler<MouseEvent> originalMouseClick;
+
+    private MainScreenSidebarController sidebar;
+    private PopOutFactory popOutFactory = new PopOutFactory();
+
+    // Contains all of the event handlers for the buttons on the sidebar
+    // Useful for when we need to open something on the sidebar based on another event
+    private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap = new HashMap<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mapSubsystem = MapSubsystem.getInstance();
-        drawer.setSidePane();
-        hamOpnsTran = new HamburgerBackArrowBasicTransition(hamburgerButton);
+        pathfinding = new PathfindingController(mainSidebarMap);
 
-        Map<Floor, HospitalMap> imgs = new HashMap<>();
-        imgs.put(Floor.SUBBASEMENT, new ProxyMap("/maps/L2.png"));
-        imgs.put(Floor.BASEMENT, new ProxyMap("/maps/L1.png"));
-        imgs.put(Floor.GROUND, new ProxyMap("/maps/G.png"));
-        imgs.put(Floor.ONE, new ProxyMap("/maps/1.png"));
-        imgs.put(Floor.TWO, new ProxyMap("/maps/2.png"));
-        imgs.put(Floor.THREE, new ProxyMap("/maps/3.png"));
+        // Populate the floor button box
+        for(Floor floor : Floor.values()) {
+            JFXButton curFloorButton = new JFXButton();
+            curFloorButton.setText(floor.toString());
+            curFloorButton.getStylesheets().add("css/MainScreenStyle.css");
+            curFloorButton.getStyleClass().add("floorbutton");
+            curFloorButton.setId(floor.toString());
+            curFloorButton.setPrefWidth(35);
 
-        map = new HospitalMapDisplay(mapScroll, mapCanvas, imgs);
-        map.setGrow(true);
-        map.setZoom(minZoom);
+            floorButtonBox.getChildren().add(curFloorButton);
+        }
 
-        PathfindingController pathfinding = new PathfindingController(MapSubsystem.getInstance(), map, areaPane, floorButtonBox);
-        SearchBarController searchBarController = new SearchBarController(searchBar, searchButton, mapSubsystem);
+        mapDrawing = MapDrawingSubsystem.getInstance();
+        mapDrawing.initialize(mapCanvas, mapScroll, floorNumberDisplay, floorButtonBox);
+
+        mapDrawing.setGrow(true);
+        mapDrawing.setZoomFactor(minZoom);
+
+        // Add a listener that displays the correct nodes for the floor
+        mapDrawing.clearMap();
+        for (MapNode n : mapSubsystem.getVisibleFloorNodes(mapDrawing.getCurrentFloor()).values()) {
+            mapDrawing.drawNode(n, 0, null);
+        }
+        mapDrawing.attachFloorChangeListener((a, b, c) -> {
+            mapDrawing.clearMap();
+            for (MapNode n : mapSubsystem.getVisibleFloorNodes(mapDrawing.getCurrentFloor()).values()) {
+                mapDrawing.drawNode(n, 0, null);
+            }
+        });
+
+        // Attach listeners to all the sidebar pop outs to open their respective pane on click
+        for(Node button : mainSidebarGrid.getChildren()) {
+            EventHandler<MouseEvent> buttonEvent = event -> {
+                // Gets the pop out type from the id defined in scenebuilder
+                openInMainSidebar(PopOutType.valueOf(button.getId()), areaPane.widthProperty(), -(int)button.prefWidth(80),
+                        button.layoutYProperty(), 0);
+            };
+            button.onMouseClickedProperty().set(buttonEvent);
+            mainSidebarMap.put(PopOutType.valueOf(button.getId()), buttonEvent);
+        }
+
+        // Make a pop up on the user's mouse cursor every time a node is clicked
+        mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
+
+        // Pop up goes away on a floor switch
+        mapDrawing.attachFloorChangeListener((a, b, c) -> removeCurrentPopUp());
+
+        // Make the node pop up disappear every time the window is resized
+        ChangeListener<Number> removePopUpWhenResized = (ObservableValue<? extends Number> obsVal, Number oldVal, Number newVal) -> removeCurrentPopUp();
+        areaPane.heightProperty().addListener(removePopUpWhenResized);
+        areaPane.widthProperty().addListener(removePopUpWhenResized);
+
+        // Remove pop up on pan
+        mapScroll.onDragDetectedProperty().set((event -> removeCurrentPopUp()));
 
         // Zoom in and out using plus and minus keys
         mapScroll.onKeyTypedProperty().set((KeyEvent event) -> {
             switch(event.getCharacter()) {
                 case "=":
                     // zoom in
-                    if(map.getZoom() < maxZoom) { // TODO: make this not throw an exception when the image gets too big
-                        map.setZoom(map.getZoom() + 0.1);
+                    if(mapDrawing.getZoomFactor() < maxZoom) {
+                        mapDrawing.setZoomFactor(mapDrawing.getZoomFactor() + 0.1);
                     }
                     break;
                 case "-":
                     // zoom out
-                    if(map.getZoom() > minZoom) {
-                        map.setZoom(map.getZoom() - 0.1);
+                    if(mapDrawing.getZoomFactor() > minZoom) {
+                        mapDrawing.setZoomFactor(mapDrawing.getZoomFactor() - 0.1);
                     }
                     break;
             }
-        });
-
-        // Make each node clickable to reveal a detailed menu
-        EventHandler<MouseEvent> clickedOnMapHandler = (MouseEvent event) -> {
-            //System.out.println("CLICKED ON MAP SCREEN AT "+event.getX()+" "+event.getY());
-
-            if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
-                areaPane.getChildren().remove(nodeInfo);
-                nodeInfo = null;
-            }
-
-            if(event.isControlDown()) { // check for a node and if there is one display the node info
-                generateNodePopUp(event);
-            } else {
-                pathfinding.genPathWithClicks(event);
-            }
-        };
-        map.getUnderlyingCanvas().onMouseClickedProperty().set(clickedOnMapHandler);
-
-        // When the map is resized the pop up must be taken off the screen
-        // TODO: Make the pop up move instead
-        ChangeListener<Number> removePopUpWhenResized = (ObservableValue<? extends Number> obsVal, Number oldVal, Number newVal) -> {
-            if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
-                areaPane.getChildren().remove(nodeInfo);
-                nodeInfo = null;
-            }
-        };
-        areaPane.heightProperty().addListener(removePopUpWhenResized);
-        areaPane.widthProperty().addListener(removePopUpWhenResized);
-
-
-        // When the map is panned, remove the pop up
-        EventHandler<MouseEvent> panningMap = (MouseEvent event) -> {
-            if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
-                areaPane.getChildren().remove(nodeInfo);
-                nodeInfo = null;
-            }
-        };
-        mapScroll.onDragDetectedProperty().set(panningMap);
-
-        /*Canvas newMapCanvas = new Canvas(); Test to add another map as an inset (multi-floor pathfinding)
-        ScrollPane newMapPane = new ScrollPane(newMapCanvas);
-        MapDisplay newMap = new HospitalMapDisplay(newMapPane, newMapCanvas, imgs);
-        newMapPane.setMinWidth(300);
-        newMap.setGrow(true);
-        displayedMaps.addColumn(1, newMapPane);*/
-
-        // When the hamburger retracts, make it disappear, otherwise appear
-        hamOpnsTran.onFinishedProperty().set((ActionEvent e) -> {
-            drawer.setVisible(drawerExtended);
-        });
-
-        // Handle the search bar, allow for autocomplete and fuzzy searching of nodes
-        searchBar.valueProperty().addListener((observable, oldValue, newValue) -> {
-            searchBarController.matchFuzzySearchValues();
-        });
-
-        searchBarController.updateNodeListing(map.getCurrentFloor());
-        // When the floor is switched make it so the floor is changed in the search box
-        for(Node node : floorButtonBox.getChildren()) {
-            node.pressedProperty().addListener((Observable obs) -> {
-                searchBarController.updateNodeListing(map.getCurrentFloor());
-            });
-        }
-
-        // If the searchbutton is pressed, display a path to the selected/approximately matched node
-        searchButton.pressedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean before, Boolean after) -> {
-            if(!before && after) { // When button is pressed
-                System.out.println("SEARCH BUTTON PRESSED");
-                MapNode dest = mapSubsystem.getNodeByDescription(searchBar.getSelectionModel().getSelectedItem(), true);
-                pathfinding.genPath(dest);
-            }
+            // Remove the pop up
+            removeCurrentPopUp();
         });
     }
 
+    private Node currentPopOut;
+    private PopOutController currentPopOutController;
+    private PopOutType currentPopOutType = null;
+
+    private void openInMainSidebar(PopOutType popOutType, ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
+        try {
+            // If the previous pop out type is the same as the current and there is a controller, remove it from the screen
+            if(popOutType.equals(currentPopOutType) && currentPopOut != null) {
+                currentPopOutController.onClose();
+                areaPane.getChildren().remove(currentPopOut);
+                currentPopOut = null;
+                return;
+            }
+            // Remove the last pop out if present
+            if(currentPopOut != null) {
+                currentPopOutController.onClose();
+                areaPane.getChildren().remove(currentPopOut);
+            }
+            PopOutController controller = popOutFactory.makePopOut(popOutType);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(controller.getFXMLPath()));
+            loader.setController(controller);
+            controller.onOpen(xProperty, xOffset, yProperty, yOffset);
+            currentPopOut = loader.load();
+            currentPopOutController = controller;
+
+            // Add it to the area pane in the correct spot next to the button
+            areaPane.getChildren().add(currentPopOut);
+
+            currentPopOutType = popOutType;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Parent nodeInfo;
 
@@ -232,15 +240,13 @@ public class MainScreenController implements Initializable {
      * @param event
      */
     private void generateNodePopUp(MouseEvent event) {
+        removeCurrentPopUp(); // only pop up allowed at a time
         System.out.println("CLICK ON NODE BUTTON");
+        // Get the node clicked on (if any)
+        MapNode nodeAt = mapDrawing.nodeAt(new Location(event, mapDrawing.getCurrentFloor()));
 
-        // Get the id of the node clicked on (if any)
-        String id = map.pointAt(new Location((int)event.getX(), (int)event.getY(), map.getCurrentFloor(), "Unknown"));
-
-        System.out.println("CLICKED ON "+id);
-
-        if(id != null) {
-            MapNode clickedNode = mapSubsystem.getNode(id);
+        if(nodeAt != null) {
+            System.out.println("CLICKED ON "+nodeAt.getId());
 
             // Load the screen in and display it on the cursor
             FXMLLoader loader = new FXMLLoader();
@@ -251,15 +257,16 @@ public class MainScreenController implements Initializable {
                 e.printStackTrace();
             }
             NodeInfoPopUpController ni = loader.getController();
-            ni.setInfo(clickedNode, map, mapSubsystem);
+            ni.setInfo(nodeAt, pathfinding);
 
             // Create pane to load nodeInfo root node into
             nodeInfo.toFront(); // bring to front of screen
             areaPane.getChildren().add(nodeInfo);
 
             // Display the pane next to the mouse cursor
-            double windowW = 140; // TODO: Pull these directly from the parent node itself.
-            double windowH = 225;
+            double windowW = 140;
+            double windowH = nodeInfo.prefHeight(windowW)+35;
+            System.out.println("WINDOWH "+windowH);
 
             double newX = event.getSceneX()-windowW/2;
             double newY = event.getSceneY()-windowH;
@@ -274,6 +281,13 @@ public class MainScreenController implements Initializable {
                 System.out.println("MOVE Y");
                 nodeInfo.setTranslateY(newY);
             }
+        }
+    }
+
+    private void removeCurrentPopUp() {
+        if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
+            areaPane.getChildren().remove(nodeInfo);
+            nodeInfo = null;
         }
     }
 }
