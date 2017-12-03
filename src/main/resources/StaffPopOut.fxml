@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="mainPane" prefHeight="560.0" prefWidth="500.0" styleClass="popOutPaneStyle" stylesheets="@css/MainScreenStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane layoutX="14.0" layoutY="37.0" />
+      <ImageView fx:id="arrow" fitHeight="76.0" fitWidth="73.0" layoutX="500.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@triangle.png" />
+         </image>
+      </ImageView>
+      <JFXTimePicker layoutX="38.0" layoutY="147.0" />
+   </children>
+</Pane>

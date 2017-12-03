@@ -2,6 +2,7 @@ group 'bwhospital-kiosk'
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: "jacoco"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -44,6 +45,11 @@ dependencies {
             [group: 'javax.mail', name: 'mail', version: '1.4.1'],
             [group: 'commons-codec', name: 'commons-codec', version: '1.11']
     )
+}
+
+jacoco {
+    toolVersion = "0.7.9"
+    reportsDir = file("$buildDir/coverageReport")
 }
 
 

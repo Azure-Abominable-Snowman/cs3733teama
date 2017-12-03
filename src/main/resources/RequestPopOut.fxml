@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane fx:id="mainPane" minHeight="450.0" minWidth="305.0" prefHeight="450.0" prefWidth="305.0" styleClass="popOutPaneStyle" stylesheets="@css/MainScreenStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane layoutX="29.0" layoutY="19.0">
+         <center>
+            <JFXListView BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+      <ImageView fx:id="arrow" fitHeight="76.0" fitWidth="73.0" layoutX="305.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@triangle.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

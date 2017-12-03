@@ -1,29 +1,24 @@
 package com.teama.controllers_refactor;
 
-import javafx.fxml.FXMLLoader;
-
-import java.io.IOException;
-import java.util.HashMap;
-
 public class PopOutFactory {
-    HashMap<PopOutType, String> popOutControllers;
+
     public PopOutFactory(){
-       //TODO populate the hashamp with all of the necessary controllers
-       popOutControllers= new HashMap<>();
+
     }
-    public void addPopOut(PopOutType t, String file){
-        popOutControllers.put(t, file);
-    }
+
     public PopOutController makePopOut(PopOutType popOutType){
-        //TODO have this method create the popOut and set its controller then return the controller
-        try {
-            String file = popOutControllers.get(popOutType);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(file));
-            loader.load();
-            return loader.getController();
+        if(popOutType == null) {
+            return null;
         }
-        catch(IOException e){
-            e.printStackTrace();
+        switch(popOutType) {
+            case STAFFDIRECTORY:
+                return new StaffPopOut();
+            case EDITOR:
+                return new EditorPopOut();
+            case REQUESTS:
+                return new RequestPopOut();
+            case LOGIN:
+                System.out.println("LOGIN SCREEN NOT YET IMPLEMENTED");
         }
         return null;
     }

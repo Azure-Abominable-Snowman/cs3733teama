@@ -2,16 +2,7 @@ package com.teama.controllers;
 
 import com.jfoenix.controls.*;
 import com.teama.controllers_refactor.PopOutController;
-import com.teama.messages.EmailMessage;
-import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequestInfo;
-import com.teama.requestsubsystem.RequestStatus;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.Language;
-
-import java.util.Map;
-import com.jfoenix.controls.*;
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
@@ -21,57 +12,40 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
-import com.teama.requestsubsystem.RequestType;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import javafx.scene.layout.*;
+import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
+import com.teama.messages.SMSMessage;
+import com.teama.requestsubsystem.GenericRequestInfo;
+import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
+import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 import static com.teama.requestsubsystem.RequestType.*;
-import java.util.HashSet;
-import java.util.Set;
-
-import java.util.*;
 
 public class MainScreenSidebarController extends PopOutController {
     @FXML
@@ -747,11 +721,17 @@ public class MainScreenSidebarController extends PopOutController {
     public HBox getHbxRoot(){return hbxRoot;}
 
     @Override
-    public void onOpen(){
+    public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
 
     }
+
     @Override
     public void onClose() {
 
+    }
+
+    @Override
+    public String getFXMLPath() {
+        return null;
     }
 }
