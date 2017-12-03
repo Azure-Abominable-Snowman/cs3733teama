@@ -81,16 +81,22 @@ public class TotalMapCache extends MapCache {
         MapNode result = nodeCash.get(id);
         if( result == null ) {
             result = dataSource.getNode(id);
-
+            addmissedNode(result);
         }
-
         return nodeCash.get(id);
     }
 
     @Override
     public MapNode getNode(String description, boolean longDescription) {
-        if(longDescription) return longDescribeToNode.get(description); // todo check the meaning for the boolean pram.
-        else return describeToNode.get(description);
+        HashMap<String, MapNode> localDescribToNode;
+        if (longDescription) localDescribToNode = longDescribeToNode; // todo check the meaning for the boolean pram.
+        else localDescribToNode = describeToNode;
+        MapNode temp = localDescribToNode.get(description);
+        if (temp == null) {
+            temp = dataSource.getNode(description, longDescription);
+            addmissedNode(temp);
+        }
+        return temp;
     }
 
     @Override
