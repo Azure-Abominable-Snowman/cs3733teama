@@ -32,7 +32,7 @@ public class TextualDirectionsTest {
         printEverything(output.getDirections());
 
         assertTrue(directions.get(0).getDescription().contains("Start walking towards X:12 Y:87"));
-        assertTrue(directions.get(directions.size()-1).getDescription().contains("you will reach your destination X:26 Y:15"));
+        assertTrue(directions.get(directions.size()-1).getDescription().contains("you will reach your destination"));
         printEverything(output.getDirections());
 
     }
