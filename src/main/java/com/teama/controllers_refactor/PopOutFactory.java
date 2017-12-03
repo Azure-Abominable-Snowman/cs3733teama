@@ -17,6 +17,8 @@ public class PopOutFactory {
                 return new EditorPopOut();
             case REQUESTS:
                 return new RequestPopOut();
+            case DIRECTIONS:
+                return new DirectionsPopOut();
             case LOGIN:
                 System.out.println("LOGIN SCREEN NOT YET IMPLEMENTED");
         }

@@ -36,6 +36,8 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -88,6 +90,9 @@ public class MainScreenController implements Initializable {
     @FXML
     private ImageView directionsButton;
 
+    @FXML
+    private GridPane mainSidebarGrid;
+
 
     private MapDisplay map;
 
@@ -108,9 +113,14 @@ public class MainScreenController implements Initializable {
     private MainScreenSidebarController sidebar;
     private PopOutFactory popOutFactory = new PopOutFactory();
 
+    // Contains all of the event handlers for the buttons on the sidebar
+    // Useful for when we need to open something on the sidebar based on another event
+    private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap = new HashMap<>();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mapSubsystem = MapSubsystem.getInstance();
+        pathfinding = new PathfindingController(mainSidebarMap);
 
         // Populate the floor button box
         for(Floor floor : Floor.values()) {
@@ -143,26 +153,15 @@ public class MainScreenController implements Initializable {
         });
 
         // Attach listeners to all the sidebar pop outs to open their respective pane on click
-
-        loginButton.onMouseClickedProperty().set(event -> {
-            openInMainSidebar(PopOutType.LOGIN, areaPane.widthProperty(), -(int)loginButton.getFitWidth(),
-                    loginButton.layoutYProperty(), 0);
-        });
-
-        directoryButton.onMouseClickedProperty().set(event -> {
-            openInMainSidebar(PopOutType.STAFFDIRECTORY, areaPane.widthProperty(), -(int)directoryButton.getFitWidth(),
-                    directoryButton.layoutYProperty(), 0);
-        });
-
-        mapEditorButton.onMouseClickedProperty().set(event -> {
-            openInMainSidebar(PopOutType.EDITOR, areaPane.widthProperty(), -(int)mapEditorButton.getFitWidth(),
-                    mapEditorButton.layoutYProperty(), 0);
-        });
-
-        serviceRequestButton.onMouseClickedProperty().set(event -> {
-            openInMainSidebar(PopOutType.REQUESTS, areaPane.widthProperty(), -(int)serviceRequestButton.getFitWidth(),
-                    serviceRequestButton.layoutYProperty(), 0);
-        });
+        for(Node button : mainSidebarGrid.getChildren()) {
+            EventHandler<MouseEvent> buttonEvent = event -> {
+                // Gets the pop out type from the id defined in scenebuilder
+                openInMainSidebar(PopOutType.valueOf(button.getId()), areaPane.widthProperty(), -(int)button.prefWidth(80),
+                        button.layoutYProperty(), 0);
+            };
+            button.onMouseClickedProperty().set(buttonEvent);
+            mainSidebarMap.put(PopOutType.valueOf(button.getId()), buttonEvent);
+        }
 
         // Make a pop up on the user's mouse cursor every time a node is clicked
         mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
@@ -258,7 +257,7 @@ public class MainScreenController implements Initializable {
                 e.printStackTrace();
             }
             NodeInfoPopUpController ni = loader.getController();
-            ni.setInfo(nodeAt);
+            ni.setInfo(nodeAt, pathfinding);
 
             // Create pane to load nodeInfo root node into
             nodeInfo.toFront(); // bring to front of screen
