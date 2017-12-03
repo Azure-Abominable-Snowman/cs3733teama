@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem.data;
 
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 
 public class MapEdgeData implements MapEdge {

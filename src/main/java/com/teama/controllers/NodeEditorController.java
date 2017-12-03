@@ -3,7 +3,7 @@ package com.teama.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
 import javafx.beans.property.BooleanProperty;
@@ -240,6 +240,9 @@ public class NodeEditorController {
     public void setButtons(JFXButton add, JFXButton edit) {
         this.addMode = add;
         this.editMode = edit;
+        add.setDisable(false);
+        edit.setDisable(false
+        );
         this.addMode.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
