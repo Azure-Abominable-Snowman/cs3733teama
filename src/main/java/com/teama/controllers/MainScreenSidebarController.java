@@ -771,6 +771,7 @@ public class MainScreenSidebarController extends PopOutController {
         requestView.getItems().clear();
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
         System.out.println("It was deleted");
+    }
     @Override
     public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
 
@@ -788,6 +789,7 @@ public class MainScreenSidebarController extends PopOutController {
         InterpreterSubsystem.getInstance().fulfillRequest(requestView.getSelectionModel().getSelectedItem());
         requestView.getItems().clear();
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+    }
     @Override
     public void onClose() {
 
