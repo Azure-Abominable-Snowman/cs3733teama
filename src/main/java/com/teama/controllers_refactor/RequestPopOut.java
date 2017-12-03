@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import static com.teama.requestsubsystem.RequestType.*;
-import static com.teama.requestsubsystem.RequestType.TRANS;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 
 public class RequestPopOut extends PopOutController {
     private int xOffset, yOffset;
@@ -95,7 +93,7 @@ public class RequestPopOut extends PopOutController {
     private AnchorPane curReqPane;
     private ArrayList<InterpreterRequest> requests;
     private InterpreterRequest curRequest;
-    private FXMLLoader loader;
+    private FXMLLoader loader = new FXMLLoader();
 
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
@@ -231,7 +229,8 @@ public class RequestPopOut extends PopOutController {
 
         Stage staffPopUp = new Stage();
         try {
-            if(controller.getLanguage()!=null) {
+            controller = new InterpReqController();
+          //  if(controller.getLanguage()!=null) {
                 staffPopUp.setTitle("View B&W Staff");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
 
@@ -251,7 +250,7 @@ public class RequestPopOut extends PopOutController {
                 });
                 staffPopUp.setScene(staffPopUpScene);
                 staffPopUp.show();
-            }
+           // }
         } catch (IOException e) {
             e.printStackTrace();
         }
