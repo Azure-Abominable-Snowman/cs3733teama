@@ -75,8 +75,7 @@ public class TotalMapCache extends MapCache {
 
     @Override
     public MapNode getNode(String id) {
-
-        return null;
+        return nodeCash.get(id);
     }
 
     @Override
