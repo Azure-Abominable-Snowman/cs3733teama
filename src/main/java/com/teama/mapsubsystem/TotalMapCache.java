@@ -106,7 +106,7 @@ public class TotalMapCache extends MapCache {
 
     @Override
     public ArrayList<String> getNodeIds() {
-        return null;
+        return nodeIds;
     }
 
     @Override
