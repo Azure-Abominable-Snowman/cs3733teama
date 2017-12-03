@@ -3,7 +3,6 @@ package com.teama.requestsubsystem.securityfeature;
 import com.teama.requestsubsystem.GenericRequestInfo;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.mapsubsystem.data.Location;
-import sun.misc.Request;
 
 public class SecurityRequest {
     private GenericRequestInfo info;

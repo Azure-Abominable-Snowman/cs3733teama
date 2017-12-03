@@ -19,12 +19,14 @@ public class TextualDirections implements DirectionsGenerator {
         nodeList = new ArrayList<>();
     }
 
+    String lang = "en";
+    Locale locale = new Locale(lang);
+    ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
+
     @Override
     public TextDirections generateDirections(Path path) {
         //TODO maybe make a singleton for lang so no need to keep pass in variable all the time.
-        String lang = "en";
-        Locale locale = new Locale(lang);
-        ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
+
 
 
         nodeList = path.getNodes();
@@ -100,24 +102,25 @@ public class TextualDirections implements DirectionsGenerator {
     {
         String discription = routeLink.getTextReturn();
         if (discription.contains("Elevator")){ // elevator text
-            discription = String.format("Enter Elevator and exit on floor %s",
+            discription = String.format("%s %s",
+                    bundle.getString("elevatorEnter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Stairs")){ // Stairs text
-            discription = String.format("Enter Stair and exit on floor %s",
+            discription = String.format("%s %s", bundle.getString("stairEnter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Straight")){// going Straight
-            discription = String.format("Walk Straight for %f distance",
+            discription = String.format("%s %s", bundle.getString("straightLine"),
                     routeLink.getDistance());
         }
         else{ // actually turning.
-            discription=String.format("%s and walk for %f distance",
+            discription=String.format("%s %s", bundle.getString("turning"),
                     discription,routeLink.getDistance());
         }
 
         if(routeLink.isEndFlag()) {
-            discription= String.format("%s \nyou will reach your destination %s",
+            discription= String.format("%s %s", bundle.getString("pathend"),
             discription,routeLink.getNext().getLongDescription());
         }
 
