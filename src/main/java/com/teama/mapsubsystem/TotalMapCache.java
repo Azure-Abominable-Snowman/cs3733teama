@@ -7,24 +7,61 @@ import com.teama.mapsubsystem.data.MapNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+
 public class TotalMapCache extends MapCache {
+
+    ArrayList<String> nodeIds;
+    HashMap<String,MapNode> nodeCash ;
+    HashMap<String,MapNode> describeToNode;
+    HashMap<String,MapNode> longDescribeToNode;
+    ArrayList<String> edgeIds;
+    HashMap<String,MapEdge> edgeCash ;
+
+    HashMap<String,ArrayList<MapNode>> floorNode;
+    HashMap<String,ArrayList<MapEdge>> floorEdge;
+
     public TotalMapCache(MapDataSource dataSource) {
         super(dataSource);
+        // pointer stored into MapDataSource dataSource.
+
+        nodeIds = new ArrayList<>();
         nodeCash = new HashMap<>();
+        describeToNode = new HashMap<>();
+        longDescribeToNode = new HashMap<>();
+        edgeIds = new ArrayList<>();
         edgeCash = new HashMap<>();
+
+        floorNode = new HashMap<>();
+        floorEdge = new HashMap<>();
+
+
+        initialCash ();
     }
 
-    HashMap<String,MapNode> nodeCash ;
-    HashMap<String,MapEdge> edgeCash ;
+    private void initialCash ()
+    {
+        // node related.
+        nodeIds = dataSource.getNodeIds();
+
+        for (String id : nodeIds) {
+            nodeCash.put(id,dataSource.getNode(id));
+        }
+        for (MapNode mapNode : nodeCash.values()) {
+            describeToNode.put(mapNode.getShortDescription(),mapNode);
+        }
+        for (MapNode mapNode : nodeCash.values()) {
+            longDescribeToNode.put(mapNode.getLongDescription(),mapNode);
+        }
+
+
+
+    }
+
+
 
     @Override
     public MapNode getNode(String id) {
-        // Try hashmap
-
-        // If not, look for in the db
-        // if found, put in hashmap w/ cache algorithm
-
-        // If not found, return null as normal
 
         return null;
     }
