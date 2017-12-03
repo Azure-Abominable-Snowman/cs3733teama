@@ -2,7 +2,7 @@ package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
-import com.teama.requestsubsystem.GenericRequestInfo;
+import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.RequestStatus;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class InterpreterRequestDBTest {
     @Test
     public void addRequest() throws Exception {
         assertNull(db.getRequest(1));
-        GenericRequestInfo g = new GenericRequestInfo(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
+        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
         InterpreterRequest spanish = new InterpreterRequest(g, 3, Language.Spanish);
         InterpreterRequest german = new InterpreterRequest(g, 2, Language.German);
         InterpreterRequest russian = new InterpreterRequest(g, 1, Language.Russian);
@@ -74,7 +74,7 @@ public class InterpreterRequestDBTest {
 
     @Test
     public void deleteRequest() throws Exception {
-        GenericRequestInfo g = new GenericRequestInfo(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
+        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
         InterpreterRequest spanish = new InterpreterRequest(g, 3, Language.Spanish);
         InterpreterRequest german = new InterpreterRequest(g, 2, Language.German);
         InterpreterRequest russian = new InterpreterRequest(g, 1, Language.Russian);
@@ -113,7 +113,7 @@ public class InterpreterRequestDBTest {
 
     @Test
     public void getAllRequests() throws Exception {
-        GenericRequestInfo g = new GenericRequestInfo(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
+        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
         InterpreterRequest spanish = new InterpreterRequest(g, 3, Language.Spanish);
         InterpreterRequest german = new InterpreterRequest(g, 2, Language.German);
         InterpreterRequest russian = new InterpreterRequest(g, 1, Language.Russian);
@@ -126,7 +126,7 @@ public class InterpreterRequestDBTest {
 
     @Test
     public void fulfillRequest() throws Exception {
-        GenericRequestInfo g = new GenericRequestInfo(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
+        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
         InterpreterRequest spanish = new InterpreterRequest(g, 3, Language.Spanish);
         db.addRequest(spanish);
         assertEquals(RequestStatus.ASSIGNED.toString(), db.getRequest(1).getStatus().toString());
@@ -150,7 +150,7 @@ public class InterpreterRequestDBTest {
 
     @Test
     public void updateRequest() throws Exception {
-        GenericRequestInfo g = new GenericRequestInfo(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Cannot read form");
+        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Cannot read form");
         InterpreterRequest german = new InterpreterRequest(g, 45, Language.German);
         db.addRequest(german);
         InterpreterRequest germanRetrieved = db.getRequest(1);

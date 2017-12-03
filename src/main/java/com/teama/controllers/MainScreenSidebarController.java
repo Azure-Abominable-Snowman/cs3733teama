@@ -3,13 +3,13 @@ package com.teama.controllers;
 import com.jfoenix.controls.*;
 import com.teama.messages.EmailMessage;
 import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequestInfo;
+import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import com.teama.requestsubsystem.interpreterfeature.Language;
 
 import java.util.Map;
-import com.jfoenix.controls.*;
+
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -20,28 +20,18 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import com.teama.messages.Message;
-import com.teama.requestsubsystem.RequestType;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,19 +44,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 import static com.teama.requestsubsystem.RequestType.*;
 import java.util.HashSet;
@@ -642,7 +625,7 @@ public class MainScreenSidebarController {
             case INTR:
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
-                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
+                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
                         Integer.parseInt(familySize),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);

@@ -55,4 +55,5 @@ public class Location {
     public String toString(){
         return xCoord + ", " + yCoord;
     }
+
 }

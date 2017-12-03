@@ -8,18 +8,24 @@ public class SystemUser {
     // holds the login credentials for an admin/staff user for verification
     private LoginInfo login;
     private AccessType access;
+    private int staffID;
     // private int userID; // may add later
 
     // set to default
     public SystemUser() {
         login = null;
         access = AccessType.GUEST;
+        staffID = 0;
     }
 
     // returned  by login database if login successful
     public SystemUser(LoginInfo l, AccessType a) {
         login = l;
         access = a;
+    }
+
+    void setStaffID(int id) {
+        this.staffID = id;
     }
 
     public String getUsername() {

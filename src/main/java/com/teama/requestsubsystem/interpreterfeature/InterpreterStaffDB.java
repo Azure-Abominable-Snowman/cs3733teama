@@ -3,7 +3,10 @@ package com.teama.requestsubsystem.interpreterfeature;
 import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.GenRequestDBManager;
+import com.teama.requestsubsystem.GenericStaff;
+import com.teama.requestsubsystem.ServiceStaff;
+import com.teama.requestsubsystem.StaffDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +17,8 @@ import java.util.logging.Logger;
  * Created by aliss on 11/21/2017.
  */
 
-public class InterpreterStaffDB implements InterpreterStaffInfoSource {
+public class InterpreterStaffDB implements StaffDataSource {
+    private StaffDataSource generalStaffDB = GenRequestDBManager.getInstance().getGenericStaffDB();
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL, staffTable;
     private String staffTableLanguages;
@@ -145,7 +149,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
                         log.info("Found a language " + rsLangs.getString("LANGUAGE"));
                     }
                     ContactInfo c = new ContactInfo(avail, info.getString("PHONENUMBER"), info.getString("EMAIL"), Provider.getFromString(info.getString("PROVIDER")));
-                    found = new InterpreterStaff(new GenericStaffInfo(info.getString("FIRSTNAME"), info.getString("LASTNAME"), c),
+                    found = new InterpreterStaff(new GenericStaff(info.getString("FIRSTNAME"), info.getString("LASTNAME"), c),
                             new InterpreterInfo(info.getInt("STAFFID"), langs, CertificationType.getCertificationType(info.getString("CERTIFICATION"))));
                     log.info("Found qualified staff member");
                     foundStaff.add(found);
@@ -157,7 +161,22 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
         }
         return foundStaff;
     }
-
+    public boolean addStaff(ServiceStaff s) {
+        //TODO
+        return false;
+    }
+    public boolean updateStaff(ServiceStaff s) {
+        //TODO
+        return false;
+    }
+    public boolean deleteStaff(int id) {
+        //TODO
+        return false;
+    }
+    public ServiceStaff getStaff(int staffID) {
+        //TODO
+        return null;
+    }
     /*
     addStaff = conn.prepareStatement("INSERT INTO " + staffTable + " VALUES(?, ?, ?, ?, ?, ?, ?)");
     addStaffLangTable = conn.prepareStatement("INSERT INTO " + staffTableLanguages + " VALUES(?) WHERE STAFFID = ?");
@@ -317,7 +336,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
 
             }
             ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.getFromString(rs.getString("PROVIDER")));
-            found = new InterpreterStaff(new GenericStaffInfo(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
+            found = new InterpreterStaff(new GenericStaff(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
                     new InterpreterInfo(rs.getInt("STAFFID"), langs, CertificationType.valueOf(rs.getString("CERTIFICATION"))));
 
             log.info("Found staff member with ID " + rs.getInt("STAFFID"));
@@ -351,7 +370,7 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
                     langs.add(Language.getLanguage(rsLangs.getString("LANGUAGE")));
                 }
                 ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.valueOf(rs.getString("PROVIDER")));
-                found = new InterpreterStaff(new GenericStaffInfo(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
+                found = new InterpreterStaff(new GenericStaff(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
                         new InterpreterInfo(rs.getInt("STAFFID"), langs, CertificationType.valueOf(rs.getString("CERTIFICATION"))));
                 log.info("Found staff member with ID " + rs.getInt("STAFFID"));
                 // perform another query to find contact info types

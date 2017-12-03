@@ -4,7 +4,7 @@ package com.teama.requestsubsystem;
  * Created by aliss on 11/20/2017.
  */
 public enum RequestStatus {
-    OPEN("Open"), // may need to add this..
+    //OPEN("Open"), // may need to add this..
     ASSIGNED("Assigned"),
     CLOSED("Closed");
 

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
  * Created by aliss on 11/11/2017.
  */
 public class JavaCredentialsDB implements LoginInfoDataSource {
+    // TODO: ADD STAFFID LINKED TO THIS USER
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName()); // Store any messages
     private Connection conn = null;
     private Statement stmt = null;

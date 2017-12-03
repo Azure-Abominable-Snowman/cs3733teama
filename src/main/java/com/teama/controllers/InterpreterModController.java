@@ -10,7 +10,7 @@ import com.teama.login.LoginSubsystem;
 import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.GenericStaff;
 import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -19,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
-import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
@@ -125,7 +124,7 @@ public class InterpreterModController implements Controller {
         String phoneNumber = PhoneNo.getText();
         String email = Email.getText();
         ContactInfo contactInfo = new ContactInfo(contactTypes, phoneNumber, email, provider);
-        GenericStaffInfo staffInfo = new GenericStaffInfo( FirstName.getText(), LastName.getText(), contactInfo);
+        GenericStaff staffInfo = new GenericStaff( FirstName.getText(), LastName.getText(), contactInfo);
         Set<Language> langs = new HashSet<>();
         for(JFXCheckBox box: languageBoxList){
             if(box.selectedProperty().get()){

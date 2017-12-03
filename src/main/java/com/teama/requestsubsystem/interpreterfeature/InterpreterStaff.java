@@ -1,72 +1,88 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.messages.ContactInfo;
-import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.GenericStaff;
+import com.teama.requestsubsystem.ServiceStaff;
 
 import java.util.Set;
 
-public class InterpreterStaff  {
-    private GenericStaffInfo info;
-    private InterpreterInfo interpSpecs;
+public class InterpreterStaff  implements ServiceStaff {
+    private GenericStaff genInfo;
+    //private InterpreterInfo interpSpecs;
+    private Set<Language> languages;
+    private CertificationType certification;
     //TODO: specify hours on duty perhaps
-    public InterpreterStaff(GenericStaffInfo i, InterpreterInfo j) {
-        info = i;
-        interpSpecs = j;
+    public InterpreterStaff(GenericStaff i, Set<Language> langs, CertificationType certification) {
+        genInfo = i;
+        languages = langs;
+        this.certification = certification;
+    }
+
+    public void add() {
+        //TODO
+    }
+    public void update() {
+        // TODO
+    }
+    public void remove() {
+        // TODO
     }
 
     public String getFirstName() {
-        return info.getFirstName();
+        return genInfo.getFirstName();
     }
     public String getLastName() {
-        return info.getLastName();
+        return genInfo.getLastName();
     }
-    public int getStaffID() {
+    /*public int getStaffID() {
         return interpSpecs.getStaffID();
     }
+    */
     public String getPhone() {
-        return info.getContactInfo().getPhoneNumber();
+        return genInfo.getContactInfo().getPhoneNumber();
     }
     public String getEmail() {
-        return info.getContactInfo().getEmailAddress();
+        return genInfo.getContactInfo().getEmailAddress();
     }
     public Provider getProvider() {
-        return info.getContactInfo().getProvider();
+        return genInfo.getContactInfo().getProvider();
     }
+
     public CertificationType getCertification() {
-        return interpSpecs.getCertification();
+        return certification;
     }
+
     public Set<Language> getLanguages() {
-        return interpSpecs.getLanguages();
+        return languages;
     }
     public void setCertification(CertificationType c) {
-        interpSpecs.setCertification(c);
+        this.certification = c;
     }
     public void setLanguages(Set<Language> langs) {
-        interpSpecs.setLanguages(langs);
+        this.languages = langs;
     }
     public void setFirstName(String name) {
-        info.setFirstName(name);
+        genInfo.setFirstName(name);
     }
     public void setLastName(String name) {
-        info.setLastName(name);
+        genInfo.setLastName(name);
     }
 
     public void setProvider(Provider p) {
-        info.setProvider(p);
+        genInfo.setProvider(p);
     }
 
     public void setEmail(String email) {
-        info.setEmail(email);
+        genInfo.setEmail(email);
     }
 
     public void setPhone(String phone) {
-        info.setPhoneNumber(phone);
+        genInfo.setPhoneNumber(phone);
     }
 
     public ContactInfo getContactInfo(){
-        return info.getContactInfo();
+        return genInfo.getContactInfo();
     }
 
     public String toString(){

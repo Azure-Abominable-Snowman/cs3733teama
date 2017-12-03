@@ -3,7 +3,7 @@ package com.teama.requestsubsystem.interpreterfeature;
 import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.GenericStaff;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,7 +88,7 @@ public class InterpreterStaffDBTest {
         langs.add(Language.Moldovan);
         langs.add(Language.JAVA);
         ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
-        GenericStaffInfo g = new GenericStaffInfo("William", "Wong", c);
+        GenericStaff g = new GenericStaff("William", "Wong", c);
         InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
         InterpreterStaff wilson = new InterpreterStaff(g, i);
         assertTrue(db.addStaff(wilson));
@@ -124,10 +124,10 @@ public class InterpreterStaffDBTest {
         InterpreterInfo i2 = new InterpreterInfo(langs2, CertificationType.CCHI);
 
 
-        GenericStaffInfo g = new GenericStaffInfo("William", "Wong", c);
+        GenericStaff g = new GenericStaff("William", "Wong", c);
         InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
         InterpreterStaff wilson = new InterpreterStaff(g, i);
-        GenericStaffInfo g2 = new GenericStaffInfo("Joe", "J", c);
+        GenericStaff g2 = new GenericStaff("Joe", "J", c);
         InterpreterStaff joe = new InterpreterStaff(g2, i2);
 
         db.addStaff(joe);
@@ -152,10 +152,10 @@ public class InterpreterStaffDBTest {
         langs.add(Language.Moldovan);
         langs.add(Language.JAVA);
         ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
-        GenericStaffInfo g = new GenericStaffInfo("William", "Wong", c);
+        GenericStaff g = new GenericStaff("William", "Wong", c);
         InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
         InterpreterStaff wilson = new InterpreterStaff(g, i);
-        GenericStaffInfo g2 = new GenericStaffInfo("Joe", "J", c);
+        GenericStaff g2 = new GenericStaff("Joe", "J", c);
         InterpreterStaff joe = new InterpreterStaff(g2, i);
         db.addStaff(joe);
         db.addStaff(wilson);
@@ -181,7 +181,7 @@ public class InterpreterStaffDBTest {
         langs.add(Language.Moldovan);
         langs.add(Language.JAVA);
         ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
-        GenericStaffInfo g = new GenericStaffInfo("William", "Wong", c);
+        GenericStaff g = new GenericStaff("William", "Wong", c);
         InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
         InterpreterStaff wilson = new InterpreterStaff(g, i);
         db.addStaff(wilson);
@@ -210,7 +210,7 @@ public class InterpreterStaffDBTest {
         langs.add(Language.Moldovan);
         langs.add(Language.JAVA);
         ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
-        GenericStaffInfo g = new GenericStaffInfo("William", "Wong", c);
+        GenericStaff g = new GenericStaff("William", "Wong", c);
         InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
         InterpreterStaff wilson = new InterpreterStaff(g, i);
         db.addStaff(wilson);

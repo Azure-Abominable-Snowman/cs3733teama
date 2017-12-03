@@ -7,4 +7,6 @@ public final class Configuration {
     public static final String edgeTable = "EDGES";
     //public static final String requestTable = "REQUEST_TABLE";
     public static final String credentialsTable = "CREDENTIALS_TABLE";
+    public static final String generalReqTable = "ALL_REQUESTS";
+    public static final String generalStaffTable = "ALL_STAFF";
 }
