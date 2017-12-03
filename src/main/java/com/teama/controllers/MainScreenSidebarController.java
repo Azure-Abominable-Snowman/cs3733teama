@@ -2,7 +2,7 @@ package com.teama.controllers;
 
 import com.jfoenix.controls.*;
 import com.teama.controllers_refactor.PopOutController;
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
@@ -20,6 +20,7 @@ import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -720,9 +721,10 @@ public class MainScreenSidebarController extends PopOutController {
     public HBox getHbxRoot(){return hbxRoot;}
 
     @Override
-    public void onOpen(){
+    public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
 
     }
+
     @Override
     public void onClose() {
 

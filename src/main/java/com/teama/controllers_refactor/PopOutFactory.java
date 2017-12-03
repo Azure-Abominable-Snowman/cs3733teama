@@ -11,12 +11,14 @@ public class PopOutFactory {
             return null;
         }
         switch(popOutType) {
-            case STAFF:
+            case STAFFDIRECTORY:
                 return new StaffPopOut();
             case EDITOR:
                 return new EditorPopOut();
             case REQUESTS:
                 return new RequestPopOut();
+            case LOGIN:
+                System.out.println("LOGIN SCREEN NOT YET IMPLEMENTED");
         }
         return null;
     }

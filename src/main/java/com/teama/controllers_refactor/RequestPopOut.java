@@ -1,18 +1,29 @@
 package com.teama.controllers_refactor;
 
-public class RequestPopOut extends PopOutController {
-    @Override
-    public void onOpen() {
+import javafx.beans.property.ReadOnlyDoubleProperty;
 
+public class RequestPopOut extends PopOutController {
+    private int xOffset, yOffset;
+    private ReadOnlyDoubleProperty xProperty, yProperty;
+
+    public void initialize() {
+        alignPane(xProperty, xOffset, yProperty, yOffset);
+    }
+    @Override
+    public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
+        this.xProperty = xProperty;
+        this.yProperty = yProperty;
     }
 
     @Override
     public void onClose() {
-
+        System.out.println("CLOSE REQUEST");
     }
 
     @Override
     public String getFXMLPath() {
-        return null;
+        return "/RequestPopOut.fxml";
     }
 }
