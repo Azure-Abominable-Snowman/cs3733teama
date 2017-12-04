@@ -53,7 +53,7 @@ public class InterpreterSubsystem {
     }
 
     // adds an Interpreter request to the database
-    public boolean addRequest(InterpreterRequest r) {
+    public InterpreterRequest addRequest(InterpreterRequest r) {
         return requestDB.addRequest(r);
     }
 

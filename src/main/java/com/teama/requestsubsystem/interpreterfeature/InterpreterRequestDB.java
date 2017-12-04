@@ -53,7 +53,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
                             "FAMSIZE INTEGER, " +
                             "SERVICETIME DOUBLE, " +
                             "TRANSTYPE VARCHAR(40), " +
-                            "FOREIGN KEY(REQUESTID, STAFFID) REFERENCES " + genericReqTableName + " (REQUESTID))");
+                            "FOREIGN KEY(REQUESTID) REFERENCES " + genericReqTableName + " (REQUESTID))");
             //" FOREIGN KEY(STAFFID) REFERENCES INTERPRETER_STAFF(STAFFID)" +
                             //" PRIMARY KEY(REQUESTID) " +
 
@@ -109,7 +109,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
             deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
             fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
-                    "  WHERE REQUESTID = ? AND STAFFID = ?)");
+                    "  WHERE REQUESTID = ? AND STAFFID = ?");
             getRequestStaffIDStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STAFFID = ? AND STATUS = ?");
             getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
             //selectRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
@@ -129,12 +129,13 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @param request
      * @return
      */
-    public boolean addRequest(InterpreterRequest request) {
+    public InterpreterRequest addRequest(InterpreterRequest request) {
         int reqID = request.getRequestID();
         int staffID = request.getStaffID();
+        Request req = null;
         RequestStatus status = request.getStatus();
         if (request.getRequestID() == 0) { // if it hasn't been added to the DB already, add it
-            Request req = generalInfo.addRequest(request);
+            req = generalInfo.addRequest(request);
             if (req != null) { // added successfully
                 reqID = req.getRequestID();
                 staffID = req.getStaffID();
@@ -152,10 +153,10 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
 
             addRequest.executeUpdate();
             log.info("Interpreter request added to Database.");
-            return true;
+            return new InterpreterRequest(req, request.getRequiredLanguage());
         } catch (SQLException exception) {
             exception.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -226,7 +227,13 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @return
      */
     public boolean deleteRequest(int requestID) {
-        boolean deletedInterp = generalInfo.deleteRequest(requestID);
+        boolean deletedInterp = false;
+        try {
+            deleteRequest.setInt(1, requestID);
+            deleteRequest.execute();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
         boolean deletedGeneral = generalInfo.deleteRequest(requestID);
         return deletedInterp && deletedGeneral;
     }

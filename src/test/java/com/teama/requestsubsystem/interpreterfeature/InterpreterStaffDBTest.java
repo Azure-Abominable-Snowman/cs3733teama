@@ -137,13 +137,13 @@ public class InterpreterStaffDBTest {
         // Test other scripts (Unicode support)
         ContactInfo c1 = new ContactInfo(avail, "4444441134", "bigboy@wpi.edu", Provider.ATT);
         GenericStaff g1 = new GenericStaff("Боевой", "водитель", c1);
-        InterpreterStaff танкиста = new InterpreterStaff(g1, langs, CertificationType.CCHI);
+        InterpreterStaff tankista = new InterpreterStaff(g1, langs, CertificationType.CCHI);
 
         ContactInfo c = new ContactInfo(avail, "4444441134", "willywongton@wpi.edu", Provider.VERIZON);
         GenericStaff g2 = new GenericStaff("Willy", "Wong", c);
         InterpreterStaff willyWong = new InterpreterStaff(g2, langs2, CertificationType.CDI);
 
-        db.addStaff(танкиста);
+        db.addStaff(tankista);
         db.addStaff(willyWong);
 
         // Test to see if the correct amount of people are returned
@@ -156,7 +156,7 @@ public class InterpreterStaffDBTest {
         ArrayList<InterpreterStaff> qualified = db.findQualified(Language.Luxembourgish);
         assertEquals(qualified.get(0).getLastName(), willyWong.getLastName());
         qualified = db.findQualified(Language.Russian);
-        assertEquals(qualified.get(0).getLastName(), танкиста.getLastName());
+        assertEquals(qualified.get(0).getLastName(), tankista.getLastName());
 
     }
 
@@ -180,18 +180,18 @@ public class InterpreterStaffDBTest {
         // Test other scripts (Unicode support)
         ContactInfo c1 = new ContactInfo(avail, "4444441134", "bigboy@wpi.edu", Provider.ATT);
         GenericStaff g1 = new GenericStaff("Боевой", "водитель", c1);
-        InterpreterStaff танкиста = new InterpreterStaff(g1, langs, CertificationType.CCHI);
+        InterpreterStaff tankista = new InterpreterStaff(g1, langs, CertificationType.CCHI);
 
         ContactInfo c = new ContactInfo(avail, "4444441134", "willywongton@wpi.edu", Provider.VERIZON);
         GenericStaff g2 = new GenericStaff("Willy", "Wong", c);
         InterpreterStaff willyWong = new InterpreterStaff(g2, langs2, CertificationType.CDI);
 
-        db.addStaff(танкиста);
+        db.addStaff(tankista);
         db.addStaff(willyWong);
 
         assertNotNull(db.getStaff(1));
         assertNotNull(db.getStaff(2));
-        assertEquals(танкиста.getLastName(), db.getStaff(1).getLastName());
+        assertEquals(tankista.getLastName(), db.getStaff(1).getLastName());
         assertEquals(willyWong.getFirstName(), db.getStaff(2).getFirstName());
 
         for (ServiceStaff s : db.getAllStaff()) {
