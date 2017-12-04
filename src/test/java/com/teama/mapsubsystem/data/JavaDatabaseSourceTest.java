@@ -1,5 +1,6 @@
 package com.teama.mapsubsystem.data;
 
+import com.teama.mapsubsystem.TotalMapCache;
 import org.junit.Test;
 
 import java.sql.*;

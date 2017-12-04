@@ -1,72 +1,118 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.messages.ContactInfo;
-import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.ServiceStaff;
+import com.teama.requestsubsystem.StaffType;
 
 import java.util.Set;
 
-public class InterpreterStaff  {
-    private GenericStaffInfo info;
-    private InterpreterInfo interpSpecs;
+public class InterpreterStaff  implements ServiceStaff {
+    private ServiceStaff genInfo;
+    //private InterpreterInfo interpSpecs;
+    private Set<Language> languages;
+    private CertificationType certification;
     //TODO: specify hours on duty perhaps
-    public InterpreterStaff(GenericStaffInfo i, InterpreterInfo j) {
-        info = i;
-        interpSpecs = j;
+    public InterpreterStaff(ServiceStaff i, Set<Language> langs, CertificationType certification) {
+        genInfo = i;
+        languages = langs;
+        this.certification = certification;
+        genInfo.setStaffType(StaffType.INTERPRETER);
+    }
+
+    public void setGenInfo(ServiceStaff staff) {
+        genInfo.setFirstName(staff.getFirstName());
+        genInfo.setLastName(staff.getLastName());
+        genInfo.setPhoneNumber(staff.getPhoneNumber());
+        genInfo.setEmail(staff.getEmail());
+        genInfo.setProvider(staff.getProvider());
+        genInfo.setUsername(staff.getUsername());
+    }
+
+    public void add() {
+        InterpreterSubsystem.getInstance().addStaff(this);
+    }
+    public void update() {
+        InterpreterSubsystem.getInstance().updateStaff(this);
+    }
+    public void remove() {
+        InterpreterSubsystem.getInstance().removeStaff(this.getStaffID());
     }
 
     public String getFirstName() {
-        return info.getFirstName();
+        return genInfo.getFirstName();
     }
     public String getLastName() {
-        return info.getLastName();
+        return genInfo.getLastName();
     }
-    public int getStaffID() {
+    /*public int getStaffID() {
         return interpSpecs.getStaffID();
     }
-    public String getPhone() {
-        return info.getContactInfo().getPhoneNumber();
+    */
+    public String getPhoneNumber() {
+        return genInfo.getPhoneNumber();
     }
     public String getEmail() {
-        return info.getContactInfo().getEmailAddress();
+        return genInfo.getEmail();
     }
     public Provider getProvider() {
-        return info.getContactInfo().getProvider();
+        return genInfo.getProvider();
     }
+
     public CertificationType getCertification() {
-        return interpSpecs.getCertification();
+        return certification;
     }
+    public String getUsername() {
+        return genInfo.getUsername();
+    }
+
+    public void setUsername(String uname) {
+        genInfo.setUsername(uname);
+    }
+    public void setPhoneNumber(String num) {
+        genInfo.setPhoneNumber(num);
+    }
+    public StaffType getStaffType() {
+        return genInfo.getStaffType();
+    }
+
+    public void setStaffType(StaffType t) {
+        genInfo.setStaffType(t);
+    }
+
     public Set<Language> getLanguages() {
-        return interpSpecs.getLanguages();
+        return languages;
     }
     public void setCertification(CertificationType c) {
-        interpSpecs.setCertification(c);
+        this.certification = c;
     }
     public void setLanguages(Set<Language> langs) {
-        interpSpecs.setLanguages(langs);
+        this.languages = langs;
     }
     public void setFirstName(String name) {
-        info.setFirstName(name);
+        genInfo.setFirstName(name);
     }
     public void setLastName(String name) {
-        info.setLastName(name);
+        genInfo.setLastName(name);
     }
 
     public void setProvider(Provider p) {
-        info.setProvider(p);
+        genInfo.setProvider(p);
     }
 
     public void setEmail(String email) {
-        info.setEmail(email);
+        genInfo.setEmail(email);
     }
 
     public void setPhone(String phone) {
-        info.setPhoneNumber(phone);
+        genInfo.setPhoneNumber(phone);
     }
 
     public ContactInfo getContactInfo(){
-        return info.getContactInfo();
+        return genInfo.getContactInfo();
+    }
+    public int getStaffID() {
+        return genInfo.getStaffID();
     }
 
     public String toString(){

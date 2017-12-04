@@ -32,15 +32,6 @@ public class KnownPoint implements  Comparable {
      * a helper function for getting adjacentNodes.
      * @return  all the mapNodes linked by the edges in the node in ArrayList
      */
-    public ArrayList<MapNode>  getAdjacentNodes()
-    {
-        ArrayList<MapNode> result = new ArrayList<>();
-        for (MapEdge edge : node.getEdges()) {
-            if(edge.getStart().getId().equals((node.getId()))) result.add(edge.getEnd());
-            else result.add(edge.getStart());
-        }
-        return result;
-    }
 
 
     /**
