@@ -98,3 +98,5 @@ lib/javax.transaction.jar
 database/
 
 derby.log
+
+classes/
