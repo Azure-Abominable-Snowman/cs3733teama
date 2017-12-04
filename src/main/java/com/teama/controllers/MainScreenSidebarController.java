@@ -575,6 +575,7 @@ public class MainScreenSidebarController extends PopOutController {
     private ArrayList<InterpreterStaff> getInterpreterStaff(){
         return InterpreterSubsystem.getInstance().getAllStaff();
     }
+
     public void hideLoginButton() {
         login.setVisible(false);
     }
@@ -582,7 +583,9 @@ public class MainScreenSidebarController extends PopOutController {
 
     //Methods for Service Request TitlePane
 
-
+    /**
+     * fills longName JFXComboBox with MapNodes pertaining on the floor selected by the user
+     */
     @FXML
     public void setNodeData() {
         floorName = floor.getSelectionModel().getSelectedItem();
@@ -595,6 +598,12 @@ public class MainScreenSidebarController extends PopOutController {
             }
         }
     }
+
+    /**
+     * clears the JFXComboBoxes when the Cancel button is clicked
+     * @param e
+     */
+
     //SERVICE REQUEST STUFF
     @FXML
     public void clearRequest(ActionEvent e) {
@@ -606,6 +615,12 @@ public class MainScreenSidebarController extends PopOutController {
         //controller.
     }
 
+    /**
+     * gets the values from all the ComboBoxes,
+     * adds the created request to its database
+     * sends a message to the staff who is assigned to the request
+     * @param e
+     */
     @FXML
     public void submitRequest(ActionEvent e) {
         Language lang = null;
@@ -622,16 +637,37 @@ public class MainScreenSidebarController extends PopOutController {
             case INTR:
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
+
+                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || additionalInfoMessage.equals("") || lang == null || familySize.equals("")){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!");
+                    alert.setHeaderText("Error with Submitting Your Request.");
+                    alert.setContentText("Atleast one of the fields is empty.  Please fill in the empty field or fields.");
+                    alert.showAndWait();
+                }
+
                 curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
                         Integer.parseInt(familySize),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
-                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
-                if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
-                    EmailMessage message2 = new EmailMessage();
-                    message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
+
+                class MyThread implements Runnable {
+
+                    public void run(){
+                        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                        if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
+                            EmailMessage message2 = new EmailMessage();
+                            message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
+                        }
+                    }
                 }
+
+            Thread t = new Thread(new MyThread());
+            t.start();
+                requestView.getItems().clear();
+                requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+                System.out.println("It was added");
                 break;
             case MAIN:
                 break;
@@ -652,6 +688,10 @@ public class MainScreenSidebarController extends PopOutController {
         System.out.println(lang);
 
     }
+
+    /**
+     * based on the requestType another FXML file is added with additional fields
+     */
 
     @FXML
     public void onRequestSelected() {
@@ -720,11 +760,37 @@ public class MainScreenSidebarController extends PopOutController {
     //END REQEUST STUFF
     public HBox getHbxRoot(){return hbxRoot;}
 
+    /**
+     * deletes a certain request from the database and then repopulates the requestView
+     * @param event
+     * @return void
+     */
+
+    @FXML
+    void deleteRequest(ActionEvent event) {
+        InterpreterSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+        System.out.println("It was deleted");
+    }
     @Override
     public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
 
     }
 
+    /**
+     * changes the status of a selected request to complete and then repopulates the requestView
+     * @param event
+     * @return void
+     */
+
+    @FXML
+    void changeRequestStatus(ActionEvent event) {
+        System.out.println(requestView.getSelectionModel().getSelectedItem());
+        InterpreterSubsystem.getInstance().fulfillRequest(requestView.getSelectionModel().getSelectedItem());
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+    }
     @Override
     public void onClose() {
 
