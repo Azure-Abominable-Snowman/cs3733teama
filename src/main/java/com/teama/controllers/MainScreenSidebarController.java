@@ -585,6 +585,8 @@ public class MainScreenSidebarController extends PopOutController {
     /**
      * fills longName JFXComboBox with MapNodes pertaining on the floor selected by the user
      */
+
+    /*
     @FXML
     public void setNodeData() {
         floorName = floor.getSelectionModel().getSelectedItem();
@@ -597,6 +599,7 @@ public class MainScreenSidebarController extends PopOutController {
             }
         }
     }
+    */
 
     /**
      * clears the JFXComboBoxes when the Cancel button is clicked
@@ -604,6 +607,7 @@ public class MainScreenSidebarController extends PopOutController {
      */
 
     //SERVICE REQUEST STUFF
+    /*
     @FXML
     public void clearRequest(ActionEvent e) {
         building.getSelectionModel().clearSelection();
@@ -613,6 +617,7 @@ public class MainScreenSidebarController extends PopOutController {
         additionalInfo.clear();
         //controller.
     }
+    */
 
     /**
      * gets the values from all the ComboBoxes,
@@ -620,6 +625,8 @@ public class MainScreenSidebarController extends PopOutController {
      * sends a message to the staff who is assigned to the request
      * @param e
      */
+
+
     @FXML
     public void submitRequest(ActionEvent e) {
         Language lang = null;
@@ -636,21 +643,21 @@ public class MainScreenSidebarController extends PopOutController {
             case INTR:
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
-
+                /*
                 if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || additionalInfoMessage.equals("") || lang == null || familySize.equals("")){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error!");
                     alert.setHeaderText("Error with Submitting Your Request.");
                     alert.setContentText("Atleast one of the fields is empty.  Please fill in the empty field or fields.");
                     alert.showAndWait();
-                }
+                }*/
 
                 curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
                         Integer.parseInt(familySize),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
-
+                /*
                 class MyThread implements Runnable {
 
                     public void run(){
@@ -664,6 +671,8 @@ public class MainScreenSidebarController extends PopOutController {
 
             Thread t = new Thread(new MyThread());
             t.start();
+
+            */
                 requestView.getItems().clear();
                 requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
                 System.out.println("It was added");
@@ -691,7 +700,7 @@ public class MainScreenSidebarController extends PopOutController {
     /**
      * based on the requestType another FXML file is added with additional fields
      */
-
+/*
     @FXML
     public void onRequestSelected() {
         try {
@@ -712,6 +721,7 @@ public class MainScreenSidebarController extends PopOutController {
             e.printStackTrace();
         }
     }
+    */
 
     public Message createTextMessage(){
         message = new Message("Needed: "+ requestType.toString()+ "\n"+
@@ -726,6 +736,7 @@ public class MainScreenSidebarController extends PopOutController {
         return message = new Message("Interpreter Help", additionalInfoMessage);
     }
 
+    /*
     @FXML
     public void showStaffPopUp(ActionEvent event) {
 
@@ -756,6 +767,7 @@ public class MainScreenSidebarController extends PopOutController {
             e.printStackTrace();
         }
     }
+    */
     //END REQEUST STUFF
     public HBox getHbxRoot(){return hbxRoot;}
 
