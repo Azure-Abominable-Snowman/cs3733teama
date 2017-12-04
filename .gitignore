@@ -96,7 +96,6 @@ lib/javax.servlet.jsp.jstl.jar
 lib/javax.transaction.jar
 
 database/
-
 derby.log
 
 classes/
