@@ -46,12 +46,12 @@ public class TextualDirections implements DirectionsGenerator {
         String temp = String.format( "%s %s",
                 Translator.getInstance().getText("pathstart"),
                 thisTurn.getNext().getLongDescription());
-        // small change to try the translator. 
 
+        // make the start section.
         dirList.add(new Direction(thisTurn.getDistance(),
                 thisTurn.getStart().getCoordinate()
                 ,thisTurn.getNext().getCoordinate(),
-                temp));
+                temp,thisTurn.getTurn()));
 
         thisTurn= routeLinks.get(1);
         RouteLink nextLink;
@@ -120,7 +120,7 @@ public class TextualDirections implements DirectionsGenerator {
         return new Direction(routeLink.getDistance(),
                 routeLink.getStart().getCoordinate(),
                 routeLink.getNext().getCoordinate(),
-                discription);
+                discription,routeLink.getTurn());
     }
 
     private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)

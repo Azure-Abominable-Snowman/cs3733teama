@@ -3,7 +3,8 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 public enum TurnType {
     TURNLEFT("turnleft"), TURNLEFTSLIGHT("turnleftslight"), TURENLEFTSHARP("turnleftsharp"),
     TURNRIGHT("turnright"), TURNRIGHTSLIGHT("turnrightslight"), TURNRIGHTSHARP("turnrightsharp"),
-    REVERSE("reverse"), STRAIGHT("straight"), START("start"), END("end");
+    REVERSE("reverse"), STRAIGHT("straight"), START("start"), END("end"),INTONEWFLOOR("intonewfloor"),
+    ELEVATOR("elevator"),STAIR("stair");
 
     private final String turnType;
 
