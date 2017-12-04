@@ -62,8 +62,7 @@ public class SearchBarController {
      */
     public void matchFuzzySearchValues(KeyEvent event) {
         String selected = inputField.getEditor().getText()+event.getCharacter();
-        System.out.println(selected);
-        if(selected != null && !selected.equals("")) {
+        if(selected.trim().length() > 0) {
             Map<String, Integer> sortedByMatch = new HashMap<>();
             for (String des : desToMatchAgainst) {
                 sortedByMatch.put(des, 0);
@@ -98,10 +97,13 @@ public class SearchBarController {
             Iterator<Map.Entry<String, Integer>> sortedIterator = sorted.iterator();
             while(sortedIterator.hasNext()) {
                 Map.Entry<String, Integer> next = sortedIterator.next();
-                //System.out.println(next.getValue());
                 inputField.getItems().add(next.getKey());
             }
             inputField.show();
+        } else {
+            inputField.getItems().clear();
+            inputField.getItems().addAll(desToMatchAgainst);
+            inputField.hide();
         }
     }
 
