@@ -176,7 +176,7 @@ public class InterpreterModController implements Controller {
             languageBoxList.add(Russian);
             languageBoxList.add(Cantonese);
             languageBoxList.add(Luxembourgish);
-            languageBoxList.add(Moldovan);
+            //languageBoxList.add(Moldovan);
             languageBoxList.add(Ukranian);
             languageBoxList.add(ASL);
         }
@@ -190,7 +190,7 @@ public class InterpreterModController implements Controller {
             }
             FirstName.setText(staffToInsert.getFirstName());
             LastName.setText(staffToInsert.getLastName());
-            Providers.setValue(staffToInsert.getProvider());
+        //    Providers.setValue(staffToInsert.getProvider());
             Certifications.setValue(staffToInsert.getCertification());
             PhoneNo.setText(staffToInsert.getPhone());
             Email.setText(staffToInsert.getEmail());
@@ -204,7 +204,7 @@ public class InterpreterModController implements Controller {
         Ukranian.setDisable(true); ASL.setDisable(true);
         FirstName.setEditable(false); LastName.setEditable(false);
         PhoneNo.setEditable(false); Providers.setDisable(true);
-        Email.setEditable(false); Certifications.setDisable(true);
+       // Email.setEditable(false); Certifications.setDisable(true);
         Submit.setDisable(true); btnDelete.setVisible(false);
     }
     public void setInterpreter(InterpreterStaff interpreter){

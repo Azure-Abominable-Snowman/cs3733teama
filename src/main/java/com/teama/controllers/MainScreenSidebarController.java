@@ -236,7 +236,7 @@ public class MainScreenSidebarController extends PopOutController {
 
         //STAFF STUFF
         btnAdd.setVisible(false);
-        initInterpColumns();
+       // initInterpColumns();
 
         //MAP EDITOR
         /*
@@ -495,8 +495,8 @@ public class MainScreenSidebarController extends PopOutController {
     }
 
     //Staff screen start
-
-    @FXML
+    //START OF STAFF STUFF
+   /* @FXML
     private void onAddStaff(ActionEvent event){
         popUpInterpInfo(null);
     }
@@ -570,6 +570,7 @@ public class MainScreenSidebarController extends PopOutController {
         }
         InterpInfoTable.setItems(tableVals);
     }
+    //END OF INTERPRETER STUFF */
     //TODO update the method to get all the interpreters from the DB
     private ArrayList<InterpreterStaff> getInterpreterStaff(){
         return InterpreterSubsystem.getInstance().getAllStaff();
@@ -685,7 +686,7 @@ public class MainScreenSidebarController extends PopOutController {
     public Message createEmailMessage(){
         return message = new Message("Interpreter Help", additionalInfoMessage);
     }
-
+/*
     @FXML
     public void showStaffPopUp(ActionEvent event) {
 
@@ -715,7 +716,7 @@ public class MainScreenSidebarController extends PopOutController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
     //END REQEUST STUFF
     public HBox getHbxRoot(){return hbxRoot;}
 
