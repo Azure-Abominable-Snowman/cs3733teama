@@ -25,9 +25,8 @@ public class TotalMapCacheTest {
 
     private ArrayList<MapNode> nodesToTest = new ArrayList<>();
 
-    @Before
-    public void setUp() throws Exception {
-
+    public TotalMapCacheTest()
+    {
         nodeTable = "TEST_CACHE_NODETABLE";
         edgeTable = "TEST_CACHE_EDGETABLE";
 
@@ -40,18 +39,17 @@ public class TotalMapCacheTest {
         }
         nList.add("/csvdata/nodes/MapWnodes.csv");
         eList.add("/csvdata/edges/MapWedges.csv");
-
-
         javaDBSource = new JavaDatabaseSource(dbURL, nodeTable, edgeTable);
         //TODO uncomment if the is fresh run
-           csvSource = new CSVDatabaseSource(nList, eList, null, null);
-            javaDBSource.addAll(csvSource);
-        ArrayList<MapEdge> test = javaDBSource.getEdgesOnFloor("1");
+        csvSource = new CSVDatabaseSource(nList, eList, null, null);
+        javaDBSource.addAll(csvSource);
+    }
+
+    @Before
+    public void setUp() throws Exception {
 
         testCache = new TotalMapCache(javaDBSource);
-
         nodesToTest.addAll(javaDBSource.getNodesOnFloor(Floor.ONE.toString()));
-
     }
 
     @After
