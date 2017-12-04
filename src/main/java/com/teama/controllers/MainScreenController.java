@@ -220,10 +220,11 @@ public class MainScreenController implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(controller.getFXMLPath()));
             loader.setController(controller);
+
             controller.onOpen(xProperty, xOffset, yProperty, yOffset);
             currentPopOut = loader.load();
             currentPopOutController = controller;
-
+            System.out.println(currentPopOutController);
             // Add it to the area pane in the correct spot next to the button
             areaPane.getChildren().add(currentPopOut);
 

@@ -15,8 +15,6 @@ import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
 import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.RequestStatus;
-import com.teama.messages.SMSMessage;
 import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
@@ -26,10 +24,7 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,10 +35,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -52,13 +43,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-
-import static com.teama.requestsubsystem.RequestType.*;
-import java.util.HashSet;
-import java.util.Set;
-
 import java.util.*;
 
 import static com.teama.requestsubsystem.RequestType.*;
@@ -662,8 +646,7 @@ public class MainScreenSidebarController extends PopOutController {
                     alert.showAndWait();
                 }
 
-                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
-                        Integer.parseInt(familySize),
+                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), RequestType.INTR, RequestStatus.ASSIGNED, additionalInfoMessage),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
@@ -671,7 +654,7 @@ public class MainScreenSidebarController extends PopOutController {
                 class MyThread implements Runnable {
 
                     public void run(){
-                        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
                         if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
                             EmailMessage message2 = new EmailMessage();
                             message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());

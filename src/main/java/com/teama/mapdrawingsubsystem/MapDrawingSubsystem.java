@@ -329,7 +329,7 @@ public class MapDrawingSubsystem {
     }
 
     public void unDrawEdge(MapEdge edge) {
-        map.deletePoint(edge.getId());
+        map.deleteLine(edge.getId());
     }
 
     public void unDrawPath(long pathID) {

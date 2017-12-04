@@ -1,5 +1,6 @@
 package com.teama.controllers_refactor;
 
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -13,6 +14,9 @@ public abstract class PopOutController {
 
     @FXML
     private Pane mainPane;
+
+    @FXML
+    private JFXToggleButton viewNodes, viewEdges;
 
     protected void alignPane(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
         xProperty.addListener((ObservableValue<? extends Number> a, Number before, Number after) -> {

@@ -9,7 +9,7 @@ import com.teama.mapsubsystem.data.NodeType;
 import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
 import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequestInfo;
+import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
@@ -158,12 +158,11 @@ public class RequestPopOut extends PopOutController {
             case INTR:
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
-                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
-                        Integer.parseInt(familySize),
+                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), RequestType.INTR, RequestStatus.ASSIGNED, additionalInfoMessage),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
-                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
                 if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
                     EmailMessage message2 = new EmailMessage();
                     message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());

@@ -155,6 +155,7 @@ public class GeneralStaffDB implements StaffDataSource{
             //addStaff.setString(7, s.); //TODO: CHANGE THIS IF WE ACTUALLY IMPLEMENT WORK HOURS, OR DELETE
             addStaff.executeUpdate();
             ResultSet id = addStaff.getGeneratedKeys();
+            
             if (id.next()) {
 
                 added = rsToStaff(id);

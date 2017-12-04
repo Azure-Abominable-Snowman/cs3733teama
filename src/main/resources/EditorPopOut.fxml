@@ -1,84 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <Pane fx:id="mainPane" prefHeight="590.0" prefWidth="241.0" styleClass="popOutPaneStyle" stylesheets="@css/MainScreenStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="5.0" prefHeight="580.0" prefWidth="213.0" style="-fx-background-color: #ededed;">
-         <content>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="578.0" prefWidth="216.0" style="-fx-background-color: #ededed;">
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </padding>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Algorithm">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Text>
-                  <VBox prefHeight="129.0" prefWidth="328.0">
-                     <VBox.margin>
-                        <Insets bottom="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
+    <children>
+        <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="5.0" prefHeight="580.0" prefWidth="213.0" style="-fx-background-color: #ededed;">
+            <content>
+                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="578.0" prefWidth="216.0" style="-fx-background-color: #ededed;">
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
+                    <children>
+                        <VBox prefHeight="129.0" prefWidth="328.0">
+                            <VBox.margin>
+                                <Insets bottom="10.0" right="10.0" top="10.0" />
+                            </VBox.margin>
                      <children>
-                        <JFXRadioButton>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </JFXRadioButton>
-                        <JFXRadioButton>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </JFXRadioButton>
-                        <JFXRadioButton>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </JFXRadioButton>
-                        <JFXRadioButton>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </JFXRadioButton>
-                        <JFXRadioButton>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </JFXRadioButton>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Tools">
+                                  <font>
+                                      <Font size="24.0" />
+                                  </font>
+                                  <VBox.margin>
+                                      <Insets />
+                                  </VBox.margin>
+                              </Text>
+                              <JFXToggleButton fx:id="viewNodes" />
+                              <JFXToggleButton fx:id="viewEdges" text="ToggleButton" />
+                     </children>
+                        </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Editor">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <HBox prefHeight="139.0" prefWidth="186.0">
+                           <children>
+                              <JFXToggleButton fx:id="viewEdges1" text="ToggleButton" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Tools">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Text>
-                  <JFXToggleButton />
-                  <JFXToggleButton />
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-      <ImageView fx:id="arrow" fitHeight="76.0" fitWidth="73.0" layoutX="241.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@triangle.png" />
-         </image>
-      </ImageView>
-   </children>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+        <ImageView fx:id="arrow" fitHeight="76.0" fitWidth="73.0" layoutX="241.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@triangle.png" />
+            </image>
+        </ImageView>
+    </children>
 </Pane>
