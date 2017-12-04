@@ -1,5 +1,6 @@
 package com.teama.controllers;
 
+import com.teama.ProgramSettings;
 import com.teama.controllers_refactor.PopOutType;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
@@ -35,10 +36,10 @@ public class PathfindingController {
         }
         curPathID = drawingSubsystem.drawPath(path);
 
+        // Put the current path into settings
+        ProgramSettings.getInstance().setCurrentDisplayedPathProp(path);
+
         // Open the directions pop out
         mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
-
-        // Put the current path into settings
-        Settings.getInstance().setCurrentDisplayedPathProp(path);
     }
 }
