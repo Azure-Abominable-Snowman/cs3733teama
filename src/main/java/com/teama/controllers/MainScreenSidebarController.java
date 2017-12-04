@@ -1,7 +1,8 @@
 package com.teama.controllers;
 
 import com.jfoenix.controls.*;
-import com.teama.drawing.MapDisplay;
+import com.teama.controllers_refactor.PopOutController;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
@@ -14,15 +15,21 @@ import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
 import com.teama.messages.SMSMessage;
+import com.teama.requestsubsystem.RequestStatus;
+import com.teama.messages.SMSMessage;
 import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,18 +40,32 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+
+import static com.teama.requestsubsystem.RequestType.*;
+import java.util.HashSet;
+import java.util.Set;
+
 import java.util.*;
 
 import static com.teama.requestsubsystem.RequestType.*;
 
-public class MainScreenSidebarController {
+public class MainScreenSidebarController extends PopOutController {
+    @FXML
+    private HBox hbxRoot;
 
     @FXML
     private JFXTextArea directions;
@@ -61,7 +82,7 @@ public class MainScreenSidebarController {
 
     @FXML
     private JFXRadioButton beamSearch;
-
+//START OF REQUEST STUFF
     @FXML
     private VBox addToThis;
 
@@ -120,7 +141,7 @@ public class MainScreenSidebarController {
 
 
     private AnchorPane curReqPane;
-
+//END OF REQUEST STUFF
     // MAP EDITOR TOOLS
     @FXML
     private JFXToggleButton viewNodes, viewEdges, editNodes, editEdges;
@@ -191,7 +212,7 @@ public class MainScreenSidebarController {
         mapSubsystem = MapSubsystem.getInstance();
 
 
-
+        //NAVIGATION STUFF
         // Add all of the radio buttons to a toggle group
         algoToggleGroup = new ToggleGroup();
         aStar.setToggleGroup(algoToggleGroup);
@@ -212,7 +233,7 @@ public class MainScreenSidebarController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
-
+        //SERVICE REQUEST STUFF
         //set up for Service Request
         building.getItems().clear();
         building.getItems().add("BTM");
@@ -230,11 +251,11 @@ public class MainScreenSidebarController {
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
 
 
-
+        //STAFF STUFF
         btnAdd.setVisible(false);
         initInterpColumns();
 
-        //Map Editor
+        //MAP EDITOR
         /*
         EventHandler<MouseEvent> onMapClicked = (MouseEvent e) -> {
             if (editNodes.isSelected()) {
@@ -336,7 +357,7 @@ public class MainScreenSidebarController {
 
     }
 
-
+    //MAP DISPLAY CODE?
     /**
      * Sets the map display in this controller, must be ran before anything else is to be done regarding the map
      * @param map
@@ -493,6 +514,10 @@ public class MainScreenSidebarController {
         floorNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
         floorEdges = getAllEdges(floorNodes);
     }
+
+    //Staff screen start
+
+
     private void popUpInterpInfo(InterpreterStaff staff){
         Stage InterpPopUp = new Stage();
         try {
@@ -566,14 +591,17 @@ public class MainScreenSidebarController {
     private ArrayList<InterpreterStaff> getInterpreterStaff(){
         return InterpreterSubsystem.getInstance().getAllStaff();
     }
+
     public void hideLoginButton() {
         login.setVisible(false);
     }
 
 
-    //Methods for Service Request TidlePane
+    //Methods for Service Request TitlePane
 
-
+    /**
+     * fills longName JFXComboBox with MapNodes pertaining on the floor selected by the user
+     */
     @FXML
     public void setNodeData() {
         floorName = floor.getSelectionModel().getSelectedItem();
@@ -587,6 +615,12 @@ public class MainScreenSidebarController {
         }
     }
 
+    /**
+     * clears the JFXComboBoxes when the Cancel button is clicked
+     * @param e
+     */
+
+    //SERVICE REQUEST STUFF
     @FXML
     public void clearRequest(ActionEvent e) {
         building.getSelectionModel().clearSelection();
@@ -597,6 +631,12 @@ public class MainScreenSidebarController {
         //controller.
     }
 
+    /**
+     * gets the values from all the ComboBoxes,
+     * adds the created request to its database
+     * sends a message to the staff who is assigned to the request
+     * @param e
+     */
     @FXML
     public void submitRequest(ActionEvent e) {
         Language lang = null;
@@ -613,15 +653,37 @@ public class MainScreenSidebarController {
             case INTR:
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
-                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), RequestType.INTR, RequestStatus.ASSIGNED, additionalInfoMessage),
+
+                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || additionalInfoMessage.equals("") || lang == null || familySize.equals("")){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!");
+                    alert.setHeaderText("Error with Submitting Your Request.");
+                    alert.setContentText("Atleast one of the fields is empty.  Please fill in the empty field or fields.");
+                    alert.showAndWait();
+                }
+
+                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
+                        Integer.parseInt(familySize),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
-                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
-                if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
-                    EmailMessage message2 = new EmailMessage();
-                    message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
+
+                class MyThread implements Runnable {
+
+                    public void run(){
+                        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                        if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
+                            EmailMessage message2 = new EmailMessage();
+                            message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
+                        }
+                    }
                 }
+
+            Thread t = new Thread(new MyThread());
+            t.start();
+                requestView.getItems().clear();
+                requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+                System.out.println("It was added");
                 break;
             case MAIN:
                 break;
@@ -642,6 +704,10 @@ public class MainScreenSidebarController {
         System.out.println(lang);
 
     }
+
+    /**
+     * based on the requestType another FXML file is added with additional fields
+     */
 
     @FXML
     public void onRequestSelected() {
@@ -707,6 +773,47 @@ public class MainScreenSidebarController {
             e.printStackTrace();
         }
     }
+    //END REQEUST STUFF
+    public HBox getHbxRoot(){return hbxRoot;}
 
+    /**
+     * deletes a certain request from the database and then repopulates the requestView
+     * @param event
+     * @return void
+     */
 
+    @FXML
+    void deleteRequest(ActionEvent event) {
+        InterpreterSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+        System.out.println("It was deleted");
+    }
+    @Override
+    public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
+
+    }
+
+    /**
+     * changes the status of a selected request to complete and then repopulates the requestView
+     * @param event
+     * @return void
+     */
+
+    @FXML
+    void changeRequestStatus(ActionEvent event) {
+        System.out.println(requestView.getSelectionModel().getSelectedItem());
+        InterpreterSubsystem.getInstance().fulfillRequest(requestView.getSelectionModel().getSelectedItem());
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+    }
+    @Override
+    public void onClose() {
+
+    }
+
+    @Override
+    public String getFXMLPath() {
+        return null;
+    }
 }

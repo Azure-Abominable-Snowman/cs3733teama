@@ -9,7 +9,7 @@ public enum RequestStatus {
     CLOSED("Closed");
 
     private final String status;
-    private RequestStatus(String s) {
+    RequestStatus(String s) {
         status = s;
     }
 
