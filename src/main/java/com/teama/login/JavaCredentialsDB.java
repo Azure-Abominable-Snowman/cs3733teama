@@ -1,5 +1,7 @@
 package com.teama.login;
 
+import com.teama.requestsubsystem.StaffType;
+
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -36,19 +38,36 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
         // Create table
         try {
             String createTable = "CREATE TABLE " + tablename +
-                    "(USERNAME VARCHAR(25) not NULL, " +
-                    "PASSWORD INTEGER not NULL, " +
-                    "ACCESS VARCHAR(25) not NULL, " +
-                    "STAFFID INT NOT NULL, " +
+                    "(USERNAME VARCHAR(25) NOT NULL, " +
+                    "PASSWORD INTEGER NOT NULL, " +
+                    "ACCESS VARCHAR(25) NOT NULL, " +
+                    "STAFFID INTEGER NOT NULL, " +
                     "STAFFTYPE VARCHAR(50), " +
                     "PRIMARY KEY (USERNAME))";
             stmt.execute(createTable);
+
+
+
         } catch (SQLException e) {
             log.info("Table " + tablename + " may already exist.");
             System.out.println(e.getErrorCode());
-            e.printStackTrace();
+            //e.printStackTrace();
 
         }
+
+        Statement st = null;
+        try {
+            st = conn.createStatement();
+            ResultSet rset = st.executeQuery("SELECT * FROM " + tablename);
+            ResultSetMetaData md = rset.getMetaData();
+            for (int i=1; i<=md.getColumnCount(); i++)
+            {
+                System.out.println(md.getColumnLabel(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
         try {
             addLogin = conn.prepareStatement("INSERT INTO " + tablename + " (USERNAME, PASSWORD, ACCESS, STAFFID) VALUES (?, ?, ?, ?)");
@@ -129,7 +148,15 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
             getLogin.setString(1,c.getUsername());
             ResultSet rs = getLogin.executeQuery();
             if (rs.next()) {
-                found = new SystemUser(new LoginInfo(rs.getString("USERNAME"), c.getPassword()), AccessType.getAccessType(rs.getString("ACCESS")));
+                int staffID = rs.getInt("STAFFID");
+                if (staffID != 0){
+                    found = new SystemUser(new LoginInfo(rs.getString("USERNAME"), c.getPassword()), AccessType.getAccessType(rs.getString("ACCESS")), rs.getInt("STAFFID"),
+                            StaffType.getStaff(rs.getString("STAFFTYPE")));
+                }
+                else {
+                    found = new SystemUser(new LoginInfo(rs.getString("USERNAME"), c.getPassword()), AccessType.getAccessType(rs.getString("ACCESS")));
+                }
+
             }
         } catch (SQLException e) {
             log.info("Failed to get the user with given login info, where username is " + c.getUsername());

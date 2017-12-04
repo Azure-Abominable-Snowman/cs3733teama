@@ -107,6 +107,20 @@ public class JavaCredentialsDBTest {
         assertEquals(login2.getPassword(), retrieved.getPassword());
         assertEquals(b.getAccess(), retrieved.getAccess());
         assertFalse(db.addUser(new SystemUser(b.getLoginInfo(), AccessType.ADMIN))); //make sure not to add a user if input username already exists
+        SystemUser retrieved2 = db.getUser(login3);
+        assertEquals(retrieved2.getStaffID(), 31, 0.02);
+        assertNull(retrieved.getStaffType());
+        try {
+            PreparedStatement s = conn.prepareStatement("SELECT * FROM " + credsTable);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getInt("STAFFID") + " " + rs.getString("STAFFTYPE"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
     @Test
     public void checkCredentials() {

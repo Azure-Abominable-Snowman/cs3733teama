@@ -55,7 +55,10 @@ public class InterpreterSubsystem {
 
     // adds an Interpreter request to the database
     public InterpreterRequest addRequest(InterpreterRequest r) {
-        return requestDB.addRequest(r);
+        if (r.getStaffID() != 0) { // must be assigned
+            return requestDB.addRequest(r);
+        }
+        return null;
     }
 
     // deletes the selected request
@@ -65,10 +68,13 @@ public class InterpreterSubsystem {
 
     // updates a request that has been assigned but not closed yet. cannot update closed requests
     public boolean updateRequest(InterpreterRequest r) {
-        return requestDB.updateRequest(r);
+        if (r.getStatus() != RequestStatus.CLOSED) {
+            return requestDB.updateRequest(r);
+        }
+        return false;
     }
 
-    // when admin marks a request as fulfilled and fills in the generated form, the InterpReqest table and Report tables will be updated
+    // when admin marks a request as fulfilled and fills in the generated form, the InterpRequest table and generic tables will be updated
     public boolean fulfillRequest(InterpreterRequest r) {
         return requestDB.fulfillRequest(r);
     }
@@ -78,10 +84,10 @@ public class InterpreterSubsystem {
         return requestDB.getAllInterpreterRequests(s);
     }
     // returns all generic requests
-    public ArrayList<Request> getAllRequest(RequestStatus s) {
+    public ArrayList<Request> getAllGenericRequests(RequestStatus s) {
         return requestDB.getAllRequests(s);
     }
 
     // Gets a specific staff member
-    public ServiceStaff getStaff(int staffID) { return staffDB.getStaff(staffID); }
+    public ServiceStaff getStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
 }

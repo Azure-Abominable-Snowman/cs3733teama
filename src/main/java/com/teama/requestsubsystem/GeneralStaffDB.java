@@ -58,7 +58,7 @@ public class GeneralStaffDB implements StaffDataSource{
             stmt.close();
         } catch (SQLException sqlExcept) {
             log.info("Does the staff info database or language relation table already exist?");
-            sqlExcept.printStackTrace();
+            //sqlExcept.printStackTrace();
         }
 
 
