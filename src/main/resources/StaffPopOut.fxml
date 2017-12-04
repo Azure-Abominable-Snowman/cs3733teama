@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -18,10 +19,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <Pane fx:id="mainPane" prefHeight="592.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="576.0" prefWidth="788.0" styleClass="popOutPaneStyle" stylesheets="@css/MainScreenStyle.css">
+      <VBox prefHeight="576.0" prefWidth="788.0" styleClass="popOutPaneStyle">
          <children>
             <GridPane prefHeight="45.0" prefWidth="788.0">
               <columnConstraints>
@@ -32,7 +32,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXComboBox prefHeight="25.0" prefWidth="232.0" GridPane.halignment="RIGHT">
+                  <JFXComboBox fx:id="cmbStaffType" prefHeight="25.0" prefWidth="232.0" GridPane.halignment="RIGHT">
                      <padding>
                         <Insets right="5.0" />
                      </padding>
@@ -161,6 +161,10 @@
                </children>
             </HBox>
          </children>
+         <stylesheets>
+            <URL value="@css/MainScreenStyle.css" />
+            <URL value="@css/DefaultStyle.css" />
+         </stylesheets>
       </VBox>
       <ImageView fx:id="arrow" fitHeight="45.0" fitWidth="51.0" layoutX="788.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>

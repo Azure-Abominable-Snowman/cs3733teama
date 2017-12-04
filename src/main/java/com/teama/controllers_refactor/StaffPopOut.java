@@ -5,14 +5,15 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import com.teama.login.AccessType;
 import com.teama.login.LoginSubsystem;
 import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
 import com.teama.requestsubsystem.GenericStaffInfo;
 import com.teama.requestsubsystem.interpreterfeature.*;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,17 +22,23 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+enum StaffType{
+    Interpreter("Interpreter");
+    private final String name;
+    private StaffType(String s){name=s;}
+    public static ArrayList<StaffType>  getTypes(){
+        ArrayList<StaffType> types = new ArrayList<>();
+        Collections.addAll(types, StaffType.values());
+        System.out.println(types);
+        return types;
+    }
+}
 public class StaffPopOut extends PopOutController {
     private int xOffset, yOffset;
     private ReadOnlyDoubleProperty xProperty, yProperty;
     private InterpreterStaff staffToInsert;
-    @FXML
-    private JFXButton btnAdd;
 
     @FXML
     private TableView<InterpreterTableAdapter> InterpInfoTable;
@@ -95,21 +102,49 @@ public class StaffPopOut extends PopOutController {
 
     @FXML
     private JFXButton btnDelete;
-
+    @FXML
+    private JFXComboBox<StaffType> cmbStaffType;
     @FXML
     private ArrayList<JFXCheckBox> languageBoxList = new ArrayList<>();
     private ObservableList<InterpreterTableAdapter> tableVals;
-    private Boolean editing;
+    private BooleanProperty editing;
     public void initialize() {
+        editing = new SimpleBooleanProperty();
         alignPane(xProperty, xOffset, yProperty, yOffset);
         initComboBoxes();
-        initForm();
         initInterpColumns();
         LoginSubsystem login = LoginSubsystem.getInstance();
-        if(login.getSystemUser().getAccess()!= AccessType.ADMIN){
+        //if(login.getSystemUser().getAccess()!= AccessType.ADMIN){
+        //TODO add back login stuff once its done
+        if(false){
             disableEditor();
         }
-        editing =false;
+        editing = new SimpleBooleanProperty();
+        editing.set(false);
+        editing.addListener((obs, before, editing) -> {
+            if (editing) {
+                btnSubmit.setText("Modify");
+            }
+            else{
+                btnSubmit.setText("Add");
+            }
+        });
+        System.out.println(cmbStaffType);
+        cmbStaffType.getItems().addAll(StaffType.getTypes());
+        cmbStaffType.getSelectionModel().select(0);
+        //sets up language box list
+        if(languageBoxList.size()==0) {
+            languageBoxList.add(English);
+            languageBoxList.add(Spanish);
+            languageBoxList.add(French);
+            languageBoxList.add(German);
+            languageBoxList.add(Russian);
+            languageBoxList.add(Cantonese);
+            languageBoxList.add(Luxembourgish);
+            languageBoxList.add(Moldovan);
+            languageBoxList.add(Ukranian);
+            languageBoxList.add(ASL);
+        }
     }
     @Override
     public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
@@ -135,10 +170,6 @@ public class StaffPopOut extends PopOutController {
 
     }
 
-    private void popUpInterpInfo(InterpreterStaff staff){
-        setInterpreter(staff);
-    }
-
     private void initInterpColumns(){
         firstCol.setCellValueFactory(
                 new PropertyValueFactory<>("firstName"));
@@ -162,8 +193,8 @@ public class StaffPopOut extends PopOutController {
             row.setOnMouseClicked(event -> {
                 if (! row.isEmpty()) {
                     InterpreterTableAdapter clickedRow = row.getItem();
-                    popUpInterpInfo(clickedRow.getInterpreter());
-                    editing=true;
+                    initInterpMod(clickedRow.getInterpreter());
+                    editing.set(true);
                 }
             });
             return row ;
@@ -198,10 +229,12 @@ public class StaffPopOut extends PopOutController {
         } else {
             alert.close();
         }
+        updateInterpList();
     }
     @FXML
     private void cancelInterpreter(ActionEvent event) {
         blankEditor();
+        editing.setValue(false);
     }
     @FXML
     private void submitInterpreter(ActionEvent e){
@@ -224,7 +257,7 @@ public class StaffPopOut extends PopOutController {
             }
             CertificationType certification = Certifications.getSelectionModel().getSelectedItem();
 
-            if (!editing) {
+            if (!editing.get()) {
                 InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, new InterpreterInfo(langs, certification));
                 InterpreterSubsystem.getInstance().addStaff(interpreterStaff);
             } else {
@@ -238,6 +271,7 @@ public class StaffPopOut extends PopOutController {
             alert.setContentText("Invalid or empty field, please check information and \n submit again");
             Optional<ButtonType> result = alert.showAndWait();
         }
+        updateInterpList();
     }
 
     private void initComboBoxes(){
@@ -248,18 +282,11 @@ public class StaffPopOut extends PopOutController {
             Certifications.getItems().add(certification);
         }
     }
-    private void initForm(){
-        if(languageBoxList.size()==0) {
-            languageBoxList.add(English);
-            languageBoxList.add(Spanish);
-            languageBoxList.add(French);
-            languageBoxList.add(German);
-            languageBoxList.add(Russian);
-            languageBoxList.add(Cantonese);
-            languageBoxList.add(Luxembourgish);
-            languageBoxList.add(Moldovan);
-            languageBoxList.add(Ukranian);
-            languageBoxList.add(ASL);
+    private void initInterpMod(InterpreterStaff interpreterStaff){
+        staffToInsert=interpreterStaff;
+        blankEditor();
+        for(JFXCheckBox box : languageBoxList){
+            box.selectedProperty().setValue(false);
         }
         if(staffToInsert!=null) {
             for (Language language : staffToInsert.getLanguages()) {
@@ -287,12 +314,6 @@ public class StaffPopOut extends PopOutController {
         PhoneNo.setEditable(false); Providers.setDisable(true);
         Email.setEditable(false); Certifications.setDisable(true);
         btnSubmit.setVisible(false); btnDelete.setVisible(false);
-    }
-    public void setInterpreter(InterpreterStaff interpreter){
-        staffToInsert=interpreter;
-        //System.out.println(interpreter.getFirstName());
-        initForm();
-        // FirstName.setText(interpreter.getFirstName());
     }
     private void blankEditor(){
         for(JFXCheckBox checkBox: languageBoxList){

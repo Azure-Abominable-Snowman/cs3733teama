@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Sun Dec 03 20:24:07 EST 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0160-1f1f-856b-0000065e2028 
-on database directory D:\WORK\WPI\CS_3733\final_project\database with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
-Loaded from file:/C:/Users/kent2/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.11.1.1/df4b50061e8e4c348ce243b921f53ee63ba9bbe1/derby-10.11.1.1.jar
+Sun Dec 03 23:05:34 VET 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0160-1f7c-64c2-000000890a28 
+on database directory G:\WORK\WPI\CS_3733\final_project\database with class loader sun.misc.Launcher$AppClassLoader@b4aac2 
+Loaded from file:/C:/Users/K%20L/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.11.1.1/df4b50061e8e4c348ce243b921f53ee63ba9bbe1/derby-10.11.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_151-b12
-user.dir=D:\WORK\WPI\CS_3733\final_project
+user.dir=G:\WORK\WPI\CS_3733\final_project
 os.name=Windows 10
-os.arch=amd64
+os.arch=x86
 os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
