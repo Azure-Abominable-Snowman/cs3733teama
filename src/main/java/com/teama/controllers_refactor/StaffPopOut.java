@@ -285,14 +285,12 @@ public class StaffPopOut extends PopOutController {
     private void initInterpMod(InterpreterStaff interpreterStaff){
         staffToInsert=interpreterStaff;
         blankEditor();
-        for(JFXCheckBox box : languageBoxList){
-            box.selectedProperty().setValue(false);
-        }
         if(staffToInsert!=null) {
             for (Language language : staffToInsert.getLanguages()) {
                 for (JFXCheckBox box : languageBoxList) {
                     if (box.getText().equals(language.toString())){
-                        box.selectedProperty().setValue(true);
+                        box.setSelected(true);
+                        box.setStyle("");
                     }
                 }
             }
@@ -317,7 +315,7 @@ public class StaffPopOut extends PopOutController {
     }
     private void blankEditor(){
         for(JFXCheckBox checkBox: languageBoxList){
-            checkBox.selectedProperty().setValue(false);
+            checkBox.setSelected(false);
         }
         FirstName.clear();LastName.clear();PhoneNo.clear(); Providers.getSelectionModel().clearSelection();
         Email.clear(); Certifications.getSelectionModel().clearSelection(); PhoneNo.clear();

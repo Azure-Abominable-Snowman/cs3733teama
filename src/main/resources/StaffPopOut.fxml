@@ -106,15 +106,15 @@
                                  </rowConstraints>
                                  <children>
                                     <JFXTextField fx:id="FirstName" promptText="First Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-                                    <JFXTextField fx:id="Email" promptText="Email" GridPane.rowIndex="5" />
-                                    <JFXTextField fx:id="PhoneNo" promptText="Phone No." GridPane.rowIndex="3" />
                                     <JFXTextField fx:id="LastName" promptText="Last Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </JFXTextField>
-                                    <JFXComboBox fx:id="Certifications" maxWidth="1.7976931348623157E308" promptText="Certificate" GridPane.rowIndex="6" />
+                                    <JFXTextField fx:id="PhoneNo" promptText="Phone No." GridPane.rowIndex="3" />
                                     <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="Phone Provider" GridPane.rowIndex="4" />
+                                    <JFXTextField fx:id="Email" promptText="Email" GridPane.rowIndex="5" />
+                                    <JFXComboBox fx:id="Certifications" maxWidth="1.7976931348623157E308" promptText="Certificate" GridPane.rowIndex="6" />
                                     <JFXTextField editable="false" text="Additional Information">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
