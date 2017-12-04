@@ -1,7 +1,7 @@
 package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
 public enum TurnType {
-    TURNLEFTSLIGHT("turnleftslight");
+    TURNLEFTSLIGHT("turnleftslight"), TURNRIGHTSLIGHT("turnrightslight");
 
     TurnType(String turn) {
 
