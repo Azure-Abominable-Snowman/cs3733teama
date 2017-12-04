@@ -22,8 +22,7 @@ public class TotalMapCacheTest {
 
     private ArrayList<MapNode> nodesToTest = new ArrayList<>();
 
-    public TotalMapCacheTest()
-    {
+    public TotalMapCacheTest() {
         nodeTable = "TEST_CACHE_NODETABLE";
         edgeTable = "TEST_CACHE_EDGETABLE";
 
@@ -167,13 +166,13 @@ public class TotalMapCacheTest {
 
     }
 
-    /*@Test
-    public void getEdgesOnFloor() throws Exception {
-        //check edges on Cafe Stairs AHALL00201_ASTAI00101
-        assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdgesOnFloor("1").get(1)));
-        assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdge("ASTAI00101_ASTAI00102")));
-        //check fake edge
-        assertFalse(testCache.getEdgesOnFloor("1").contains(testCache.getEdge("FAKE_EDGE")));
-    }*/
+    @Test
+    public void resetTest (){
+        javaDBSource.addNode(testNode = new MapNodeData("FakeNode", new Location(2080, 1280, Floor.THREE, "WPI"),
+                NodeType.HALL, "FakeNode 001", "FN", "Team A", null)
+       );
+        ( (TotalMapCache) testCache ).reset(javaDBSource);
+        assertEquals("FakeNode",testCache.getNode(testNode.getId()).getId());
+    }
 
 }

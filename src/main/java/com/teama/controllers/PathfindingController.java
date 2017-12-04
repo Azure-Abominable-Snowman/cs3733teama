@@ -28,7 +28,7 @@ public class PathfindingController {
 
     public void genPath(MapNode origin, MapNode dest) {
         // Generate the path and put it on the screen
-        Path path = mapSubsystem.getPathGenerator().generatePath(origin, dest);
+        Path path = mapSubsystem.getPathGenerator().generatePath(mapSubsystem.getNode(origin.getId()), mapSubsystem.getNode(dest.getId()));
 
         if(curPathID != -1) {
             drawingSubsystem.unDrawPath(curPathID);
