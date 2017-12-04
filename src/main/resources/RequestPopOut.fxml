@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane fx:id="mainPane" minHeight="432.0" minWidth="305.0" prefHeight="523.0" prefWidth="653.0" styleClass="popOutPaneStyle" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox layoutX="-2.0" layoutY="-1.0" prefHeight="517.0" prefWidth="653.0">

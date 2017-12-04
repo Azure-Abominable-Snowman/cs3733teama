@@ -14,4 +14,13 @@ public enum RequestType {
         return this.value;
     }
 
+    public static RequestType getRequestType(String s) {
+        for (RequestType r: RequestType.values()) {
+            if (r.toString().equals(s)) {
+                return r;
+            }
+        }
+        throw new IllegalArgumentException("No such request type " + s);
+    }
+
 }

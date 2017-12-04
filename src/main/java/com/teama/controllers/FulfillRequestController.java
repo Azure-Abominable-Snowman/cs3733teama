@@ -7,15 +7,16 @@ package com.teama.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.teama.messages.EmailMessage;
+import com.teama.messages.Message;
+import com.teama.messages.SMSMessage;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.event.ActionEvent;
+
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import com.teama.messages.SMSMessage;
-import com.teama.messages.Message;
 
 public class FulfillRequestController {
 
@@ -57,7 +58,7 @@ public class FulfillRequestController {
     @FXML
     void fulfill(ActionEvent event) {
         System.out.println(staffToFulfill);
-        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
         if(!message1.sendMessage(staffToFulfill.getContactInfo(),message)){
             EmailMessage message2 = new EmailMessage();
             message2.sendMessage(staffToFulfill.getContactInfo(),message);

@@ -6,10 +6,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
-import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
-import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequestInfo;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
@@ -152,7 +149,7 @@ public class RequestPopOut extends PopOutController {
         requestType = typeOfRequest.getSelectionModel().getSelectedItem();
         additionalInfoMessage = additionalInfo.getText();
 
-        switch (requestType) {
+        /*switch (requestType) {
             case FOOD:
                 break;
             case INTR:
@@ -177,7 +174,7 @@ public class RequestPopOut extends PopOutController {
                 break;
             default:
                 break;
-        }
+        }*/
 
         System.out.println(buildingName);
         System.out.println(floorName);
