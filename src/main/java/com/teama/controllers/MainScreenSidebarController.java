@@ -766,8 +766,7 @@ public class MainScreenSidebarController extends PopOutController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    */
+    }*/
     //END REQEUST STUFF
     public HBox getHbxRoot(){return hbxRoot;}
 
