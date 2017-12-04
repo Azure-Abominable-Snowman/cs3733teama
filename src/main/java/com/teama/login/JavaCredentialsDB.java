@@ -7,11 +7,12 @@ import java.util.logging.Logger;
  * Created by aliss on 11/11/2017.
  */
 public class JavaCredentialsDB implements LoginInfoDataSource {
+    // TODO: ADD STAFFID LINKED TO THIS USER
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName()); // Store any messages
     private Connection conn = null;
     private Statement stmt = null;
     private String dbURL, tablename;
-    PreparedStatement addLogin, checkLogin, updateLogin, getLogin, removeUser, updatePW, updateUName;
+    PreparedStatement addLogin, checkLogin, updateLogin, getLogin, removeUser, updatePW, updateUName, addStaffType;
 
     public JavaCredentialsDB(String dbURL, String tablename) {
         this.dbURL = dbURL;
@@ -38,15 +39,20 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
                     "(USERNAME VARCHAR(25) not NULL, " +
                     "PASSWORD INTEGER not NULL, " +
                     "ACCESS VARCHAR(25) not NULL, " +
+                    "STAFFID INT NOT NULL, " +
+                    "STAFFTYPE VARCHAR(50), " +
                     "PRIMARY KEY (USERNAME))";
             stmt.execute(createTable);
         } catch (SQLException e) {
             log.info("Table " + tablename + " may already exist.");
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
 
         }
 
         try {
-            addLogin = conn.prepareStatement("INSERT INTO " + tablename + " VALUES (?, ?, ?)");
+            addLogin = conn.prepareStatement("INSERT INTO " + tablename + " (USERNAME, PASSWORD, ACCESS, STAFFID) VALUES (?, ?, ?, ?)");
+            addStaffType = conn.prepareStatement("UPDATE " + tablename + " SET STAFFTYPE = ? WHERE STAFFID = ?");
             getLogin = conn.prepareStatement("SELECT * FROM " + tablename + " WHERE USERNAME = ? ");
             updateLogin = conn.prepareStatement("UPDATE " + tablename + " SET USERNAME = ?, PASSWORD = ?" + " WHERE USERNAME = ?",
                     ResultSet.CONCUR_UPDATABLE); // can only update username/password, not privelege level
@@ -67,6 +73,13 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
             }
         }
     }
+
+    /**
+     *  addLogin = conn.prepareStatement("INSERT INTO " + tablename + " VALUES (?, ?, ?, ?, ?)");
+
+     * @param p
+     * @return
+     */
     @Override
     public boolean addUser(SystemUser p) {
         //PreparedStatement pstmt = null;
@@ -79,21 +92,26 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
             addLogin.setString(1, uname);
             addLogin.setInt(2, pw_hash);
             addLogin.setString(3, access);
-            /*
-            String sql = "INSERT INTO " + tablename +
-                    "(USERNAME, PASSWORD, ACCESS)" +
-                    "VALUES (?, ?, ?)";
-            insert = conn.prepareStatement(sql);
-            insert.setString(1, uname);
-            insert.setInt(2, pw_hash);
-            insert.setString(3, access);
-            */
+            addLogin.setInt(4, p.getStaffID());
             addLogin.executeUpdate();
+
+
             //insert.close();
             // Update
         } catch (SQLException e) {
-            log.info("User with given username already exists");
+            log.info("Failed to add login information for user with username " + uname);
             return false;
+        }
+        if (p.getStaffType() != null) {
+            try {
+                addStaffType.setString(1, p.getStaffType().toString());
+                addStaffType.setInt(2, p.getStaffID());
+                addStaffType.executeUpdate();
+                log.info("Added login information for Staff member " + p.getStaffID());
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
         return true;
     }

@@ -1,65 +1,45 @@
 package com.teama.requestsubsystem;
-/*
-// probably don't need this
+
 import com.teama.messages.ContactInfo;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.interpreterfeature.Language;
 
-import java.util.Set;
+/**
+ * Created by aliss on 12/2/2017.
+ */
+public interface ServiceStaff {
+    void add();
+    void remove();
+    void update();
 
-public abstract class ServiceStaff {
-    private Set<Language> languages;
-    private boolean available;
-    private StaffType type;
-    private String staffId, firstName, lastName, phoneNumber;
-    public Provider provider;
-    private ContactInfo info;
+    public String getFirstName();
+    public void setFirstName(String first);
+
+    public StaffType getStaffType();
+    public void setStaffType(StaffType t);
+
+    public String getLastName();
+    public void setLastName(String last);
+
+    public String getUsername();
+
+    public void setUsername(String uname);
+
+    public ContactInfo getContactInfo();
+
+    public void setEmail(String email);
+
+    public String getEmail();
+
+    public void setPhoneNumber(String phone);
+
+    public String getPhoneNumber();
+
+    public void setProvider(Provider p);
+
+    public Provider getProvider();
+
+    public int getStaffID();
 
 
 
-    public ServiceStaff(String staffId, String firstName, String lastName, String phoneNumber, StaffType type,
-                        Set<Language> languages, Provider provider, boolean available) {
-        this.available = available;
-        this.languages = languages;
-        this.type = type;
-        this.staffId = staffId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.provider = provider;
-    }
-
-    public Set<Language> getLanguages() {
-        return languages;
-    }
-
-    public StaffType getStaffType() {
-        return type;
-    }
-
-    public String getStaffId() { return staffId; }
-
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public Enum<Provider> getProvider(){ return provider; }
-
-    @Override
-    public String toString(){
-        return this.firstName+this.lastName+"\n"+this.type+"\n"+this.languages+"\n"+this.phoneNumber+"  "+this.provider;
-    }
 }
-*/

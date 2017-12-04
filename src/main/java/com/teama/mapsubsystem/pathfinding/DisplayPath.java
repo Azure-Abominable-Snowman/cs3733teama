@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem.pathfinding;
 
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;

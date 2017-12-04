@@ -26,7 +26,7 @@ public class InterpreterTableAdapter {
         }
         languages =new SimpleStringProperty(langsToAdd);
         certification=new SimpleStringProperty(interpreter.getCertification().toString());
-        phone=new SimpleStringProperty(interpreter.getPhone());
+        phone=new SimpleStringProperty(interpreter.getPhoneNumber());
         email = new SimpleStringProperty(interpreter.getEmail());
         this.interpreterBase=interpreter;
     }

@@ -12,3 +12,10 @@
     -fx-background-color: #78909C
 ;
 }
+
+.popOutPaneStyle {
+    -fx-background-size: 1200 900;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-background-color: #ededed;
+}

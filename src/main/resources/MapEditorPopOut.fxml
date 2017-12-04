@@ -4,12 +4,9 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -28,7 +25,7 @@
                   <Font size="19.0" />
                </font>
             </Label>
-            <JFXTabPane prefHeight="361.0" prefWidth="602.0" stylesheets="@css/MapEditorStyle.css">
+            <JFXTabPane prefHeight="361.0" prefWidth="602.0">
                <tabs>
                   <Tab fx:id="nodeEditorTab" text="Node Editor">
                      <content>
@@ -46,37 +43,37 @@
                                  <children>
                                     <VBox prefHeight="283.0" prefWidth="282.0">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Node ID" textFill="WHITE">
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" style="-fx-background-color: #03A9F4;" text="Node ID" textFill="WHITE">
                                              <VBox.margin>
                                                 <Insets bottom="2.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Long Name" textFill="WHITE">
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" style="-fx-background-color: #03A9F4;" text="Long Name" textFill="WHITE">
                                              <VBox.margin>
                                                 <Insets bottom="2.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Short Name" textFill="WHITE">
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" style="-fx-background-color: #03A9F4;" text="Short Name" textFill="WHITE">
                                              <VBox.margin>
                                                 <Insets bottom="2.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Location Type" textFill="WHITE">
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" style="-fx-background-color: #03A9F4;" text="Location Type" textFill="WHITE">
                                              <VBox.margin>
                                                 <Insets bottom="2.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Floor" textFill="WHITE">
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" style="-fx-background-color: #03A9F4;" text="Floor" textFill="WHITE">
                                              <VBox.margin>
                                                 <Insets bottom="2.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="X Coordinate" textFill="WHITE">
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" style="-fx-background-color: #03A9F4;" text="X Coordinate" textFill="WHITE">
                                              <VBox.margin>
                                                 <Insets bottom="2.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Y Coordinate" textFill="WHITE">
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" style="-fx-background-color: #03A9F4;" text="Y Coordinate" textFill="WHITE">
                                              <VBox.margin>
                                                 <Insets bottom="2.0" />
                                              </VBox.margin>
@@ -87,7 +84,7 @@
                                        <children>
                                           <VBox prefHeight="292.0" prefWidth="388.0">
                                              <children>
-                                                <JFXTextField fx:id="nodeID" prefHeight="34.0" prefWidth="328.0" promptText="Type Long Name here" text="Node ID">
+                                                <JFXTextField fx:id="nodeID" alignment="CENTER" prefHeight="34.0" prefWidth="328.0" promptText="Type Long Name here" text="Node ID">
                                                    <VBox.margin>
                                                       <Insets bottom="8.0" left="40.0" right="40.0" />
                                                    </VBox.margin>
@@ -128,17 +125,17 @@
                                     </VBox>
                                     <HBox prefHeight="49.0" prefWidth="364.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                                        <children>
-                                          <JFXButton fx:id="resetBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onResetBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="resetButton" stylesheets="@css/MapEditorStyle.css" text="Reset" textAlignment="CENTER" textFill="WHITE">
+                                          <JFXButton fx:id="resetBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onResetBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Reset" textAlignment="CENTER" textFill="WHITE">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
                                              </HBox.margin>
                                           </JFXButton>
-                                          <JFXButton fx:id="confirmBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onConfirmBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="confirmButton" stylesheets="@css/MapEditorStyle.css" text="Confirm" textAlignment="CENTER" textFill="WHITE">
+                                          <JFXButton fx:id="confirmBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onConfirmBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Confirm" textAlignment="CENTER" textFill="WHITE">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
                                              </HBox.margin>
                                           </JFXButton>
-                                          <JFXButton fx:id="cancelBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onCancleBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="cancelButton" stylesheets="@css/MapEditorStyle.css" text="Cancel" textAlignment="CENTER" textFill="WHITE">
+                                          <JFXButton fx:id="cancelBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onCancleBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Cancel" textAlignment="CENTER" textFill="WHITE">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
                                              </HBox.margin>
@@ -181,27 +178,27 @@
                                                    <children>
                                                       <VBox prefHeight="198.0" prefWidth="114.0" GridPane.rowIndex="1">
                                                          <children>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Name" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="Name" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
                                                             </Label>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="X-Coordinate" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="X-Coordinate" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
                                                             </Label>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Y-Coordinate" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="Y-Coordinate" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
                                                             </Label>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Floor" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="Floor" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
                                                             </Label>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Type" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="Type" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
@@ -220,14 +217,11 @@
                                                             <JFXTextField fx:id="startYCoordinate" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" text="Y" />
                                                             <JFXTextField fx:id="startFloor" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" promptText="Floor" />
                                                             <JFXTextField fx:id="startType" alignment="CENTER" prefHeight="39.0" prefWidth="186.0" promptText="Type" />
-                                                            <ImageView fx:id="startNodeConfirm" fitHeight="38.0" fitWidth="38.0" onMouseClicked="#onStartNodeConfirmClick">
-                                                               <image>
-                                                                  <Image url="@check.png" />
-                                                               </image>
+                                                            <JFXButton fx:id="startConfirmBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onStartConfirmBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Confirm" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
-                                                                  <Insets bottom="2.0" left="75.0" top="2.0" />
+                                                                  <Insets bottom="2.0" left="24.0" right="10.0" top="5.0" />
                                                                </VBox.margin>
-                                                            </ImageView>
+                                                            </JFXButton>
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -248,27 +242,27 @@
                                                    <children>
                                                       <VBox prefHeight="199.0" prefWidth="114.0" GridPane.rowIndex="1">
                                                          <children>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Name" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="Name" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
                                                             </Label>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="X-Coordinate" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="X-Coordinate" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
                                                             </Label>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Y-Coordinate" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="Y-Coordinate" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
                                                             </Label>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Floor" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="Floor" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
                                                             </Label>
-                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Type" textAlignment="CENTER" textFill="WHITE">
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" style="-fx-background-color: #03A9F4;" text="Type" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
                                                                   <Insets bottom="2.0" left="4.0" top="2.0" />
                                                                </VBox.margin>
@@ -287,14 +281,11 @@
                                                             <JFXTextField fx:id="endYCoordinate" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" text="Y" />
                                                             <JFXTextField fx:id="endFloor" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" promptText="Floor" />
                                                             <JFXTextField fx:id="endType" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" promptText="Type" />
-                                                            <ImageView fx:id="endNodeConfirm" fitHeight="38.0" fitWidth="38.0" onMouseClicked="#onEndNodeConfirmClick">
-                                                               <image>
-                                                                  <Image url="@check.png" />
-                                                               </image>
+                                                            <JFXButton fx:id="endConfirmBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onEndConfirmBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Confirm" textAlignment="CENTER" textFill="WHITE">
                                                                <VBox.margin>
-                                                                  <Insets bottom="2.0" left="75.0" top="2.0" />
+                                                                  <Insets bottom="2.0" left="24.0" right="10.0" top="5.0" />
                                                                </VBox.margin>
-                                                            </ImageView>
+                                                            </JFXButton>
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -303,17 +294,17 @@
                                           </VBox>
                                           <HBox prefHeight="48.0" prefWidth="168.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                                              <children>
-                                                <JFXButton fx:id="resetBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onRestBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="resetButton" stylesheets="@css/MapEditorStyle.css" text="Reset" textAlignment="CENTER" textFill="WHITE">
+                                                <JFXButton fx:id="resetBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onRestBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Reset" textAlignment="CENTER" textFill="WHITE">
                                                    <HBox.margin>
                                                       <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
                                                    </HBox.margin>
                                                 </JFXButton>
-                                                <JFXButton fx:id="confirmBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onConfirmBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="confirmButton" stylesheets="@css/MapEditorStyle.css" text="Confirm" textAlignment="CENTER" textFill="WHITE">
+                                                <JFXButton fx:id="confirmBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onConfirmBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Confirm" textAlignment="CENTER" textFill="WHITE">
                                                    <HBox.margin>
                                                       <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
                                                    </HBox.margin>
                                                 </JFXButton>
-                                                <JFXButton fx:id="cancelBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onCancelBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="cancelButton" stylesheets="@css/MapEditorStyle.css" text="Cancel" textAlignment="CENTER" textFill="WHITE">
+                                                <JFXButton fx:id="cancelBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onCancelBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="normalButton" stylesheets="@css/MainScreenStyle.css" text="Cancel" textAlignment="CENTER" textFill="WHITE">
                                                    <HBox.margin>
                                                       <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
                                                    </HBox.margin>
@@ -329,11 +320,6 @@
                      </content>
                   </Tab>
                </tabs>
-               <styleClass>
-                  <String fx:value="jfx-tab-pane" />
-                  <String fx:value="tab-header-background" />
-                  <String fx:value="tab-selected-line" />
-               </styleClass>
             </JFXTabPane>
          </children>
       </VBox>
