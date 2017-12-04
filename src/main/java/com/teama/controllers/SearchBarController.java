@@ -1,9 +1,9 @@
 package com.teama.controllers;
 
+import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import org.apache.commons.codec.language.DoubleMetaphone;
 
@@ -13,17 +13,37 @@ import java.util.Comparator;
 public class SearchBarController {
 
     private ComboBox<String> inputField;
-    private Button searchButton;
     private MapSubsystem mapSubsystem;
 
     // Double metaphone fuzzy search algorithm
     private DoubleMetaphone doubleMetaphone;
 
-    public SearchBarController(ComboBox<String> inputField, Button searchButton, MapSubsystem mapSubsystem) {
+    public SearchBarController(ComboBox<String> inputField, boolean floorNodes) {
         this.inputField = inputField;
-        this.searchButton = searchButton;
-        this.mapSubsystem = mapSubsystem;
+        this.mapSubsystem = MapSubsystem.getInstance();
         doubleMetaphone = new DoubleMetaphone();
+        // Editable (fuzzy searching)
+        inputField.getEditor().setEditable(true);
+        MapDrawingSubsystem mapDrawing = MapDrawingSubsystem.getInstance();
+
+        // Tie updating the node listing to floor change events if we are looking at floor nodes
+        if(floorNodes) {
+            updateNodeListing(mapDrawing.getCurrentFloor());
+            mapDrawing.attachFloorChangeListener((a, b, c) -> {
+                updateNodeListing(mapDrawing.getCurrentFloor());
+            });
+        } else {
+            updateNodeListing();
+            // still attach to a floor change in case nodes are updated
+            mapDrawing.attachFloorChangeListener((a, b, c) -> {
+                updateNodeListing();
+            });
+        }
+
+        // On typing into the combo box, update the fuzzy search values
+        inputField.getEditor().onKeyTypedProperty().set((event) -> {
+            matchFuzzySearchValues();
+        });
     }
 
     /**
@@ -43,24 +63,30 @@ public class SearchBarController {
         // TODO: Allow the user to select from this menu
     }
 
+    public void updateNodeListing() {
+        inputField.getItems().clear();
+        ArrayList<MapNode> floorNodes = new ArrayList<>();
+        for (Floor f : Floor.values()) {
+            floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(f).values());
+        }
+        finishUpdateNodes(floorNodes);
+    }
+
     /**
      * Updates the node listing for the building
      *
      * This might also need to be called when fuzzy search matching ends
      *
      */
-    public void updateNodeListing(boolean onlyThis, Floor floor) {
+    public void updateNodeListing(Floor floor) {
         // Initially populate the list with all of the values (long descriptions)
         inputField.getItems().clear();
         ArrayList<MapNode> floorNodes = new ArrayList<>();
-        if(!onlyThis) {
-            for (Floor f : Floor.values()) {
-                floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(f).values());
-            }
-        } else {
-            floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(floor).values());
-        }
+        floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(floor).values());
+        finishUpdateNodes(floorNodes);
+    }
 
+    private void finishUpdateNodes(ArrayList<MapNode> floorNodes) {
         // Alphabetize by long description
         floorNodes.sort(new Comparator<MapNode>() {
             @Override

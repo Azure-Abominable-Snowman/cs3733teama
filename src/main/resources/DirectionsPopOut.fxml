@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -13,12 +14,13 @@
             <Image url="@triangle.png" />
          </image>
       </ImageView>
-      <TableView fx:id="textDirections" layoutX="14.0" layoutY="14.0" prefHeight="405.0" prefWidth="325.0" stylesheets="@css/DirectionPopOut.css">
+      <TableView fx:id="textDirections" layoutX="14.0" layoutY="69.0" prefHeight="350.0" prefWidth="325.0" stylesheets="@css/DirectionPopOut.css">
         <columns>
           <TableColumn fx:id="imageCol" editable="false" prefWidth="83.0" text="Image" />
           <TableColumn fx:id="descriptionCol" editable="false" prefWidth="177.0" text="Description" />
             <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="64.0" text="Distance" />
         </columns>
       </TableView>
+      <JFXComboBox fx:id="originNodeCombo" editable="true" layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="325.0" />
    </children>
 </Pane>

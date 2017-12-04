@@ -21,6 +21,13 @@ public class PathfindingController {
 
     public PathfindingController(Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap) {
         this.mainSidebarMap = mainSidebarMap;
+
+        ProgramSettings settings = ProgramSettings.getInstance();
+
+        // Set the pathfinding controller to update its path automatically on a changed start node
+        settings.getPathOriginNodeProp().addListener((a) -> {
+            genPath(settings.getPathOriginNodeProp().getValue(), settings.getPathEndNodeProp().getValue());
+        });
     }
 
     public void genPath(MapNode dest) {
@@ -38,6 +45,7 @@ public class PathfindingController {
 
         // Put the current path into settings
         ProgramSettings.getInstance().setCurrentDisplayedPathProp(path);
+        ProgramSettings.getInstance().setPathEndNodeProp(dest);
 
         // Open the directions pop out
         mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);

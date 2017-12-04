@@ -1,13 +1,19 @@
 package com.teama.controllers_refactor;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.teama.ProgramSettings;
+import com.teama.controllers.SearchBarController;
+import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DirectionAdapter;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextualDirections;
+import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,11 +39,18 @@ public class DirectionsPopOut extends PopOutController {
     @FXML
     private TableColumn<String, String> distanceCol;
 
+    @FXML
+    private JFXComboBox<String> originNodeCombo;
+
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
 
-        putDirectionsOnScreen(ProgramSettings.getInstance().getCurrentDisplayedPathProp().getValue());
-        ProgramSettings.getInstance().getCurrentDisplayedPathProp().addListener((a, b, currentPath) -> {
+        ReadOnlyObjectProperty<Path> pathObjectProperty = ProgramSettings.getInstance().getCurrentDisplayedPathProp();
+
+        if(pathObjectProperty.getValue() != null) {
+            putDirectionsOnScreen(pathObjectProperty.getValue());
+        }
+        pathObjectProperty.addListener((a, b, currentPath) -> {
             putDirectionsOnScreen(currentPath);
         });
 
@@ -54,6 +67,19 @@ public class DirectionsPopOut extends PopOutController {
             row.setWrapText(true);
             return row;
         });
+
+        // Populate the combo box and allow fuzzy search by tying it to a search controller
+        SearchBarController searchBarController = new SearchBarController(originNodeCombo, true);
+
+        // When the origin combo box changes selected value, set the origin of the path to the new one
+        originNodeCombo.getSelectionModel().selectedItemProperty().addListener((Observable a) -> {
+            System.out.println("CHANGED SELECTION "+originNodeCombo.getSelectionModel().getSelectedItem());
+            MapNode selectedNode = MapSubsystem.getInstance().getNodeByDescription(originNodeCombo.getSelectionModel().getSelectedItem(), true);
+            if(selectedNode != null) {
+                // Tell path controller to make a new path
+                ProgramSettings.getInstance().setPathOriginNodeProp(selectedNode);
+            }
+        });
     }
 
     private DirectionsGenerator directionsGenerator = new TextualDirections();
@@ -65,6 +91,9 @@ public class DirectionsPopOut extends PopOutController {
             directionVals.add(new DirectionAdapter(d));
         }
         textDirections.setItems(directionVals);
+
+        // make the combo box automatically change to the start of the path
+        originNodeCombo.getEditor().setText(path.getStartNode().getLongDescription());
     }
 
     @Override
