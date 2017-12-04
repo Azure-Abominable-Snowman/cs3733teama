@@ -12,10 +12,7 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
-import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
-import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequestInfo;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.*;
@@ -646,20 +643,20 @@ public class MainScreenSidebarController extends PopOutController {
                     alert.showAndWait();
                 }
 
-                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
-                        Integer.parseInt(familySize),
-                        lang);
+                //curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
+                //        Integer.parseInt(familySize),
+                //        lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
 
                 class MyThread implements Runnable {
 
                     public void run(){
-                        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
-                        if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
-                            EmailMessage message2 = new EmailMessage();
-                            message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
-                        }
+                       // SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                       // if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
+                       //     EmailMessage message2 = new EmailMessage();
+                       //     message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
+                       // }
                     }
                 }
 
