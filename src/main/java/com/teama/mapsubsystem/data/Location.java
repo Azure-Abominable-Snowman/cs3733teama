@@ -1,5 +1,7 @@
 package com.teama.mapsubsystem.data;
 
+import javafx.scene.input.MouseEvent;
+
 public class Location {
     private int xCoord, yCoord;
     private String building;
@@ -14,6 +16,14 @@ public class Location {
         this.yCoord = yCoord;
         this.level = level;
         this.building = building;
+    }
+
+    /**
+     * Location from a mouse event and a floor
+     * @param e
+     */
+    public Location(MouseEvent e, Floor floor) {
+        this((int)e.getX(), (int)e.getY(), floor, "Unknown");
     }
 
     public int getxCoord() {
@@ -55,4 +65,5 @@ public class Location {
     public String toString(){
         return xCoord + ", " + yCoord;
     }
+
 }

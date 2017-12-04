@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem.data;
 
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 
 public abstract class DrawEdge implements MapEdge {
     private MapEdge edge;

@@ -104,7 +104,7 @@ public class CSVDatabaseSource implements MapDataSource {
         }
         return allNodes;
     }
-    @Override
+ /*   @Override
     public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
         ArrayList<MapEdge> allEdges = new ArrayList<MapEdge>();
         for (String id: edgeMap.keySet()) {
@@ -114,7 +114,8 @@ public class CSVDatabaseSource implements MapDataSource {
             }
         }
         return allEdges;
-    }
+    }*/
+
     /**
      * Returns an array of CSV data lines parsed from a given filename
      * @param filename
