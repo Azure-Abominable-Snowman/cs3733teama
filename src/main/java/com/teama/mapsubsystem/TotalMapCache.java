@@ -170,6 +170,7 @@ public class TotalMapCache extends MapCache {
         edgeIds.remove(id);
        // MapEdge oldEdge = edgeCash.get(id);
         // TODO also how to remove it from the floor cache? super stupid way now.
+        edgeCash.remove(id);
         updateFloorEdges();
     }
 

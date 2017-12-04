@@ -122,7 +122,12 @@ public class TotalMapCacheTest {
     @Test
     public void removeEdge() throws Exception {
         //remove Edge"GEXIT00101_GSTAI01301"
+        String randomRremoveStr = testCache.getEdgeIds().get(testCache.getEdgeIds().size()/5);
         testCache.removeEdge("GEXIT00101_GSTAI01301");
+        testCache.removeEdge(randomRremoveStr);
+        assertNull(testCache.getEdge("GEXIT00101_GSTAI01301"));
+        assertNull(testCache.getEdge(randomRremoveStr));
+        assertFalse(testCache.getEdgeIds().contains(randomRremoveStr));
         assertFalse(testCache.getEdgeIds().contains("GEXIT00101_GSTAI01301"));
     }
 
@@ -156,6 +161,7 @@ public class TotalMapCacheTest {
         String db = javaDBSource.getEdge(testingId).getId();
         String cache = testCache.getEdge(testingId).getId();
         assertEquals(db, cache);
+        assertNull(testCache.getEdge("FakeEdge"));
     }
 
     @Test
@@ -169,7 +175,7 @@ public class TotalMapCacheTest {
 
     }
 
-    @Test
+  //  @Test
     public void getEdgesOnFloor() throws Exception {
         //check edges on Cafe Stairs AHALL00201_ASTAI00101
         assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdgesOnFloor("1").get(1)));
