@@ -3,6 +3,7 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.translator.Translator;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -103,11 +104,11 @@ public class TextualDirections implements DirectionsGenerator {
         String discription = routeLink.getTextReturn();
         if (discription.contains("Elevator")){ // elevator text
             discription = String.format("%s %s",
-                    bundle.getString("elevatorenter"),
+                    Translator.getInstance().getText("elevatorenter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Stairs")){ // Stairs text
-            discription = String.format("%s %s", bundle.getString("stairenter"),
+            discription = String.format("%s %s", Translator.getInstance().getText("stairenter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Straight")){// going Straight
@@ -118,8 +119,8 @@ public class TextualDirections implements DirectionsGenerator {
         }
 
         if(routeLink.isEndFlag()) {
-            discription= String.format("%s %s %s", bundle.getString("pathend"),
-            discription,routeLink.getNext().getLongDescription());
+            discription= String.format("%s %s", discription, bundle.getString("pathend"));
+            //routeLink.getNext().getLongDescription());
         }
 
         // create and return the new formed Direction object.
