@@ -48,7 +48,7 @@ public class TextualDirections implements DirectionsGenerator {
                 thisTurn.getNext().getLongDescription());
         // small change to try the translator. 
 
-        dirList.add(new Direction(0,
+        dirList.add(new Direction(thisTurn.getDistance(),
                 thisTurn.getStart().getCoordinate()
                 ,thisTurn.getNext().getCoordinate(),
                 temp));
@@ -117,7 +117,7 @@ public class TextualDirections implements DirectionsGenerator {
         }
 
         // create and return the new formed Direction object.
-        return new Direction(0,
+        return new Direction(routeLink.getDistance(),
                 routeLink.getStart().getCoordinate(),
                 routeLink.getNext().getCoordinate(),
                 discription);

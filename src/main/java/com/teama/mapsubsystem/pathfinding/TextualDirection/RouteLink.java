@@ -40,6 +40,9 @@ public class RouteLink {
         }
         else {
             textReturn = "Start";
+            double dx = next.getCoordinate().getxCoord() - start.getCoordinate().getxCoord();
+            double dy = next.getCoordinate().getyCoord() - start.getCoordinate().getyCoord();
+            distance = (double) Math.sqrt( dx*dx + dy*dy);
         }
 
     }
