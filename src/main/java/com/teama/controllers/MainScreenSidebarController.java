@@ -1,15 +1,6 @@
 package com.teama.controllers;
 
 import com.jfoenix.controls.*;
-import com.teama.messages.EmailMessage;
-import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequest;
-import com.teama.requestsubsystem.RequestStatus;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.Language;
-
-import java.util.Map;
-
 import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -20,13 +11,13 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterTableAdapter;
-import com.teama.requestsubsystem.RequestType;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
+import com.teama.messages.SMSMessage;
+import com.teama.requestsubsystem.GenericRequest;
+import com.teama.requestsubsystem.RequestStatus;
+import com.teama.requestsubsystem.RequestType;
+import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -38,26 +29,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import static com.teama.requestsubsystem.RequestType.*;
-import java.util.HashSet;
-import java.util.Set;
-
 import java.util.*;
 
+import static com.teama.requestsubsystem.RequestType.*;
+
 public class MainScreenSidebarController {
+
     @FXML
     private JFXTextArea directions;
     @FXML
@@ -625,12 +613,11 @@ public class MainScreenSidebarController {
             case INTR:
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
-                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
-                        Integer.parseInt(familySize),
+                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), RequestType.INTR, RequestStatus.ASSIGNED, additionalInfoMessage),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
-                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
                 if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
                     EmailMessage message2 = new EmailMessage();
                     message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());

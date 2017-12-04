@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class InterpreterRequestDB implements ServiceRequestDataSource {
-    private ServiceRequestDataSource generalInfo = GenRequestDBManager.getInstance().getGenericRequestDB();
+    private ServiceRequestDataSource generalInfo = new GeneralRequestDB(Configuration.dbURL, Configuration.generalReqTable);
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
     private String requestTableName;
@@ -48,7 +48,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
                     " CREATE TABLE " + this.requestTableName + " (" +
                             "REQUESTID INTEGER NOT NULL PRIMARY KEY, " +
                             "STAFFID INTEGER NOT NULL, " +
-                            "STATUS STRING NOT NULL, " +
+                            "STATUS VARCHAR(50) NOT NULL, " +
                             "LANG VARCHAR(30) NOT NULL, " +
                             "FAMSIZE INTEGER, " +
                             "SERVICETIME DOUBLE, " +
@@ -57,7 +57,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             //" FOREIGN KEY(STAFFID) REFERENCES INTERPRETER_STAFF(STAFFID)" +
                             //" PRIMARY KEY(REQUESTID) " +
 
-
+            System.out.println(requestTableName);
             stmt.close();
             log.info("Created the Interpreter Request table.");
         } catch (SQLException e) {
@@ -146,7 +146,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             addRequest.setInt(2, staffID);
             addRequest.setString(3, status.toString());
             addRequest.setString(4, request.getRequiredLanguage().toString()); // a request only added to db if assigned to staff member
-            addRequest.setNull(5, Types.INTEGER); // not filled in yet
+            addRequest.setNull(5, Types.DOUBLE); // not filled in yet
             addRequest.setNull(6, Types.VARCHAR);
             addRequest.setNull(7, Types.VARCHAR);
 

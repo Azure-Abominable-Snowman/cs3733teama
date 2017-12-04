@@ -91,10 +91,9 @@ public class ViewStaffController {
 
 
         GenericStaff g = new GenericStaff("William", "Wong", c);
-        InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
-        InterpreterStaff wilson = new InterpreterStaff(g, i);
+        InterpreterStaff wilson = new InterpreterStaff(g, langs, CertificationType.CCHI);
         GenericStaff g2 = new GenericStaff("Joe", "J", c);
-        InterpreterStaff joe = new InterpreterStaff(g2, i2);
+        InterpreterStaff joe = new InterpreterStaff(g2, langs2, CertificationType.CCHI);
         ArrayList<InterpreterStaff> staff = new ArrayList<>();
         staff.add(wilson);
         staff.add(joe);

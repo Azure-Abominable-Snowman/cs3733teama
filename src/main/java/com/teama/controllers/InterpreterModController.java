@@ -134,11 +134,11 @@ public class InterpreterModController implements Controller {
         CertificationType certification = Certifications.getSelectionModel().getSelectedItem();
 
         if(staffToInsert==null){
-            InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, new InterpreterInfo(langs, certification));
+            InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, langs, certification);
             InterpreterSubsystem.getInstance().addStaff(interpreterStaff);
         }
         else{
-            InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, new InterpreterInfo(staffToInsert.getStaffID(), langs, certification));
+            InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo,langs, certification);
             InterpreterSubsystem.getInstance().updateStaff(interpreterStaff);
         }
         editing = true;
@@ -191,7 +191,7 @@ public class InterpreterModController implements Controller {
             LastName.setText(staffToInsert.getLastName());
             Providers.setValue(staffToInsert.getProvider());
             Certifications.setValue(staffToInsert.getCertification());
-            PhoneNo.setText(staffToInsert.getPhone());
+            PhoneNo.setText(staffToInsert.getPhoneNumber());
             Email.setText(staffToInsert.getEmail());
         }
 

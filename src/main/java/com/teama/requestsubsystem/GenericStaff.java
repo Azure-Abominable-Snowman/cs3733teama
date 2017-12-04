@@ -16,15 +16,20 @@ public class GenericStaff implements ServiceStaff { // staff info shared among a
 
 
 
+    public GenericStaff(String firstName, String lastName, ContactInfo c) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = firstName.substring(0).toLowerCase() + lastName.toLowerCase();
+        this.c = c;
+    }
+
     public GenericStaff(String firstName, String lastName, String username, ContactInfo c) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.c = c;
     }
-
     public void add() {
-        //TODO
     }
     public void update() {
         // TODO

@@ -1,5 +1,9 @@
 package com.teama.requestsubsystem;
 
+import com.teama.login.AccessType;
+import com.teama.login.LoginInfo;
+import com.teama.login.LoginSubsystem;
+import com.teama.login.SystemUser;
 import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
@@ -115,7 +119,7 @@ public class GeneralStaffDB implements StaffDataSource{
 
             ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.getFromString(rs.getString("PROVIDER")));
             found = new GenericStaff(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), rs.getString("USERNAME"), c);
-            found.setStaffID(rs.getInt("STAFFID"));
+            found.setStaffID(rs.getInt("STAFFID")); // set the staff ID
             log.info("Found staff member with ID " + rs.getInt("STAFFID"));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,6 +130,12 @@ public class GeneralStaffDB implements StaffDataSource{
             removeStaffReqTable = conn.prepareStatement("DELETE FROM " + staffTable + " WHERE STAFFID = ?");
 
  */
+    private boolean addNewStaffLogin(ServiceStaff s) {
+        LoginInfo defaultLogin = new LoginInfo(s.getUsername(), "defaultPW");
+        SystemUser newStaff = new SystemUser(defaultLogin, AccessType.STAFF, s.getStaffID(), s.getStaffType());
+        return LoginSubsystem.getInstance().addUser(newStaff);
+    }
+
     /**
      * addStaff = conn.prepareStatement("INSERT INTO " + staffTable + " (STAFFTYPE, FIRSTNAME, LASTNAME, PHONENUMBER, EMAIL, PROVIDER, USERNAME) VALUES(?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
      * @param s
@@ -148,13 +158,20 @@ public class GeneralStaffDB implements StaffDataSource{
             if (id.next()) {
 
                 added = rsToStaff(id);
-                if (added != null) {
+                if (added != null && added.getStaffID() != 0) {
                     log.info("Staff member with ID " + added.getStaffID() + " added to Staff Table.");
+                    if (addNewStaffLogin(s)) {
+                        log.info("Login Info successfully added for new user.");
+                    }
                 }
             }
 
         } catch (SQLException e) {
-            log.info("Failed to add Staff Member to Staff Table.");
+            /*
+            if (e.getErrorCode() == -803) {
+                added = getStaff(s)
+            }
+            */
             e.printStackTrace();
         }
         return added;

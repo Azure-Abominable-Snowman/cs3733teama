@@ -20,13 +20,13 @@ public class InterpreterStaff  implements ServiceStaff {
     }
 
     public void add() {
-        //TODO
+        InterpreterSubsystem.getInstance().addStaff(this);
     }
     public void update() {
-        // TODO
+        InterpreterSubsystem.getInstance().updateStaff(this);
     }
     public void remove() {
-        // TODO
+        InterpreterSubsystem.getInstance().removeStaff(this.getStaffID());
     }
 
     public String getFirstName() {

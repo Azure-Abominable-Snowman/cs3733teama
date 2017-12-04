@@ -1,6 +1,8 @@
 package com.teama.login;
 
 
+import com.teama.requestsubsystem.StaffType;
+
 /**
  * Created by aliss on 11/11/2017.
  */
@@ -8,7 +10,8 @@ public class SystemUser {
     // holds the login credentials for an admin/staff user for verification
     private LoginInfo login;
     private AccessType access;
-    private int staffID;
+    private int staffID = 0;
+    private StaffType type = null;
     // private int userID; // may add later
 
     // set to default
@@ -23,9 +26,11 @@ public class SystemUser {
         login = l;
         access = a;
     }
-
-    void setStaffID(int id) {
-        this.staffID = id;
+    public SystemUser(LoginInfo l, AccessType a, int StaffID, StaffType t) {
+        login = l;
+        access = a;
+        staffID = StaffID;
+        type = t;
     }
 
     public String getUsername() {
@@ -55,7 +60,12 @@ public class SystemUser {
     public void setLoginInfo(LoginInfo l) {
         this.login = l;
     }
-
+    public int getStaffID() {
+        return this.staffID;
+    }
+    public StaffType getStaffType() {
+        return this.type;
+    }
     public void setAccess(AccessType a) {
         this.access = a;
     }
