@@ -76,8 +76,6 @@ public class TotalMapCache extends MapCache {
     }
 
 
-    // TODO: do a check in all the gets to prevent case of missing.
-
     @Override
     public MapNode getNode(String id) {
         MapNode result = nodeCash.get(id);
@@ -144,7 +142,13 @@ public class TotalMapCache extends MapCache {
     public void removeNode(String id) {
         dataSource.removeNode(id);
         MapNode oldNode = nodeCash.get(id);
-        floorNode.get(oldNode.getCoordinate().getLevel().toString()).remove(oldNode);
+        ArrayList<MapNode> nodes =  floorNode.get(oldNode.getCoordinate().getLevel().toString());
+        for(int i=0;i<nodes.size();++i)
+        {
+            if(nodes.get(i).getId().equals(oldNode.getId())){
+                nodes.remove(i); break;
+            }
+        }
         nodeIds.remove(id);
         describeToNode.remove(oldNode.getShortDescription());
         longDescribeToNode.remove((oldNode.getLongDescription()));
@@ -194,7 +198,13 @@ public class TotalMapCache extends MapCache {
     {
         if(node == null) return;
         MapNode oldNode = nodeCash.get(node.getId());
-        floorNode.get(oldNode.getCoordinate().getLevel().toString()).remove(oldNode);
+        ArrayList<MapNode> nodes =  floorNode.get(oldNode.getCoordinate().getLevel().toString());
+        for(int i=0;i<nodes.size();++i)
+        {
+            if(nodes.get(i).getId().equals(oldNode.getId())){
+                nodes.remove(i); break;
+            }
+        }
 
         if (! nodeIds.contains(node.getId()))
             nodeIds.add(node.getId());  // add if not already in it.
