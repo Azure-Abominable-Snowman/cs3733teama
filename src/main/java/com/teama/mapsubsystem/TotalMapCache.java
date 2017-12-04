@@ -16,6 +16,7 @@ public class TotalMapCache extends MapCache {
     HashMap<String,MapNode> nodeCash ;
     HashMap<String,MapNode> describeToNode;
     HashMap<String,MapNode> longDescribeToNode;
+
     ArrayList<String> edgeIds;
     HashMap<String,MapEdge> edgeCash ;
 
@@ -35,8 +36,6 @@ public class TotalMapCache extends MapCache {
 
         floorNode = new HashMap<>();
         floorEdge = new HashMap<>();
-
-
         initialCash ();
     }
 
@@ -56,15 +55,18 @@ public class TotalMapCache extends MapCache {
         for (MapNode mapNode : nodeCash.values()) {
             longDescribeToNode.put(mapNode.getLongDescription(),mapNode);
         }
+        for (Floor floor : Floor.values()) {
+            ArrayList<MapNode> list = new ArrayList<>();
+            for (MapNode mapNode : nodeCash.values())
+                if(mapNode.getCoordinate().getLevel().equals(floor)) list.add(mapNode);
+            floorNode.put(floor.toString(),list);
+        } // get the nodes from nodeCash to the pointers whould be the same.
 
         // edge related.
         edgeIds=dataSource.getEdgeIds();
+
         for (String edgeId : edgeIds) {
             edgeCash.put(edgeId,dataSource.getEdge(edgeId));
-        }
-
-        for (Floor floor : Floor.values()) {
-            floorNode.put(floor.toString(),dataSource.getNodesOnFloor(floor.toString()));
         }
 
         for (Floor floor : Floor.values()) {
@@ -100,30 +102,13 @@ public class TotalMapCache extends MapCache {
     }
 
     @Override
-    public void addNode(MapNode node) {
-        dataSource.addNode(node); // first add into dataSource.
-        // adding to cache list. //TODO not done.
-
-    }
-
-    @Override
-    public void removeNode(String id) {
-
-    }
-
-    @Override
-    public void addEdge(MapEdge edge) {
-
-    }
-
-    @Override
-    public void removeEdge(String id) {
-
-    }
-
-    @Override
     public ArrayList<String> getNodeIds() {
         return nodeIds;
+    }
+
+    @Override
+    public ArrayList<MapNode> getNodesOnFloor(String floor) {
+        return floorNode.get(floor); //TODO no check for missed?
     }
 
     @Override
@@ -133,18 +118,57 @@ public class TotalMapCache extends MapCache {
 
     @Override
     public MapEdge getEdge(String id) {
-        return edgeCash.get(id);
-    }
-
-    @Override
-    public ArrayList<MapNode> getNodesOnFloor(String floor) {
-        return floorNode.get(floor);
+        MapEdge temp = edgeCash.get(id);
+        if(temp == null) {
+            temp= dataSource.getEdge(id);
+            addmissedEdge(temp);
+        }
+        return temp;
     }
 
     @Override
     public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
-        return floorEdge.get(floor);
+        return floorEdge.get(floor); //TODO no check for missed ? also now to renew the list?
+        // TODO slow at add and remove solution now.
     }
+
+
+
+    @Override
+    public void addNode(MapNode node) {
+        dataSource.addNode(node); // first add into dataSource.
+        addmissedNode(node);
+    }
+
+    @Override
+    public void removeNode(String id) {
+        dataSource.removeNode(id);
+        MapNode oldNode = nodeCash.get(id);
+        floorNode.get(oldNode.getCoordinate().getLevel().toString()).remove(oldNode);
+        nodeIds.remove(id);
+        describeToNode.remove(oldNode.getShortDescription());
+        longDescribeToNode.remove((oldNode.getLongDescription()));
+        nodeCash.remove(id);
+
+    }
+    // why intellij always say no change deleted?
+
+    @Override
+    public void addEdge(MapEdge edge) {
+        dataSource.addEdge(edge);
+        addmissedEdge(edge);
+
+    }
+
+    @Override
+    public void removeEdge(String id) {
+        dataSource.removeEdge(id);
+        edgeIds.remove(id);
+       // MapEdge oldEdge = edgeCash.get(id);
+        // TODO also how to remove it from the floor cache? super stupid way now.
+        updateFloorEdges();
+    }
+
 
     @Override
     public void close() {
@@ -168,16 +192,21 @@ public class TotalMapCache extends MapCache {
      */
     private void addmissedNode(MapNode node)
     {
-        //TODO poplate this, maybe add node can reuse this.
-        if (nodeIds.contains(node.getId()))
-            nodeIds.add(node.getId());
-        nodeCash.put(node.getId(), node); // over write or put new one.
+        if(node == null) return;
+        MapNode oldNode = nodeCash.get(node.getId());
+        floorNode.get(oldNode.getCoordinate().getLevel().toString()).remove(oldNode);
 
+        if (! nodeIds.contains(node.getId()))
+            nodeIds.add(node.getId());  // add if not already in it.
         describeToNode.remove(node.getId()); // first remove the old one, then put in the new
         describeToNode.put(node.getShortDescription(), node);
+        longDescribeToNode.remove(node.getId());
+        longDescribeToNode.put(node.getLongDescription(),node );
 
-        // TODO long describ
-        // TODO floor this need to come very first. 
+        nodeCash.put(node.getId(), node); // over write or put new one.
+        floorNode.get(node.getCoordinate().getLevel().toString()).add(nodeCash.get(node.getId()));
+        // add from cache to ensure same pointer.
+
     }
 
     /**
@@ -186,7 +215,19 @@ public class TotalMapCache extends MapCache {
      */
     private void addmissedEdge(MapEdge edge)
     {
-        //TODO poplate this, maybe add edge can reuse this.
+        if(edge== null) return;
+        edgeCash.put(edge.getId(),edge);
+        if( ! edgeIds.contains(edge.getId())) edgeIds.add(edge.getId());
+        // TODO put it into the floor edges. now is just doing it the stupied way.
+        updateFloorEdges();
+    }
+
+    private void updateFloorEdges ()
+    {
+        floorEdge = new HashMap<>();
+        for (Floor floor : Floor.values()) {
+            floorEdge.put(floor.toString(),dataSource.getEdgesOnFloor(floor.toString()));
+        }
     }
 
 }
