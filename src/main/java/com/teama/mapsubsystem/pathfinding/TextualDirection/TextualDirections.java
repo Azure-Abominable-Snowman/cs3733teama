@@ -114,8 +114,7 @@ public class TextualDirections implements DirectionsGenerator {
             discription = String.format("%s", bundle.getString("straightline")); //haven't added distance yet
         }
         else{ // actually turning.
-            discription=String.format("%s %s", bundle.getString("turning"),
-                    discription); //haven't put distance in yet
+            discription=String.format("%s %s", discription, bundle.getString("turning")); //haven't put distance in yet
         }
 
         if(routeLink.isEndFlag()) {
