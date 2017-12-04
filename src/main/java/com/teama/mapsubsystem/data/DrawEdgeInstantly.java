@@ -1,6 +1,6 @@
 package com.teama.mapsubsystem.data;
 
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import javafx.scene.paint.Color;
 
 public class DrawEdgeInstantly extends DrawEdge {

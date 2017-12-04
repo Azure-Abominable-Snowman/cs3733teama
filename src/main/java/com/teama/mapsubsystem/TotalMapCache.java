@@ -69,9 +69,9 @@ public class TotalMapCache extends MapCache {
             edgeCash.put(edgeId,dataSource.getEdge(edgeId));
         }
 
-        for (Floor floor : Floor.values()) {
+        /*for (Floor floor : Floor.values()) {
             floorEdge.put(floor.toString(),dataSource.getEdgesOnFloor(floor.toString()));
-        }
+        }*/
 
     }
 
@@ -124,11 +124,11 @@ public class TotalMapCache extends MapCache {
         return temp;
     }
 
-    @Override
+   /* @Override
     public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
         return floorEdge.get(floor); //TODO no check for missed ? also now to renew the list?
         // TODO slow at add and remove solution now.
-    }
+    }*/
 
 
 
@@ -170,8 +170,9 @@ public class TotalMapCache extends MapCache {
         edgeIds.remove(id);
        // MapEdge oldEdge = edgeCash.get(id);
         // TODO also how to remove it from the floor cache? super stupid way now.
-        edgeCash.remove(id);
         updateFloorEdges();
+        edgeCash.remove(id);
+        //updateFloorEdges();
     }
 
 
@@ -238,8 +239,16 @@ public class TotalMapCache extends MapCache {
     private void updateFloorEdges ()
     {
         floorEdge = new HashMap<>();
-        for (Floor floor : Floor.values()) {
+        /*for (Floor floor : Floor.values()) {
             floorEdge.put(floor.toString(),dataSource.getEdgesOnFloor(floor.toString()));
+        }*/
+        for(Floor floor : Floor.values()) {
+            ArrayList<MapNode> nodeArray = floorNode.get(floor.toString());
+            ArrayList<MapEdge> edgeArray = new ArrayList<>();
+            for(MapNode n : nodeArray) {
+                edgeArray.addAll(n.getEdges());
+            }
+            floorEdge.put(floor.toString(), edgeArray);
         }
     }
 
