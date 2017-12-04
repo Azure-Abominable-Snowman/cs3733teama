@@ -97,8 +97,7 @@ public class TotalMapCacheTest {
 
     @Test
     public void removeNode() throws Exception {
-
-        MapNode testNode = testCache.getNode("FINFO00101"); // grab it from somewhere
+        MapNode testNode = testCache.getNode("FINFO00101");
 
         testCache.removeNode(testNode.getId());
         assertNull(testNode.getShortDescription(), testCache.getNode(testNode.getId()).getShortDescription());
