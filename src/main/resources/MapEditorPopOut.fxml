@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
@@ -27,7 +28,7 @@
                   <Font size="19.0" />
                </font>
             </Label>
-            <JFXTabPane prefHeight="361.0" prefWidth="602.0">
+            <JFXTabPane prefHeight="361.0" prefWidth="602.0" stylesheets="@css/MapEditorStyle.css">
                <tabs>
                   <Tab fx:id="nodeEditorTab" text="Node Editor">
                      <content>
@@ -86,7 +87,7 @@
                                        <children>
                                           <VBox prefHeight="292.0" prefWidth="388.0">
                                              <children>
-                                                <JFXTextField fx:id="nodeID" alignment="CENTER" prefHeight="34.0" prefWidth="328.0" promptText="Type Long Name here" text="Node ID">
+                                                <JFXTextField fx:id="nodeID" prefHeight="34.0" prefWidth="328.0" promptText="Type Long Name here" text="Node ID">
                                                    <VBox.margin>
                                                       <Insets bottom="8.0" left="40.0" right="40.0" />
                                                    </VBox.margin>
@@ -328,6 +329,11 @@
                      </content>
                   </Tab>
                </tabs>
+               <styleClass>
+                  <String fx:value="jfx-tab-pane" />
+                  <String fx:value="tab-header-background" />
+                  <String fx:value="tab-selected-line" />
+               </styleClass>
             </JFXTabPane>
          </children>
       </VBox>
