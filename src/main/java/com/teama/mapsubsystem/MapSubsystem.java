@@ -43,7 +43,7 @@ public class MapSubsystem {
         //TODO: Automatically detect to see if we need to populate the database with the CSV files
         csvSource = new CSVDatabaseSource(nList, eList, null, null); // Don't specify output files
         javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
-        //javaDBSource = new TotalMapCache(javaDBSource);
+        javaDBSource = new TotalMapCache(javaDBSource);
 
         pathGenerator = new PathGenerator(new AStar());
 

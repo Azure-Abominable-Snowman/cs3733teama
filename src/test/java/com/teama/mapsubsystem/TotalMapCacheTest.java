@@ -1,9 +1,6 @@
 package com.teama.mapsubsystem;
 
-import com.teama.Configuration;
-import com.teama.drawing.MapDisplay;
 import com.teama.mapsubsystem.data.*;
-import com.teama.mapsubsystem.pathfinding.PathGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -169,13 +166,13 @@ public class TotalMapCacheTest {
 
     }
 
-    @Test
+   /* @Test
     public void getEdgesOnFloor() throws Exception {
         //check edges on Cafe Stairs AHALL00201_ASTAI00101
         assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdgesOnFloor("1").get(1)));
         assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdge("ASTAI00101_ASTAI00102")));
         //check fake edge
         assertFalse(testCache.getEdgesOnFloor("1").contains(testCache.getEdge("FAKE_EDGE")));
-    }
+    }*/
 
 }

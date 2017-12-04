@@ -420,7 +420,7 @@ public class JavaDatabaseSource implements MapDataSource {
         return null;
     }
 
-    @Override
+    /*@Override
     public ArrayList<MapEdge> getEdgesOnFloor(String floor) {
         ArrayList<MapEdge> edges = new ArrayList<>();
         try {
@@ -437,7 +437,7 @@ public class JavaDatabaseSource implements MapDataSource {
             sqlExcept.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     @Override
     public MapNode getNode(String description, boolean longDescription) {
