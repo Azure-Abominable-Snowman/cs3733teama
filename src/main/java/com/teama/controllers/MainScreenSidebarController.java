@@ -736,7 +736,7 @@ public class MainScreenSidebarController extends PopOutController {
         return message = new Message("Interpreter Help", additionalInfoMessage);
     }
 
-    /*
+        /*
     @FXML
     public void showStaffPopUp(ActionEvent event) {
 
