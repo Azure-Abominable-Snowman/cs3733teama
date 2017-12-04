@@ -6,8 +6,10 @@ public class Direction {
     private double lengthOfPath;
     private Location start, end;
     private String description;
+    private TurnType turn;
 
-    public Direction(double length, Location start, Location end, String description) {
+    public Direction(double length, Location start, Location end, String description , TurnType turn) {
+
         this.lengthOfPath = length;
         this.start = start;
         this.end = end;
@@ -28,5 +30,9 @@ public class Direction {
 
     public String getDescription() {
         return description;
+    }
+
+    public TurnType getTurn() {
+        return turn;
     }
 }

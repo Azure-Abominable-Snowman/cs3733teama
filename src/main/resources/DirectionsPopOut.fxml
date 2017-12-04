@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -11,5 +12,6 @@
             <Image url="@triangle.png" />
          </image>
       </ImageView>
+      <JFXTextArea fx:id="textDirections" layoutX="11.0" layoutY="14.0" prefHeight="404.0" prefWidth="330.0" />
    </children>
 </Pane>

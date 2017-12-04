@@ -12,10 +12,7 @@ import com.teama.mapsubsystem.pathfinding.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
-import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
-import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequestInfo;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.*;
@@ -236,7 +233,7 @@ public class MainScreenSidebarController extends PopOutController {
 
         //STAFF STUFF
         btnAdd.setVisible(false);
-        initInterpColumns();
+       // initInterpColumns();
 
         //MAP EDITOR
         /*
@@ -497,8 +494,8 @@ public class MainScreenSidebarController extends PopOutController {
     }
 
     //Staff screen start
-
-    @FXML
+    //START OF STAFF STUFF
+   /* @FXML
     private void onAddStaff(ActionEvent event){
         popUpInterpInfo(null);
     }
@@ -572,6 +569,7 @@ public class MainScreenSidebarController extends PopOutController {
         }
         InterpInfoTable.setItems(tableVals);
     }
+    //END OF INTERPRETER STUFF */
     //TODO update the method to get all the interpreters from the DB
     private ArrayList<InterpreterStaff> getInterpreterStaff(){
         return InterpreterSubsystem.getInstance().getAllStaff();
@@ -647,20 +645,20 @@ public class MainScreenSidebarController extends PopOutController {
                     alert.showAndWait();
                 }
 
-                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
-                        Integer.parseInt(familySize),
-                        lang);
+                //curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
+                //        Integer.parseInt(familySize),
+                //        lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
 
                 class MyThread implements Runnable {
 
                     public void run(){
-                        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
-                        if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
-                            EmailMessage message2 = new EmailMessage();
-                            message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
-                        }
+                       // SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                       // if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
+                       //     EmailMessage message2 = new EmailMessage();
+                       //     message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
+                       // }
                     }
                 }
 
@@ -727,7 +725,7 @@ public class MainScreenSidebarController extends PopOutController {
     public Message createEmailMessage(){
         return message = new Message("Interpreter Help", additionalInfoMessage);
     }
-
+/*
     @FXML
     public void showStaffPopUp(ActionEvent event) {
 
@@ -757,7 +755,7 @@ public class MainScreenSidebarController extends PopOutController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
     //END REQEUST STUFF
     public HBox getHbxRoot(){return hbxRoot;}
 

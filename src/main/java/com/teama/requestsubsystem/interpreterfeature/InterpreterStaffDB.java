@@ -1,9 +1,9 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
-import com.teama.messages.ContactInfo;
-import com.teama.messages.ContactInfoTypes;
-import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.GeneralStaffDB;
+import com.teama.requestsubsystem.ServiceStaff;
+import com.teama.requestsubsystem.StaffDataSource;
+import com.teama.requestsubsystem.StaffType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,20 +14,21 @@ import java.util.logging.Logger;
  * Created by aliss on 11/21/2017.
  */
 
-public class InterpreterStaffDB implements InterpreterStaffInfoSource {
+public class InterpreterStaffDB implements StaffDataSource {
+    private StaffDataSource generalStaffDB;
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
-    private String dbURL, staffTable;
-    private String staffTableLanguages;
+    private String dbURL;
+    private String interpStaffTable;
     private Connection conn = null;
     private Statement stmt = null;
-    PreparedStatement addStaff, removeStaffTable, updateStaffTable, getStaff, getQualifiedStaff, getQualifiedStaffInfo, getAllStaff;
-    PreparedStatement addStaffLangTable, updateStaffLangTable, getQualifiedStaffLangs, removeStaffLangTable;
+    private PreparedStatement addStaff, removeStaff, updateStaffTable, getStaff, getQualifiedStaff, getAllStaff;
+    //PreparedStatement addStaffLangTable, updateStaffLangTable, getQualifiedStaffLangs, removeStaffLangTable;
 
-    public InterpreterStaffDB(String dbURL, String staffTableName, String languageTableName) {
+    public InterpreterStaffDB(String dbURL, String generalStaffTableName, String staffTableName) {
         this.dbURL = dbURL;
-        this.staffTable = staffTableName;
-        this.staffTableLanguages = languageTableName;
-
+        this.interpStaffTable = staffTableName;
+        generalStaffDB = new GeneralStaffDB(dbURL, generalStaffTableName);
+        //this.generalStaffTable = generalStaffTable;
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             // Get a connection
@@ -36,51 +37,32 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             except.printStackTrace();
         }
 
-        // Creates the staff table if it isn't there already; link to request table by staffID
-        try {
-            stmt = conn.createStatement();
-            stmt.execute(
-                    " CREATE TABLE " + staffTable + " (" +
-                            "STAFFID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
-                            "FIRSTNAME VARCHAR(50) NOT NULL, " +
-                            "LASTNAME VARCHAR(50) NOT NULL, " +
-                            "PHONENUMBER VARCHAR(30) NOT NULL, " +
-                            "EMAIL VARCHAR(100) NOT NULL, " +
-                            "PROVIDER VARCHAR(100) NOT NULL, " +
-                            "CERTIFICATION VARCHAR(30) NOT NULL " +
-                            //"ONDUTY VARCHAR(20) NOT NULL " +
-                            ")"
-            );
-            log.info("Staff table created.");
-            stmt.close();
-        } catch (SQLException sqlExcept) {
-            //log.info("Does the staff info database or language relation table already exist?");
-            sqlExcept.printStackTrace();
-        }
-        // Create the language->staff table as well
+
+        // Create the InterpreterStaff table as well
         // This table is always named <staffTable>_LANGUAGE
         try {
             stmt = conn.createStatement();
-            System.out.println(staffTableLanguages + " about to be created.");
+            System.out.println(interpStaffTable + " about to be created.");
             stmt.execute(
-                    " CREATE TABLE " + staffTableLanguages + " (" +
+                    " CREATE TABLE " + interpStaffTable + " (" +
                             "STAFFID INTEGER NOT NULL, " +
                             "LANGUAGE VARCHAR(50) NOT NULL, " +
-                            "FOREIGN KEY (STAFFID) REFERENCES " + staffTable + " (STAFFID), " +
+                            "CERTIFICATION VARCHAR(100) NOT NULL, " +
+                            "FOREIGN KEY (STAFFID) REFERENCES " + generalStaffTableName + " (STAFFID), " +
                             "PRIMARY KEY (STAFFID,LANGUAGE)" +
                             ")"
             );
-            log.info("Language table created.");
+            log.info("InterpreterStaff table created.");
             stmt.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+/*
         DatabaseMetaData meta = null;
         try {
             meta = conn.getMetaData();
-            ResultSet res = meta.getTables(null, null, staffTableLanguages,
+            ResultSet res = meta.getTables(null, null, interpStaffTable,
                     new String[] {"TABLE"});
             while (res.next()) {
                 System.out.println(
@@ -94,32 +76,109 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             e.printStackTrace();
         }
 
-
+*/
 
         try {
-            addStaff = conn.prepareStatement("INSERT INTO " + staffTable + " (FIRSTNAME, LASTNAME, PHONENUMBER, EMAIL, PROVIDER, CERTIFICATION) VALUES(?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            getStaff = conn.prepareStatement("SELECT * FROM " + staffTable + " WHERE STAFFID = ?");
-            getAllStaff = conn.prepareStatement("SELECT * FROM " + staffTable);
-            /*
-            getQualifiedStaff = conn.prepareStatement("SELECT * FROM " + staffTable + " AS T1, " +
-                    staffTableLanguages + " AS T2 WHERE T1.STAFFID = T2.STAFFID AND T2.LANGUAGE = ?");
-                    */
-            getQualifiedStaff = conn.prepareStatement("SELECT STAFFID FROM " + staffTableLanguages + " WHERE LANGUAGE = ?");
-            getQualifiedStaffInfo = conn.prepareStatement("SELECT * FROM " + staffTable + " WHERE STAFFID = ?");
-            getQualifiedStaffLangs = conn.prepareStatement("SELECT * FROM " + staffTableLanguages + " WHERE STAFFID = ?");
-            //getContactInfo = conn.prepareStatement("SELECT ? FROM " + staffTable + " WHERE STAFFID = ?");
-            removeStaffTable = conn.prepareStatement("DELETE FROM " + staffTable + " WHERE STAFFID = ?");
-            updateStaffTable = conn.prepareStatement("UPDATE " + staffTable + " SET FIRSTNAME = ?, LASTNAME = ?, PHONENUMBER = ?, EMAIL = ?, PROVIDER = ?, CERTIFICATION = ? WHERE STAFFID = ?");
-            addStaffLangTable = conn.prepareStatement("INSERT INTO " + staffTableLanguages + " VALUES(?, ?)");
-            updateStaffLangTable = conn.prepareStatement("UPDATE " + staffTableLanguages + " SET LANGUAGE = ? WHERE STAFFID = ?");
-            removeStaffLangTable = conn.prepareStatement("DELETE FROM " + staffTableLanguages + " WHERE STAFFID = ?");
+            addStaff = conn.prepareStatement("INSERT INTO " + interpStaffTable + "  (STAFFID, LANGUAGE, CERTIFICATION) VALUES(?, ?, ?)");
+            getStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE STAFFID = ?");
+            getAllStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE STAFFID = ?");
+            getQualifiedStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE LANGUAGE = ?");
+            removeStaff = conn.prepareStatement("DELETE FROM " + interpStaffTable + " WHERE STAFFID = ?");
+            updateStaffTable = conn.prepareStatement("UPDATE " + interpStaffTable + " SET LANGUAGE = ?, CERTIFICATION = ? WHERE STAFFID = ?");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public ServiceStaff addStaff(ServiceStaff s) {
+        return generalStaffDB.addStaff(s);
+    }
 
+    @Override
+    public boolean updateStaff(ServiceStaff s) {
+        return generalStaffDB.updateStaff(s);
+    }
+
+    /** Removes staff from the interpreter staff DB and from the generic staff DB
+     * removeStaff = conn.prepareStatement("DELETE FROM " + interpStaffTable + " WHERE STAFFID = ?");
+
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean deleteStaff(int id) {
+        //DELETE FROM THIS TABLE FIRST, THEN FROM GENERAL TABLE (FK CONSTRAINS)
+        try {
+            removeStaff.setInt(1, id);
+            removeStaff.executeUpdate();
+            log.info("Removed all interpreter information related to InterpreterStaff " + id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            log.info("Failed to remove specific staff member.");
+            return false;
+        }
+        if (generalStaffDB.deleteStaff(id)) {
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public ArrayList<ServiceStaff> getStaffByType(StaffType t) {
+        return generalStaffDB.getStaffByType(t);
+    }
+    @Override
+    public ArrayList<ServiceStaff> getAllStaff() {
+        return generalStaffDB.getAllStaff();
+    }
+    @Override
+    public ServiceStaff getStaff(int staffID) {
+        return generalStaffDB.getStaff(staffID);
+    }
+
+    /**
+     * getStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE STAFFID = ?");
+
+     * @param staffID
+     * @return
+     */
+    public InterpreterStaff getInterpreterStaff(int staffID) {
+        ServiceStaff general = generalStaffDB.getStaff(staffID);
+        InterpreterStaff gotten = null;
+        if (general != null) {
+            try {
+                getStaff.setInt(1, staffID);
+                ResultSet found = getStaff.executeQuery();
+                Set<Language> langs = new HashSet<>();
+                CertificationType cert = null;
+                while (found.next()) {
+                    Language spoken = Language.getLanguage(found.getString("LANGUAGE"));
+                    langs.add(spoken);
+                    if (cert == null) {
+                        cert = CertificationType.getCertificationType(found.getString("CERTIFICATION"));
+                    }
+                }
+                InterpreterStaff interp = new InterpreterStaff(general, langs, cert);
+                if (interp != null && interp.getStaffID() != 0 && !langs.isEmpty()) {
+                    gotten = interp;
+                    log.info("Successfully found interpreter with ID " + staffID);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                log.info("Problem getting Interpreter staff with ID " + staffID);
+            }
+        }
+        return gotten;
+    }
+
+    /**
+     * Returns a list of InterpreterStaff based on input Language
+     * getQualifiedStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE LANGUAGE = ?");
+
+     * @param lang
+     * @return
+     */
     // filter based on language for now
     public ArrayList<InterpreterStaff> findQualified(Language lang) {
         ArrayList<InterpreterStaff> foundStaff = new ArrayList<InterpreterStaff>();
@@ -130,27 +189,15 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
             while (rs.next()) {
                 InterpreterStaff found = null;
                 int staffID = rs.getInt("STAFFID");
-                getQualifiedStaffInfo.setInt(1, staffID); // get the rest of the info about the staff member
-                ResultSet info = getQualifiedStaffInfo.executeQuery();
-                if (info.next()) {
-                    Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
-                    avail.add(ContactInfoTypes.EMAIL);
-                    avail.add(ContactInfoTypes.TEXT);
-                    avail.add(ContactInfoTypes.PHONE);
-                    Set<Language> langs = new HashSet<>();
-                    getQualifiedStaffLangs.setInt(1, staffID);
-                    ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
-                    while (rsLangs.next()) {
-                        langs.add(Language.getLanguage(rsLangs.getString("LANGUAGE")));
-                        log.info("Found a language " + rsLangs.getString("LANGUAGE"));
-                    }
-                    ContactInfo c = new ContactInfo(avail, info.getString("PHONENUMBER"), info.getString("EMAIL"), Provider.getFromString(info.getString("PROVIDER")));
-                    found = new InterpreterStaff(new GenericStaffInfo(info.getString("FIRSTNAME"), info.getString("LASTNAME"), c),
-                            new InterpreterInfo(info.getInt("STAFFID"), langs, CertificationType.getCertificationType(info.getString("CERTIFICATION"))));
-                    log.info("Found qualified staff member");
-                    foundStaff.add(found);
+                InterpreterStaff allInfo = getInterpreterStaff(staffID);
+                if (allInfo != null) {
+                    foundStaff.add(allInfo);
+                    log.info("Found qualified Interpreter that speaks " + lang.toString());
                 }
-
+                else {
+                    log.info("Problem finding qualified Interpreter. Exiting.");
+                    return null;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,241 +205,106 @@ public class InterpreterStaffDB implements InterpreterStaffInfoSource {
         return foundStaff;
     }
 
-    /*
-    addStaff = conn.prepareStatement("INSERT INTO " + staffTable + " VALUES(?, ?, ?, ?, ?, ?, ?)");
-    addStaffLangTable = conn.prepareStatement("INSERT INTO " + staffTableLanguages + " VALUES(?) WHERE STAFFID = ?");
-     " CREATE TABLE " + staffTable + " (" +
-                            "STAFFID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," +
-                            "FIRSTNAME VARCHAR(50) NOT NULL, " +
-                            "LASTNAME VARCHAR(50) NOT NULL, " +
-                            "PHONENUMBER VARCHAR(30) NOT NULL, " +
-                            "EMAIL VARCHAR(100) NOT NULL, " +
-                            "PROVIDER VARCHAR(100) NOT NULL, " +
-                            "CERTIFICATION VARCHAR(30) NOT NULL, " +
-                            "ONDUTY VARCHAR(20) NOT NULL " +
-                            ")"
-            );
-            " CREATE TABLE " + staffTableLanguages + " (" +
-                            "STAFFID INTEGER NOT NULL," +
-                            "LANGUAGE VARCHAR(50) NOT NULL " +
-                            "FOREIGN KEY(STAFFID) REFERENCES " + staffTable +
-                            ")
+
+    /** Adds an interpreter staff to the InterpreterStaff DB
+     * addStaff = conn.prepareStatement("INSERT INTO " + interpStaffTable + "  (STAFFID, LANGUAGE, CERTIFICATION) VALUES(?, ?, ?)");
+
+     * @param s
+     * @return
      */
-
     public boolean addStaff(InterpreterStaff s) {
-        try {
-            addStaff.setString(1, s.getFirstName());
-            addStaff.setString(2, s.getLastName());
-            addStaff.setString(3, s.getPhone());
-            addStaff.setString(4, s.getEmail());
-            addStaff.setString(5, s.getProvider().toString());
-            addStaff.setString(6, s.getCertification().toString());
-            //addStaff.setString(7, s.); //TODO: CHANGE THIS IF WE ACTUALLY IMPLEMENT WORK HOURS, OR DELETE
-            addStaff.executeUpdate();
-
-            // add to Language Table
-            ResultSet rs = addStaff.getGeneratedKeys();
-            if (rs.next()) {
-                int ID = rs.getInt(1);
-                Set<Language> langs = s.getLanguages();
-                for (Language l: langs) { // add each spoken language to the Language table
-                    addStaffLangTable.setInt(1, ID);
-                    addStaffLangTable.setString(2, l.toString());
-                    log.info("Added " + l.toString());
-                    addStaffLangTable.executeUpdate();
+        ServiceStaff genInfo = generalStaffDB.addStaff(s); // add general info first
+        if (genInfo != null) {
+            try {
+                addStaff.setInt(1, genInfo.getStaffID());
+                //addStaff.setString(2, );
+                addStaff.setString(3, s.getCertification().toString());
+                for (Language l: s.getLanguages()) {
+                    addStaff.setString(2, l.toString());
+                    addStaff.executeUpdate();
                 }
-                log.info("All languages spoken by staff member added to the Interpreter Language table successfully.");
+                log.info("All languages spoken by staff member added to the Interpreter Table successfully.");
                 log.info("Staff member added successfully to Interpreter Table.");
 
+                //addStaff.setString(7, s.); //TODO: CHANGE THIS IF WE ACTUALLY IMPLEMENT WORK HOURS, OR DELETE
                 return true;
+            } catch (SQLException e) {
+                log.info("Failed to add Staff Member to Interpreter Table.");
+                e.printStackTrace();
+                return false;
             }
-
-            else {
-                log.info("Not possible for an interpreter to have 0 languages. Check something.");
-                return false; // what kind of interpreter speaks no languages?
-            }
-        } catch (SQLException e) {
-            log.info("Failed to add Staff Member to Interpreter Table.");
-            e.printStackTrace();
-            return false;
         }
+        log.info("Problem with adding the InterpreterStaff to the General Staff DB. General Staff Info is NULL.");
+        return false;
     }
-/*
-           updateStaffTable = conn.prepareStatement("UPDATE " + staffTable + " SET FIRSTNAME = ?, LASTNAME = ?, PHONENUMBER = ?, EMAIL = ?, PROVIDER = ?" +
-                    " CERTIFICATION = ?, WHERE STAFFID = ?");
-            updateStaffLangTable = conn.prepareStatement("UPDATE " + staffTableLanguages + " SET LANGUAGE = ? WHERE STAFFID = ?");
 
- */
-    public ArrayList<InterpreterStaff> getAllStaff() {
-        ArrayList<InterpreterStaff> allStaff = new ArrayList<>();
-        try {
-            ResultSet all = getAllStaff.executeQuery();
-            while (all.next()) {
-                InterpreterStaff gottenStaff = rsToStaff(all);
-                if (gottenStaff != null) {
-                    allStaff.add(gottenStaff);
+    /**
+     * returns all the Interpreters in the table
+     * @return
+     */
+    public ArrayList<InterpreterStaff> getAllInterpreterStaff() {
+        ArrayList<ServiceStaff> allStaff = generalStaffDB.getStaffByType(StaffType.INTERPRETER);
+        ArrayList<InterpreterStaff> allInterps = new ArrayList<>();
+        for (ServiceStaff s: allStaff) {
+            if (s != null) {
+                InterpreterStaff found = getInterpreterStaff(s.getStaffID());
+                if (found != null) {
+                    allInterps.add(found);
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return allStaff;
+        return allInterps;
     }
+
+    /**
+     * updateStaffTable = conn.prepareStatement("UPDATE " + interpStaffTable + " SET LANGUAGE = ?, CERTIFICATION = ? WHERE STAFFID = ?");
+     removeStaff = conn.prepareStatement("DELETE FROM " + interpStaffTable + " WHERE STAFFID = ?");
+
+     * @param s
+     * @return
+     */
     public boolean updateStaff(InterpreterStaff s) {
-         try {
-            updateStaffTable.setString(1, s.getFirstName());
-            updateStaffTable.setString(2, s.getLastName());
-            updateStaffTable.setString(3, s.getPhone());
-            updateStaffTable.setString(4, s.getEmail());
-            updateStaffTable.setString(5, s.getProvider().toString());
-            updateStaffTable.setString(6, s.getCertification().toString());
-            updateStaffTable.setInt(7, s.getStaffID());
-            updateStaffTable.executeUpdate();
-            log.info("Staff member successfully updated.");
-             try {
-                 removeStaffLangTable.setInt(1, s.getStaffID()); // first remove all languages, then re-add
-                 System.out.println(s.getStaffID());
-                 removeStaffLangTable.executeUpdate();
-                 log.info("Executed delete languages");
-                 getQualifiedStaffLangs.setInt(1, s.getStaffID());
-                 ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
-                 while (rsLangs.next()) {
-                     log.info("Should have deleted, but Found a language " + rsLangs.getString("LANGUAGE"));
-                 }
-             }
-             catch (SQLException e) {
-                 log.info("Failed to clear existing languages...");
-                 e.printStackTrace();
-             }
-
-            // add to Language Table
-            Set<Language> langs = s.getLanguages();
-            for (Language l: langs) {
-
-                try {
-                    addStaffLangTable.setInt(1, s.getStaffID());
-                    addStaffLangTable.setString(2, l.toString());
-                    addStaffLangTable.executeUpdate();
-                    log.info("Added language " + l.toString());
-                    getQualifiedStaffLangs.setInt(1, s.getStaffID());
-                    ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
-                    while (rsLangs.next()) {
-                        log.info("After re-adding, Found a language " + rsLangs.getString("LANGUAGE"));
-                    }
+        if (generalStaffDB.updateStaff(s)) {
+            try {
+                // FIRST REMOVE THE CURRENT ENTRIES
+                removeStaff.setInt(1, s.getStaffID());
+                removeStaff.executeUpdate();
+                log.info("Deleted all current Language entries for udpate.");
+                addStaff.setString(3, s.getCertification().toString());
+                addStaff.setInt(1, s.getStaffID());
+                for (Language l : s.getLanguages()) {
+                    addStaff.setString(2, l.toString());
+                    addStaff.executeUpdate();
                 }
-                catch (SQLException e) {
-                    log.info("Failed to update staff member Language Table.");
+
+                log.info("Interpreter with ID " + s.getStaffID() + " successfully updated.");
+                return true;
+            } catch (SQLException e) {
+                    log.info("Failed to update Interpreter Staff with id " + s.getStaffID());
                     e.printStackTrace();
-                    return false;
-                }
             }
-            return true;
-
-
-        } catch (SQLException e) {
-            log.info("Failed to update staff member General Interpreter info.");
-            e.printStackTrace();
-            return false;
         }
+        return false;
     }
     /*
                getStaff = conn.prepareStatement("SELECT T1.*, T2.* FROM " + staffTable + " AS T1, " +
-                    staffTableLanguages + " AS T2 WHERE T1.STAFFID = ? AND T1.STAFFID = T2.STAFFID");
+                    interpStaffTable + " AS T2 WHERE T1.STAFFID = ? AND T1.STAFFID = T2.STAFFID");
 
      */
-    private InterpreterStaff rsToStaff(ResultSet rs) {
-        InterpreterStaff found = null;
 
-        try {
-            Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
-            avail.add(ContactInfoTypes.EMAIL);
-            avail.add(ContactInfoTypes.TEXT);
-            avail.add(ContactInfoTypes.PHONE);
-            Set<Language> langs = new HashSet<>();
-            getQualifiedStaffLangs.setInt(1, rs.getInt("STAFFID"));
-            ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
-            while (rsLangs.next()) {
-                langs.add(Language.getLanguage(rsLangs.getString("LANGUAGE")));
-                log.info("Found a language " + rsLangs.getString("LANGUAGE"));
 
-            }
-            ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.getFromString(rs.getString("PROVIDER")));
-            found = new InterpreterStaff(new GenericStaffInfo(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
-                    new InterpreterInfo(rs.getInt("STAFFID"), langs, CertificationType.valueOf(rs.getString("CERTIFICATION"))));
-
-            log.info("Found staff member with ID " + rs.getInt("STAFFID"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return found;
-    }
-    // finds staff by ID
-    public InterpreterStaff getStaff(int id) {
-        InterpreterStaff found = null;
-        try {
-            getStaff.setInt(1, id);
-            ResultSet rs = getStaff.executeQuery();
-            if (rs.next()) {
-                found = rsToStaff(rs);
-                /*
-                for (Language l: found.getLanguages()) {
-                    System.out.print(l.toString());
-                }
-                */
-                /*
-                Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
-                avail.add(ContactInfoTypes.EMAIL);
-                avail.add(ContactInfoTypes.TEXT);
-                avail.add(ContactInfoTypes.PHONE);
-                Set<Language> langs = new HashSet<>();
-                getQualifiedStaffLangs.setInt(1, rs.getInt("STAFFID"));
-                ResultSet rsLangs = getQualifiedStaffLangs.executeQuery();
-                while (rsLangs.next()) {
-                    langs.add(Language.getLanguage(rsLangs.getString("LANGUAGE")));
-                }
-                ContactInfo c = new ContactInfo(avail, rs.getString("PHONENUMBER"), rs.getString("EMAIL"), Provider.valueOf(rs.getString("PROVIDER")));
-                found = new InterpreterStaff(new GenericStaffInfo(rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), c),
-                        new InterpreterInfo(rs.getInt("STAFFID"), langs, CertificationType.valueOf(rs.getString("CERTIFICATION"))));
-                log.info("Found staff member with ID " + rs.getInt("STAFFID"));
-                // perform another query to find contact info types
-                */
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        }
-        return found;
-
-    }
 /*
             removeStaffReqTable = conn.prepareStatement("DELETE FROM " + staffTable + " WHERE STAFFID = ?");
 
  */
 
-    public boolean deleteStaff(int id) {
-        try {
-            removeStaffLangTable.setInt(1, id);
-            removeStaffLangTable.executeUpdate();
-            log.info("Removed all languages related to Staff " + id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            removeStaffTable.setInt(1, id);
-            removeStaffTable.executeUpdate();
-            log.info("Successfully removed staff member " + id);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            log.info("Failed to delete staff member " + id);
-            return false;
-        }
 
-    }
+
 
     public void close() {
         try {
             conn.close();
+            generalStaffDB.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

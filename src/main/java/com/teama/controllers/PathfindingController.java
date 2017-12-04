@@ -4,11 +4,7 @@ import com.teama.controllers_refactor.PopOutType;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
-import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
-import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
-import com.teama.mapsubsystem.pathfinding.TextualDirection.TextualDirections;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -21,7 +17,6 @@ public class PathfindingController {
     private MapDrawingSubsystem drawingSubsystem = MapDrawingSubsystem.getInstance();
     private MapSubsystem mapSubsystem = MapSubsystem.getInstance();
     private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap;
-    private DirectionsGenerator directionsGenerator;
 
     public PathfindingController(Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap) {
         this.mainSidebarMap = mainSidebarMap;
@@ -33,20 +28,17 @@ public class PathfindingController {
 
     public void genPath(MapNode origin, MapNode dest) {
         // Generate the path and put it on the screen
-        Path path = mapSubsystem.getPathGenerator().generatePath(origin, dest);
+        Path path = mapSubsystem.getPathGenerator().generatePath(mapSubsystem.getNode(origin.getId()), mapSubsystem.getNode(dest.getId()));
 
         if(curPathID != -1) {
             drawingSubsystem.unDrawPath(curPathID);
         }
         curPathID = drawingSubsystem.drawPath(path);
 
-        // Generate the textual directions and put them on the directions screen
-        // Then show the directions screen
-        directionsGenerator = new TextualDirections();
-        TextDirections directions = directionsGenerator.generateDirections(path);
+        // Open the directions pop out
+        mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
 
-        for(Direction d : directions.getDirections()) {
-            System.out.println(d.getDescription());
-        }
+        // Put the current path into settings
+        Settings.getInstance().setCurrentDisplayedPathProp(path);
     }
 }

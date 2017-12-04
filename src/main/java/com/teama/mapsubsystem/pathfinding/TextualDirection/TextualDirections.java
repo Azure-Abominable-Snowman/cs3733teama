@@ -5,10 +5,8 @@ import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.translator.Translator;
 
-import javax.swing.*;
+
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class TextualDirections implements DirectionsGenerator {
     private ArrayList<MapNode> nodeList;
@@ -20,13 +18,8 @@ public class TextualDirections implements DirectionsGenerator {
         nodeList = new ArrayList<>();
     }
 
-    String lang = "en";
-    Locale locale = new Locale(lang);
-    ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
-
     @Override
     public TextDirections generateDirections(Path path) {
-        //TODO maybe make a singleton for lang so no need to keep pass in variable all the time.
 
 
 
@@ -51,14 +44,14 @@ public class TextualDirections implements DirectionsGenerator {
         // make the start Direction and push it into list.
         RouteLink thisTurn = routeLinks.get(0);
         String temp = String.format( "%s %s",
-                bundle.getString("pathstart"),
+                Translator.getInstance().getText("pathstart"),
                 thisTurn.getNext().getLongDescription());
-        // small change to try the translator. 
 
-        dirList.add(new Direction(0,
+        // make the start section.
+        dirList.add(new Direction(thisTurn.getDistance(),
                 thisTurn.getStart().getCoordinate()
                 ,thisTurn.getNext().getCoordinate(),
-                temp));
+                temp,thisTurn.getTurn()));
 
         thisTurn= routeLinks.get(1);
         RouteLink nextLink;
@@ -112,22 +105,22 @@ public class TextualDirections implements DirectionsGenerator {
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Straight")){// going Straight
-            discription = String.format("%s", bundle.getString("straightline")); //haven't added distance yet
+            discription = String.format("%s", Translator.getInstance().getText("straightline")); //haven't added distance yet
         }
         else{ // actually turning.
-            discription=String.format("%s %s", discription, bundle.getString("turning")); //haven't put distance in yet
+            discription=String.format("%s %s", discription, Translator.getInstance().getText("turning")); //haven't put distance in yet
         }
 
         if(routeLink.isEndFlag()) {
-            discription= String.format("%s %s", discription, bundle.getString("pathend"));
+            discription= String.format("%s %s", discription, Translator.getInstance().getText("pathend"));
             //routeLink.getNext().getLongDescription());
         }
 
         // create and return the new formed Direction object.
-        return new Direction(0,
+        return new Direction(routeLink.getDistance(),
                 routeLink.getStart().getCoordinate(),
                 routeLink.getNext().getCoordinate(),
-                discription);
+                discription,routeLink.getTurn());
     }
 
     private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)
