@@ -43,7 +43,6 @@ public class JavaDatabaseSourceTest {
         }
 
         db = new JavaDatabaseSource(dbURL, nodeTable, edgeTable);
-        MapDataSource testCash = new TotalMapCache(db);
     }
 
     @Test

@@ -45,6 +45,8 @@ public class TotalMapCacheTest {
         csvSource = new CSVDatabaseSource(nList, eList, null, null);
         javaDBSource = new JavaDatabaseSource(dbURL, nodeTable, edgeTable);
         javaDBSource.addAll(csvSource);
+        ArrayList<MapEdge> test = javaDBSource.getEdgesOnFloor("1");
+
         testCache = new TotalMapCache(javaDBSource);
 
         nodesToTest.addAll(javaDBSource.getNodesOnFloor(Floor.ONE.toString()));
@@ -102,8 +104,8 @@ public class TotalMapCacheTest {
         assertNull(testNode.getShortDescription(), testCache.getNode(testNode.getId()).getShortDescription());
         assertNull(testNode.getId(), testCache.getNode(testNode.getLongDescription(), true).getId());
         assertNull(testNode.getId(), testCache.getNode(testNode.getShortDescription(), false).getId());
-        assertFalse(testCache.getNodeIds().contains(testNode.getId()));
-        assertFalse(testCache.getNodesOnFloor(testNode.getCoordinate().getLevel().toString()).contains(testNode));
+        assertNull(testCache.getNodeIds().contains(testNode.getId()));
+        assertNull(testCache.getNodesOnFloor(testNode.getCoordinate().getLevel().toString()).contains(testNode));
 
     }
 
@@ -114,31 +116,37 @@ public class TotalMapCacheTest {
         testEdge = new MapEdgeData("TESTEDGE", n1,n2);
         testCache.addEdge(testEdge);
 
-        assertEquals(testEdge.getId(), testCache.getEdge(testEdge.getId()));
-        
-        assertEquals(testEdge.getId(), testCache.getNode(testNode.getLongDescription(), true).getId());
-        assertEquals(testEdge.getId(), testCache.getNode(testNode.getShortDescription(), false).getId());
-        assertTrue(testCache.getNodeIds().contains(testNode.getId()));
-        assertTrue(testCache.getNodesOnFloor(testNode.getCoordinate().getLevel().toString()).contains(testNode));
-
+        assertEquals(testEdge.getStartID(), testCache.getEdge(testEdge.getId()).getStartID());
+        assertTrue(testCache.getEdgeIds().contains(testEdge.getId()));
     }
 
     @Test
     public void removeEdge() throws Exception {
-        testCache.addEdge(testEdge);
-        testCache.removeEdge("TestEdge");
-        assertEquals(false, testCache.getEdge("TestEdge"));
-
+        //remove Edge"GEXIT00101_GSTAI01301"
+        testCache.removeEdge("GEXIT00101_GSTAI01301");
+        assertNull(testCache.getEdgeIds().contains("GEXIT00101_GSTAI01301"));
     }
+
+
 
     @Test
     public void getNodeIds() throws Exception {
-
+        //check Emergence Entrance
+        assertTrue(testCache.getNodeIds().contains(testCache.getNode("FEXIT00301")));
+        //check Cafe Stairs
+        assertTrue(testCache.getNodeIds().contains(testCache.getNode("ASTAI00101")));
+        //check fake node
+        assertNull(testCache.getNodeIds().contains(testCache.getNode("FAKE_NODE")));
 
     }
 
     @Test
     public void getEdgeIds() throws Exception {
+        //check edges on Cafe Stairs
+        assertTrue(testCache.getEdgeIds().contains(testCache.getEdge("AHALL00201_ASTAI00101")));
+        assertTrue(testCache.getEdgeIds().contains(testCache.getEdge("ASTAI00101_ASTAI00102")));
+        //check fake edge
+        assertNull(testCache.getEdgeIds().contains(testCache.getEdge("FAKE_EDGE")));
     }
 
     @Test
@@ -149,15 +157,23 @@ public class TotalMapCacheTest {
     }
 
     @Test
-    public void close() throws Exception {
-    }
-
-    @Test
     public void getNodesOnFloor() throws Exception {
+        //check Emergence Entrance
+        assertTrue(testCache.getNodesOnFloor("1").contains(testCache.getNode("FEXIT00301")));
+        //check Cafe Stairs
+        assertTrue(testCache.getNodesOnFloor("1").contains(testCache.getNode("ASTAI00101")));
+        //check fake node
+        assertNull(testCache.getNodesOnFloor("1").contains(testCache.getNode("FAKE_NODE")));
+
     }
 
     @Test
     public void getEdgesOnFloor() throws Exception {
+        //check edges on Cafe Stairs
+        assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdge("AHALL00201_ASTAI00101")));
+        assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdge("ASTAI00101_ASTAI00102")));
+        //check fake edge
+        assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdge("FAKE_EDGE")));
     }
 
 }
