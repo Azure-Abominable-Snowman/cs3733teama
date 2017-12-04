@@ -6,6 +6,7 @@ import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ import static org.junit.Assert.*;
  */
 public class InterpreterRequestDBTest {
     private String dbURL = "jdbc:derby:unittestdb;create=true";
-    private String reqTable, reportTable;
+    private String reqTable, genericReqTable;
     private Connection conn = null;
     private Statement stmt = null;
     // Make the database object to test
@@ -27,7 +28,8 @@ public class InterpreterRequestDBTest {
     public InterpreterRequestDBTest() {
         // this object connects directly to the db
 
-        reqTable = "TEST_REQUESTS";
+        reqTable = "TEST_INTERP_REQUESTS";
+        genericReqTable = "TEST_GENERIC_REQS";
 
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
@@ -37,24 +39,28 @@ public class InterpreterRequestDBTest {
             except.printStackTrace();
         }
     }
+
     @Before
     public void setup() {
         try {
             stmt = conn.createStatement();
 
-            stmt.execute("DROP TABLE TEST_REQUESTS");
+            stmt.execute("DROP TABLE "+reqTable);
+            stmt.execute("DROP TABLE "+genericReqTable);
             stmt.close();
             System.out.println("Deleted the previous tables");
         } catch (SQLException e) {
-            System.out.println("No previous table");
-            e.printStackTrace();
+            System.out.println("No previous generic/specific interpreter table");
+            //e.printStackTrace();
         }
 
-        db = new InterpreterRequestDB(dbURL, reqTable, "");
-
-
+        db = new InterpreterRequestDB(dbURL, genericReqTable, reqTable);
     }
 
+    @After
+    public void tearDown() {
+        db.close();
+    }
 
     @Test
     public void addRequest() throws Exception {
@@ -64,12 +70,12 @@ public class InterpreterRequestDBTest {
         InterpreterRequest spanish = new InterpreterRequest(g, Language.Spanish);
         InterpreterRequest german = new InterpreterRequest(g, Language.German);
         InterpreterRequest russian = new InterpreterRequest(g, Language.Russian);
-        assertTrue(db.addRequest(spanish));
+        assertNotNull(db.addRequest(spanish));
         assertEquals(Language.Spanish.toString(), db.getInterpreterRequest(1).getRequiredLanguage().name);
-        assertTrue(db.addRequest(german));
-        assertTrue(db.addRequest(russian));
+        assertNotNull(db.addRequest(german));
+        assertNotNull(db.addRequest(russian));
         InterpreterRequest retrieved = db.getInterpreterRequest(3);
-        assertEquals(1, retrieved.getFamilySize());
+        assertEquals(0, retrieved.getFamilySize());
 
     }
 
@@ -93,19 +99,23 @@ public class InterpreterRequestDBTest {
     public void getRequest() throws Exception {
         assertNull(db.getRequest(8));
 
-        PreparedStatement p = conn.prepareStatement("INSERT INTO " + reqTable + " (REQUESTID, STAFFID, STATUS, LANG, FAMSIZE, SERVICETIME, TRANSTYPE) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)");
-        p.setInt(1, 1);
-        p.setInt(2, 3);
-        p.setString(3, RequestStatus.ASSIGNED.toString());
-        p.setString(4, Language.French.toString());
-        p.setInt(5, 3);
-        p.setInt(6, 100);
-        p.setString(7, TranslationType.VERBAL.toString());
+        Request g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, RequestType.INTR,
+                RequestStatus.ASSIGNED, "Can't read form");
+        InterpreterRequest spanish = new InterpreterRequest(g, Language.Spanish);
+        assertNotNull(db.addRequest(spanish));
 
-        p.executeUpdate();
-        assertNotNull(db.getRequest(1));
-
+        InterpreterRequest retrieved = db.getInterpreterRequest(1);
+        assertNotNull(retrieved);
+        assertEquals(retrieved.getRequestID(), 1);
+        assertEquals(retrieved.getLocation().getxCoord(), 1459);
+        assertEquals(retrieved.getLocation().getyCoord(), 2009);
+        assertEquals(retrieved.getLocation().getLevel(), Floor.GROUND);
+        assertEquals(retrieved.getLocation().getBuilding(), "BTM");
+        assertEquals(retrieved.getStaffID(), 35791);
+        assertEquals(retrieved.getReqType(), RequestType.INTR);
+        assertEquals(retrieved.getStatus(), RequestStatus.ASSIGNED);
+        assertEquals(retrieved.getNote(), "Can't read form");
+        assertEquals(retrieved.getRequiredLanguage(), Language.Spanish);
     }
 
     @Test
@@ -125,18 +135,19 @@ public class InterpreterRequestDBTest {
 
     @Test
     public void fulfillRequest() throws Exception {
-        /*
-        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Can't read form");
-        InterpreterRequest spanish = new InterpreterRequest(g, 3, Language.Spanish);
-        db.addRequest(spanish);
+
+        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, RequestType.INTR,RequestStatus.ASSIGNED,"Can't read form");
+        InterpreterRequest spanish = new InterpreterRequest(g, Language.Spanish);
+        spanish = db.addRequest(spanish);
         assertEquals(RequestStatus.ASSIGNED.toString(), db.getRequest(1).getStatus().toString());
         spanish.setServiceTime(60);
         spanish.setTranslationTypes(TranslationType.WRITTEN);
         db.fulfillRequest(spanish);
-        InterpreterRequest fulfilled = db.getRequest(1);
-
+        InterpreterRequest fulfilled = db.getInterpreterRequest(1);
         assertEquals(RequestStatus.CLOSED.toString(), fulfilled.getStatus().toString());
-        PreparedStatement getReport = conn.prepareStatement("SELECT * FROM " + reportTable + " WHERE REQUESTID = ?");
+
+        // Reports, not implemented yet
+        /*PreparedStatement getReport = conn.prepareStatement("SELECT * FROM " + reqTable + " WHERE REQUESTID = ?");
         getReport.setInt(1, 1);
         ResultSet rs = getReport.executeQuery();
         if (rs.next()) {
@@ -144,23 +155,23 @@ public class InterpreterRequestDBTest {
             assertEquals(spanish.getTranslType().toString(), rs.getString("TRANSTYPE"));
         }
         rs.close();
-        getReport.close();
-        */
+        getReport.close();*/
+
 
     }
 
     @Test
     public void updateRequest() throws Exception {
-        /*
-        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, "Cannot read form");
-        InterpreterRequest german = new InterpreterRequest(g, 45, Language.German);
+
+        GenericRequest g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, RequestType.INTR, RequestStatus.ASSIGNED, "Cannot read form");
+        InterpreterRequest german = new InterpreterRequest(g, Language.German);
         db.addRequest(german);
-        InterpreterRequest germanRetrieved = db.getRequest(1);
+        InterpreterRequest germanRetrieved = db.getInterpreterRequest(1);
         assertEquals(35791, germanRetrieved.getStaffID());
         germanRetrieved.setStaffID(1919);
         db.updateRequest(germanRetrieved);
         assertEquals(1919, db.getRequest(1).getStaffID());
-        */
+
     }
 
 }

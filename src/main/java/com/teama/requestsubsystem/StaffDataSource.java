@@ -11,6 +11,7 @@ public interface StaffDataSource {
     boolean updateStaff(ServiceStaff s);
     boolean deleteStaff(int id);
     ServiceStaff getStaff(int staffID);
-    public ArrayList<ServiceStaff> getAllStaff();
-    public ArrayList<ServiceStaff> getStaffByType(StaffType t);
+    ArrayList<ServiceStaff> getAllStaff();
+    ArrayList<ServiceStaff> getStaffByType(StaffType t);
+    void close();
 }

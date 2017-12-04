@@ -64,7 +64,7 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
             log.info("Created the general request table.");
         } catch (SQLException e) {
             log.info("Does the General Request table already exist?");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
 
@@ -134,7 +134,7 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
             rs = addRequest.getGeneratedKeys();
             int ID = 0;
             if (rs.next()) {
-                ID = rs.getInt("REQUESTID");
+                ID = rs.getInt(1);
                 newReq = new GenericRequest(request.getLocation(), request.getStaffID(), request.getReqType(), request.getStatus(), request.getNote());
                 newReq.setRequestID(ID);
                 log.info("Added request with ID " + ID);

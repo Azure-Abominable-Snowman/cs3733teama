@@ -1,6 +1,5 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
-import com.teama.Configuration;
 import com.teama.requestsubsystem.*;
 
 import java.sql.*;
@@ -8,11 +7,10 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class InterpreterRequestDB implements ServiceRequestDataSource {
-    private ServiceRequestDataSource generalInfo = new GeneralRequestDB(Configuration.dbURL, Configuration.generalReqTable);
+    private ServiceRequestDataSource generalInfo;
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
     private String requestTableName;
-    private String generalReqTableName;
     //private String reportTableName;
     private Connection conn = null;
     private Statement stmt = null;
@@ -20,11 +18,12 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             //selectRequestByStatus, updateRequest, markClosed, getRequestID; //for request table
     private PreparedStatement addReport, updateReport, deleteReport, getReport;
 
-    public InterpreterRequestDB(String dbURL, String reqTableName, String generalReqTableName) {
+    public InterpreterRequestDB(String dbURL, String genericReqTableName, String reqTableName) {
 
         this.requestTableName = reqTableName;
-        this.generalReqTableName = generalReqTableName;
         this.dbURL = dbURL;
+
+        generalInfo = new GeneralRequestDB(dbURL, genericReqTableName);
 
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
@@ -54,7 +53,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
                             "FAMSIZE INTEGER, " +
                             "SERVICETIME DOUBLE, " +
                             "TRANSTYPE VARCHAR(40), " +
-                            "FOREIGN KEY(REQUESTID, STAFFID) REFERENCES " + Configuration.generalReqTable + " (REQUESTID))");
+                            "FOREIGN KEY(REQUESTID) REFERENCES " + genericReqTableName + " (REQUESTID))");
             //" FOREIGN KEY(STAFFID) REFERENCES INTERPRETER_STAFF(STAFFID)" +
                             //" PRIMARY KEY(REQUESTID) " +
 
@@ -110,7 +109,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
             deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
             fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
-                    "  WHERE REQUESTID = ? AND STAFFID = ?)");
+                    "  WHERE REQUESTID = ? AND STAFFID = ?");
             getRequestStaffIDStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STAFFID = ? AND STATUS = ?");
             getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
             //selectRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
@@ -130,12 +129,13 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @param request
      * @return
      */
-    public boolean addRequest(InterpreterRequest request) {
+    public InterpreterRequest addRequest(InterpreterRequest request) {
         int reqID = request.getRequestID();
         int staffID = request.getStaffID();
+        Request req = null;
         RequestStatus status = request.getStatus();
         if (request.getRequestID() == 0) { // if it hasn't been added to the DB already, add it
-            Request req = generalInfo.addRequest(request);
+            req = generalInfo.addRequest(request);
             if (req != null) { // added successfully
                 reqID = req.getRequestID();
                 staffID = req.getStaffID();
@@ -153,10 +153,10 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
 
             addRequest.executeUpdate();
             log.info("Interpreter request added to Database.");
-            return true;
+            return new InterpreterRequest(req, request.getRequiredLanguage());
         } catch (SQLException exception) {
             exception.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -227,7 +227,13 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @return
      */
     public boolean deleteRequest(int requestID) {
-        boolean deletedInterp = generalInfo.deleteRequest(requestID);
+        boolean deletedInterp = false;
+        try {
+            deleteRequest.setInt(1, requestID);
+            deleteRequest.execute();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
         boolean deletedGeneral = generalInfo.deleteRequest(requestID);
         return deletedInterp && deletedGeneral;
     }
@@ -414,6 +420,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
     public void close() {
         try {
             conn.close();
+            generalInfo.close();
         } catch(SQLException e) {
             e.printStackTrace();
         }

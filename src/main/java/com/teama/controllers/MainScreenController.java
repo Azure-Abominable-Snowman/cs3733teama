@@ -154,13 +154,25 @@ public class MainScreenController implements Initializable {
 
         // Attach listeners to all the sidebar pop outs to open their respective pane on click
         for(Node button : mainSidebarGrid.getChildren()) {
+            // Opens the pop out and closes it when it is clicked again
             EventHandler<MouseEvent> buttonEvent = event -> {
                 // Gets the pop out type from the id defined in scenebuilder
-                openInMainSidebar(PopOutType.valueOf(button.getId()), areaPane.widthProperty(), -(int)button.prefWidth(80),
+                PopOutType type = PopOutType.valueOf(button.getId());
+                if(type.equals(currentPopOutType)) {
+                    closeInMainSidebar(type);
+                } else {
+                    openInMainSidebar(type, areaPane.widthProperty(), -(int) button.prefWidth(80),
+                            button.layoutYProperty(), 0);
+                }
+            };
+            // Opens the pop out
+            EventHandler<MouseEvent> openEvent = event -> {
+                PopOutType type = PopOutType.valueOf(button.getId());
+                openInMainSidebar(type, areaPane.widthProperty(), -(int)button.prefWidth(80),
                         button.layoutYProperty(), 0);
             };
-            button.onMouseClickedProperty().set(buttonEvent);
-            mainSidebarMap.put(PopOutType.valueOf(button.getId()), buttonEvent);
+            button.setOnMouseClicked(buttonEvent);
+            mainSidebarMap.put(PopOutType.valueOf(button.getId()), openEvent);
         }
 
         // Make a pop up on the user's mouse cursor every time a node is clicked
@@ -204,13 +216,6 @@ public class MainScreenController implements Initializable {
 
     private void openInMainSidebar(PopOutType popOutType, ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
         try {
-            // If the previous pop out type is the same as the current and there is a controller, remove it from the screen
-            if(popOutType.equals(currentPopOutType) && currentPopOut != null) {
-                currentPopOutController.onClose();
-                areaPane.getChildren().remove(currentPopOut);
-                currentPopOut = null;
-                return;
-            }
             // Remove the last pop out if present
             if(currentPopOut != null) {
                 currentPopOutController.onClose();
@@ -231,6 +236,16 @@ public class MainScreenController implements Initializable {
             currentPopOutType = popOutType;
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void closeInMainSidebar(PopOutType popOutType) {
+        // remove it from the screen if one is open
+        if(currentPopOut != null) {
+            currentPopOutController.onClose();
+            areaPane.getChildren().remove(currentPopOut);
+            currentPopOut = null;
+            currentPopOutType = null;
         }
     }
 

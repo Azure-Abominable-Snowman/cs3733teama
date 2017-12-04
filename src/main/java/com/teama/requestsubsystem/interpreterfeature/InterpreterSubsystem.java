@@ -3,6 +3,7 @@ package com.teama.requestsubsystem.interpreterfeature;
 import com.teama.Configuration;
 import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestStatus;
+import com.teama.requestsubsystem.ServiceStaff;
 
 import java.util.ArrayList;
 
@@ -16,8 +17,8 @@ public class InterpreterSubsystem {
     private InterpreterRequestDB requestDB;
     private InterpreterStaffDB staffDB;
     private InterpreterSubsystem() {
-        requestDB = new InterpreterRequestDB(Configuration.dbURL, "REQUEST_TABLE", Configuration.generalReqTable);
-        staffDB = new InterpreterStaffDB(Configuration.dbURL, "STAFF_TABLE");
+        requestDB = new InterpreterRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.interpReqTable);
+        staffDB = new InterpreterStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.interpStaffTable);
     }
     private static class InterpreterHelper {
         private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
@@ -53,7 +54,7 @@ public class InterpreterSubsystem {
     }
 
     // adds an Interpreter request to the database
-    public boolean addRequest(InterpreterRequest r) {
+    public InterpreterRequest addRequest(InterpreterRequest r) {
         return requestDB.addRequest(r);
     }
 
@@ -81,4 +82,6 @@ public class InterpreterSubsystem {
         return requestDB.getAllRequests(s);
     }
 
+    // Gets a specific staff member
+    public ServiceStaff getStaff(int staffID) { return staffDB.getStaff(staffID); }
 }

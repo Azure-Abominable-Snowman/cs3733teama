@@ -19,13 +19,12 @@ import java.util.logging.Logger;
  */
 public class GeneralStaffDB implements StaffDataSource{
     // TODO: add username to the info
-    private StaffDataSource generalStaffDB = GenRequestDBManager.getInstance().getGenericStaffDB();
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL, staffTable;
     //private String staffTableLanguages;
     private Connection conn = null;
     private Statement stmt = null;
-    PreparedStatement addStaff, removeStaff, updateStaff, getStaff,  getStaffByType, getAllStaff;
+    private PreparedStatement addStaff, removeStaff, updateStaff, getStaff,  getStaffByType, getAllStaff;
 
     public GeneralStaffDB(String dbURL, String staffTableName) {
         this.dbURL = dbURL;
@@ -58,7 +57,7 @@ public class GeneralStaffDB implements StaffDataSource{
             log.info("Staff table created.");
             stmt.close();
         } catch (SQLException sqlExcept) {
-            //log.info("Does the staff info database or language relation table already exist?");
+            log.info("Does the staff info database or language relation table already exist?");
             sqlExcept.printStackTrace();
         }
 
@@ -151,31 +150,20 @@ public class GeneralStaffDB implements StaffDataSource{
             addStaff.setString(4, s.getPhoneNumber());
             addStaff.setString(5, s.getEmail());
             addStaff.setString(6, s.getProvider().toString());
-            addStaff.setString(7, s.getUsername().toString());
+            addStaff.setString(7, s.getUsername());
             //addStaff.setString(7, s.); //TODO: CHANGE THIS IF WE ACTUALLY IMPLEMENT WORK HOURS, OR DELETE
             addStaff.executeUpdate();
             ResultSet id = addStaff.getGeneratedKeys();
-            
-            if (id.next()) {
-
-                added = rsToStaff(id);
-                if (added != null && added.getStaffID() != 0) {
-                    log.info("Staff member with ID " + added.getStaffID() + " added to Staff Table.");
-                    if (addNewStaffLogin(s)) {
-                        log.info("Login Info successfully added for new user.");
-                    }
-                }
+            if(!id.next()) {
+                log.severe("Staff wasn't added correctly to the database");
+                return null;
             }
+            return getStaff(id.getInt(1));
 
         } catch (SQLException e) {
-            /*
-            if (e.getErrorCode() == -803) {
-                added = getStaff(s)
-            }
-            */
             e.printStackTrace();
         }
-        return added;
+        return null;
     }
     /*
                updateStaff = conn.prepareStatement("UPDATE " + staffTable + " SET FIRSTNAME = ?, LASTNAME = ?, PHONENUMBER = ?, EMAIL = ?, PROVIDER = ?" +
@@ -248,7 +236,7 @@ public class GeneralStaffDB implements StaffDataSource{
             updateStaff.setString(3, s.getPhoneNumber());
             updateStaff.setString(4, s.getEmail());
             updateStaff.setString(5, s.getProvider().toString());
-            updateStaff.setString(6, s.getUsername().toString());
+            updateStaff.setString(6, s.getUsername());
             updateStaff.setInt(7, s.getStaffID());
             updateStaff.executeUpdate();
             log.info("Staff member successfully updated.");

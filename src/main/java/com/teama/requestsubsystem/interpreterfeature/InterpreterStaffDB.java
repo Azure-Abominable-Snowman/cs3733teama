@@ -1,7 +1,6 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
-import com.teama.Configuration;
-import com.teama.requestsubsystem.GenRequestDBManager;
+import com.teama.requestsubsystem.GeneralStaffDB;
 import com.teama.requestsubsystem.ServiceStaff;
 import com.teama.requestsubsystem.StaffDataSource;
 import com.teama.requestsubsystem.StaffType;
@@ -16,19 +15,19 @@ import java.util.logging.Logger;
  */
 
 public class InterpreterStaffDB implements StaffDataSource {
-    private StaffDataSource generalStaffDB = GenRequestDBManager.getInstance().getGenericStaffDB();
+    private StaffDataSource generalStaffDB;
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
     private String interpStaffTable;
-    private String generalStaffTable;
     private Connection conn = null;
     private Statement stmt = null;
-    PreparedStatement addStaff, removeStaff, updateStaffTable, getStaff, getQualifiedStaff, getAllStaff;
+    private PreparedStatement addStaff, removeStaff, updateStaffTable, getStaff, getQualifiedStaff, getAllStaff;
     //PreparedStatement addStaffLangTable, updateStaffLangTable, getQualifiedStaffLangs, removeStaffLangTable;
 
-    public InterpreterStaffDB(String dbURL, String staffTableName) {
+    public InterpreterStaffDB(String dbURL, String generalStaffTableName, String staffTableName) {
         this.dbURL = dbURL;
         this.interpStaffTable = staffTableName;
+        generalStaffDB = new GeneralStaffDB(dbURL, generalStaffTableName);
         //this.generalStaffTable = generalStaffTable;
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
@@ -49,7 +48,7 @@ public class InterpreterStaffDB implements StaffDataSource {
                             "STAFFID INTEGER NOT NULL, " +
                             "LANGUAGE VARCHAR(50) NOT NULL, " +
                             "CERTIFICATION VARCHAR(100) NOT NULL, " +
-                            "FOREIGN KEY (STAFFID) REFERENCES " + Configuration.generalStaffTable + " (STAFFID), " +
+                            "FOREIGN KEY (STAFFID) REFERENCES " + generalStaffTableName + " (STAFFID), " +
                             "PRIMARY KEY (STAFFID,LANGUAGE)" +
                             ")"
             );
@@ -151,7 +150,7 @@ public class InterpreterStaffDB implements StaffDataSource {
             try {
                 getStaff.setInt(1, staffID);
                 ResultSet found = getStaff.executeQuery();
-                Set<Language> langs = new HashSet<Language>();
+                Set<Language> langs = new HashSet<>();
                 CertificationType cert = null;
                 while (found.next()) {
                     Language spoken = Language.getLanguage(found.getString("LANGUAGE"));
@@ -271,11 +270,11 @@ public class InterpreterStaffDB implements StaffDataSource {
                 removeStaff.setInt(1, s.getStaffID());
                 removeStaff.executeUpdate();
                 log.info("Deleted all current Language entries for udpate.");
-                updateStaffTable.setString(2, s.getCertification().toString());
-                updateStaffTable.setInt(3, s.getStaffID());
+                addStaff.setString(3, s.getCertification().toString());
+                addStaff.setInt(1, s.getStaffID());
                 for (Language l : s.getLanguages()) {
-                    updateStaffTable.setString(1, l.toString());
-                    updateStaffTable.executeUpdate();
+                    addStaff.setString(2, l.toString());
+                    addStaff.executeUpdate();
                 }
 
                 log.info("Interpreter with ID " + s.getStaffID() + " successfully updated.");
@@ -305,6 +304,7 @@ public class InterpreterStaffDB implements StaffDataSource {
     public void close() {
         try {
             conn.close();
+            generalStaffDB.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
