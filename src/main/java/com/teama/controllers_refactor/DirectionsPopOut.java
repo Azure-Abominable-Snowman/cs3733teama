@@ -42,6 +42,9 @@ public class DirectionsPopOut extends PopOutController {
     @FXML
     private JFXComboBox<String> originNodeCombo;
 
+    @FXML
+    private JFXComboBox<String> filterBox;
+
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
 
