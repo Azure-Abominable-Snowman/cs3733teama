@@ -3,6 +3,7 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.translator.Translator;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -19,15 +20,14 @@ public class TextualDirections implements DirectionsGenerator {
         nodeList = new ArrayList<>();
     }
 
+    String lang = "en";
+    Locale locale = new Locale(lang);
+    ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
+
     @Override
     public TextDirections generateDirections(Path path) {
-
-
         //TODO maybe make a singleton for lang so no need to keep pass in variable all the time.
 
-        String lang = "en";
-        Locale locale = new Locale(lang);
-        ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
 
 
         nodeList = path.getNodes();
@@ -103,25 +103,24 @@ public class TextualDirections implements DirectionsGenerator {
     {
         String discription = routeLink.getTextReturn();
         if (discription.contains("Elevator")){ // elevator text
-            discription = String.format("Enter Elevator and exit on floor %s",
+            discription = String.format("%s %s",
+                    Translator.getInstance().getText("elevatorenter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Stairs")){ // Stairs text
-            discription = String.format("Enter Stair and exit on floor %s",
+            discription = String.format("%s %s", Translator.getInstance().getText("stairenter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Straight")){// going Straight
-            discription = String.format("Walk Straight for %f distance",
-                    routeLink.getDistance());
+            discription = String.format("%s", bundle.getString("straightline")); //haven't added distance yet
         }
         else{ // actually turning.
-            discription=String.format("%s and walk for %f distance",
-                    discription,routeLink.getDistance());
+            discription=String.format("%s %s", discription, bundle.getString("turning")); //haven't put distance in yet
         }
 
         if(routeLink.isEndFlag()) {
-            discription= String.format("%s \nyou will reach your destination %s",
-            discription,routeLink.getNext().getLongDescription());
+            discription= String.format("%s %s", discription, bundle.getString("pathend"));
+            //routeLink.getNext().getLongDescription());
         }
 
         // create and return the new formed Direction object.
