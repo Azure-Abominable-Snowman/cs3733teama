@@ -153,6 +153,7 @@ public class TotalMapCacheTest {
         String db = javaDBSource.getEdge(testingId).getId();
         String cache = testCache.getEdge(testingId).getId();
         assertEquals(db, cache);
+        assertNull(testCache.getEdge("FakeEdge"));
     }
 
     @Test
@@ -166,7 +167,7 @@ public class TotalMapCacheTest {
 
     }
 
-   /* @Test
+    /*@Test
     public void getEdgesOnFloor() throws Exception {
         //check edges on Cafe Stairs AHALL00201_ASTAI00101
         assertTrue(testCache.getEdgesOnFloor("1").contains(testCache.getEdgesOnFloor("1").get(1)));
