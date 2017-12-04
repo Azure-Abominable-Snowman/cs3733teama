@@ -1,5 +1,6 @@
 package com.teama.mapsubsystem.data;
 
+import com.teama.mapsubsystem.TotalMapCache;
 import org.junit.Test;
 
 import java.sql.*;
@@ -42,6 +43,7 @@ public class JavaDatabaseSourceTest {
         }
 
         db = new JavaDatabaseSource(dbURL, nodeTable, edgeTable);
+        MapDataSource testCash = new TotalMapCache(db);
     }
 
     @Test
