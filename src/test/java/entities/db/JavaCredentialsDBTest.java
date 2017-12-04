@@ -1,6 +1,7 @@
 package entities.db;
 
 import com.teama.login.*;
+import com.teama.requestsubsystem.StaffType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,6 +55,7 @@ public class JavaCredentialsDBTest {
     SystemUser a = new SystemUser(login1, STAFF);
     SystemUser b = new SystemUser(login2, ADMIN);
     SystemUser c = new SystemUser(login3, ADMIN);
+    SystemUser d = new SystemUser(login3, STAFF, 31, StaffType.INTERPRETER);
 
 
 /*
@@ -77,10 +79,11 @@ public class JavaCredentialsDBTest {
     public void getUser() {
         try {
             assertNull(db.getUser(login2));
-            PreparedStatement x = conn.prepareStatement("INSERT INTO " + credsTable + " VALUES(?,?,?) ");
+            PreparedStatement x = conn.prepareStatement("INSERT INTO " + credsTable + " (USERNAME, PASSWORD,ACCESS, STAFFID) VALUES(?,?,?, ?) ");
             x.setString(1, login1.getUsername());
             x.setInt(2, login1.getPassword().hashCode());
             x.setString(3, AccessType.STAFF.toString());
+            x.setInt(4, 12312);
             x.executeUpdate();
             SystemUser found = db.getUser(login1);
 
@@ -97,6 +100,7 @@ public class JavaCredentialsDBTest {
     public void addUser() {
         assertNull(db.getUser(login2));
         assertTrue(db.addUser(b));
+        assertTrue(db.addUser(d));
         SystemUser retrieved = db.getUser(login2);
         assertNotNull(retrieved);
         assertEquals(login2.getUsername(), retrieved.getUsername());
