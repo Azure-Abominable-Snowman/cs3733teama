@@ -27,5 +27,5 @@ public enum TurnType {
         }
         throw new IllegalArgumentException("No turn by the name "+name+" found");
     }
-    
+
 }

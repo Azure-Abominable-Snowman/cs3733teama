@@ -305,4 +305,7 @@ public class MainScreenController implements Initializable {
             nodeInfo = null;
         }
     }
+    //CREATES THE ABOUT PAGE POP UP
+
+    //END OF ABOUT PAGE POP UP
 }
