@@ -1,6 +1,7 @@
 package com.teama.mapsubsystem.pathfinding;
 
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.data.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -59,7 +60,7 @@ public class DisplayPathInstantly extends DisplayPath {
             if(curEdge.getStart().getCoordinate().getLevel().equals(floor) && curEdge.getEnd().getCoordinate().getLevel().equals(floor)) {
                 new DrawEdgeInstantly(curEdge).displayOnScreen(display);
                 if(!drawnFirst) {
-                    new DrawNodeInstantly(curEdge.getStart()).displayOnScreen(display, 9, Color.RED);
+                    MapDrawingSubsystem.getInstance().drawNode(curEdge.getStart(), 9, Color.RED);
                     drawnFirst = true;
                 }
                 lastDrawn = lastEnd;
@@ -103,7 +104,7 @@ public class DisplayPathInstantly extends DisplayPath {
         }
         // Draw the end special
         if(lastDrawn != null) {
-            new DrawNodeInstantly(lastDrawn).displayOnScreen(display, 9, Color.RED);
+            MapDrawingSubsystem.getInstance().drawNode(lastDrawn, 9, Color.RED);
         }
     }
 

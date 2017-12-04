@@ -58,7 +58,7 @@ public interface MapDataSource {
 
     ArrayList<MapNode> getNodesOnFloor(String floor);
 
-    ArrayList<MapEdge> getEdgesOnFloor(String floor);
+    //ArrayList<MapEdge> getEdgesOnFloor(String floor);
 
     /**
      * Adds everything from the selected data source to this one
