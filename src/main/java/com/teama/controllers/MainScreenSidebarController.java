@@ -1,7 +1,6 @@
 package com.teama.controllers;
 
 import com.jfoenix.controls.*;
-import com.teama.controllers_refactor.PopOutController;
 import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
@@ -15,12 +14,11 @@ import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
 import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequestInfo;
+import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.Observable;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +34,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -47,9 +44,7 @@ import java.util.*;
 
 import static com.teama.requestsubsystem.RequestType.*;
 
-public class MainScreenSidebarController extends PopOutController {
-    @FXML
-    private HBox hbxRoot;
+public class MainScreenSidebarController {
 
     @FXML
     private JFXTextArea directions;
@@ -66,7 +61,7 @@ public class MainScreenSidebarController extends PopOutController {
 
     @FXML
     private JFXRadioButton beamSearch;
-//START OF REQUEST STUFF
+
     @FXML
     private VBox addToThis;
 
@@ -112,6 +107,7 @@ public class MainScreenSidebarController extends PopOutController {
     @FXML
     private JFXButton login;
 
+
     private String buildingName;
     private Floor floorName;
     private MapNode mapNodeName;
@@ -124,7 +120,7 @@ public class MainScreenSidebarController extends PopOutController {
 
 
     private AnchorPane curReqPane;
-//END OF REQUEST STUFF
+
     // MAP EDITOR TOOLS
     @FXML
     private JFXToggleButton viewNodes, viewEdges, editNodes, editEdges;
@@ -195,7 +191,7 @@ public class MainScreenSidebarController extends PopOutController {
         mapSubsystem = MapSubsystem.getInstance();
 
 
-        //NAVIGATION STUFF
+
         // Add all of the radio buttons to a toggle group
         algoToggleGroup = new ToggleGroup();
         aStar.setToggleGroup(algoToggleGroup);
@@ -216,7 +212,7 @@ public class MainScreenSidebarController extends PopOutController {
             System.out.println("Changed to "+algoToggleGroup.getSelectedToggle().getUserData());
             mapSubsystem.setPathGeneratorStrategy((PathAlgorithm)algoToggleGroup.getSelectedToggle().getUserData());
         });
-        //SERVICE REQUEST STUFF
+
         //set up for Service Request
         building.getItems().clear();
         building.getItems().add("BTM");
@@ -234,11 +230,11 @@ public class MainScreenSidebarController extends PopOutController {
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
 
 
-        //STAFF STUFF
+
         btnAdd.setVisible(false);
         initInterpColumns();
 
-        //MAP EDITOR
+        //Map Editor
         /*
         EventHandler<MouseEvent> onMapClicked = (MouseEvent e) -> {
             if (editNodes.isSelected()) {
@@ -340,7 +336,7 @@ public class MainScreenSidebarController extends PopOutController {
 
     }
 
-    //MAP DISPLAY CODE?
+
     /**
      * Sets the map display in this controller, must be ran before anything else is to be done regarding the map
      * @param map
@@ -431,6 +427,10 @@ public class MainScreenSidebarController extends PopOutController {
         }
     }
 
+    @FXML
+    private void onAddStaff(ActionEvent event){
+        popUpInterpInfo(null);
+    }
     private void updateHiddenNodesEdges() { // controls what is shown on the map based on the toggle currently selected by user
         updateCurrentNodesEdges();
 
@@ -493,14 +493,6 @@ public class MainScreenSidebarController extends PopOutController {
         floorNodes = mapSubsystem.getFloorNodes(map.getCurrentFloor());
         floorEdges = getAllEdges(floorNodes);
     }
-
-    //Staff screen start
-
-    @FXML
-    private void onAddStaff(ActionEvent event){
-        popUpInterpInfo(null);
-    }
-
     private void popUpInterpInfo(InterpreterStaff staff){
         Stage InterpPopUp = new Stage();
         try {
@@ -579,7 +571,7 @@ public class MainScreenSidebarController extends PopOutController {
     }
 
 
-    //Methods for Service Request TitlePane
+    //Methods for Service Request TidlePane
 
 
     @FXML
@@ -594,7 +586,7 @@ public class MainScreenSidebarController extends PopOutController {
             }
         }
     }
-    //SERVICE REQUEST STUFF
+
     @FXML
     public void clearRequest(ActionEvent e) {
         building.getSelectionModel().clearSelection();
@@ -621,12 +613,11 @@ public class MainScreenSidebarController extends PopOutController {
             case INTR:
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
-                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
-                        Integer.parseInt(familySize),
+                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), RequestType.INTR, RequestStatus.ASSIGNED, additionalInfoMessage),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
-                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
                 if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
                     EmailMessage message2 = new EmailMessage();
                     message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
@@ -716,21 +707,6 @@ public class MainScreenSidebarController extends PopOutController {
             e.printStackTrace();
         }
     }
-    //END REQEUST STUFF
-    public HBox getHbxRoot(){return hbxRoot;}
 
-    @Override
-    public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
 
-    }
-
-    @Override
-    public void onClose() {
-
-    }
-
-    @Override
-    public String getFXMLPath() {
-        return null;
-    }
 }

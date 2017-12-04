@@ -10,7 +10,7 @@ import com.teama.login.LoginSubsystem;
 import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.GenericStaff;
 import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -19,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
-import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
@@ -125,7 +124,7 @@ public class InterpreterModController implements Controller {
         String phoneNumber = PhoneNo.getText();
         String email = Email.getText();
         ContactInfo contactInfo = new ContactInfo(contactTypes, phoneNumber, email, provider);
-        GenericStaffInfo staffInfo = new GenericStaffInfo( FirstName.getText(), LastName.getText(), contactInfo);
+        GenericStaff staffInfo = new GenericStaff( FirstName.getText(), LastName.getText(), contactInfo);
         Set<Language> langs = new HashSet<>();
         for(JFXCheckBox box: languageBoxList){
             if(box.selectedProperty().get()){
@@ -135,11 +134,11 @@ public class InterpreterModController implements Controller {
         CertificationType certification = Certifications.getSelectionModel().getSelectedItem();
 
         if(staffToInsert==null){
-            InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, new InterpreterInfo(langs, certification));
+            InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, langs, certification);
             InterpreterSubsystem.getInstance().addStaff(interpreterStaff);
         }
         else{
-            InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, new InterpreterInfo(staffToInsert.getStaffID(), langs, certification));
+            InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo,langs, certification);
             InterpreterSubsystem.getInstance().updateStaff(interpreterStaff);
         }
         editing = true;
@@ -192,7 +191,7 @@ public class InterpreterModController implements Controller {
             LastName.setText(staffToInsert.getLastName());
             Providers.setValue(staffToInsert.getProvider());
             Certifications.setValue(staffToInsert.getCertification());
-            PhoneNo.setText(staffToInsert.getPhone());
+            PhoneNo.setText(staffToInsert.getPhoneNumber());
             Email.setText(staffToInsert.getEmail());
         }
 

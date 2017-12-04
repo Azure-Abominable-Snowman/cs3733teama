@@ -1,6 +1,7 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.Configuration;
+import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestStatus;
 
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ public class InterpreterSubsystem {
     private InterpreterRequestDB requestDB;
     private InterpreterStaffDB staffDB;
     private InterpreterSubsystem() {
-        requestDB = new InterpreterRequestDB(Configuration.dbURL, "REQUEST_TABLE", "REPORT_TABLE");
-        staffDB = new InterpreterStaffDB(Configuration.dbURL, "STAFF_TABLE", "LANGUAGE_TABLE");
+        requestDB = new InterpreterRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.interpReqTable);
+        staffDB = new InterpreterStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.interpStaffTable);
     }
     private static class InterpreterHelper {
         private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
@@ -46,10 +47,9 @@ public class InterpreterSubsystem {
         return staffDB.findQualified(language);
     }
 
-    // TODO
     // returns a list of all Interpreters in the system
     public ArrayList<InterpreterStaff> getAllStaff() {
-        return staffDB.getAllStaff();
+        return staffDB.getAllInterpreterStaff();
     }
 
     // adds an Interpreter request to the database
@@ -74,8 +74,11 @@ public class InterpreterSubsystem {
 
     // returns all requests filtered by Request Status (ASSGINED or CLOSED). See Enum
     public ArrayList<InterpreterRequest> getAllRequests(RequestStatus s) {
+        return requestDB.getAllInterpreterRequests(s);
+    }
+    // returns all generic requests
+    public ArrayList<Request> getAllRequest(RequestStatus s) {
         return requestDB.getAllRequests(s);
     }
-
 
 }
