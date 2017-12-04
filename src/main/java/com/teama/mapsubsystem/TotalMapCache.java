@@ -169,6 +169,15 @@ public class TotalMapCache extends MapCache {
     private void addmissedNode(MapNode node)
     {
         //TODO poplate this, maybe add node can reuse this.
+        if (nodeIds.contains(node.getId()))
+            nodeIds.add(node.getId());
+        nodeCash.put(node.getId(), node); // over write or put new one.
+
+        describeToNode.remove(node.getId()); // first remove the old one, then put in the new
+        describeToNode.put(node.getShortDescription(), node);
+
+        // TODO long describ
+        // TODO floor this need to come very first. 
     }
 
     /**
