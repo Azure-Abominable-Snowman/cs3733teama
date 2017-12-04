@@ -175,6 +175,15 @@ public class TotalMapCacheTest {
 
     }
 
+    @Test
+    public void resetTest (){
+        javaDBSource.addNode(    testNode = new MapNodeData("FakeNode", new Location(2080, 1280, Floor.THREE, "WPI"),
+                NodeType.HALL, "FakeNode 001", "FN", "Team A", null)
+       );
+        ( (TotalMapCache) testCache ).reset(javaDBSource);
+        assertEquals("FakeNode",testCache.getNode(testNode.getId()).getId());
+    }
+
   //  @Test
     public void getEdgesOnFloor() throws Exception {
         //check edges on Cafe Stairs AHALL00201_ASTAI00101
