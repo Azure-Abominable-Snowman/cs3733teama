@@ -20,6 +20,7 @@ public class InterpreterStaffDB implements StaffDataSource {
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
     private String interpStaffTable;
+    private String generalStaffTable;
     private Connection conn = null;
     private Statement stmt = null;
     PreparedStatement addStaff, removeStaff, updateStaffTable, getStaff, getQualifiedStaff, getAllStaff;
@@ -28,7 +29,7 @@ public class InterpreterStaffDB implements StaffDataSource {
     public InterpreterStaffDB(String dbURL, String staffTableName) {
         this.dbURL = dbURL;
         this.interpStaffTable = staffTableName;
-
+        //this.generalStaffTable = generalStaffTable;
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             // Get a connection

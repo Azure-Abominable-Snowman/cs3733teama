@@ -12,6 +12,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
     private String requestTableName;
+    private String generalReqTableName;
     //private String reportTableName;
     private Connection conn = null;
     private Statement stmt = null;
@@ -19,10 +20,10 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             //selectRequestByStatus, updateRequest, markClosed, getRequestID; //for request table
     private PreparedStatement addReport, updateReport, deleteReport, getReport;
 
-    public InterpreterRequestDB(String dbURL, String reqTableName) {
+    public InterpreterRequestDB(String dbURL, String reqTableName, String generalReqTableName) {
 
         this.requestTableName = reqTableName;
-        //this.reportTableName = reportTableName;
+        this.generalReqTableName = generalReqTableName;
         this.dbURL = dbURL;
 
         try {

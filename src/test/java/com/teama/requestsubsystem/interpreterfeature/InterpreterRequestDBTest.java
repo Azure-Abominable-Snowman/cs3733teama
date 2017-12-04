@@ -50,7 +50,7 @@ public class InterpreterRequestDBTest {
             e.printStackTrace();
         }
 
-        db = new InterpreterRequestDB(dbURL, reqTable);
+        db = new InterpreterRequestDB(dbURL, reqTable, "");
 
 
     }
@@ -99,13 +99,12 @@ public class InterpreterRequestDBTest {
         p.setInt(2, 3);
         p.setString(3, RequestStatus.ASSIGNED.toString());
         p.setString(4, Language.French.toString());
-        p.setDouble(5, 3);
+        p.setInt(5, 3);
         p.setInt(6, 100);
         p.setString(7, TranslationType.VERBAL.toString());
 
         p.executeUpdate();
         assertNotNull(db.getRequest(1));
-        assertEquals(db.getInterpreterRequest(1).getServiceTime(), 100, 0.01);
 
     }
 

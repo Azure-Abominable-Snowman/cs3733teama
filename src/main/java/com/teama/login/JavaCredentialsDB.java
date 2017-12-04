@@ -40,17 +40,19 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
                     "PASSWORD INTEGER not NULL, " +
                     "ACCESS VARCHAR(25) not NULL, " +
                     "STAFFID INT NOT NULL, " +
-                    "STAFFTYPE VARCHAR(50) " +
+                    "STAFFTYPE VARCHAR(50), " +
                     "PRIMARY KEY (USERNAME))";
             stmt.execute(createTable);
         } catch (SQLException e) {
             log.info("Table " + tablename + " may already exist.");
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
 
         }
 
         try {
-            addLogin = conn.prepareStatement("INSERT INTO " + tablename + " VALUES (?, ?, ?, ?)");
-            addStaffType = conn.prepareStatement("INSERT INTO " + tablename + " (STAFFTYPE) VALUES (?) WHERE STAFFID = ?)");
+            addLogin = conn.prepareStatement("INSERT INTO " + tablename + " (USERNAME, PASSWORD, ACCESS, STAFFID) VALUES (?, ?, ?, ?)");
+            addStaffType = conn.prepareStatement("UPDATE " + tablename + " SET STAFFTYPE = ? WHERE STAFFID = ?");
             getLogin = conn.prepareStatement("SELECT * FROM " + tablename + " WHERE USERNAME = ? ");
             updateLogin = conn.prepareStatement("UPDATE " + tablename + " SET USERNAME = ?, PASSWORD = ?" + " WHERE USERNAME = ?",
                     ResultSet.CONCUR_UPDATABLE); // can only update username/password, not privelege level

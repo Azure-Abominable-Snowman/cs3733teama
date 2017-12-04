@@ -16,7 +16,7 @@ public class InterpreterSubsystem {
     private InterpreterRequestDB requestDB;
     private InterpreterStaffDB staffDB;
     private InterpreterSubsystem() {
-        requestDB = new InterpreterRequestDB(Configuration.dbURL, "REQUEST_TABLE");
+        requestDB = new InterpreterRequestDB(Configuration.dbURL, "REQUEST_TABLE", Configuration.generalReqTable);
         staffDB = new InterpreterStaffDB(Configuration.dbURL, "STAFF_TABLE");
     }
     private static class InterpreterHelper {
