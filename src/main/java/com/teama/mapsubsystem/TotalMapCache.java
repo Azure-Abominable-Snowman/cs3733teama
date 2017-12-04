@@ -198,11 +198,13 @@ public class TotalMapCache extends MapCache {
     {
         if(node == null) return;
         MapNode oldNode = nodeCash.get(node.getId());
-        ArrayList<MapNode> nodes =  floorNode.get(oldNode.getCoordinate().getLevel().toString());
-        for(int i=0;i<nodes.size();++i)
-        {
-            if(nodes.get(i).getId().equals(oldNode.getId())){
-                nodes.remove(i); break;
+        if(oldNode != null ) {
+            ArrayList<MapNode> nodes = floorNode.get(oldNode.getCoordinate().getLevel().toString());
+            for (int i = 0; i < nodes.size(); ++i) {
+                if (nodes.get(i).getId().equals(oldNode.getId())) {
+                    nodes.remove(i);
+                    break;
+                }
             }
         }
 
