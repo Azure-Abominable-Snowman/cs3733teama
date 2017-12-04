@@ -20,6 +20,15 @@ public class InterpreterStaff  implements ServiceStaff {
         genInfo.setStaffType(StaffType.INTERPRETER);
     }
 
+    public void setGenInfo(ServiceStaff staff) {
+        genInfo.setFirstName(staff.getFirstName());
+        genInfo.setLastName(staff.getLastName());
+        genInfo.setPhoneNumber(staff.getPhoneNumber());
+        genInfo.setEmail(staff.getEmail());
+        genInfo.setProvider(staff.getProvider());
+        genInfo.setUsername(staff.getUsername());
+    }
+
     public void add() {
         InterpreterSubsystem.getInstance().addStaff(this);
     }
