@@ -26,6 +26,8 @@ public class ContactInfo {
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        availableContactInfoTypes.add(ContactInfoTypes.PHONE);
+        availableContactInfoTypes.add(ContactInfoTypes.TEXT);
         this.phoneNumber = phoneNumber;
     }
 
@@ -45,6 +47,7 @@ public class ContactInfo {
     }
 
     public void setEmailAddress(String emailAddress) {
+        availableContactInfoTypes.add(ContactInfoTypes.EMAIL);
         this.emailAddress = emailAddress;
     }
 

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXSlider;
+import com.teama.ProgramSettings;
 import com.teama.controllers_refactor.PopOutController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
@@ -14,6 +15,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -211,6 +213,32 @@ public class MainScreenController implements Initializable {
             }
             // Remove the pop up
             removeCurrentPopUp();
+
+            // make the zoom slider reflect the current zoom level
+            zoomSlider.setValue(mapDrawing.getZoomFactor());
+        });
+
+        // Set the zoom slider max and min to the zoom max and min
+        zoomSlider.setMin(minZoom);
+        zoomSlider.setMax(maxZoom);
+        // Set to default
+        zoomSlider.setValue(mapDrawing.getZoomFactor());
+        // When the zoom slider is moved, change the zoom factor on the screen
+        zoomSlider.valueProperty().addListener((a, b, after) -> {
+            mapDrawing.setZoomFactor(after.doubleValue());
+        });
+
+        // Populate and create the search bar
+        SearchBarController mainSearch = new SearchBarController(searchBar, false);
+
+        // When the search button is pressed then generate a new path with that as the destination
+        searchButton.pressedProperty().addListener((Observable a) -> {
+            pathfinding.genPath(mainSearch.getSelectedNode());
+        });
+
+        // Have the search bar listen to the beginning of the path and update accordingly
+        ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
+            searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
     }
 

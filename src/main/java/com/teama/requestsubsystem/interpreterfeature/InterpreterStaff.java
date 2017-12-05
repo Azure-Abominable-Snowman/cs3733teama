@@ -2,6 +2,7 @@ package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.messages.ContactInfo;
 import com.teama.messages.Provider;
+import com.teama.requestsubsystem.GenericStaff;
 import com.teama.requestsubsystem.ServiceStaff;
 import com.teama.requestsubsystem.StaffType;
 
@@ -17,6 +18,14 @@ public class InterpreterStaff  implements ServiceStaff {
         genInfo = i;
         languages = langs;
         this.certification = certification;
+        genInfo.setStaffType(StaffType.INTERPRETER);
+    }
+
+    public InterpreterStaff(int id, InterpreterStaff s) {
+        GenericStaff genInfo = new GenericStaff(id, s.getFirstName(), s.getLastName(), s.getUsername(), s.getContactInfo());
+        this.genInfo = genInfo;
+        this.languages = s.getLanguages();
+        this.certification = s.getCertification();
         genInfo.setStaffType(StaffType.INTERPRETER);
     }
 

@@ -1,0 +1,79 @@
+.resetButton {
+    -fx-background-color: #E57373
+;
+}
+
+.confirmButton {
+    -fx-background-color: #2196F3
+;
+}
+
+ .field {
+     -fx-background-color: #29B6F6
+ ;
+ }
+
+.cancelButton {
+    -fx-background-color: #78909C;
+}
+
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #4DD0E1;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #4DD0E1;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: #75bc1b;
+    -fx-stroke-width: 3pt;
+}
+
+.check-box:selected > .box {
+    /* background color for selected checkbox */
+    -fx-background-color: lime;
+}
+
+.check-box > .box {
+    /* background color of unselected checkbox */
+    -fx-background-color: red;
+}
+
+.check-box:selected > .box > .mark,
+.check-box:indeterminate  > .box > .mark {
+    /* modify mark color */
+    -fx-background-color: blue;
+}
+
+
+.table-view .column-header .nested-column-header
+{
+    -fx-background-color: #03A9F4;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+
+}
+
+.table-view .column-header
+{
+	-fx-font: 13px "Roboto";
+    -fx-background-color: #90A4AE;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+}
+
+.table-view .column-header .filter
+{
+    -fx-background-color: #AAAAAA;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+}
+
+.table-row-cell:odd{
+    -fx-background-color: -fx-table-cell-border-color, #E0E0E0;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */  
+}
