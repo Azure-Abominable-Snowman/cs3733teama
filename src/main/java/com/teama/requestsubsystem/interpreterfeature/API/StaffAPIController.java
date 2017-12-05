@@ -268,6 +268,7 @@ public class StaffAPIController {
             InterpreterSubsystem.getInstance().addStaff(newStaffMember);
         }
         updateInterpList();
+        clearForm();
     }
 
     public void updateInterpList(){
