@@ -1,3 +1,7 @@
+.normalButton {
+    -fx-background-color: #78909C
+;
+}
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -17,6 +21,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+.resetButton {
+    -fx-background-color: #78909C;
+
+}
 
 .jfx-alert-overlay{
     -fx-background-color: #00000011;
