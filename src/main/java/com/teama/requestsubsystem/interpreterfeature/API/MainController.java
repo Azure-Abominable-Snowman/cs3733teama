@@ -38,5 +38,15 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        FXMLLoader reqLoader = new FXMLLoader();
+        RequestAPIController requestController = new RequestAPIController(node);
+        reqLoader.setLocation(getClass().getResource("/RequestPopOutAPI.fxml"));
+        Pane requestComponent;
+        requestComponent = reqLoader.load();
+        requestComponent.getStylesheets().clear();
+        requestComponent.getStylesheets().add(cssPath);
+        requestTab.setContent(requestComponent);
+
     }
 }

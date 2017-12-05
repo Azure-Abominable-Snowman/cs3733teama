@@ -47,7 +47,7 @@
          <items>
             <VBox fx:id="formBox" prefHeight="480.0" prefWidth="419.0">
                <children>
-                  <GridPane prefHeight="530.0" prefWidth="370.0">
+                  <GridPane prefHeight="531.0" prefWidth="370.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -78,15 +78,15 @@
                               <Insets top="10.0" />
                            </GridPane.margin>
                            <children>
-                              <JFXRadioButton text="Spanish" />
-                              <JFXRadioButton text="French" GridPane.rowIndex="3" />
-                              <JFXRadioButton text="German" GridPane.rowIndex="4" />
-                              <JFXRadioButton text="Russian" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
-                              <JFXRadioButton text="Cantonese" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <JFXRadioButton text="Ukranian" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                              <JFXRadioButton text="Luxembourgish" GridPane.rowIndex="1" />
-                              <JFXRadioButton text="Moldovan" GridPane.rowIndex="2" />
-                              <JFXRadioButton text="ASL" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+                              <JFXRadioButton fx:id="span" text="Spanish" />
+                              <JFXRadioButton fx:id="french" text="French" GridPane.rowIndex="3" />
+                              <JFXRadioButton fx:id="german" text="German" GridPane.rowIndex="4" />
+                              <JFXRadioButton fx:id="rus" text="Russian" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                              <JFXRadioButton fx:id="cantonese" text="Cantonese" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <JFXRadioButton fx:id="ukranian" text="Ukranian" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                              <JFXRadioButton fx:id="lux" text="Luxembourgish" GridPane.rowIndex="1" />
+                              <JFXRadioButton fx:id="mold" text="Moldovan" GridPane.rowIndex="2" />
+                              <JFXRadioButton fx:id="asl" text="ASL" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Required Language:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
@@ -99,7 +99,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Text>
-                        <JFXTextField editable="false" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="reqLocation" editable="false" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="30.0" right="30.0" />
                            </GridPane.margin>
@@ -109,13 +109,13 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Text>
-                        <JFXTextArea prefHeight="73.0" prefWidth="392.0" GridPane.rowIndex="7">
+                        <JFXTextArea fx:id="additionalInfo" prefHeight="73.0" prefWidth="392.0" GridPane.rowIndex="7">
                            <GridPane.margin>
                               <Insets bottom="15.0" left="30.0" right="30.0" />
                            </GridPane.margin>
                         </JFXTextArea>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.rowIndex="5" />
-                        <JFXComboBox prefHeight="22.0" prefWidth="209.0" promptText="Qualified Staff" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                        <JFXComboBox fx:id="qualStaff" prefHeight="22.0" prefWidth="209.0" promptText="Qualified Staff" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Staff:" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font name="System Bold" size="15.0" />
@@ -135,7 +135,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelInterpreter" prefHeight="48.0" prefWidth="80.0" text="Cancel">
+                        <JFXButton fx:id="cancelBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelInterpreter" prefHeight="48.0" prefWidth="80.0" text="Cancel">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -143,7 +143,7 @@
                               <Font size="15.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitInterpreter" prefHeight="43.0" prefWidth="198.0" text="Submit" GridPane.columnIndex="1">
+                        <JFXButton fx:id="submitBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitInterpreter" prefHeight="43.0" prefWidth="198.0" text="Submit" GridPane.columnIndex="1">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -166,12 +166,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXComboBox prefHeight="37.0" prefWidth="204.0" promptText="Status" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <JFXComboBox fx:id="reqStatus" prefHeight="37.0" prefWidth="204.0" promptText="Status" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <opaqueInsets>
                               <Insets left="5.0" />
                            </opaqueInsets>
                         </JFXComboBox>
-                        <JFXButton text="Filter" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                        <JFXButton fx:id="filterBtn" text="Filter" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -189,12 +189,12 @@
                         <ColumnConstraints />
                      </columnConstraints>
                      <children>
-                        <TableView fx:id="InterpInfoTable" prefHeight="570.0" prefWidth="396.0">
+                        <TableView fx:id="requestTable" prefHeight="570.0" prefWidth="396.0">
                            <columns>
-                              <TableColumn fx:id="firstCol" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Status" />
-                              <TableColumn fx:id="lastCol" maxWidth="1.7976931348623157E308" prefWidth="98.5" text="Location" />
-                              <TableColumn fx:id="langCol" maxWidth="1.7976931348623157E308" prefWidth="105.5" text="Language" />
-                              <TableColumn fx:id="certCol" maxWidth="1.7976931348623157E308" prefWidth="117.0" text="Assigned Staff" />
+                              <TableColumn fx:id="statusCol" maxWidth="1.7976931348623157E308" prefWidth="66.5" text="Status" />
+                              <TableColumn fx:id="locCol" maxWidth="1.7976931348623157E308" prefWidth="117.5" text="Location" />
+                              <TableColumn fx:id="langCol" maxWidth="1.7976931348623157E308" prefWidth="114.5" text="Language" />
+                              <TableColumn fx:id="staffCol" maxWidth="1.7976931348623157E308" prefWidth="99.5" text="Assigned Staff" />
                            </columns>
                         </TableView>
                      </children>
@@ -211,12 +211,12 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                      <children>
-                        <JFXButton text="Delete " GridPane.halignment="CENTER">
+                        <JFXButton fx:id="deleteBtn" text="Delete " GridPane.halignment="CENTER">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton text="Fulfill Request" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                        <JFXButton fx:id="fulfillBtn" text="Fulfill Request" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                            <font>
                               <Font size="15.0" />
                            </font>
