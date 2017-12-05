@@ -116,10 +116,10 @@
             <TableView fx:id="InterpInfoTable" prefWidth="373.0" HBox.hgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="firstCol" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="First Name" />
-                  <TableColumn fx:id="lastCol" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Last Name" />
-                  <TableColumn fx:id="langCol" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Language" />
-                  <TableColumn fx:id="certCol" maxWidth="1.7976931348623157E308" prefWidth="90.0" text="Certification" />
-                  <TableColumn fx:id="phoneCol" maxWidth="1.7976931348623157E308" prefWidth="62.0" text="Phone #" />
+                  <TableColumn fx:id="lastCol" maxWidth="1.7976931348623157E308" prefWidth="72.0" text="Last Name" />
+                  <TableColumn fx:id="langCol" maxWidth="1.7976931348623157E308" prefWidth="63.0" text="Language" />
+                  <TableColumn fx:id="certCol" maxWidth="1.7976931348623157E308" prefWidth="79.0" text="Certification" />
+                  <TableColumn fx:id="phoneCol" maxWidth="1.7976931348623157E308" prefWidth="88.0" text="Phone #" />
                   <TableColumn fx:id="emailCol" editable="false" prefWidth="118.0" text="Email" />
                </columns>
             </TableView>
