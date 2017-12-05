@@ -54,10 +54,7 @@ public class InterpreterSubsystem {
 
     // adds an Interpreter request to the database
     public InterpreterRequest addRequest(InterpreterRequest r) {
-        if (r.getStaffID() != 0) { // must be assigned
-            return requestDB.addRequest(r);
-        }
-        return null;
+        return requestDB.addRequest(r);
     }
 
     // deletes the selected request
@@ -88,5 +85,5 @@ public class InterpreterSubsystem {
     }
 
     // Gets a specific staff member
-    public InterpreterStaff getStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
+    public InterpreterStaff getIntepreterStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
 }

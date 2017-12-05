@@ -12,10 +12,13 @@
          <children>
             <JFXTextField fx:id="txtFamilySize" promptText="Family Size">
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
             </JFXTextField>
-            <JFXComboBox fx:id="cmbLang" prefHeight="25.0" prefWidth="220.0" promptText="Language" />
+            <JFXComboBox fx:id="cmbLang" prefHeight="25.0" prefWidth="220.0" promptText="Language">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </VBox.margin></JFXComboBox>
          </children>
       </VBox>
    </children>
