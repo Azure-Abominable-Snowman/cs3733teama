@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="mainPane" prefHeight="433.0" prefWidth="351.0" styleClass="popOutPaneStyle" stylesheets="@css/MainScreenStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="mainPane" prefHeight="663.0" prefWidth="351.0" styleClass="popOutPaneStyle" stylesheets="@css/MainScreenStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="arrow" fitHeight="76.0" fitWidth="73.0" layoutX="351.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="arrow" fitHeight="76.0" fitWidth="40.0" layoutX="351.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@triangle.png" />
          </image>
       </ImageView>
-      <JFXTextArea fx:id="textDirections" layoutX="11.0" layoutY="14.0" prefHeight="404.0" prefWidth="330.0" />
+      <TableView fx:id="textDirections" layoutX="14.0" layoutY="129.0" prefHeight="520.0" prefWidth="325.0" stylesheets="@css/DirectionPopOut.css">
+        <columns>
+          <TableColumn fx:id="imageCol" editable="false" prefWidth="83.0" text="Image" />
+          <TableColumn fx:id="descriptionCol" editable="false" prefWidth="177.0" text="Description" />
+            <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="64.0" text="Distance" />
+        </columns>
+      </TableView>
+      <JFXComboBox fx:id="originNodeCombo" editable="true" layoutX="13.0" layoutY="20.0" prefHeight="40.0" prefWidth="325.0" />
+      <JFXComboBox fx:id="filterBox" layoutX="13.0" layoutY="74.0" prefHeight="40.0" prefWidth="325.0" />
    </children>
 </Pane>
