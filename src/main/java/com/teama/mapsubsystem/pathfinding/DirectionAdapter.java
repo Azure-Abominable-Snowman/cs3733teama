@@ -4,9 +4,11 @@ import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 
 public class DirectionAdapter {
     private Direction d;
+    private int stepNum;
 
-    public DirectionAdapter(Direction d) {
+    public DirectionAdapter(int stepNum, Direction d) {
         this.d = d;
+        this.stepNum = stepNum;
     }
 
     public String getDescription() {
@@ -14,6 +16,8 @@ public class DirectionAdapter {
     }
 
     public String getDistance() {
-        return Double.toString(d.getLengthOfPath());
+        return Integer.toString((int)d.getLengthOfPath());
     }
+
+    public int getStepNum() { return stepNum; }
 }

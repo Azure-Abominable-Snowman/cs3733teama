@@ -3,8 +3,10 @@ package com.teama.controllers_refactor;
 import com.jfoenix.controls.JFXComboBox;
 import com.teama.ProgramSettings;
 import com.teama.controllers.SearchBarController;
+import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.DirectionAdapter;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
@@ -22,6 +24,10 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class DirectionsPopOut extends PopOutController {
     private int xOffset, yOffset;
@@ -29,6 +35,9 @@ public class DirectionsPopOut extends PopOutController {
 
     @FXML
     private TableView<DirectionAdapter> textDirections;
+
+    @FXML
+    private TableColumn<String, Integer> stepCol;
 
     @FXML
     private TableColumn<String, Image> imageCol;
@@ -57,6 +66,8 @@ public class DirectionsPopOut extends PopOutController {
             putDirectionsOnScreen(currentPath);
         });
 
+        stepCol.setCellValueFactory(
+                new PropertyValueFactory<>("stepNum"));
         descriptionCol.setCellValueFactory(
                 new PropertyValueFactory<>("description"));
         distanceCol.setCellValueFactory(
@@ -83,6 +94,51 @@ public class DirectionsPopOut extends PopOutController {
                 ProgramSettings.getInstance().setPathOriginNodeProp(selectedNode);
             }
         });
+
+        // Populate the filter box
+        filterBox.getItems().add("");
+        for(NodeType nType : NodeType.values()) {
+            if(!nType.equals(NodeType.HALL)) {
+                filterBox.getItems().add(nType.toString());
+            }
+        }
+
+        // Make a listener on the filter box that when it changes the nodes of that type
+        // are displayed differently
+        filterBox.getSelectionModel().selectedItemProperty().addListener((a1, b1, c1) -> {
+            for(long id : filterFloorListeners) {
+                mapDrawing.detachListener(id);
+            }
+            updateFilter();
+            drawShortestPathToFilter();
+            filterFloorListeners.add(mapDrawing.attachFloorChangeListener((a, b, c) -> {
+                updateFilter();
+                drawShortestPathToFilter();
+            }));
+        });
+    }
+
+    private MapDrawingSubsystem mapDrawing = MapDrawingSubsystem.getInstance();
+    private MapSubsystem mapSubsystem = MapSubsystem.getInstance();
+
+    private ArrayList<Long> filterFloorListeners = new ArrayList<>();
+    private void updateFilter() {
+        mapDrawing.refreshMapNodes();
+        Collection<MapNode> floorNodes = mapSubsystem.getVisibleFloorNodes(mapDrawing.getCurrentFloor()).values();
+        for (MapNode n : floorNodes) {
+            if (n.getNodeType().equals(NodeType.fromValue(filterBox.getSelectionModel().getSelectedItem()))) {
+                // Display on floor differently
+                mapDrawing.drawNode(n, 15, Color.RED);
+            }
+        }
+    }
+
+    private void drawShortestPathToFilter() {
+        // Find the shortest path to the given nodetype
+        Path shortest = mapSubsystem.findClosest(NodeType.fromValue(filterBox.getSelectionModel().getSelectedItem()));
+        System.out.println("SHORTEST FOUND TO "+shortest.getEndNode().getId());
+        //ProgramSettings.getInstance().setPathEndNodeProp(shortest.getEndNode());
+        //ProgramSettings.getInstance().setCurrentDisplayedPathProp(shortest);
     }
 
     private DirectionsGenerator directionsGenerator = new TextualDirections();
@@ -90,8 +146,10 @@ public class DirectionsPopOut extends PopOutController {
     private void putDirectionsOnScreen(Path path) {
         TextDirections directions = directionsGenerator.generateDirections(path);
         ObservableList<DirectionAdapter> directionVals = FXCollections.observableArrayList();
+        int num = 1;
         for(Direction d : directions.getDirections()) {
-            directionVals.add(new DirectionAdapter(d));
+            directionVals.add(new DirectionAdapter(num, d));
+            num++;
         }
         textDirections.setItems(directionVals);
 
@@ -109,7 +167,8 @@ public class DirectionsPopOut extends PopOutController {
 
     @Override
     public void onClose() {
-
+        // Redisplay all floor nodes to get rid of the filter
+        MapDrawingSubsystem.getInstance().refreshMapNodes();
     }
 
     @Override

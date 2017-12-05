@@ -373,4 +373,10 @@ public class MapDrawingSubsystem {
     public void clearMap() {
         map.clear();
     }
+
+    public void refreshMapNodes() {
+        for(MapNode n : mapDB.getVisibleFloorNodes(getCurrentFloor()).values()) {
+            drawNode(n, 0, null);
+        }
+    }
 }
