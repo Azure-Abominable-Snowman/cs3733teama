@@ -358,4 +358,23 @@ public class MainScreenController implements Initializable {
 
     }
     //END OF ABOUT PAGE POP UP
+
+    //create the help page pop up
+    @FXML
+    private void onHelpClick(ActionEvent e){
+        Stage helpPopUp = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/HelpPage.fxml"));
+        try {
+            Parent root = (Parent) loader.load();
+            Scene helpScene = new Scene(root);
+            helpPopUp.setScene(helpScene);
+            helpPopUp.resizableProperty().set(false);
+            helpPopUp.showAndWait();
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+        }
+
+    }
 }
