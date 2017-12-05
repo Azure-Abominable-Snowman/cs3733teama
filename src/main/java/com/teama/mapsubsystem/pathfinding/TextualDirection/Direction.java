@@ -2,18 +2,24 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
 import com.teama.mapsubsystem.data.Location;
 
+import java.awt.*;
+import javax.swing.*;
+
+
 public class Direction {
     private double lengthOfPath;
     private Location start, end;
     private String description;
     private TurnType turn;
+    private Icon icon;
 
-    public Direction(double length, Location start, Location end, String description , TurnType turn) {
+    public Direction(double length, Location start, Location end, String description , TurnType turn, Icon icon) {
 
         this.lengthOfPath = length;
         this.start = start;
         this.end = end;
         this.description = description;
+        this.icon = icon;
     }
 
     public double getLengthOfPath() {
@@ -34,5 +40,9 @@ public class Direction {
 
     public TurnType getTurn() {
         return turn;
+    }
+
+    public Icon getIcon(){
+        return icon;
     }
 }
