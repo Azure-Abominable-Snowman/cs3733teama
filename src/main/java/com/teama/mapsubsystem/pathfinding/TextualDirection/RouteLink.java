@@ -22,7 +22,7 @@ public class RouteLink {
 
     private  boolean endFlag = false;
     private  TurnType turn;
-    double pixToRealScaleFactor = 0.5 ; //TODO put the actual in.
+    double pixToRealScaleFactor = 0.0929411764705882 ; //1870 pixel per 173.8m
 
     RouteLink(MapNode start, MapNode next, RouteLink lastLink) {
 
@@ -43,7 +43,7 @@ public class RouteLink {
             textReturn = "Start";
             double dx = next.getCoordinate().getxCoord() - start.getCoordinate().getxCoord();
             double dy = next.getCoordinate().getyCoord() - start.getCoordinate().getyCoord();
-            distance = ((double) Math.sqrt( dx*dx + dy*dy) )/pixToRealScaleFactor;
+            distance = ((double) Math.sqrt( dx*dx + dy*dy) )*pixToRealScaleFactor;
             turn=TurnType.START;
         }
 
@@ -71,7 +71,7 @@ public class RouteLink {
 
             double dx = next.getCoordinate().getxCoord() - start.getCoordinate().getxCoord();
             double dy = next.getCoordinate().getyCoord() - start.getCoordinate().getyCoord();
-            distance = ((double) Math.sqrt( dx*dx + dy*dy) )/pixToRealScaleFactor;
+            distance = ((double) Math.sqrt( dx*dx + dy*dy) )*pixToRealScaleFactor;
 
 
             if(lastLink.getTextReturn().contains("Elevator") || lastLink.getTextReturn().contains("Stairs")){
