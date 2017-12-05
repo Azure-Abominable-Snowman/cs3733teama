@@ -471,7 +471,6 @@ public class HospitalMapDisplay implements MapDisplay {
      * @return
      */
     private boolean isPointOnLine(Location loc, Line line) {
-        loc = convToImageCoords(loc);
         System.out.println("SX: "+line.getStart().getxCoord()+" SY: "+line.getStart().getyCoord()+" EX: "+line.getEnd().getxCoord()+" EY: "+line.getEnd().getyCoord());
 
         Vector edge = new Vector(line.start,line.end);
@@ -527,6 +526,7 @@ public class HospitalMapDisplay implements MapDisplay {
     @Override
     public String lineAt(Location loc) {
         System.out.println("Y: "+loc.getyCoord()+" X: "+loc.getxCoord());
+        loc = convToImageCoords(loc);
         for(Line l : lineMap.values()) {
             if(isPointOnLine(loc, l)) {
                 return l.getId();
