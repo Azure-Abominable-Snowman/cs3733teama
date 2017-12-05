@@ -87,7 +87,6 @@ public class StaffPopOut extends PopOutController {
 
     @FXML
     private JFXTextField LastName;
-
     @FXML
     private JFXComboBox<CertificationType> Certifications;
 
@@ -260,7 +259,7 @@ public class StaffPopOut extends PopOutController {
             if (!editing.get()) {
                 InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, langs, certification);
                 InterpreterSubsystem.getInstance().addStaff(interpreterStaff);
-            } else {
+            } else if(InterpInfoTable.getSelectionModel().getSelectedCells().size() > 0) {
                 InterpreterStaff interpreterStaff = InterpInfoTable.getItems().get(InterpInfoTable.getSelectionModel().getFocusedIndex()).getInterpreter();
                 interpreterStaff.setGenInfo(staffInfo);
                 interpreterStaff.setLanguages(langs);
@@ -320,7 +319,8 @@ public class StaffPopOut extends PopOutController {
         for(JFXCheckBox checkBox: languageBoxList){
             checkBox.setSelected(false);
         }
-        FirstName.clear();LastName.clear();PhoneNo.clear(); Providers.getSelectionModel().clearSelection();
+        FirstName.clear();LastName.clear();PhoneNo.clear();
+        Providers.getSelectionModel().clearSelection();
         Email.clear(); Certifications.getSelectionModel().clearSelection(); PhoneNo.clear();
         Providers.setValue(null); Certifications.setValue(null);
     }
