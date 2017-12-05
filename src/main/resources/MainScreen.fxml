@@ -93,27 +93,27 @@
                <children>
                   <ImageView id="LOGIN" fx:id="loginButton" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.valignment="TOP">
                      <image>
-                        <Image url="@materialicons/ic_vpn_key_black_48dp/android/drawable-xxxhdpi/ic_vpn_key_black_48dp.png" />
+                        <Image url="@materialicons/flaticons/user-hero-blue.png" />
                      </image>
                   </ImageView>
                   <ImageView id="STAFFDIRECTORY" fx:id="directoryButton" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" GridPane.valignment="TOP">
                      <image>
-                        <Image url="@materialicons/ic_book_white_36dp/android/drawable-xxxhdpi/ic_book_white_36dp.png" />
+                        <Image url="@materialicons/flaticons/icon-people.png" />
                      </image>
                   </ImageView>
                   <ImageView id="EDITOR" fx:id="mapEditorButton" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" GridPane.valignment="TOP">
                      <image>
-                        <Image url="@materialicons/ic_mode_edit_white_36dp/android/drawable-xxxhdpi/ic_mode_edit_white_36dp.png" />
+                        <Image url="@materialicons/flaticons/edit-icon-2375785_960_720.png" />
                      </image>
                   </ImageView>
                   <ImageView id="REQUESTS" fx:id="serviceRequestButton" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" GridPane.valignment="TOP">
                      <image>
-                        <Image url="@materialicons/ic_room_service_white_36dp/android/drawable-xxxhdpi/ic_room_service_white_36dp.png" />
+                        <Image url="@materialicons/flaticons/maintenance-icon-1.png" />
                      </image>
                   </ImageView>
                   <ImageView id="DIRECTIONS" fx:id="directionsButton" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
                      <image>
-                        <Image url="@materialicons/ic_directions_white_36dp/android/drawable-xxxhdpi/ic_directions_white_36dp.png" />
+                        <Image url="@materialicons/flaticons/direction-icon.png" />
                      </image>
                   </ImageView>
                </children>
