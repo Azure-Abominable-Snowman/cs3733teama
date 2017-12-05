@@ -9,7 +9,8 @@
 }
 
 .normalButton {
-    -fx-background-color: gray;
+    -fx-background-color: #78909C
+;
 }
 
 .popOutPaneStyle {
