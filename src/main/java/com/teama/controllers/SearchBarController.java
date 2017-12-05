@@ -1,77 +1,139 @@
 package com.teama.controllers;
 
+import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.KeyEvent;
 import org.apache.commons.codec.language.DoubleMetaphone;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 
 public class SearchBarController {
 
     private ComboBox<String> inputField;
-    private Button searchButton;
     private MapSubsystem mapSubsystem;
+    private MapDrawingSubsystem mapDrawing;
 
     // Double metaphone fuzzy search algorithm
     private DoubleMetaphone doubleMetaphone;
 
-    public SearchBarController(ComboBox<String> inputField, Button searchButton, MapSubsystem mapSubsystem) {
+    private boolean floorNodes;
+
+    public SearchBarController(ComboBox<String> inputField, boolean floorNodes) {
         this.inputField = inputField;
-        this.searchButton = searchButton;
-        this.mapSubsystem = mapSubsystem;
+        this.mapSubsystem = MapSubsystem.getInstance();
+        this.floorNodes = floorNodes;
         doubleMetaphone = new DoubleMetaphone();
+        // Editable (fuzzy searching)
+        inputField.getEditor().setEditable(true);
+        mapDrawing = MapDrawingSubsystem.getInstance();
+
+        // Tie updating the node listing to floor change events if we are looking at floor nodes
+        if(floorNodes) {
+            updateNodeListing(mapDrawing.getCurrentFloor());
+            mapDrawing.attachFloorChangeListener((a, b, c) -> {
+                String text = inputField.getEditor().getText();
+                updateNodeListing(mapDrawing.getCurrentFloor());
+                inputField.getEditor().setText(text);
+            });
+        } else {
+            updateNodeListing();
+            // still attach to a floor change in case nodes are updated
+            mapDrawing.attachFloorChangeListener((a, b, c) -> {
+                String text = inputField.getEditor().getText();
+                updateNodeListing();
+                inputField.getEditor().setText(text);
+            });
+        }
+
+        // On typing into the combo box, update the fuzzy search values
+        inputField.getEditor().setOnKeyTyped((event) -> {
+            matchFuzzySearchValues(event);
+        });
     }
+
+    private ArrayList<String> desToMatchAgainst = new ArrayList<>();
 
     /**
      * Function that uses the current inputField text to generate and display a list of
      * approximately matched strings below the text field
      */
-    public void matchFuzzySearchValues() {
-        String selected = inputField.getSelectionModel().getSelectedItem();
-        System.out.println("TRIGGERED FUZZY VALUES ON: "+inputField.getSelectionModel().getSelectedItem());
-        System.out.println("DOUBLE METAPHONE ENCODED: "+doubleMetaphone.doubleMetaphone(selected, false)+" "+
-                doubleMetaphone.doubleMetaphone(selected, true));
+    public void matchFuzzySearchValues(KeyEvent event) {
+        String selected = inputField.getEditor().getText()+event.getCharacter();
+        if(selected.trim().length() > 0) {
+            Map<String, Integer> sortedByMatch = new HashMap<>();
+            for (String des : desToMatchAgainst) {
+                sortedByMatch.put(des, 0);
+                // Iterate through each substring and match it with the corresponding substring of the input
+                String[] subStrings = des.split(" ");
+                String[] toMatchSubStrings = selected.split(" ");
+                int timesMatched = 0;
+                for (int i = 0; i < subStrings.length; i++) {
+                    if (toMatchSubStrings.length > i) {
+                        if (doubleMetaphone.isDoubleMetaphoneEqual(subStrings[i], toMatchSubStrings[i])) {
+                            timesMatched++;
+                        }
+                    } else {
+                        if (doubleMetaphone.isDoubleMetaphoneEqual(subStrings[i], toMatchSubStrings[toMatchSubStrings.length - 1])) {
+                            timesMatched++;
+                        }
+                    }
+                }
+                sortedByMatch.put(des, timesMatched);
+            }
 
-        System.out.println("DMETA EQUAL: "+doubleMetaphone.isDoubleMetaphoneEqual("testval", selected));
-
-        // TODO: Use built in DoubleMetaphone in order to do string matching with the typed values
-        // TODO: Display these matched values below where the user is typing
-        // TODO: Allow the user to select from this menu
+            ArrayList<Map.Entry<String, Integer>> sorted = new ArrayList<>(sortedByMatch.entrySet());
+            Collections.sort(sorted, new Comparator<Map.Entry<String, Integer>>() {
+                        @Override
+                        public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                            return o2.getValue().compareTo(o1.getValue());
+                        }
+                    }
+            );
+            // Sort the set by the values
+            inputField.getItems().clear();
+            Iterator<Map.Entry<String, Integer>> sortedIterator = sorted.iterator();
+            while(sortedIterator.hasNext()) {
+                Map.Entry<String, Integer> next = sortedIterator.next();
+                inputField.getItems().add(next.getKey());
+            }
+            inputField.show();
+        } else {
+            inputField.getItems().clear();
+            inputField.getItems().addAll(desToMatchAgainst);
+            inputField.hide();
+        }
     }
 
-    /**
-     * Updates the node listing for the building
-     *
-     * This might also need to be called when fuzzy search matching ends
-     *
-     */
-    public void updateNodeListing(boolean onlyThis, Floor floor) {
+    public void updateNodeListing() {
+        inputField.getItems().clear();
+        ArrayList<MapNode> floorNodes = new ArrayList<>();
+        for (Floor f : Floor.values()) {
+            floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(f).values());
+        }
+        finishUpdateNodes(floorNodes);
+    }
+
+    public void updateNodeListing(Floor floor) {
         // Initially populate the list with all of the values (long descriptions)
         inputField.getItems().clear();
         ArrayList<MapNode> floorNodes = new ArrayList<>();
-        if(!onlyThis) {
-            for (Floor f : Floor.values()) {
-                floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(f).values());
-            }
-        } else {
-            floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(floor).values());
-        }
+        floorNodes.addAll(mapSubsystem.getVisibleFloorNodes(floor).values());
+        finishUpdateNodes(floorNodes);
+    }
 
+    private void finishUpdateNodes(ArrayList<MapNode> floorNodes) {
         // Alphabetize by long description
-        floorNodes.sort(new Comparator<MapNode>() {
-            @Override
-            public int compare(MapNode o1, MapNode o2) {
-                return o1.getLongDescription().compareTo(o2.getLongDescription());
-            }
+        floorNodes.sort((o1, o2) -> {
+            return o1.getLongDescription().compareTo(o2.getLongDescription());
         });
 
         for(MapNode n : floorNodes) {
             inputField.getItems().add(n.getLongDescription());
         }
+        desToMatchAgainst.addAll(inputField.getItems());
     }
 
     public MapNode getSelectedNode() {

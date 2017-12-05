@@ -4,7 +4,6 @@ import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -31,7 +30,7 @@ public class TextualDirections implements DirectionsGenerator {
 
 
         nodeList = path.getNodes();
-         routeLinks = new ArrayList<>(nodeList.size()-1);
+        routeLinks = new ArrayList<>(nodeList.size()-1);
 
         // group list of nodes into two point link structure and let RouteLink do the basic calculation.
         RouteLink lastLink  = new RouteLink(nodeList.get(0),nodeList.get(1),null);

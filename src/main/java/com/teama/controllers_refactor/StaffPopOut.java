@@ -260,7 +260,7 @@ public class StaffPopOut extends PopOutController {
             if (!editing.get()) {
                 InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, langs, certification);
                 InterpreterSubsystem.getInstance().addStaff(interpreterStaff);
-            } else {
+            } else if(InterpInfoTable.getSelectionModel().getSelectedCells().size() > 0) {
                 InterpreterStaff interpreterStaff = InterpInfoTable.getItems().get(InterpInfoTable.getSelectionModel().getFocusedIndex()).getInterpreter();
                 interpreterStaff.setGenInfo(staffInfo);
                 interpreterStaff.setLanguages(langs);
