@@ -32,12 +32,12 @@
                   <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXTextField fx:id="uname" focusColor="#061e65" labelFloat="true" onKeyPressed="#onEnterPressed" prefHeight="24.0" prefWidth="180.0" promptText="username" unFocusColor="#0a011e" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <JFXTextField fx:id="uname" focusColor="#061e65" labelFloat="true" onKeyPressed="#onEnterPressed" prefHeight="24.0" prefWidth="180.0" promptText="%usernamelog" unFocusColor="#0a011e" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Calibri Light Italic" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXPasswordField fx:id="pword" onKeyPressed="#onEnterPressed" prefHeight="5.0" prefWidth="155.0" promptText="password" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                  <JFXPasswordField fx:id="pword" onKeyPressed="#onEnterPressed" prefHeight="5.0" prefWidth="155.0" promptText="%staffpassword" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
                      <font>
                         <Font name="Calibri Light Italic" size="14.0" />
                      </font>
