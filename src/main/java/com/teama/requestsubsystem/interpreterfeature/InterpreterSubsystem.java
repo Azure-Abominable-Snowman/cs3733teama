@@ -3,7 +3,6 @@ package com.teama.requestsubsystem.interpreterfeature;
 import com.teama.Configuration;
 import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestStatus;
-import com.teama.requestsubsystem.ServiceStaff;
 
 import java.util.ArrayList;
 
@@ -89,5 +88,5 @@ public class InterpreterSubsystem {
     }
 
     // Gets a specific staff member
-    public ServiceStaff getStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
+    public InterpreterStaff getStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
 }
