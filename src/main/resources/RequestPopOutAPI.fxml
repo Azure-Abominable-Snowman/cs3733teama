@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<VBox xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.requestsubsystem.interpreterfeature.API.RequestAPIController">
+<VBox xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane>
         <columnConstraints>
@@ -135,7 +135,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="cancelBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelInterpreter" prefHeight="48.0" prefWidth="80.0" text="Cancel">
+                        <JFXButton fx:id="cancelBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onCancel" prefHeight="48.0" prefWidth="80.0" text="Cancel">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -143,7 +143,7 @@
                               <Font size="15.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="submitBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitInterpreter" prefHeight="43.0" prefWidth="198.0" text="Submit" GridPane.columnIndex="1">
+                        <JFXButton fx:id="submitBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onSubmit" prefHeight="43.0" prefWidth="198.0" text="Submit" GridPane.columnIndex="1">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -171,7 +171,7 @@
                               <Insets left="5.0" />
                            </opaqueInsets>
                         </JFXComboBox>
-                        <JFXButton fx:id="filterBtn" text="Filter" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                        <JFXButton fx:id="filterBtn" onAction="#onFilter" text="Filter" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -228,4 +228,7 @@
          </items>
       </SplitPane>
    </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
 </VBox>

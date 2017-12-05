@@ -158,7 +158,7 @@ public class MainScreenController implements Initializable {
             }
         });
         // Make a pop up on the user's mouse cursor every time a node is clicked
-        popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
+        popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.LOCCLICKED);
 
         // Attach listeners to all the sidebar pop outs to open their respective pane on click
         for(Node button : mainSidebarGrid.getChildren()) {
@@ -187,7 +187,6 @@ public class MainScreenController implements Initializable {
 
         // Pop up goes away on a floor switch
         mapDrawing.attachFloorChangeListener((a, b, c) -> removeCurrentPopUp());
-
 
         // Make the node pop up disappear every time the window is resized
         ChangeListener<Number> removePopUpWhenResized = (ObservableValue<? extends Number> obsVal, Number oldVal, Number newVal) -> removeCurrentPopUp();
@@ -242,6 +241,8 @@ public class MainScreenController implements Initializable {
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
+
+
     }
 
     private Node currentPopOut;
@@ -251,6 +252,7 @@ public class MainScreenController implements Initializable {
     private void openInMainSidebar(PopOutType popOutType, ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
         try {
             // Remove the last pop out if present
+            removeCurrentPopUp();
             if(currentPopOut != null) {
                 currentPopOutController.onClose();
                 areaPane.getChildren().remove(currentPopOut);
@@ -313,6 +315,7 @@ public class MainScreenController implements Initializable {
                 e.printStackTrace();
             }
             areaPane.getChildren().add(nodeInfo);
+            System.out.println(areaPane.getChildren().getClass());
             nodePopUp.setInfo(nodeAt, pathfinding, event);
 /*
             // Create pane to load nodeInfo root node into
@@ -339,6 +342,10 @@ public class MainScreenController implements Initializable {
             }
         }
         */
+        }
+        else {
+            System.out.println("Clicked on a random location.");
+            removeCurrentPopUp();
         }
     }
 

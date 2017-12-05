@@ -2,22 +2,29 @@ package com.teama.requestsubsystem.interpreterfeature.API;
 
 import com.jfoenix.controls.*;
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.requestsubsystem.RequestStatus;
-import com.teama.requestsubsystem.ServiceStaff;
+import com.teama.requestsubsystem.*;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.Language;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
 
 /**
  * Created by aliss on 12/4/2017.
  */
 public class RequestAPIController {
-    @FXML
-    private VBox formBox;
+
     @FXML
     private JFXRadioButton span, french, german, rus, cantonese, ukranian, lux, mold, asl;
     @FXML
@@ -31,13 +38,26 @@ public class RequestAPIController {
     @FXML
     private JFXButton cancelBtn, submitBtn, filterBtn, deleteBtn, fulfillBtn;
     @FXML
-    private TableView<InterpreterRequest> requestTable;
+    private TableView<RequestTableData> requestTable;
     @FXML
-    private TableColumn statusCol, locCol, langCol, staffCol;
+    private TableColumn<RequestTableData, RequestStatus> statusCol;
+    @FXML
+    private TableColumn<RequestTableData, String> locCol;
+    @FXML
+    private TableColumn<RequestTableData, Language> langCol;
+    @FXML
+    private TableColumn<RequestTableData, Integer> staffCol;
+
+    @FXML
+    private VBox formBox;
+    @FXML
+    private GridPane newForm, newFormBtns;
 
     private MapNode destination;
     private Language requiredLanguage;
     private ToggleGroup languageSelectionGroup;
+    private BooleanProperty isIncomplete = new SimpleBooleanProperty(true);
+    private BooleanProperty isNotSelected = new SimpleBooleanProperty(true);
 
     public RequestAPIController(MapNode destination) {
         this.destination = destination;
@@ -55,10 +75,123 @@ public class RequestAPIController {
         mold.setToggleGroup(languageSelectionGroup);
         asl.setToggleGroup(languageSelectionGroup);
 
+        span.setUserData(Language.Spanish);
+        french.setUserData(Language.French);
+        german.setUserData(Language.German);
+        rus.setUserData(Language.Russian);
+        cantonese.setUserData(Language.Cantonese);
+        ukranian.setUserData(Language.Ukranian);
+        lux.setUserData(Language.Luxembourgish);
+        mold.setUserData(Language.Moldovan);
+        asl.setUserData(Language.ASL);
+
         //languageSelectionGroup.selectedToggleProperty().addListener();
         reqLocation.setText(destination.getId());
+        languageSelectionGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (newValue != null) {
+                    Language chosen = (Language)newValue.getUserData();
+                    qualStaff.getItems().clear();
+                    ArrayList<InterpreterStaff> qualified = InterpreterSubsystem.getInstance().findQualified(chosen);
+                    qualStaff.getItems().addAll(qualified);
+                    isNotSelected.setValue(false);
+                }
+                else {
+                    isNotSelected.setValue(true);
+                }
+            }
+        });
+
+        //submitBtn.disableProperty().bind(isIncomplete);
+        //fulfillBtn.disableProperty().bind(isNotSelected);
+        //deleteBtn.disableProperty().bind(isNotSelected);
+
+        reqStatus.getItems().clear();
+        reqStatus.getItems().addAll(RequestStatus.values());
+
+        requestTable.selectionModelProperty().addListener(new ChangeListener<TableView.TableViewSelectionModel<RequestTableData>>() {
+            @Override
+            public void changed(ObservableValue<? extends TableView.TableViewSelectionModel<RequestTableData>> observable, TableView.TableViewSelectionModel<RequestTableData> oldValue, TableView.TableViewSelectionModel<RequestTableData> newValue) {
+                if (newValue != null && newValue != oldValue) {
+                    isNotSelected.setValue(false);
+                }
+                else {
+                    isNotSelected.setValue(true);
+                }
+            }
+        });
+
+
+        //    private TableColumn statusCol, locCol, langCol, staffCol;
+
+        statusCol.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+        locCol.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
+        langCol.setCellValueFactory(cellData -> cellData.getValue().requiredLanguageProperty());
+        staffCol.setCellValueFactory(cellData -> cellData.getValue().staffIDProperty().asObject());
+
 
     }
+
+
+    @FXML
+    void onCancel(ActionEvent event) {
+        clearAllNewRequestFields();
+    }
+
+    @FXML
+    void onSubmit(ActionEvent event) {
+        ServiceStaff selected = qualStaff.getSelectionModel().getSelectedItem();
+        Toggle requiredLangToggle = languageSelectionGroup.getSelectedToggle();
+        if (selected != null && requiredLangToggle!= null) {
+            Request newReq = new GenericRequest(destination.getCoordinate(), selected.getStaffID(), RequestType.INTR, RequestStatus.ASSIGNED, additionalInfo.getText());
+            InterpreterRequest newInterpReq = new InterpreterRequest(newReq, (Language) requiredLangToggle.getUserData());
+            InterpreterRequest added = InterpreterSubsystem.getInstance().addRequest(newInterpReq);
+            if (added != null) {
+                clearAllNewRequestFields();
+
+                // populate request table
+                RequestTableData newData = new RequestTableData(added, destination);
+                requestTable.getItems().addAll(newData);
+            }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Submission Error");
+            alert.setHeaderText("Form Submission Failure");
+            alert.setContentText("All fields must be filled in for the request to be submitted.");
+            alert.showAndWait();
+        }
+
+    }
+
+    @FXML
+    void onFilter(ActionEvent e) {
+        //TODO
+
+    }
+    private void clearAllNewRequestFields() {
+        reqLocation.clear();
+        for (Toggle t: languageSelectionGroup.getToggles()) {
+            t.setSelected(false);
+        }
+        qualStaff.getItems().clear();
+        additionalInfo.clear();
+    }
+
+    @FXML
+    void onFulfill(ActionEvent e) {
+        formBox.getChildren().clear();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("FulfillRqAPI.fxml"));
+        FulfillRqAPIController controller = new FulfillRqAPIController();
+    }
+
+    @FXML
+    void onDelete(ActionEvent e) {
+
+    }
+
 
 
 

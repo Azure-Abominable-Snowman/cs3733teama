@@ -1,5 +1,8 @@
 package com.teama.controllers_refactor;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import com.teama.controllers.NodeEditorController;
 import com.teama.mapdrawingsubsystem.ClickedListener;
@@ -8,6 +11,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -30,11 +35,21 @@ public class EditorPopOut extends PopOutController {
     private MapDrawingSubsystem mapDraw;
 
     @FXML
-    private JFXToggleButton viewEdges, viewNodes;
+    private JFXToggleButton viewEdges, viewNodes, editNodes, editEdges;
     @FXML
     private ImageView editNode, deleteNode;
+    @FXML
+    private JFXTextField nodeID, nodeCoord, longName, shortName;
+    @FXML
+    private JFXComboBox<NodeType> nodeType;
+    @FXML
+    private JFXComboBox<String> alignmentOptions;
+    @FXML
+    private JFXButton confirmBtn, cancelBtn, alignBtn;
+
 
     private Parent currentPopOut;
+    private ToggleGroup editorGroup;
 
     private Map<Long, EventHandler<MouseEvent>> mouseEvents = new HashMap<>();
     private Map<Long, ChangeListener<Boolean>> floorEvents = new HashMap<>();
@@ -46,7 +61,18 @@ public class EditorPopOut extends PopOutController {
         //viewNodes = new JFXToggleButton();
         viewEdges.setText("View Edges");
         viewNodes.setText("View Hall Nodes");
+        nodeType.getItems().clear();
+        nodeType.getItems().addAll(NodeType.values());
+        alignmentOptions.getItems().clear();
+        alignmentOptions.getItems().addAll("X", "Y");
+        //alignmentOptions.setDisable(true);
+        alignmentOptions.setVisible(false);
+        alignBtn.setVisible(false);
 
+
+        editorGroup = new ToggleGroup();
+        editNodes.setToggleGroup(editorGroup);
+        editEdges.setToggleGroup(editorGroup);
 
         viewNodes.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -110,6 +136,12 @@ public class EditorPopOut extends PopOutController {
             }
         }
     };
+    //            nType = nodeTypeSelector.getSelectionModel().getSelectedItem().toString();
+/*
+if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
+            nType = nodeTypeSelector.getSelectionModel().getSelectedItem().toString();
+        }
+ */
 
     EventHandler<MouseEvent> onLocClick = new EventHandler<MouseEvent>() {
         @Override
@@ -122,16 +154,34 @@ public class EditorPopOut extends PopOutController {
             MapNode clickedNode = masterMap.nodeAt(selected);
             if (clickedNode != null) {
                 System.out.println(clickedNode.getCoordinate().getxCoord());
-                viewEdges.setText(clickedNode.getId());
+                nodeID.setText(clickedNode.getId());
+                nodeCoord.setText("(" + clickedNode.getCoordinate().getxCoord() + ", " + clickedNode.getCoordinate().getyCoord());
+                longName.setText(clickedNode.getLongDescription());
+                shortName.setText(clickedNode.getShortDescription());
+                nodeType.setValue(clickedNode.getNodeType());
+                nodeType.setDisable(true);
+
+
             }
 
             else {
                 Location converted = masterMap.convertEventToImg(event, masterMap.getCurrentFloor());
-                viewEdges.setText(Integer.toString(converted.getxCoord()));
+                clearTextFields();
+                nodeCoord.setText("(" + Integer.toString(converted.getxCoord()) + ", " +  Integer.toString(converted.getyCoord()) + ")");
+
             }
             // IF EDITING NODES, GENERATE + POPUP
         }
     };
+
+    private void clearTextFields() {
+        nodeID.setText(nodeID.getPromptText());
+        longName.setText(longName.getPromptText());
+        shortName.setText(shortName.getPromptText());
+        nodeType.setDisable(false);
+        nodeType.getSelectionModel().clearSelection();
+        nodeType.setDisable(true);
+    }
 
     EventHandler<MouseEvent> onNodeClick = new EventHandler<MouseEvent>() {
         @Override
