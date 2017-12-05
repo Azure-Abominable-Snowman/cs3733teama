@@ -120,7 +120,7 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+      <AnchorPane prefHeight="40.0" prefWidth="218.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
          <children>
             <JFXSlider fx:id="zoomSlider" prefHeight="40.0" prefWidth="200.0" stylesheets="@css/MainScreenStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
@@ -128,6 +128,15 @@
       <AnchorPane prefHeight="200.0" prefWidth="54.0" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="15.0">
          <children>
             <VBox fx:id="floorButtonBox" layoutX="137.0" prefHeight="200.0" prefWidth="63.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="932.0" layoutY="735.0" prefHeight="47.0" prefWidth="89.0">
+         <children>
+            <JFXButton layoutX="22.0" layoutY="12.0" onAction="#onAboutClick" prefHeight="47.0" prefWidth="89.0" style="-fx-background-color: TRANSPARENT;" text="About" textFill="#0657a8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Font" size="20.0" />
+               </font>
+            </JFXButton>
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="66.0" prefWidth="63.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="90.0" />
