@@ -20,7 +20,7 @@ public class RouteLink {
     private RouteLink lastLink;
     private double distance;
     private String textReturn;
-    private Icon icon;
+    //private Icon icon;
     private Floor startFloor;
     private  Floor nextFloor; // Can't have an end floor since there is only a start and next, therefore no end
 

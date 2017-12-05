@@ -11,15 +11,15 @@ public class Direction {
     private Location start, end;
     private String description;
     private TurnType turn;
-    private Icon icon;
+    //private Icon icon;
 
-    public Direction(double length, Location start, Location end, String description , TurnType turn, Icon icon) {
+    public Direction(double length, Location start, Location end, String description , TurnType turn) {
 
         this.lengthOfPath = length;
         this.start = start;
         this.end = end;
         this.description = description;
-        this.icon = icon;
+      //  this.icon = icon;
     }
 
     public double getLengthOfPath() {
@@ -42,7 +42,8 @@ public class Direction {
         return turn;
     }
 
-    public Icon getIcon(){
+   /* public Icon getIcon(){
         return icon;
     }
+    */
 }

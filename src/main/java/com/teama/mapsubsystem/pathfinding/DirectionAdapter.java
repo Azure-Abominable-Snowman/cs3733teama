@@ -22,5 +22,5 @@ public class DirectionAdapter {
         return Double.toString(d.getLengthOfPath());
     }
 
-    public Icon getIcon(){return d.getIcon();}
+    //public Icon getIcon(){return d.getIcon();}
 }
