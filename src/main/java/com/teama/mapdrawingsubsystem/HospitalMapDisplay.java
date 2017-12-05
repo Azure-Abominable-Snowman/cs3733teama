@@ -471,31 +471,57 @@ public class HospitalMapDisplay implements MapDisplay {
      * @return
      */
     private boolean isPointOnLine(Location loc, Line line) {
+        loc = convToImageCoords(loc);
         System.out.println("SX: "+line.getStart().getxCoord()+" SY: "+line.getStart().getyCoord()+" EX: "+line.getEnd().getxCoord()+" EY: "+line.getEnd().getyCoord());
-        try {
-            double slope = ((line.getStart().getyCoord() - line.getEnd().getyCoord())/(line.getStart().getxCoord() - line.getEnd().getxCoord()));
-            double invSlope = 1 / slope;
-            loc = convToImageCoords(loc);
-            System.out.println("CONVY: "+loc.getyCoord()+" CONVX: "+loc.getxCoord());
 
-            double yGuess = slope*loc.getxCoord()-slope*line.getStart().getxCoord()+line.getStart().getyCoord();
-            double xGuess = loc.getyCoord()*invSlope-line.getStart().getyCoord()*invSlope+line.getStart().getxCoord();
-            System.out.println("YGUESS: "+yGuess+" XGUESS: "+xGuess);
+        Vector edge = new Vector(line.start,line.end);
+        Vector mouse = new Vector(loc,line.end);
+        Vector proj = edge.projection(mouse);
+        Vector perb = new Vector();
+        perb.x=edge.x-mouse.x;
+        perb.y=edge.y-mouse.y;
 
-            double yDist = yGuess-loc.getyCoord();
-            double xDist = xGuess-loc.getxCoord();
+        if(perb.getNorm()>line.weight) return false; // the point is out side of the thickness TODO check if this weight need to be doubled?
+        if(proj.getNorm()>edge.getNorm()) return false; // the point is at least out side of end of line.
+        if(edge.x>=0  ) {
+            if( proj.x>=0) return  true;
+            else return false;
+        }
+        else {
+            if( proj.x<=0) return  true;
+            else return false;
+        }
+    }
 
-            System.out.println("YDIST: "+yDist+" XDIST: "+xDist);
+    private class Vector{
+        public double x=0  , y=0 ;
+        public double norm=-1;
+        public Vector(Location start,Location end){
+            x = end.getxCoord() - start.getxCoord();
+            y = end.getyCoord() - start.getyCoord();
+        }
+        public Vector(){}
 
-            /*double bound = Math.cos(Math.atan((xDist/yDist)))*yDist;
-
-            System.out.println("BOUND: "+bound);*/
-
-        } catch(ArithmeticException e) {
-            return false;
+        /**
+         * get the projection from b onto this vector
+         * @param b the vector that will project onto this vector.
+         * @return the this proj b result.
+         */
+        public Vector projection(Vector b){
+            Vector result  = new Vector();
+            result.norm= (this.x*b.x+this.y*b.y) / b.getNorm();
+            result.x = b.x/b.getNorm();
+            result.y = b.y/b.getNorm();
+            return result;
         }
 
-        return false;
+        public double  getNorm (){
+            if ( norm<0) norm = Math.sqrt(x*x+y*y); // lazy initialize.
+            return norm;
+        }
+
+
+
     }
 
     @Override
@@ -503,9 +529,9 @@ public class HospitalMapDisplay implements MapDisplay {
         System.out.println("Y: "+loc.getyCoord()+" X: "+loc.getxCoord());
         for(Line l : lineMap.values()) {
             if(isPointOnLine(loc, l)) {
-                //return l.getId();
+                return l.getId();
                 //TODO: make this work
-                return null;
+                //return null;
             }
         }
         return null;
