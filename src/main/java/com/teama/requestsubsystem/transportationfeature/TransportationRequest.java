@@ -4,6 +4,7 @@ import com.teama.mapsubsystem.data.Location;
 import com.teama.requestsubsystem.GenericRequestInfo;
 import com.teama.requestsubsystem.Priority;
 import com.teama.requestsubsystem.RequestStatus;
+import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.Language;
 
 /**
@@ -92,6 +93,10 @@ public class TransportationRequest {
 
     public void setServiceTime(double time) {
         serviceTime = time;
+    }
+
+    public RequestType getRequestType(){
+        return RequestType.TRANS;
     }
 
 }

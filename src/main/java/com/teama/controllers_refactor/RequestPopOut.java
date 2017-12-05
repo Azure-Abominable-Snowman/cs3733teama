@@ -45,19 +45,19 @@ public class RequestPopOut extends PopOutController {
     private JFXTextField locationLabel;
 
     @FXML
-    private JFXComboBox<String> building = new JFXComboBox<>();
+    private JFXComboBox<String> building;
 
     @FXML
-    private JFXComboBox<Floor> floor = new JFXComboBox<>();
+    private JFXComboBox<Floor> floor;
 
     @FXML
-    private JFXComboBox<MapNode> longName = new JFXComboBox<>();
+    private JFXComboBox<MapNode> longName;
 
     @FXML
     private JFXTextField typeLabel;
 
     @FXML
-    private JFXComboBox<RequestType> typeOfRequest = new JFXComboBox<>();
+    private JFXComboBox<RequestType> typeOfRequest;
 
     @FXML
     private JFXTextField noteLabel;
@@ -80,6 +80,12 @@ public class RequestPopOut extends PopOutController {
     @FXML
     private JFXButton login;
 
+    @FXML
+    private JFXButton deleteButton;
+
+    @FXML
+    private JFXButton completeButton;
+
     private String buildingName;
     private Floor floorName;
     private MapNode mapNodeName;
@@ -93,8 +99,8 @@ public class RequestPopOut extends PopOutController {
 
     private AnchorPane curReqPane;
     private ArrayList<InterpreterRequest> requests;
-    private InterpreterRequest curRequest;
-    private FXMLLoader loader = new FXMLLoader();
+    private InterpreterRequest curRequest = null;
+    //private FXMLLoader loader = new FXMLLoader();
 
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
@@ -140,11 +146,12 @@ public class RequestPopOut extends PopOutController {
         longName.getSelectionModel().clearSelection();
         typeOfRequest.getSelectionModel().clearSelection();
         additionalInfo.clear();
-        //controller.
+
     }
 
     @FXML
     public void submitRequest(ActionEvent e) {
+
         //for Food Request
         String foodDesired = "";
         //for Interpreter Request
@@ -177,13 +184,11 @@ public class RequestPopOut extends PopOutController {
                 //foodDesired = controller.getFoodDesired();
                 if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || additionalInfoMessage.equals("") || foodDesired.equals("")){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error!");
+                    alert.setTitle("Error1!");
                     alert.setHeaderText("Error with Submitting Your Request.");
                     alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields.");
                     alert.showAndWait();
                 }
-
-
                 break;
             case INTR:
                 lang = controller.getLanguage();
@@ -191,7 +196,7 @@ public class RequestPopOut extends PopOutController {
 
                 if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || additionalInfoMessage.equals("") || lang == null || familySize.equals("")){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error!");
+                    alert.setTitle("Error2!");
                     alert.setHeaderText("Error with Submitting Your Request.");
                     alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
                     alert.showAndWait();
@@ -200,7 +205,17 @@ public class RequestPopOut extends PopOutController {
                         Integer.parseInt(familySize),
                         lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
+                System.out.println(curRequest.getStatus());
                 System.out.println("It was successful");
+                //TODO fix this
+                if(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest)){
+                    System.out.println("I o[i2jej]qoi[2 you so much");
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation!");
+                    alert.setHeaderText("Request has been added.");
+                    alert.setContentText("");
+                    alert.showAndWait();
+                }
 
                 class MyThread implements Runnable {
 
@@ -213,17 +228,23 @@ public class RequestPopOut extends PopOutController {
                     }
                 }
                 Thread t = new Thread(new MyThread());
+                System.out.println("Message has been sent!");
                 t.start();
+
                 break;
             case MAIN:
                 break;
             case SEC:
                 break;
             case TRANS:
+
                 break;
             default:
                 break;
         }
+
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
 
         System.out.println(buildingName);
         System.out.println(floorName);
@@ -242,9 +263,11 @@ public class RequestPopOut extends PopOutController {
             if (typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.INTR)) {
                 System.out.println("Firing");
                 System.out.println(getClass().getResource("/InterpreterReq.fxml"));
+                FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/InterpreterReq.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
+                    System.out.println("Hello Jake");
                     addToThis.getChildren().remove(curReqPane);
                     addToThis.getChildren().add(interpParent);
                     curReqPane = interpParent;
@@ -254,9 +277,40 @@ public class RequestPopOut extends PopOutController {
             }
             else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.TRANS)){
                 System.out.println("this is working");
+                FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/Transportation.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
+                    System.out.println("Hello Jake");
+                    addToThis.getChildren().remove(curReqPane);
+                    addToThis.getChildren().add(interpParent);
+                    curReqPane = interpParent;
+                    InterpReqController temp = loader.getController();
+                    controller = temp;
+                }
+            }
+
+            else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.FOOD)){
+                System.out.println("this is working");
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/FoodDropDown.fxml"));
+                AnchorPane interpParent = loader.load();
+                if (curReqPane != interpParent) {
+                    System.out.println("Hello Jake");
+                    addToThis.getChildren().remove(curReqPane);
+                    addToThis.getChildren().add(interpParent);
+                    curReqPane = interpParent;
+                    InterpReqController temp = loader.getController();
+                    controller = temp;
+                }
+            }
+            else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.MAIN)){
+                System.out.println("this is working");
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/MaintenanceDropDown.fxml"));
+                AnchorPane interpParent = loader.load();
+                if (curReqPane != interpParent) {
+                    System.out.println("Hello Jake");
                     addToThis.getChildren().remove(curReqPane);
                     addToThis.getChildren().add(interpParent);
                     curReqPane = interpParent;
@@ -267,34 +321,11 @@ public class RequestPopOut extends PopOutController {
 
             else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.SEC)){
                 System.out.println("this is working");
-                loader.setLocation(getClass().getResource("/FoodDropDown.fxml"));
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/SecurityDropDown.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
-                    addToThis.getChildren().remove(curReqPane);
-                    addToThis.getChildren().add(interpParent);
-                    curReqPane = interpParent;
-                    InterpReqController temp = loader.getController();
-                    controller = temp;
-                }
-            }
-            else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.MAIN)){
-                System.out.println("this is working");
-                loader.setLocation(getClass().getResource("MaintenanceDropDown.fxml"));
-                AnchorPane interpParent = loader.load();
-                if (curReqPane != interpParent) {
-                    addToThis.getChildren().remove(curReqPane);
-                    addToThis.getChildren().add(interpParent);
-                    curReqPane = interpParent;
-                    InterpReqController temp = loader.getController();
-                    controller = temp;
-                }
-            }
-
-            else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.MAIN)){
-                System.out.println("this is working");
-                loader.setLocation(getClass().getResource("MaintenanceDropDown.fxml"));
-                AnchorPane interpParent = loader.load();
-                if (curReqPane != interpParent) {
+                    System.out.println("Hello Jake");
                     addToThis.getChildren().remove(curReqPane);
                     addToThis.getChildren().add(interpParent);
                     curReqPane = interpParent;
@@ -325,28 +356,43 @@ public class RequestPopOut extends PopOutController {
 
         Stage staffPopUp = new Stage();
         try {
-            controller = new InterpReqController();
-          //  if(controller.getLanguage()!=null) {
-                staffPopUp.setTitle("View B&W Staff");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
+            if(typeOfRequest.getSelectionModel().getSelectedItem() == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setHeaderText("No Request Type Selected.");
+                alert.setContentText("Please choose a request type.");
+                alert.showAndWait();
+            }
 
-                Scene staffPopUpScene = new Scene(loader.load());
-                ViewStaffController viewStaffController = loader.getController();
-                viewStaffController.setLanguage(controller.getLanguage());
-                // viewStaffController.setRequestViewList(controller.getLanguage());
-                viewStaffController.setIsComplete(false);
-                viewStaffController.getIsComplete().addListener((obs, before, isComplete) -> {
-                    staffToFulfill=viewStaffController.getStaffToFulfill();
-                    System.out.println(staffToFulfill);
-                    if (isComplete&&staffToFulfill!=null){
+            if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.INTR)){
+                if( controller.getLanguage()== null){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error4!");
+                    alert.setHeaderText("No language selected.");
+                    alert.setContentText("Please choose a language.");
+                    alert.showAndWait();
+                }
+                    staffPopUp.setTitle("View B&W Staff");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
+
+                    Scene staffPopUpScene = new Scene(loader.load());
+                    ViewStaffController viewStaffController = loader.getController();
+                    viewStaffController.setLanguage(controller.getLanguage());
+                    System.out.println("controller " + controller);
+                    //viewStaffController.setRequestViewList(controller.getLanguage());
+                    viewStaffController.setIsComplete(false);
+                    viewStaffController.getIsComplete().addListener((obs, before, isComplete) -> {
+                        staffToFulfill=viewStaffController.getStaffToFulfill();
                         System.out.println(staffToFulfill);
-                        staffPopUp.close();
-                        System.out.println("done");
-                    }
-                });
-                staffPopUp.setScene(staffPopUpScene);
-                staffPopUp.show();
-           // }
+                        if (isComplete&&staffToFulfill!=null){
+                            System.out.println(staffToFulfill);
+                            staffPopUp.close();
+                            System.out.println("done");
+                        }
+                    });
+                    staffPopUp.setScene(staffPopUpScene);
+                    staffPopUp.show();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -363,5 +409,39 @@ public class RequestPopOut extends PopOutController {
                 longName.getItems().add(n);
             }
         }
+    }
+
+    @FXML
+    public void deleteRequest(ActionEvent event) {
+        InterpreterSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+        System.out.println("It was deleted");
+    }
+
+    public void fulfillRequest(ActionEvent e){
+        Stage fulfillStage = new Stage();
+        //TODO change name of that plz
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FulfillIntReq.fxml"));
+        Scene fulfillScene;
+        try {
+            fulfillScene = new Scene(loader.load());
+            FulfillRequestController fillReqController = loader.getController();
+            fillReqController.setReqToFulfill(requestView.getSelectionModel().getSelectedItem());
+            fillReqController.getSubmitted().addListener(((observable, oldValue, submitted) -> {
+                if(submitted){
+                    requestView.getItems().clear();
+                    requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+                }
+            }));
+
+            fulfillStage.setScene(fulfillScene);
+            fulfillStage.show();
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+            System.out.println("check file name");
+        }
+
     }
 }

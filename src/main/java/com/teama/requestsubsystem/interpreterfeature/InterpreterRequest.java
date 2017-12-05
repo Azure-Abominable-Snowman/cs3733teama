@@ -3,6 +3,7 @@ package com.teama.requestsubsystem.interpreterfeature;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.requestsubsystem.GenericRequestInfo;
 import com.teama.requestsubsystem.RequestStatus;
+import com.teama.requestsubsystem.RequestType;
 
 /**
  * Created by aliss on 11/20/2017.
@@ -23,7 +24,7 @@ public class InterpreterRequest {
 
     public InterpreterRequest(GenericRequestInfo g, int familySize, Language requiredLanguage) {
         this.info = g;
-        this.r = RequestStatus.OPEN;
+        this.r = RequestStatus.ASSIGNED;
         this.requiredLanguage = requiredLanguage;
         this.familySize = familySize;
 
@@ -106,6 +107,10 @@ public class InterpreterRequest {
 
     public void setRequestStatus(RequestStatus r){
         this.r = r;
+    }
+
+    public RequestType getRequestType(){
+        return RequestType.INTR;
     }
 
 

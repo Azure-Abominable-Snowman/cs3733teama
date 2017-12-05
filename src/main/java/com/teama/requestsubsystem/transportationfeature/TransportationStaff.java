@@ -55,6 +55,7 @@ public class TransportationStaff {
     public void setModeOfTransportation(Set<ModeOfTransportation> m) {
         transportInfo.setModeOfTransportation(m);
     }
+
     public void setFirstName(String name) {
         genericStaffInfo.setFirstName(name);
     }

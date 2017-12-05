@@ -804,12 +804,13 @@ public class MainScreenSidebarController extends PopOutController {
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
     }
     @Override
-    public void onClose() {
-
-    }
-
+    public void onClose() {}
     @Override
     public String getFXMLPath() {
         return null;
+    }
+
+    public void fulfillRequest(ActionEvent e){
+
     }
 }
