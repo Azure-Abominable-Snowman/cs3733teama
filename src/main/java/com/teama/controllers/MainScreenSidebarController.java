@@ -19,7 +19,6 @@ import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,7 +29,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -261,8 +259,8 @@ public class MainScreenSidebarController extends PopOutController {
                     Parent root = (Parent) loader.load(); // load in fxml
                     NodeEditorController nodeEditor = loader.getController();
                     edit.setText("Edit Existing");
-                    nodeEditor.setButtons(add, edit);
-                    nodeEditor.setMap(map);
+                    //nodeEditor.setButtons(add, edit);
+                    //nodeEditor.setMap(map);
                     infoPane.getChildren().clear();
                     infoPane.getChildren().add(root);
                 } catch (IOException e) {
@@ -285,7 +283,7 @@ public class MainScreenSidebarController extends PopOutController {
             }
             else {
                 // Delete the cursor
-                map.deletePoint(NodeEditorController.selectedLocID);
+                //map.deletePoint(NodeEditorController.selectedLocID);
 
 
                 // Restore the old node editor handler so the pop ups keep appearing

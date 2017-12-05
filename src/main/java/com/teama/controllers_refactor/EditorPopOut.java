@@ -1,31 +1,52 @@
 package com.teama.controllers_refactor;
 
 import com.jfoenix.controls.JFXToggleButton;
+import com.teama.controllers.NodeEditorController;
+import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditorPopOut extends PopOutController {
 
     private int xOffset, yOffset;
     private ReadOnlyDoubleProperty xProperty, yProperty;
+    private MapDrawingSubsystem mapDraw;
 
     @FXML
     private JFXToggleButton viewEdges, viewNodes;
     @FXML
+    private ImageView editNode, deleteNode;
+
+    private Parent currentPopOut;
+
+    private Map<Long, EventHandler<MouseEvent>> mouseEvents = new HashMap<>();
+    private Map<Long, ChangeListener<Boolean>> floorEvents = new HashMap<>();
+    @FXML
     public void initialize() {
-        System.out.println("hello");
+        mapDraw = MapDrawingSubsystem.getInstance();
         alignPane(xProperty, xOffset, yProperty, yOffset);
        // viewEdges = new JFXToggleButton();
         //viewNodes = new JFXToggleButton();
         viewEdges.setText("View Edges");
         viewNodes.setText("View Hall Nodes");
+
 
         viewNodes.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -53,8 +74,8 @@ public class EditorPopOut extends PopOutController {
                 }
             }
         });
-
-
+        mouseEvents.put(masterMap.attachClickedListener(onLocClick, ClickedListener.LOCCLICKED), onLocClick);
+        mouseEvents.put(masterMap.attachClickedListener(onNodeClick, ClickedListener.NODECLICKED), onNodeClick);
     }
 
     private MapDrawingSubsystem masterMap;
@@ -71,9 +92,83 @@ public class EditorPopOut extends PopOutController {
         masterMap = MapDrawingSubsystem.getInstance();
         mapData = MapSubsystem.getInstance();
 
+        floorEvents.put(masterMap.attachFloorChangeListener(onFloorChange), onFloorChange);
 
     }
 
+    ChangeListener<Boolean> onFloorChange = new ChangeListener<Boolean>() {
+        @Override
+        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            if (viewNodes.isSelected()) {
+                System.out.println("Viewing nodes; floor change detected.");
+                drawNodes();
+            }
+            if (viewEdges.isSelected()) {
+                System.out.println("Viewing edges; floor change detected.");
+
+                drawEdges();
+            }
+        }
+    };
+
+    EventHandler<MouseEvent> onLocClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            closePopUp();
+            double xCanv = event.getX();
+            double yCanv = event.getY();
+            Location selected = new Location(event, masterMap.getCurrentFloor());
+
+            MapNode clickedNode = masterMap.nodeAt(selected);
+            if (clickedNode != null) {
+                System.out.println(clickedNode.getCoordinate().getxCoord());
+                viewEdges.setText(clickedNode.getId());
+            }
+
+            else {
+                Location converted = masterMap.convertEventToImg(event, masterMap.getCurrentFloor());
+                viewEdges.setText(Integer.toString(converted.getxCoord()));
+            }
+            // IF EDITING NODES, GENERATE + POPUP
+        }
+    };
+
+    EventHandler<MouseEvent> onNodeClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            //TODO: GENERATE EDIT/ADD POPUP
+            closePopUp();
+            Parent editPopout;
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/EditDeleteNode.fxml"));
+            NodeEditorController node = new NodeEditorController();
+            loader.setController(node);
+            try {
+                editPopout = loader.load();
+                currentPopOut = editPopout;
+                mapDraw.getAreaPane().getChildren().addAll(editPopout);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            node.setInfo(event);
+
+
+        }
+    };
+
+    EventHandler<MouseEvent> onEdgeClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            closePopUp();
+            //TODO
+        }
+    };
+
+    private void displayNodePopUp(MouseEvent e) {
+
+    }
     private void drawNodes() {
         for (MapNode m: mapData.getVisibleFloorNodes(masterMap.getCurrentFloor()).values()) {
             masterMap.drawNode(m, 3, Color.DARKBLUE);
@@ -106,9 +201,22 @@ public class EditorPopOut extends PopOutController {
             }
         }
     }
+    private void closePopUp() {
+        if(currentPopOut != null && masterMap.getAreaPane().getChildren().contains(currentPopOut)) {
+            masterMap.getAreaPane().getChildren().remove(currentPopOut);
+            currentPopOut = null;
+        }
+    }
+
     @Override
     public void onClose() {
-
+        this.isOpenProperty.setValue(false);
+        for (long id: floorEvents.keySet()) {
+            masterMap.detachListener(id);
+        }
+        for (long id: mouseEvents.keySet()) {
+            masterMap.detachListener(id);
+        }
     }
 
     @Override

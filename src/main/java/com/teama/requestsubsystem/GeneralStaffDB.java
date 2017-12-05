@@ -132,6 +132,7 @@ public class GeneralStaffDB implements StaffDataSource{
     private boolean addNewStaffLogin(ServiceStaff s) {
         LoginInfo defaultLogin = new LoginInfo(s.getUsername(), "defaultPW");
         SystemUser newStaff = new SystemUser(defaultLogin, AccessType.STAFF, s.getStaffID(), s.getStaffType());
+        log.info("Added new login info for user with username " + s.getUsername());
         return LoginSubsystem.getInstance().addUser(newStaff);
     }
 
@@ -158,7 +159,12 @@ public class GeneralStaffDB implements StaffDataSource{
                 log.severe("Staff wasn't added correctly to the database");
                 return null;
             }
-            return getStaff(id.getInt(1));
+            ServiceStaff complete = getStaff(id.getInt(1));
+            if (!addNewStaffLogin(complete)) {
+                log.severe("Failed to create login info.");
+            }
+            return complete;
+
 
         } catch (SQLException e) {
             e.printStackTrace();

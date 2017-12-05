@@ -126,6 +126,8 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
                 addStaffType.setString(1, p.getStaffType().toString());
                 addStaffType.setInt(2, p.getStaffID());
                 addStaffType.executeUpdate();
+                log.info("Added a new " + p.getStaffType().toString());
+
                 log.info("Added login information for Staff member " + p.getStaffID());
             } catch (SQLException e) {
                 e.printStackTrace();
