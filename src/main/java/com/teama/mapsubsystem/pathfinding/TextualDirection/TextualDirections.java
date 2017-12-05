@@ -24,7 +24,7 @@ public class TextualDirections implements DirectionsGenerator {
 
 
         nodeList = path.getNodes();
-         routeLinks = new ArrayList<>(nodeList.size()-1);
+        routeLinks = new ArrayList<>(nodeList.size()-1);
 
         // group list of nodes into two point link structure and let RouteLink do the basic calculation.
         RouteLink lastLink  = new RouteLink(nodeList.get(0),nodeList.get(1),null);
