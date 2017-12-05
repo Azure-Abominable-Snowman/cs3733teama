@@ -1,6 +1,5 @@
 package com.teama;
 
-import com.teama.controllers.SceneEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,7 +24,6 @@ public class Main extends Application{
             primaryStage.setTitle("Brigham and Women's Hospital Kiosk");
             primaryStage.setScene(scene);
             primaryStage.show();
-            SceneEngine.setStages(primaryStage);
         } catch (IOException e) {
             e.printStackTrace();
         }
