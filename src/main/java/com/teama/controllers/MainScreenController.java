@@ -15,6 +15,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.translator.Translator;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -259,6 +260,7 @@ public class MainScreenController implements Initializable {
             }
             PopOutController controller = popOutFactory.makePopOut(popOutType);
             FXMLLoader loader = new FXMLLoader();
+            loader.setResources(Translator.getInstance().getNewBundle());
             loader.setLocation(getClass().getResource(controller.getFXMLPath()));
             loader.setController(controller);
 
