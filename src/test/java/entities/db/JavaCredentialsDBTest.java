@@ -79,11 +79,12 @@ public class JavaCredentialsDBTest {
     public void getUser() {
         try {
             assertNull(db.getUser(login2));
-            PreparedStatement x = conn.prepareStatement("INSERT INTO " + credsTable + " (USERNAME, PASSWORD,ACCESS, STAFFID) VALUES(?,?,?, ?) ");
+            PreparedStatement x = conn.prepareStatement("INSERT INTO " + credsTable + " (USERNAME, PASSWORD,ACCESS, STAFFID, STAFFTYPE) VALUES(?,?,?, ?, ?) ");
             x.setString(1, login1.getUsername());
             x.setInt(2, login1.getPassword().hashCode());
             x.setString(3, AccessType.STAFF.toString());
             x.setInt(4, 12312);
+            x.setString(5, StaffType.INTERPRETER.toString());
             x.executeUpdate();
             SystemUser found = db.getUser(login1);
 

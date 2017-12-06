@@ -12,9 +12,12 @@ import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,6 +56,7 @@ public class EditorPopOut extends PopOutController {
 
     private Map<Long, EventHandler<MouseEvent>> mouseEvents = new HashMap<>();
     private Map<Long, ChangeListener<Boolean>> floorEvents = new HashMap<>();
+    BooleanProperty updateCurrentNode = new SimpleBooleanProperty(true);
     @FXML
     public void initialize() {
         mapDraw = MapDrawingSubsystem.getInstance();
@@ -193,6 +197,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
             loader.setLocation(getClass().getResource("/EditDeleteNode.fxml"));
             NodeEditorController node = new NodeEditorController();
             loader.setController(node);
+            System.out.println("Node is clicked, make a popup.");
             try {
                 editPopout = loader.load();
                 currentPopOut = editPopout;
@@ -266,6 +271,12 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
         }
         for (long id: mouseEvents.keySet()) {
             masterMap.detachListener(id);
+        }
+    }
+
+    @FXML
+    void onAlignNode(ActionEvent e) {
+        if (alignmentOptions.getSelectionModel().getSelectedItem() != null) {
         }
     }
 
