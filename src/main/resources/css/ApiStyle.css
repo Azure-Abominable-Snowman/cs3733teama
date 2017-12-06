@@ -1,0 +1,152 @@
+
+
+.resetButton {
+    -fx-background-color: #E57373
+    -fx-
+;
+}
+
+.confirmButton {
+    -fx-background-color: #2196F3
+;
+}
+
+.field {
+    -fx-background-color: #29B6F6
+;
+}
+
+.cancel {
+
+    -fx-background-color: #78909C;
+    -fx-background-image: -webkit-linear-gradient(top, #78909C, #d15858);
+    -fx-background-image: -moz-linear-gradient(top, #78909C, #d15858);
+    -fx-background-image: -ms-linear-gradient(top, #78909C, #d15858);
+    -fx-background-image: -o-linear-gradient(top, #78909C, #d15858);
+    -fx-background-image: linear-gradient(to bottom, #78909C, #d15858);
+    -fx-webkit-border-radius: 13;
+    -moz-border-radius: 13;
+    -fx-border-radius: 13px;
+    -fx-text-shadow: 1px 1px 3px #211a21;
+    -fx-font-family: "Roboto";
+    -fx-color: #ffffff;
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px 10px 20px;
+    -fx-text-decoration: none;
+    -fx-cursor: hand;
+}
+
+.btn:hover {
+    background: #1a2830;
+    background-image: -webkit-linear-gradient(top, #1a2830, #1b2429);
+    background-image: -moz-linear-gradient(top, #1a2830, #1b2429);
+    background-image: -ms-linear-gradient(top, #1a2830, #1b2429);
+    background-image: -o-linear-gradient(top, #1a2830, #1b2429);
+    background-image: linear-gradient(to bottom, #1a2830, #1b2429);
+    text-decoration: none;
+}
+
+
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #4DD0E1;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #4DD0E1;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: #75bc1b;
+    -fx-stroke-width: 3pt;
+}
+
+.check-box:selected > .box {
+    /* background color for selected checkbox */
+    -fx-background-color: lime;
+}
+
+.check-box > .box {
+    /* background color of unselected checkbox */
+    -fx-background-color: red;
+}
+
+.check-box:selected > .box > .mark,
+.check-box:indeterminate  > .box > .mark {
+    /* modify mark color */
+    -fx-background-color: blue;
+}
+
+
+.table-view .column-header .nested-column-header
+{
+    -fx-background-color: #03A9F4;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+
+}
+
+.table-view .column-header
+{
+    -fx-font: 13px "Roboto";
+    -fx-background-color: #90A4AE;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+}
+
+.table-view .column-header .filter
+{
+    -fx-background-color: #AAAAAA;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+}
+
+.table-row-cell:odd{
+    -fx-background-color: -fx-table-cell-border-color, #E0E0E0;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+
+.submit {
+    -fx-background-color: #2196F3;
+    -fx-background-image: -webkit-linear-gradient(top, #70baeb, #2980b9);
+    -fx-background-image: -moz-linear-gradient(top, #70baeb, #2980b9);
+    -fx-background-image: -ms-linear-gradient(top, #70baeb, #2980b9);
+    -fx-background-image: -o-linear-gradient(top, #70baeb, #2980b9);
+    -fx-background-image: linear-gradient(to bottom, #70baeb, #2980b9);
+    -fx--webkit-border-radius: 12;
+    moz-border-radius: 12;
+    -fx-border-radius: 12px;
+    -fx-font-family: "Roboto";
+    -fx-color: #ffffff;
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px 10px 20px;
+    -fx-text-decoration: none;
+    -fx-cursor: hand;
+}
+
+.delete {
+    -fx-background-color: #E57373;
+    -fx-border-radius: 12px;
+    -fx-font-family: Courier New;
+    -fx-color: #ffffff;
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px 10px 20px;
+    -fx-font-family: "Roboto";
+    -fx-cursor: hand;
+
+
+}
+
+.text-field {
+    -fx-background-color: #a9a9a9 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-cursor: hand;
+}
+
+.text-field:focused {
+    -fx-background-color: #a9a9a9 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+}
+
