@@ -96,7 +96,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXButton fx:id="exportCSV" stylesheets="@css/defaultStyle.css" text="Export to CSV" GridPane.halignment="CENTER" />
+                  <JFXButton fx:id="exportCSV" onAction="#exportCSV" stylesheets="@css/defaultStyle.css" text="Export to CSV" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
          </children>
