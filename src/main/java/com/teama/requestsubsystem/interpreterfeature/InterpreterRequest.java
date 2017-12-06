@@ -93,6 +93,10 @@ public class InterpreterRequest implements Request {
         return familySize;
     }
 
+    public void setFamilySize(int num){
+        this.familySize = num;
+    }
+
     public Language getRequiredLanguage() {
         return requiredLanguage;
     }
@@ -150,17 +154,21 @@ public class InterpreterRequest implements Request {
         //TODO
 
     }
-/*
+
+
     public String toString(){
-        return "Type: Interpreter \n" + "Location: " + getLocation().toString() + "\n" + "RequestStatus: "+ r.toString() + "\n" + "Staff ID: "+ Integer.toString(getInfo().getStaffID());
+        return "Type: Interpreter \n" + "Location: " + getLocation().toString() + "\n" + "RequestStatus: "+ getReqType().toString() + "\n" + "Staff ID: "+ Integer.toString(getInfo().getStaffID());
     }
+
+/*
 
     public void setRequestStatus(RequestStatus r){
         this.r = r;
     }
 
-
 */
+
+
 
 
 }

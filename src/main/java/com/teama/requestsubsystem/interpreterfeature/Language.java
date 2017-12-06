@@ -6,13 +6,14 @@ public enum Language {
 
     public final String name;
 
-    private Language(String s) {
+    Language(String s) {
         this.name = s;
     }
 
     public String toString() {
         return name;
     }
+
     public static Language getLanguage(String s) {
         for (Language l: Language.values()) {
             if (l.toString().equals(s)) {
