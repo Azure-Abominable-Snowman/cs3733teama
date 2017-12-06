@@ -33,6 +33,7 @@
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
     -fx-text-decoration: none;
+    -fx-cursor: hand;
 }
 
 .btn:hover {
@@ -122,6 +123,7 @@
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
     -fx-text-decoration: none;
+    -fx-cursor: hand;
 }
 
 .delete {
@@ -132,6 +134,7 @@
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
     -fx-font-family: "Roboto";
+    -fx-cursor: hand;
 
 
 }
@@ -139,9 +142,11 @@
 .text-field {
     -fx-background-color: #a9a9a9 , white , white;
     -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-cursor: hand;
 }
 
 .text-field:focused {
     -fx-background-color: #a9a9a9 , white , white;
     -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
 }
+
