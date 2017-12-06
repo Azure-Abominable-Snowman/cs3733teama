@@ -222,7 +222,7 @@ public class StaffLoginPopOut extends PopOutController {
         //have this set the flag for logged in so the map system knows to close
         if (LoginSubsystem.getInstance().checkCredentials(l)) {
             setLoggedIn(true);
-            errorMsg.setText("Login Successfully");
+            errorMsg.setText("Login Successful");
             errorMsg.setVisible(true);
             //parent.hideLoginButton();
         }
