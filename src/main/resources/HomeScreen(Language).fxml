@@ -15,7 +15,7 @@
          <children>
             <ImageView fitHeight="105.0" fitWidth="90.0" HBox.hgrow="ALWAYS">
                <image>
-                  <Image url="@../../../../../../../Library/Containers/at.EternalStorms.Yoink/Data/Documents/YoinkPromisedFiles/yoinkFilePromiseCreationFolder324F8B98-30A0-476A-A5ED-12194A00D4DA/add324F8B98-30A0-476A-A5ED-12194A00D4DA/-yoinkdirectlycreatedimages-/Image%20result%20for%20Brigham%20and%20Women's%20Hospital.png" />
+                  <Image url="@1200px-Brigham_and_Womens_Hospital_logo.svg.png" />
                </image>
             </ImageView>
             <Label maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="105.0" prefWidth="431.0" text="Brigham and Women's Hospital" textAlignment="CENTER" HBox.hgrow="ALWAYS">
