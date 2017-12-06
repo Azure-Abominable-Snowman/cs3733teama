@@ -262,10 +262,12 @@ public class MainScreenController implements Initializable {
             directoryButton.setVisible(true);
             mapEditorButton.setVisible(true);
             serviceRequestButton.setVisible(true);
+            settingButton.setVisible(true);
         } else {
             directoryButton.setVisible(false);
             mapEditorButton.setVisible(false);
             serviceRequestButton.setVisible(false);
+            settingButton.setVisible(false);
         }
     }
 

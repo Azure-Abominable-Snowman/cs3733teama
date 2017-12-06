@@ -18,21 +18,22 @@
 
 .cancel {
 
-    -fx-background-color: #ff0000;
-    -fx-background-image: -webkit-linear-gradient(top, #ff0000, #d15858);
-    -fx-background-image: -moz-linear-gradient(top, #ff0000, #d15858);
-    -fx-background-image: -ms-linear-gradient(top, #ff0000, #d15858);
-    -fx-background-image: -o-linear-gradient(top, #ff0000, #d15858);
-    -fx-background-image: linear-gradient(to bottom, #ff0000, #d15858);
+    -fx-background-color: #78909C;
+    -fx-background-image: -webkit-linear-gradient(top, #78909C, #d15858);
+    -fx-background-image: -moz-linear-gradient(top, #78909C, #d15858);
+    -fx-background-image: -ms-linear-gradient(top, #78909C, #d15858);
+    -fx-background-image: -o-linear-gradient(top, #78909C, #d15858);
+    -fx-background-image: linear-gradient(to bottom, #78909C, #d15858);
     -fx-webkit-border-radius: 13;
     -moz-border-radius: 13;
     -fx-border-radius: 13px;
     -fx-text-shadow: 1px 1px 3px #211a21;
-    -fx-font-family: Courier New;
+    -fx-font-family: "Roboto";
     -fx-color: #ffffff;
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
     -fx-text-decoration: none;
+    -fx-cursor: hand;
 }
 
 .btn:hover {
@@ -108,7 +109,7 @@
 }
 
 .submit {
-    -fx-background-color: #70baeb;
+    -fx-background-color: #2196F3;
     -fx-background-image: -webkit-linear-gradient(top, #70baeb, #2980b9);
     -fx-background-image: -moz-linear-gradient(top, #70baeb, #2980b9);
     -fx-background-image: -ms-linear-gradient(top, #70baeb, #2980b9);
@@ -117,20 +118,35 @@
     -fx--webkit-border-radius: 12;
     moz-border-radius: 12;
     -fx-border-radius: 12px;
-    -fx-font-family: Courier New;
+    -fx-font-family: "Roboto";
     -fx-color: #ffffff;
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
     -fx-text-decoration: none;
+    -fx-cursor: hand;
 }
 
 .delete {
-    -fx-background-color: #9ddfa8;
+    -fx-background-color: #E57373;
     -fx-border-radius: 12px;
     -fx-font-family: Courier New;
     -fx-color: #ffffff;
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
+    -fx-font-family: "Roboto";
+    -fx-cursor: hand;
 
 
 }
+
+.text-field {
+    -fx-background-color: #a9a9a9 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-cursor: hand;
+}
+
+.text-field:focused {
+    -fx-background-color: #a9a9a9 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+}
+
