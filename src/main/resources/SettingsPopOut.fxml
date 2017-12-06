@@ -101,7 +101,7 @@
             </GridPane>
          </children>
       </VBox>
-      <ImageView fx:id="arrow" fitHeight="91.0" fitWidth="70.0" layoutX="325.0" layoutY="431.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="arrow" fitHeight="45.0" fitWidth="51.0" layoutX="325.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@triangle.png" />
          </image>

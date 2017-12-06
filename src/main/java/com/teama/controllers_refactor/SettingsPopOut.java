@@ -22,7 +22,7 @@ public class SettingsPopOut extends PopOutController {
 
     @Override
     public void onClose() {
-        System.out.println("CLOSE STAFF");
+        System.out.println("CLOSE SETTING");
     }
 
     @Override
