@@ -117,11 +117,10 @@ public class DirectionsPopOut extends PopOutController {
             for(long id : filterFloorListeners) {
                 mapDrawing.detachListener(id);
             }
-            drawShortestPathToFilter();
             updateFilter();
+            drawShortestPathToFilter();
             filterFloorListeners.add(mapDrawing.attachFloorChangeListener((a, b, c) -> {
                 System.out.println(filterBox.getSelectionModel().getSelectedItem());
-                drawShortestPathToFilter();
                 updateFilter();
             }));
         });
@@ -147,7 +146,7 @@ public class DirectionsPopOut extends PopOutController {
         // Find the shortest path to the given nodetype
         Path shortest = mapSubsystem.findClosest(NodeType.fromValue(filterBox.getSelectionModel().getSelectedItem()));
         System.out.println("SHORTEST FOUND TO "+shortest.getEndNode().getId());
-        //ProgramSettings.getInstance().setPathOriginNodeProp(shortest.getStartNode());
+        ProgramSettings.getInstance().setPathOriginNodeProp(shortest.getStartNode());
         ProgramSettings.getInstance().setPathEndNodeProp(shortest.getEndNode());
     }
 

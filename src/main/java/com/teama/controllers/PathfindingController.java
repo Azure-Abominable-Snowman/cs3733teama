@@ -4,8 +4,6 @@ import com.teama.ProgramSettings;
 import com.teama.controllers_refactor.PopOutType;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.Floor;
-import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.Path;
 import javafx.event.EventHandler;
@@ -89,7 +87,7 @@ public class PathfindingController {
             mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
 
             // Set the map to focus on the first node of the generated path
-            drawingSubsystem.setViewportCenter(new Location(2500, 1700, Floor.ONE, ""));
+            //drawingSubsystem.setViewportCenter(new Location(2500, 1700, Floor.ONE, ""));
         }
     }
 }
