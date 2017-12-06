@@ -1,9 +1,7 @@
-package com.teama.mapsubsystem.pathfinding.TextualDirection;
+package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
-import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
-import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.translator.Translator;
 
 
@@ -77,15 +75,15 @@ public class TextualDirections implements DirectionsGenerator {
                     continue;
                 }
             }
-            // case of the link right out of the elevator, ignore this for now.
+            // case of the link right out of the elevator don't need to ignore it anymore
+            /*
             if( nextLink.getTurn().equals(TurnType.INTONEWFLOOR) )
             {
                 thisTurn= nextLink;
                 continue;
-            }
+            }*/
             if (nextLink.getTurn().equals(TurnType.STRAIGHT)) {
                 addDistance(thisTurn, nextLink); // combine the next one into this.
-
                 continue;
             }
             // condenced turn and floor change case.
@@ -112,23 +110,23 @@ public class TextualDirections implements DirectionsGenerator {
 
     private Direction formDirection (RouteLink routeLink , String nodeNameInto)
     {
+        TurnType turn  = routeLink.getTurn();
         String discription = routeLink.getTextReturn();
-        if (discription.contains("Elevator")){ // elevator text
+        if (turn.equals(TurnType.ELEVATOR)){ // Elevator text
             discription = String.format("%s %s",
                     Translator.getInstance().getText("elevatorenter"),
                     routeLink.getNextFloor().toString());
         }
-        else if(discription.contains("Stairs")){ // Stairs text
+        else if (turn.equals(TurnType.STAIR)){ // Stairs text
             discription = String.format("%s %s", Translator.getInstance().getText("stairenter"),
                     routeLink.getNextFloor().toString());
         }
-        else if(discription.contains("Straight")){// going Straight
+        else if(turn.equals(TurnType.STRAIGHT)){ // going Straight
             discription = String.format("%s", Translator.getInstance().getText("straightline"));
         }
-        else{ // actually turning.
+        else{ // actually turning, going to new floor, into new floor.
             if(nodeNameInto.length()>1) {
                 discription = String.format("%s %s %s", discription, Translator.getInstance().getText("turning"), nodeNameInto);
-                // TODO change the work with turning key from "and walk for" to "into"
             }
             else discription = String.format("%s", discription); // in the case we don't have a walk into situation.
 

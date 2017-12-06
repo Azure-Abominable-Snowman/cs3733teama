@@ -1,4 +1,4 @@
-package com.teama.mapsubsystem.pathfinding.AStar;
+package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar;
 
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public class BeamSearch extends AStar {
 
-    private HashMap<String,KnownPoint> checkedPoints;
+    private HashMap<String,KnownPointA> checkedPoints;
     private LimitedPriorityQueue limitedQueue;
     private MapNode start, end;
 
@@ -30,10 +30,10 @@ public class BeamSearch extends AStar {
         checkedPoints= new HashMap<>();
 
 
-        KnownPoint checking ; // create a temp variable to keep track of which node are we on.
+        KnownPointA checking ; // create a temp variable to keep track of which node are we on.
 
         //Generate Path
-        for(checking = new KnownPoint(start,null,0,calDistance(start,end));
+        for(checking = new KnownPointA(start,null,0,calDistance(start,end));
             !checking.getNode().getId().equals(end.getId());   // reached end
             checking= limitedQueue.pop() // move forward one step
                 )
@@ -54,7 +54,7 @@ public class BeamSearch extends AStar {
      * @param checking is the node currently under examining.
      */
     @Override
-    protected void putNodesIntoQueue (KnownPoint checking)
+    protected void putNodesIntoQueue (KnownPointA checking)
     {
         for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
@@ -63,7 +63,7 @@ public class BeamSearch extends AStar {
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
-                KnownPoint nextPoint = new KnownPoint(nextNode, checking, newPastCost,
+                KnownPointA nextPoint = new KnownPointA(nextNode, checking, newPastCost,
                         newPastCost + calDistance(nextNode, end)); // Generate a new Point from checking point to add into queue.
                 limitedQueue.insert(nextPoint); // add into queue
             }
@@ -84,7 +84,7 @@ public class BeamSearch extends AStar {
     private class LimitedPriorityQueue
     {
         private int size;
-        private  LinkedList<KnownPoint> list ;
+        private  LinkedList<KnownPointA> list ;
 
         LimitedPriorityQueue(int size)
         {
@@ -96,17 +96,17 @@ public class BeamSearch extends AStar {
          * Put the point into proper position (using cmopareTo) and then delete the last nodes if the list get too long
          * @param point the node need to be insert into the queue.
          */
-        public void insert(KnownPoint point)
+        public void insert(KnownPointA point)
         {
             int position =0;
-            for (KnownPoint i : list) {
+            for (KnownPointA i : list) {
                 if(i.compareTo(point)==1) break;
                 ++position;
             }
             list.add(position,point);
             for(;list.size()>size;list.pollLast()); // cut the size of the list off.
         }
-        public KnownPoint peek()
+        public KnownPointA peek()
         {
             return list.peek();
         }
@@ -115,7 +115,7 @@ public class BeamSearch extends AStar {
          * same as poll used in AStar, just need a different name for Intellij didn't complain
          * @return return the first node in the list.
          */
-        public KnownPoint pop()
+        public KnownPointA pop()
         {
             return list.pop();
         }
