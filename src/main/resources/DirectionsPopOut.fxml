@@ -17,7 +17,7 @@
       <TableView fx:id="textDirections" layoutX="14.0" layoutY="129.0" prefHeight="520.0" prefWidth="325.0" stylesheets="@css/DirectionPopOut.css">
         <columns>
             <TableColumn fx:id="stepCol" editable="false" prefWidth="34.0" resizable="false" text="Step" />
-          <TableColumn fx:id="descriptionCol" editable="false" prefWidth="228.0" resizable="false" sortable="false" text="Description" />
+          <TableColumn fx:id="descriptionCol" editable="false" maxWidth="228.0" prefWidth="220.0" resizable="false" sortable="false" text="Description" />
             <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="62.0" resizable="false" sortable="false" text="Distance" />
         </columns>
          <columnResizePolicy>

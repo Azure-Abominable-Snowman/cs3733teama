@@ -78,7 +78,6 @@ public class DirectionsPopOut extends PopOutController {
         // Factory for each row, set to have the text wrap
         textDirections.setRowFactory(tv -> {
             TableRow<DirectionAdapter> row = new TableRow<>();
-            row.setWrapText(true);
             return row;
         });
 
