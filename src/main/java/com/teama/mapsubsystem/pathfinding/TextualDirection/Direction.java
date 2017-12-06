@@ -2,8 +2,6 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
 import com.teama.mapsubsystem.data.Location;
 
-import java.awt.*;
-import javax.swing.*;
 
 
 public class Direction {
