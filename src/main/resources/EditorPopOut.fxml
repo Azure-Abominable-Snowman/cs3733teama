@@ -163,7 +163,7 @@
                           </rowConstraints>
                            <children>
                               <JFXButton fx:id="confirmBtn" graphicTextGap="0.0" prefHeight="23.0" prefWidth="66.0" text="Confirm" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                              <JFXButton fx:id="cancelBtn" text="Cancel" />
+                              <JFXButton fx:id="cancelBtn" onAction="#onCancel" text="Cancel" />
                            </children>
                         </GridPane>
                      </children>
