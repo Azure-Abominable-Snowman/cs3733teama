@@ -5,7 +5,6 @@ import com.teama.controllers.ViewStaffController;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
-import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
 import com.teama.messages.EmailMessage;
@@ -19,7 +18,10 @@ import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.Language;
-import javafx.beans.property.*;
+import com.teama.translator.Translator;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,13 +31,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
 import static com.teama.requestsubsystem.RequestType.*;
-import static javafx.scene.paint.Color.color;
 
 public class RequestPopOut extends PopOutController {
     private int xOffset, yOffset;
@@ -99,11 +99,7 @@ public class RequestPopOut extends PopOutController {
     private InterpreterStaff staffToFulfill;
     private Message message;
 
-    private int SCALING = 450;
-
     private InterpReqController controller;
-
-    final BooleanProperty nodeSelected = new SimpleBooleanProperty();
 
 
     private AnchorPane curReqPane;
@@ -115,7 +111,7 @@ public class RequestPopOut extends PopOutController {
         alignPane(xProperty, xOffset, yProperty, yOffset);
         System.out.println(building);
         building.getItems().clear();
-        building.getItems().addAll("BTM","Tower","Shapiro", "15 Francis", "45 Francis");
+        building.getItems().addAll("BTM","Tower","Sharipo", "15 Francis", "45 Francis");
 
         floor.getItems().clear();
         floor.getItems().addAll(
@@ -128,29 +124,6 @@ public class RequestPopOut extends PopOutController {
         //set up requestViewList
         requestView.getItems().clear();
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
-        nodeSelected.set(false);
-        longName.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(mapNodeName);
-            System.out.println(mapNodeName);
-            mapNodeName=newValue;
-            if(newValue != null){
-                System.out.println("This is freaking working!");
-                MapDrawingSubsystem.getInstance().setZoomFactor(2);
-                Location toMove = new Location((newValue.getCoordinate().getxCoord()+SCALING), newValue.getCoordinate().getyCoord(),
-                        newValue.getCoordinate().getLevel(), newValue.getCoordinate().getBuilding());
-                MapDrawingSubsystem.getInstance().setViewportCenter(toMove);
-                MapDrawingSubsystem.getInstance().drawNode(newValue, 20, color(1, 0, 0));
-
-            }
-        });
-        nodeSelected.addListener((obs, before, mapNode) ->{
-            System.out.println(mapNode);
-            System.out.println(mapNodeName);
-            if(mapNode!=null){
-                System.out.println("This is freaking working!");
-                MapDrawingSubsystem.getInstance().setViewportCenter(mapNodeName.getCoordinate());
-            }
-        });
     }
 
     @Override
@@ -164,10 +137,6 @@ public class RequestPopOut extends PopOutController {
     @Override
     public void onClose() {
         System.out.println("CLOSE REQUEST");
-        if(mapNodeName!=null) {
-            MapDrawingSubsystem.getInstance().drawNode(mapNodeName, 0, null);
-        }
-
     }
 
     @Override
@@ -182,7 +151,7 @@ public class RequestPopOut extends PopOutController {
         longName.getSelectionModel().clearSelection();
         typeOfRequest.getSelectionModel().clearSelection();
         additionalInfo.clear();
-        //nodeSelected.set(null);
+
     }
 
     @FXML
@@ -300,6 +269,7 @@ public class RequestPopOut extends PopOutController {
                 System.out.println(getClass().getResource("/InterpreterReq.fxml"));
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/InterpreterReq.fxml"));
+                loader.setResources(Translator.getInstance().getNewBundle());
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
                     System.out.println("Hello Jake");
@@ -409,7 +379,7 @@ public class RequestPopOut extends PopOutController {
                 }
                     staffPopUp.setTitle("View B&W Staff");
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
-
+                    loader.setResources(Translator.getInstance().getNewBundle());
                     Scene staffPopUpScene = new Scene(loader.load());
                     ViewStaffController viewStaffController = loader.getController();
                     viewStaffController.setLanguage(controller.getLanguage());
@@ -449,10 +419,18 @@ public class RequestPopOut extends PopOutController {
                 longName.getItems().add(n);
             }
         }
-        mapNodeName = longName.getSelectionModel().getSelectedItem();
-        nodeSelected.set(true);
-        System.out.println(nodeSelected);
+        /*
+        class MyThread implements Runnable {
 
+            public void run(){
+                MapDrawingSubsystem.getInstance().setViewportCenter();
+
+            }
+        }
+        Thread t = new Thread(new MyThread());
+        System.out.println("Message has been sent!");
+        t.start();
+        */
 
     }
 
@@ -469,9 +447,11 @@ public class RequestPopOut extends PopOutController {
         Stage fulfillStage = new Stage();
         //TODO change name of that plz
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FulfillIntReq.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         Scene fulfillScene;
         try {
             fulfillScene = new Scene(loader.load());
+            loader.setResources(Translator.getInstance().getNewBundle());
             FulfillRequestController fillReqController = loader.getController();
             fillReqController.setReqToFulfill(requestView.getSelectionModel().getSelectedItem());
             fillReqController.getSubmitted().addListener(((observable, oldValue, submitted) -> {

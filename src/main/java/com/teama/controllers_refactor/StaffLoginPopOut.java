@@ -9,15 +9,11 @@ import com.teama.login.AccessType;
 import com.teama.login.LoginInfo;
 import com.teama.login.LoginSubsystem;
 import com.teama.login.SystemUser;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -27,11 +23,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
-
-import javax.swing.*;
 
 public class StaffLoginPopOut extends PopOutController {
     private int xOffset, yOffset;
@@ -199,19 +190,6 @@ public class StaffLoginPopOut extends PopOutController {
     private void validate(LoginInfo l) {
         //have this set the flag for logged in so the map system knows to close
         if (LoginSubsystem.getInstance().checkCredentials(l)) {
-            Notifications notifications = Notifications.create()
-                    .title("Log In Complete")
-                    .text("Welcome "+ uname.getText())
-                    .graphic(null)
-                    .hideAfter(Duration.seconds(2))
-                    .position(Pos.BOTTOM_CENTER)
-                    .onAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Hi Kent");
-                        }
-                    });
-            notifications.showConfirm();
             setLoggedIn(true);
             errorMsg.setText("Login Successful");
             errorMsg.setVisible(true);
