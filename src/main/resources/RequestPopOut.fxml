@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" minHeight="432.0" minWidth="305.0" prefHeight="523.0" prefWidth="653.0" stylesheets="@css/DefaultStyle2.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="mainPane" minHeight="432.0" minWidth="305.0" prefHeight="523.0" prefWidth="653.0" styleClass="popOutPaneStyle" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox layoutX="-2.0" layoutY="-1.0" prefHeight="517.0" prefWidth="653.0">
          <children>
@@ -28,7 +29,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXComboBox fx:id="typeOfRequest1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="28.0" prefWidth="277.0" promptText="Filter" stylesheets="@css/DefaultStyle.css" />
+                  <JFXComboBox fx:id="typeOfRequest1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="28.0" prefWidth="277.0" promptText="Filter" />
                   <JFXListView fx:id="requestView" prefHeight="378.0" prefWidth="325.0" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -142,4 +143,8 @@
          </image>
       </ImageView>
    </children>
+   <stylesheets>
+      <URL value="@css/MainScreenStyle.css" />
+      <URL value="@css/DefaultStyle2.css" />
+   </stylesheets>
 </Pane>
