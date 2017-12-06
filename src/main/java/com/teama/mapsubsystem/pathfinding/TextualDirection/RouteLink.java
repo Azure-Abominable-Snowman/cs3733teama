@@ -5,10 +5,6 @@ import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
 import com.teama.translator.Translator;
 
-import java.awt.*;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import javax.swing.*;
 
 
 public class RouteLink {

@@ -11,7 +11,7 @@ public class Direction {
     private Location start, end;
     private String description;
     private TurnType turn;
-    //private Icon icon;
+
 
     public Direction(double length, Location start, Location end, String description , TurnType turn) {
 
@@ -42,8 +42,5 @@ public class Direction {
         return turn;
     }
 
-   /* public Icon getIcon(){
-        return icon;
-    }
-    */
+
 }
