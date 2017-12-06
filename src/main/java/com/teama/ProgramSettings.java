@@ -37,5 +37,4 @@ public class ProgramSettings {
     }
     public ReadOnlyObjectProperty<MapNode> getPathOriginNodeProp() { return pathOriginNode; }
     public ReadOnlyObjectProperty<MapNode> getPathEndNodeProp() { return pathEndNode; }
-
 }

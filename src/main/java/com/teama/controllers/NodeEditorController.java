@@ -1,30 +1,38 @@
 package com.teama.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
-import com.teama.mapdrawingsubsystem.MapDisplay;
-import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.*;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import com.teama.mapdrawingsubsystem.PopUpDrawing;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-
-import java.util.Map;
 
 /**
  * Created by aliss on 11/28/2017.
  */
-public class NodeEditorController {
+public class NodeEditorController extends PopUpDrawing {
+    @FXML
+    ImageView editNode, deleteNode;
 
+    public void setInfo(MouseEvent e) {
+        bgPane.toFront();
+        generatePopUp(e.getSceneX(), e.getSceneY(), 0, -10);
+        System.out.println("Generating popup");
+
+    }
+
+    public void onEdit(ActionEvent e) {
+        //TODO
+        System.out.println("Edit a node");
+
+    }
+    public void onDelete(ActionEvent e) {
+        //TODO
+        System.out.println("Delete a Node");
+    }
+
+
+
+/*
     @FXML
     private Text nodePrompt;
     @FXML
@@ -425,4 +433,5 @@ public class NodeEditorController {
     private void isNotEditing() {
         editing.set(false);
     }
+    */
 }
