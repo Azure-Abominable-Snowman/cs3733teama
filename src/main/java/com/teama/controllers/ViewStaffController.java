@@ -7,7 +7,7 @@ import com.jfoenix.controls.JFXListView;
 import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.GenericStaff;
 import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -97,11 +97,10 @@ public class ViewStaffController {
         InterpreterInfo i2 = new InterpreterInfo(langs2, CertificationType.CCHI);
 
 
-        GenericStaffInfo g = new GenericStaffInfo("William", "Wong", c);
-        InterpreterInfo i = new InterpreterInfo(langs, CertificationType.CCHI);
-        InterpreterStaff wilson = new InterpreterStaff(g, i);
-        GenericStaffInfo g2 = new GenericStaffInfo("Joe", "J", c);
-        InterpreterStaff joe = new InterpreterStaff(g2, i2);
+        GenericStaff g = new GenericStaff("William", "Wong", c);
+        InterpreterStaff wilson = new InterpreterStaff(g, langs, CertificationType.CCHI);
+        GenericStaff g2 = new GenericStaff("Joe", "J", c);
+        InterpreterStaff joe = new InterpreterStaff(g2, langs2, CertificationType.CCHI);
         ArrayList<InterpreterStaff> staff = new ArrayList<>();
         staff.add(wilson);
         staff.add(joe);

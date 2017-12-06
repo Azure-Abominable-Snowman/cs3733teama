@@ -41,9 +41,9 @@ public class MapSubsystem {
         eList.add("/csvdata/edges/MapWedges.csv");
 
         //TODO: Automatically detect to see if we need to populate the database with the CSV files
-        //csvSource = new CSVDatabaseSource(nList, eList, null, null); // Don't specify output files
+        csvSource = new CSVDatabaseSource(nList, eList, null, null); // Don't specify output files
         javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
-        //javaDBSource = new TotalMapCache(javaDBSource);
+        javaDBSource = new TotalMapCache(javaDBSource);
 
         pathGenerator = new PathGenerator(new AStar());
 
@@ -51,9 +51,7 @@ public class MapSubsystem {
         //javaDBSource.addAll(csvSource);
 
         // Populate the kiosknode with a default value
-        if(originNode == null) {
-           originNode = getNode("AINFO0020G");
-        }
+        resetKioskNode();
     }
 
 
@@ -167,12 +165,16 @@ public class MapSubsystem {
         return null;
     }
 
-    public MapNode getOriginNode() {
+    public MapNode getKioskNode() {
         return originNode;
     }
 
-    public void setOriginNode(String id) {
+    public void setKioskNode(String id) {
         originNode = getNode(id);
+    }
+
+    public void resetKioskNode() {
+        originNode = getNode("AINFO0020G"); // reset to default kiosk location
     }
 
     // TODO: Should we be able to find a node by any descriptive attribute?

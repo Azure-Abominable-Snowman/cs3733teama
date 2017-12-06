@@ -91,7 +91,7 @@
                            </children>
                         </VBox>
                         <HBox />
-                        <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="36.0" prefWidth="327.0" styleClass="jfx-view-more-button" text="View Staff">
+                        <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="36.0" prefWidth="327.0" text="View Staff">
                            <padding>
                               <Insets top="10.0" />
                            </padding>

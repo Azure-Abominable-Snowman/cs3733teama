@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXSlider;
+import com.teama.ProgramSettings;
 import com.teama.controllers_refactor.PopOutController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
@@ -14,6 +15,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -154,13 +156,25 @@ public class MainScreenController implements Initializable {
 
         // Attach listeners to all the sidebar pop outs to open their respective pane on click
         for(Node button : mainSidebarGrid.getChildren()) {
+            // Opens the pop out and closes it when it is clicked again
             EventHandler<MouseEvent> buttonEvent = event -> {
                 // Gets the pop out type from the id defined in scenebuilder
-                openInMainSidebar(PopOutType.valueOf(button.getId()), areaPane.widthProperty(), -(int)button.prefWidth(80),
+                PopOutType type = PopOutType.valueOf(button.getId());
+                if(type.equals(currentPopOutType)) {
+                    closeInMainSidebar(type);
+                } else {
+                    openInMainSidebar(type, areaPane.widthProperty(), -(int) button.prefWidth(80),
+                            button.layoutYProperty(), 0);
+                }
+            };
+            // Opens the pop out
+            EventHandler<MouseEvent> openEvent = event -> {
+                PopOutType type = PopOutType.valueOf(button.getId());
+                openInMainSidebar(type, areaPane.widthProperty(), -(int)button.prefWidth(80),
                         button.layoutYProperty(), 0);
             };
-            button.onMouseClickedProperty().set(buttonEvent);
-            mainSidebarMap.put(PopOutType.valueOf(button.getId()), buttonEvent);
+            button.setOnMouseClicked(buttonEvent);
+            mainSidebarMap.put(PopOutType.valueOf(button.getId()), openEvent);
         }
 
         // Make a pop up on the user's mouse cursor every time a node is clicked
@@ -195,6 +209,32 @@ public class MainScreenController implements Initializable {
             }
             // Remove the pop up
             removeCurrentPopUp();
+
+            // make the zoom slider reflect the current zoom level
+            zoomSlider.setValue(mapDrawing.getZoomFactor());
+        });
+
+        // Set the zoom slider max and min to the zoom max and min
+        zoomSlider.setMin(minZoom);
+        zoomSlider.setMax(maxZoom);
+        // Set to default
+        zoomSlider.setValue(mapDrawing.getZoomFactor());
+        // When the zoom slider is moved, change the zoom factor on the screen
+        zoomSlider.valueProperty().addListener((a, b, after) -> {
+            mapDrawing.setZoomFactor(after.doubleValue());
+        });
+
+        // Populate and create the search bar
+        SearchBarController mainSearch = new SearchBarController(searchBar, false);
+
+        // When the search button is pressed then generate a new path with that as the destination
+        searchButton.pressedProperty().addListener((Observable a) -> {
+            pathfinding.genPath(mainSearch.getSelectedNode());
+        });
+
+        // Have the search bar listen to the beginning of the path and update accordingly
+        ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
+            searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
     }
 
@@ -204,13 +244,6 @@ public class MainScreenController implements Initializable {
 
     private void openInMainSidebar(PopOutType popOutType, ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
         try {
-            // If the previous pop out type is the same as the current and there is a controller, remove it from the screen
-            if(popOutType.equals(currentPopOutType) && currentPopOut != null) {
-                currentPopOutController.onClose();
-                areaPane.getChildren().remove(currentPopOut);
-                currentPopOut = null;
-                return;
-            }
             // Remove the last pop out if present
             if(currentPopOut != null) {
                 currentPopOutController.onClose();
@@ -230,6 +263,16 @@ public class MainScreenController implements Initializable {
             currentPopOutType = popOutType;
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void closeInMainSidebar(PopOutType popOutType) {
+        // remove it from the screen if one is open
+        if(currentPopOut != null) {
+            currentPopOutController.onClose();
+            areaPane.getChildren().remove(currentPopOut);
+            currentPopOut = null;
+            currentPopOutType = null;
         }
     }
 

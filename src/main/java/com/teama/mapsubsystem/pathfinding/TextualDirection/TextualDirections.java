@@ -3,6 +3,8 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.translator.Translator;
+
 
 import java.util.ArrayList;
 
@@ -18,8 +20,11 @@ public class TextualDirections implements DirectionsGenerator {
 
     @Override
     public TextDirections generateDirections(Path path) {
+
+
+
         nodeList = path.getNodes();
-         routeLinks = new ArrayList<>(nodeList.size()-1);
+        routeLinks = new ArrayList<>(nodeList.size()-1);
 
         // group list of nodes into two point link structure and let RouteLink do the basic calculation.
         RouteLink lastLink  = new RouteLink(nodeList.get(0),nodeList.get(1),null);
@@ -38,13 +43,15 @@ public class TextualDirections implements DirectionsGenerator {
         // put RouteLinks into Direction formate and refactor the same RouteLinks.
         // make the start Direction and push it into list.
         RouteLink thisTurn = routeLinks.get(0);
-        String temp = String.format( "Start walking towards %s",
+        String temp = String.format( "%s %s",
+                Translator.getInstance().getText("pathstart"),
                 thisTurn.getNext().getLongDescription());
 
-        dirList.add(new Direction(0,
+        // make the start section.
+        dirList.add(new Direction(thisTurn.getDistance(),
                 thisTurn.getStart().getCoordinate()
                 ,thisTurn.getNext().getCoordinate(),
-                temp));
+                temp,thisTurn.getTurn()));
 
         thisTurn= routeLinks.get(1);
         RouteLink nextLink;
@@ -89,32 +96,31 @@ public class TextualDirections implements DirectionsGenerator {
     {
         String discription = routeLink.getTextReturn();
         if (discription.contains("Elevator")){ // elevator text
-            discription = String.format("Enter Elevator and exit on floor %s",
+            discription = String.format("%s %s",
+                    Translator.getInstance().getText("elevatorenter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Stairs")){ // Stairs text
-            discription = String.format("Enter Stair and exit on floor %s",
+            discription = String.format("%s %s", Translator.getInstance().getText("stairenter"),
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Straight")){// going Straight
-            discription = String.format("Walk Straight for %f distance",
-                    routeLink.getDistance());
+            discription = String.format("%s", Translator.getInstance().getText("straightline")); //haven't added distance yet
         }
         else{ // actually turning.
-            discription=String.format("%s and walk for %f distance",
-                    discription,routeLink.getDistance());
+            discription=String.format("%s %s", discription, Translator.getInstance().getText("turning")); //haven't put distance in yet
         }
 
         if(routeLink.isEndFlag()) {
-            discription= String.format("%s \nyou will reach your destination %s",
-                    discription,routeLink.getNext().getLongDescription());
+            discription= String.format("%s %s", discription, Translator.getInstance().getText("pathend"));
+            //routeLink.getNext().getLongDescription());
         }
 
         // create and return the new formed Direction object.
-        return new Direction(0,
+        return new Direction(routeLink.getDistance(),
                 routeLink.getStart().getCoordinate(),
                 routeLink.getNext().getCoordinate(),
-                discription);
+                discription,routeLink.getTurn());
     }
 
     private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)

@@ -4,6 +4,7 @@ import com.teama.mapsubsystem.data.CSVDatabaseSource;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
 import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.translator.Translator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +22,9 @@ public class TextualDirectionsTest {
 
     @org.junit.Test
     public void generateDirections() throws Exception {
+
+        Translator.getInstance().setLang("en");
+
         AStar pathGen = new AStar();
         MapNode start = generater1.fullMap.get(0);
         MapNode end = generater1.fullMap.get(generater1.fullMap.size()-1);
@@ -29,8 +33,10 @@ public class TextualDirectionsTest {
         TextualDirections textGenerator = new TextualDirections();
         TextDirections output = textGenerator.generateDirections(testPath);
         ArrayList<Direction> directions = output.getDirections();
+        printEverything(output.getDirections());
+
         assertTrue(directions.get(0).getDescription().contains("Start walking towards X:12 Y:87"));
-        assertTrue(directions.get(directions.size()-1).getDescription().contains("you will reach your destination X:26 Y:15"));
+        assertTrue(directions.get(directions.size()-1).getDescription().contains("you will reach your destination"));
         printEverything(output.getDirections());
 
     }

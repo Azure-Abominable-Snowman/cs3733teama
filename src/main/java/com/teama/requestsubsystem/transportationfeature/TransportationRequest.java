@@ -1,34 +1,31 @@
 package com.teama.requestsubsystem.transportationfeature;
 
 import com.teama.mapsubsystem.data.Location;
-import com.teama.requestsubsystem.GenericRequestInfo;
-import com.teama.requestsubsystem.Priority;
-import com.teama.requestsubsystem.RequestStatus;
-import com.teama.requestsubsystem.RequestType;
+import com.teama.requestsubsystem.*;
 import com.teama.requestsubsystem.interpreterfeature.Language;
 
 /**
  * Created by jakepardue on 12/4/17.
  */
 public class TransportationRequest {
-    private GenericRequestInfo info; // will be filled in
+    private Request info; // will be filled in
     private RequestStatus r; // used in database
-    private Priority p;
+    private PriorityLevel p;
     private ModeOfTransportation requiredModeOfTransportation;
     private String endLocation;
     private int id = 0; // only set by db
 
     double serviceTime;
 
-    public TransportationRequest(GenericRequestInfo g, Priority p, ModeOfTransportation m, String s){
+    public TransportationRequest(Request g, PriorityLevel p, ModeOfTransportation m, String s){
         this.info = g;
         this.p = p;
         this.requiredModeOfTransportation = m;
-        this.r = RequestStatus.OPEN;
+        this.r = RequestStatus.ASSIGNED;
         this.endLocation = s;
     }
 
-    public TransportationRequest(GenericRequestInfo g, Priority p, RequestStatus s, ModeOfTransportation m, int id, String str){
+    public TransportationRequest(Request g, PriorityLevel p, RequestStatus s, ModeOfTransportation m, int id, String str){
         this.info = g;
         this.r = s;
         this.p = p;
@@ -37,7 +34,13 @@ public class TransportationRequest {
         this.endLocation = str;
     }
 
-    public GenericRequestInfo getInfo() {
+    public TransportationRequest(Request g,ModeOfTransportation m, double serviceTime) {
+        this.info = g;
+        this.requiredModeOfTransportation = m;
+        this.serviceTime = serviceTime;
+    }
+
+    public Request getInfo() {
         return info;
     }
 
@@ -45,9 +48,9 @@ public class TransportationRequest {
         this.id = ID;
     }
 
-    public Priority getPriority(){return p;}
+    public PriorityLevel getPriority(){return p;}
 
-    public void setPriority(Priority p){ this.p = p;}
+    public void setPriority(PriorityLevel p){ this.p = p;}
 
     public Location getLocation() {
     return info.getLocation();

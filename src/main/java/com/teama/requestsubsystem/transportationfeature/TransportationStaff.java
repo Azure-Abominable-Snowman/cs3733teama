@@ -2,10 +2,9 @@ package com.teama.requestsubsystem.transportationfeature;
 
 import com.teama.messages.ContactInfo;
 import com.teama.messages.Provider;
-import com.teama.requestsubsystem.GenericStaffInfo;
-import com.teama.requestsubsystem.interpreterfeature.CertificationType;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterInfo;
-import com.teama.requestsubsystem.interpreterfeature.Language;
+import com.teama.requestsubsystem.GenericStaff;
+import com.teama.requestsubsystem.ServiceStaff;
+import com.teama.requestsubsystem.StaffType;
 
 import java.util.Set;
 
@@ -14,78 +13,92 @@ import java.util.Set;
  */
 public class TransportationStaff {
 
+    private int id;
+    private Set<ModeOfTransportation> modeOfTransportation;
+    private ServiceStaff genInfo;
 
-    private GenericStaffInfo genericStaffInfo;
-    private TransportInfo transportInfo;
+    public TransportationStaff(ServiceStaff staffInfo, Set<ModeOfTransportation> modes){
+       this.genInfo = staffInfo;
+       this.modeOfTransportation = modes;
+       staffInfo.setStaffType(StaffType.TRANSPORT);
+    }
 
-    public TransportationStaff(GenericStaffInfo gInfo, TransportInfo tInfo ){
-        this.genericStaffInfo = gInfo;
-        this.transportInfo = tInfo;
+    public TransportationStaff(int id, TransportationStaff s){
+        this.genInfo = new GenericStaff(id, s.getFirstName(), s.getLastName(), s.getUsername(), s.getContactInfo());
+        this.modeOfTransportation = s.getModeOfTransportation();
+        genInfo.setStaffType(StaffType.TRANSPORT);
+    }
 
+    public void setGenInfo(ServiceStaff staff) {
+        genInfo.setFirstName(staff.getFirstName());
+        genInfo.setLastName(staff.getLastName());
+        genInfo.setPhoneNumber(staff.getPhoneNumber());
+        genInfo.setEmail(staff.getEmail());
+        genInfo.setProvider(staff.getProvider());
+        genInfo.setUsername(staff.getUsername());
     }
 
     public String getFirstName() {
-        return genericStaffInfo.getFirstName();
+        return genInfo.getFirstName();
+    }
+    public void setFirstName(String name) {
+        genInfo.setFirstName(name);
     }
 
     public String getLastName() {
-        return genericStaffInfo.getLastName();
+        return genInfo.getLastName();
     }
+    public void setLastName(String name) {genInfo.setLastName(name);}
 
-    public int getStaffID() {
-        return transportInfo.getStaffID();
+    public String getPhoneNumber() {
+        return genInfo.getPhoneNumber();
     }
-
-    public String getPhone() {
-        return genericStaffInfo.getContactInfo().getPhoneNumber();
+    public void setPhone(String phone) {
+        genInfo.setPhoneNumber(phone);
     }
 
     public String getEmail() {
-        return genericStaffInfo.getContactInfo().getEmailAddress();
+        return genInfo.getEmail();
+    }
+    public void setEmail(String email) {
+        genInfo.setEmail(email);
     }
 
     public Provider getProvider() {
-        return genericStaffInfo.getContactInfo().getProvider();
+        return genInfo.getProvider();
     }
-
-    public Set<ModeOfTransportation> getModeOfTransportation() {
-        return transportInfo.getModeOfTransportation();
-    }
-
-    public void setModeOfTransportation(Set<ModeOfTransportation> m) {
-        transportInfo.setModeOfTransportation(m);
-    }
-
-    public void setFirstName(String name) {
-        genericStaffInfo.setFirstName(name);
-    }
-
-    public void setLastName(String name) {
-        genericStaffInfo.setLastName(name);
-    }
-
     public void setProvider(Provider p) {
-        genericStaffInfo.setProvider(p);
+        genInfo.setProvider(p);
     }
 
-    public void setEmail(String email) {
-        genericStaffInfo.setEmail(email);
+    public String getUsername() {
+        return genInfo.getUsername();
     }
-
-    public void setPhone(String phone) {
-        genericStaffInfo.setPhoneNumber(phone);
-    }
+    public void setUsername(String uname) {genInfo.setUsername(uname);}
 
     public ContactInfo getContactInfo(){
-        return genericStaffInfo.getContactInfo();
+        return genInfo.getContactInfo();
     }
 
-    public String toString(){
-        String ans = "";
-        for(ModeOfTransportation m : getModeOfTransportation()){
-            ans+= m;
-        }
-        return getFirstName()+" "+getLastName()+"\n"+getStaffID()+"\n"+ans;
+    public StaffType getStaffType() {
+        return genInfo.getStaffType();
     }
+    public void setStaffType(StaffType t) {
+        genInfo.setStaffType(t);
+    }
+
+
+
+    public Set<ModeOfTransportation> getModeOfTransportation(){
+        return modeOfTransportation;
+    }
+
+    public void setModeOfTransportation(Set<ModeOfTransportation> modes){
+        this.modeOfTransportation = modes;
+    }
+
+
+
+
 
 }

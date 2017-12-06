@@ -1,67 +1,100 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.mapsubsystem.data.Location;
-import com.teama.requestsubsystem.GenericRequestInfo;
+import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 
 /**
  * Created by aliss on 11/20/2017.
  */
-public class InterpreterRequest {
-    private GenericRequestInfo info; // will be filled in
-    private RequestStatus r; // used in database
+public class InterpreterRequest implements Request {
+    private Request info; // will be filled in
     private int familySize;
     private Language requiredLanguage;
-    private int id = 0; // only set by db
-
 // may want to add a filter for CertificationType in the future
 
     // THESE FIELDS WILL BE FILLED OUT AFTER THE SERVICE IS COMPLETED:
     double serviceTime;
     TranslationType type; // which type of translation was required? whether written, verbal, and/or ASL
 
-
-    public InterpreterRequest(GenericRequestInfo g, int familySize, Language requiredLanguage) {
+    /**
+     * for making an interpreter request that has not been fulfilled yet
+     * @param g
+     * @param requiredLanguage
+     */
+    public InterpreterRequest(Request g, Language requiredLanguage) {
         this.info = g;
-        this.r = RequestStatus.ASSIGNED;
         this.requiredLanguage = requiredLanguage;
-        this.familySize = familySize;
-
+        this.familySize = 0;
+        this.serviceTime = 0;
+        this.type = null;
     }
 
-    // ONLY USED BY INTERPRETER REQUEST DB
-    InterpreterRequest(GenericRequestInfo g, RequestStatus s, int familySize, Language requiredLanguage, int id) {
+    /**
+     * for making an interpreter request that is fulfilled
+     * @param g
+     * @param requiredLanguage
+     * @param familySize
+     * @param serviceTime
+     * @param type
+     */
+
+    public InterpreterRequest(Request g, Language requiredLanguage, int familySize, double serviceTime, TranslationType type) {
         this.info = g;
-        this.r = s;
         this.requiredLanguage = requiredLanguage;
         this.familySize = familySize;
-        this.id = id;
+        this.serviceTime = serviceTime;
+        this.type = type;
     }
 
 
-    // methods used by DB to get info
-    public GenericRequestInfo getInfo() {
+    public Request getInfo() {
         return info;
     }
+    /*
     protected void setRequestID(int ID) { //protected, only used by DB
         this.id = ID;
     } // set by DB when request is entered into Request Table
-
+*/
 
     public Location getLocation() {
         return info.getLocation();
     }
 
+    public void setLocation(Location s) {
+        info.setLocation(s);
+    }
+
+    public void setStatus(RequestStatus s) {
+        info.setStatus(s);
+    }
+
+    public void setReqType(RequestType t) {
+        info.setReqType(t);
+    }
+    public RequestType getReqType(){
+        return info.getReqType();
+    }
+
     public String getNote() {
         return info.getNote();
     }
+
+    public void setNote(String note) {
+        info.setNote(note);
+    }
+
     public RequestStatus getStatus() {
-        return r;
+        return this.info.getStatus();
     }
 
     public int getFamilySize() {
         return familySize;
+    }
+
+    public void setFamilySize(int num){
+        this.familySize = num;
     }
 
     public Language getRequiredLanguage() {
@@ -77,7 +110,7 @@ public class InterpreterRequest {
     }
 
     public int getRequestID() { // protected, only used by DB
-        return this.id;
+        return this.info.getRequestID();
     }
 
     public int getStaffID () {
@@ -97,22 +130,43 @@ public class InterpreterRequest {
         this.type = t;
     }
 
-    public void updateStatus(RequestStatus newStatus) {
-        r = newStatus;
+    public TranslationType getTranslationType() {
+        return this.type;
     }
 
-    public String toString(){
-        return "Type: Interpreter \n" + "Location: " + getLocation().toString() + "\n" + "RequestStatus: "+ r.toString() + "\n" + "Staff ID: "+ Integer.toString(getInfo().getStaffID());
+    public void updateStatus(RequestStatus newStatus) {
+        this.info.setStatus(newStatus);
     }
+
+    public void add() {
+        //TODO
+    }
+
+    public void remove() {
+        //TODO
+
+    }
+    public void fulfill() {
+        //TODO
+
+    }
+    public void generateReport() {
+        //TODO
+
+    }
+
+
+    public String toString(){
+        return "Type: Interpreter \n" + "Location: " + getLocation().toString() + "\n" + "RequestStatus: "+ getReqType().toString() + "\n" + "Staff ID: "+ Integer.toString(getInfo().getStaffID());
+    }
+
+/*
 
     public void setRequestStatus(RequestStatus r){
         this.r = r;
     }
 
-    public RequestType getRequestType(){
-        return RequestType.INTR;
-    }
-
+*/
 
 
 

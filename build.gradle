@@ -3,6 +3,7 @@ group 'bwhospital-kiosk'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: "jacoco"
+apply plugin: "application"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -10,7 +11,7 @@ version = '1.0'
 
 jar {
     manifest {
-        attributes 'Implementation-Title': "BWHospitalKiosk-Iteration1",
+        attributes 'Implementation-Title': "BWHospitalKiosk-Iteration3",
                 'Implementation-Version': version,
                 'Main-Class': 'com.teama.Main'
     }
@@ -47,9 +48,23 @@ dependencies {
     )
 }
 
+task interpAPI(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': "TeamAInterpreterRequestAPI",
+                'Implementation-Version': version,
+                'Main-Class': 'com.teama.requestsubsystem.interpreterfeature.API.InterpreterAPI'
+    }
+    baseName = 'TeamAInterpreterRequestAPI'
+    from(sourceSets.main.output) {
+        include "**"
+    }
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 jacoco {
     toolVersion = "0.7.9"
     reportsDir = file("$buildDir/coverageReport")
 }
 
+mainClassName = 'com.teama.Main'
 
