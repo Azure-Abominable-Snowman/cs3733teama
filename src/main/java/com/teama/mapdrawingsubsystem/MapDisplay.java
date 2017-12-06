@@ -32,6 +32,7 @@ public interface MapDisplay {
     void setCurrentFloor(Floor floor);
 
     void setDisplayedLocation(Location loc);
+    void setDisplayedLocation(Location loc, boolean screenCoords);
     Location getDisplayedLocation();
 
     double getMaxX();
