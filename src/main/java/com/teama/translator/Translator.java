@@ -8,12 +8,12 @@ import java.util.ResourceBundle;
  */
 public class Translator {
 
-    Locale langLocale;
-    ResourceBundle bundle;
+    private Locale langLocale;
+    private ResourceBundle bundle;
 
     private static Translator ourInstance;
 
-    public static Translator getInstance() {
+    public static synchronized Translator getInstance() {
         if(ourInstance == null){
             ourInstance = new Translator("en");
         }
@@ -34,6 +34,12 @@ public class Translator {
     public void setLang(String lang) {
         this.langLocale = new Locale(lang);
         this.bundle = ResourceBundle.getBundle("lang", langLocale);
+    }
+
+    public ResourceBundle getNewBundle(){
+
+        return this.bundle = ResourceBundle.getBundle("lang", langLocale);
+
     }
 
 }
