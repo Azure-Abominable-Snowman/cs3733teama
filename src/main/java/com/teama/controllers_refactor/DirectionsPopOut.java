@@ -19,6 +19,7 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -73,13 +74,16 @@ public class DirectionsPopOut extends PopOutController {
                 new PropertyValueFactory<>("description"));
         distanceCol.setCellValueFactory(
                 new PropertyValueFactory<>("distance"));
+        directionCol.setCellValueFactory(
+                new PropertyValueFactory<>("direction"));
 
 
-        textDirections.setFixedCellSize(100); // cells need to be bigger than default
+        textDirections.setFixedCellSize(75); // cells need to be bigger than default
 
         // Factory for each row, set to have the text wrap
         textDirections.setRowFactory(tv -> {
             TableRow<DirectionAdapter> row = new TableRow<>();
+            row.setAlignment(Pos.CENTER);
             return row;
         });
 
