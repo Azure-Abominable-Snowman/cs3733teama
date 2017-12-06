@@ -37,7 +37,7 @@
                         <Insets right="5.0" />
                      </padding>
                   </JFXComboBox>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Info" GridPane.columnIndex="1">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%staffInfoMenu" GridPane.columnIndex="1">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -81,7 +81,7 @@
                                     <JFXCheckBox fx:id="Moldovan" maxWidth="1.7976931348623157E308" text="Moldovan" GridPane.rowIndex="8" />
                                     <JFXCheckBox fx:id="Ukranian" maxWidth="1.7976931348623157E308" text="Ukranian" GridPane.rowIndex="9" />
                                     <JFXCheckBox fx:id="ASL" maxWidth="1.7976931348623157E308" text="ASL" GridPane.rowIndex="10" />
-                                    <JFXTextField editable="false" text="Select Languages Spoken">
+                                    <JFXTextField editable="false" text="%languagesSelector">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
@@ -105,17 +105,17 @@
                                     <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
                                  </rowConstraints>
                                  <children>
-                                    <JFXTextField fx:id="FirstName" promptText="First Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-                                    <JFXTextField fx:id="LastName" promptText="Last Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                                    <JFXTextField fx:id="FirstName" promptText="%firstName" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                                    <JFXTextField fx:id="LastName" promptText="%lastName" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </JFXTextField>
-                                    <JFXTextField fx:id="PhoneNo" promptText="Phone No." GridPane.rowIndex="3" />
-                                    <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="Phone Provider" GridPane.rowIndex="4" />
-                                    <JFXTextField fx:id="Email" promptText="Email" GridPane.rowIndex="5" />
-                                    <JFXComboBox fx:id="Certifications" maxWidth="1.7976931348623157E308" promptText="Certificate" GridPane.rowIndex="6" />
-                                    <JFXTextField editable="false" text="Additional Information">
+                                    <JFXTextField fx:id="PhoneNo" promptText="%phone" GridPane.rowIndex="3" />
+                                    <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="%phoneProvider" GridPane.rowIndex="4" />
+                                    <JFXTextField fx:id="Email" promptText="%email" GridPane.rowIndex="5" />
+                                    <JFXComboBox fx:id="Certifications" maxWidth="1.7976931348623157E308" promptText="%certificate" GridPane.rowIndex="6" />
+                                    <JFXTextField editable="false" text="%additionalInfo">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
@@ -137,15 +137,15 @@
                               <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
                            </rowConstraints>
                            <children>
-                              <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelInterpreter" prefHeight="48.0" prefWidth="114.0" styleClass="cancelButton" text="Cancel">
+                              <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelInterpreter" prefHeight="48.0" prefWidth="114.0" styleClass="cancelButton" text="%cancelBtn">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin></JFXButton>
-                              <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitInterpreter" prefHeight="75.0" prefWidth="90.0" styleClass="confirmButton" text="Add" GridPane.columnIndex="1">
+                              <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitInterpreter" prefHeight="75.0" prefWidth="90.0" styleClass="confirmButton" text="%addBtn" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin></JFXButton>
-                              <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#deleteInterpeter" prefHeight="69.0" prefWidth="107.0" styleClass="resetButton" text="Delete" GridPane.columnIndex="2">
+                              <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#deleteInterpeter" prefHeight="69.0" prefWidth="107.0" styleClass="resetButton" text="%deleteBtn" GridPane.columnIndex="2">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin></JFXButton>
@@ -157,12 +157,12 @@
                      <children>
                         <TableView fx:id="InterpInfoTable" VBox.vgrow="ALWAYS">
                            <columns>
-                              <TableColumn fx:id="firstCol" prefWidth="75.0" text="First Name" />
-                              <TableColumn fx:id="lastCol" prefWidth="75.0" text="Last Name" />
-                              <TableColumn fx:id="langCol" prefWidth="75.0" text="Language" />
-                              <TableColumn fx:id="certCol" prefWidth="90.0" text="Certification" />
-                              <TableColumn fx:id="phoneCol" prefWidth="62.0" text="Phone #" />
-                              <TableColumn fx:id="emailCol" editable="false" prefWidth="118.0" text="Email" />
+                              <TableColumn fx:id="firstCol" prefWidth="75.0" text="%listFirstName" />
+                              <TableColumn fx:id="lastCol" prefWidth="75.0" text="%listLastName" />
+                              <TableColumn fx:id="langCol" prefWidth="75.0" text="%listLanguage" />
+                              <TableColumn fx:id="certCol" prefWidth="90.0" text="%listCertification" />
+                              <TableColumn fx:id="phoneCol" prefWidth="62.0" text="%listPhoneNo" />
+                              <TableColumn fx:id="emailCol" editable="false" prefWidth="118.0" text="%listEmail" />
                            </columns>
                         </TableView>
                      </children>
