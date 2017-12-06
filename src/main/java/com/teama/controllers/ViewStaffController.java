@@ -30,7 +30,7 @@ public class ViewStaffController {
     private Language language;
     private BooleanProperty isComplete= new SimpleBooleanProperty();
 
-
+/*
     public void setRequestViewList(Language Lang){
         //fill ListView with Interpreter staff
         ArrayList<InterpreterStaff> possibleStaff = InterpreterSubsystem.getInstance().findQualified(Lang);
@@ -38,6 +38,8 @@ public class ViewStaffController {
             staffViewList.getItems().add(s);
         }
     }
+
+    */
 
     @FXML
     void onSelect(MouseEvent event) {
