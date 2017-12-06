@@ -168,7 +168,7 @@ public class DirectionsPopOut extends PopOutController {
         ObservableList<DirectionAdapter> directionVals = FXCollections.observableArrayList();
         int num = 1;
         for(Direction d : directions.getDirections()) {
-            directionVals.add(new DirectionAdapter( d));
+            directionVals.add(new DirectionAdapter(num, d));
             num++;
         }
         textDirections.setItems(directionVals);
