@@ -40,15 +40,15 @@
                                     <RowConstraints maxHeight="106.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <JFXTextField fx:id="staffName" editable="false" promptText="Name of Staff" GridPane.rowIndex="2" />
-                                    <JFXTextField fx:id="language" editable="false" promptText="Language Used" GridPane.rowIndex="6" />
-                                    <JFXTextField fx:id="txtLocation" editable="false" promptText="Location" GridPane.rowIndex="8" />
-                                    <JFXTextField fx:id="staffID" editable="false" prefHeight="28.0" prefWidth="186.0" promptText="Staff ID" GridPane.rowIndex="4" />
-                                    <Label prefHeight="34.0" prefWidth="186.0" text="Staff Name:" GridPane.rowIndex="1" />
-                                    <Label prefHeight="32.0" prefWidth="186.0" text="Staff ID:" GridPane.rowIndex="3" />
-                                    <Label prefHeight="25.0" prefWidth="186.0" text="Language:" GridPane.rowIndex="5" />
-                                    <Label prefHeight="22.0" prefWidth="186.0" text="Location:" GridPane.rowIndex="7" />
-                                    <JFXTextField editable="false" promptText="Request Information" />
+                                    <JFXTextField fx:id="staffName" editable="false" promptText="%nameOstaff" GridPane.rowIndex="2" />
+                                    <JFXTextField fx:id="language" editable="false" promptText="%usedLang" GridPane.rowIndex="6" />
+                                    <JFXTextField fx:id="txtLocation" editable="false" promptText="%local" GridPane.rowIndex="8" />
+                                    <JFXTextField fx:id="staffID" editable="false" prefHeight="28.0" prefWidth="186.0" promptText="%staffid" GridPane.rowIndex="4" />
+                                    <Label prefHeight="34.0" prefWidth="186.0" text="%nameStaff" GridPane.rowIndex="1" />
+                                    <Label prefHeight="32.0" prefWidth="186.0" text="%staffID" GridPane.rowIndex="3" />
+                                    <Label prefHeight="25.0" prefWidth="186.0" text="%language" GridPane.rowIndex="5" />
+                                    <Label prefHeight="22.0" prefWidth="186.0" text="%location" GridPane.rowIndex="7" />
+                                    <JFXTextField editable="false" promptText="%inforeq" />
                                  </children>
                               </GridPane>
                            </children>
@@ -68,16 +68,16 @@
                                     <RowConstraints maxHeight="213.0" minHeight="10.0" prefHeight="114.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <JFXTextField fx:id="txtTimeToFulfill" promptText="How long did it take you to complete the request?" GridPane.rowIndex="1" />
-                                    <JFXTextArea fx:id="txtDescription" prefHeight="214.0" prefWidth="444.0" promptText="Please describe the encounter below:" GridPane.rowIndex="4" />
-                                    <JFXButton fx:id="btnSubmit" onAction="#onSubmitClick" prefHeight="79.0" prefWidth="245.0" style="-fx-background-color: #4d4dff;" text="Submit Request" GridPane.rowIndex="5">
+                                    <JFXTextField fx:id="txtTimeToFulfill" promptText="%reqlength" GridPane.rowIndex="1" />
+                                    <JFXTextArea fx:id="txtDescription" prefHeight="214.0" prefWidth="444.0" promptText="%encounterdesc" GridPane.rowIndex="4" />
+                                    <JFXButton fx:id="btnSubmit" onAction="#onSubmitClick" prefHeight="79.0" prefWidth="245.0" style="-fx-background-color: #4d4dff;" text="%subreq" GridPane.rowIndex="5">
                                        <GridPane.margin>
                                           <Insets left="95.0" />
                                        </GridPane.margin>
                                     </JFXButton>
-                                    <JFXTextField editable="false" prefHeight="12.0" prefWidth="444.0" promptText="Please fill out the additional information" />
-                                    <JFXTextField fx:id="groupSize" promptText="How many people did you help?" GridPane.rowIndex="2" />
-                                    <JFXComboBox fx:id="cmbxTransType" prefHeight="27.0" prefWidth="445.0" promptText="What type of translation did you do?" GridPane.rowIndex="3" />
+                                    <JFXTextField editable="false" prefHeight="12.0" prefWidth="444.0" promptText="%addInfo" />
+                                    <JFXTextField fx:id="groupSize" promptText="%numhelp" GridPane.rowIndex="2" />
+                                    <JFXComboBox fx:id="cmbxTransType" prefHeight="27.0" prefWidth="445.0" promptText="%translationtype" GridPane.rowIndex="3" />
                                  </children>
                               </GridPane>
                            </children>
