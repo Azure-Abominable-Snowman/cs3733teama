@@ -1,6 +1,9 @@
 package com.teama.controllers_refactor;
 
+import com.jfoenix.controls.JFXToggleButton;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -13,6 +16,20 @@ public abstract class PopOutController {
 
     @FXML
     private Pane mainPane;
+
+    @FXML
+    private JFXToggleButton viewNodes, viewEdges;
+
+    public boolean isIsOpenProperty() {
+        return isOpenProperty.get();
+    }
+
+    public BooleanProperty isOpenPropertyProperty() {
+        return isOpenProperty;
+    }
+
+    BooleanProperty isOpenProperty = new SimpleBooleanProperty(true); //popOut is open
+
 
     protected void alignPane(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
         xProperty.addListener((ObservableValue<? extends Number> a, Number before, Number after) -> {
@@ -32,4 +49,6 @@ public abstract class PopOutController {
     public abstract void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset);
     public abstract void onClose();
     public abstract String getFXMLPath();
+
+
 }

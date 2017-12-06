@@ -1,6 +1,7 @@
 package com.teama.mapsubsystem.pathfinding.TextualDirection;
 
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.translator.Translator;
@@ -52,39 +53,53 @@ public class TextualDirections implements DirectionsGenerator {
                 thisTurn.getStart().getCoordinate()
                 ,thisTurn.getNext().getCoordinate(),
                 temp,thisTurn.getTurn()));
-
         thisTurn= routeLinks.get(1);
         RouteLink nextLink;
+        String intoNodeName =""; // this is to hold the long description of the best along all nodes.
+        NodeType oldNodeType = NodeType.BATH; // this is a flag that go with the intoNodeName for getting the right one.
+
+        // The start of rest of all combining job of directions.
         for(int i=2;i<routeLinks.size();i++) {
+            if(holdNodeName(thisTurn.getNext(),oldNodeType)){
+                oldNodeType = thisTurn.getNext().getNodeType();
+                // ignore the case of only a bathroom link in the middle.
+                if(! ( oldNodeType.equals(NodeType.BATH)|| oldNodeType.equals((NodeType.REST))) ) {
+                    intoNodeName = thisTurn.getNext().getLongDescription();
+                }
+            } // This is to record any good node name comming after the turn node.
             nextLink=routeLinks.get(i);
-            // in the case of two stair links next to each other combing all the stair situation
-            if( (thisTurn.getTextReturn().contains("Elevator") || thisTurn.getTextReturn().contains("Stairs"))){
-                if((nextLink.getTextReturn().contains("Elevator")|| nextLink.getTextReturn().contains("Stairs"))){
+
+            if( (thisTurn.getTurn().equals(TurnType.ELEVATOR) || thisTurn.getTurn().equals(TurnType.STAIR))){
+                if((thisTurn.getTurn().equals(TurnType.ELEVATOR) || thisTurn.getTurn().equals(TurnType.STAIR))){
                     combineFloorChange(thisTurn,nextLink); // combine the next one into this.
                     continue;
                 }
             }
             // case of the link right out of the elevator, ignore this for now.
-            if( thisTurn.getTextReturn().contains("No") )
+            if( thisTurn.getTurn().equals(TurnType.INTONEWFLOOR) )
             {
                 thisTurn= nextLink;
                 continue;
             }
-            if (nextLink.getTextReturn().contains("Straight")) {
+            if (thisTurn.getTurn().equals(TurnType.STRAIGHT)) {
                 addDistance(thisTurn, nextLink); // combine the next one into this.
+
                 continue;
             }
             // condenced turn and floor change case.
-            dirList.add(formDirection(thisTurn));
+            dirList.add(formDirection(thisTurn,intoNodeName)); // TODO put in name
             thisTurn=nextLink;
         }
         // create the end link.
         thisTurn.setEndFlag(true);
-        dirList.add(formDirection(thisTurn));
+        dirList.add(formDirection(thisTurn,intoNodeName));
 
         //warp the list into the TextDirection and return it.
         return new TextDirections(dirList);
     }
+
+
+    ///////////////////////  Helpers /////////////////////
 
     private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
     {
@@ -92,7 +107,7 @@ public class TextualDirections implements DirectionsGenerator {
         return turnLink;
     }
 
-    private Direction formDirection (RouteLink routeLink)
+    private Direction formDirection (RouteLink routeLink , String nodeNameInto)
     {
         String discription = routeLink.getTextReturn();
         if (discription.contains("Elevator")){ // elevator text
@@ -105,10 +120,15 @@ public class TextualDirections implements DirectionsGenerator {
                     routeLink.getNextFloor().toString());
         }
         else if(discription.contains("Straight")){// going Straight
-            discription = String.format("%s", Translator.getInstance().getText("straightline")); //haven't added distance yet
+            discription = String.format("%s", Translator.getInstance().getText("straightline"));
         }
         else{ // actually turning.
-            discription=String.format("%s %s", discription, Translator.getInstance().getText("turning")); //haven't put distance in yet
+            if(nodeNameInto.length()>1) {
+                discription = String.format("%s %s %s", discription, Translator.getInstance().getText("turning"), nodeNameInto);
+                // TODO change the work with turning key from "and walk for" to "into"
+            }
+            else discription = String.format("%s", discription); // in the case we don't have a walk into situation.
+
         }
 
         if(routeLink.isEndFlag()) {
@@ -128,5 +148,46 @@ public class TextualDirections implements DirectionsGenerator {
         baseLink.setNextFloor(nextLink.getNextFloor());
         return baseLink;
     }
+
+
+    /**
+     * This will look at the next node type and try to find first the best kind of node.
+     * @param nextNode the next node that might have the good node type.
+     * @param oldNodetype   the recorded node type.
+     * @return true if nextNode is has a better node type then the old one.
+     */
+    private boolean holdNodeName (MapNode nextNode, NodeType oldNodetype )
+    {
+        int nextTypeRank= rankNodeType(nextNode.getNodeType());
+        int oldTypeRank = rankNodeType(oldNodetype);
+        if(nextTypeRank>oldTypeRank) return true;
+        else return false;
+    }
+
+    /**
+     * This is the return a integer of ranked node type, only work with holdNodeName function.
+     * @param type the one need to be ranked
+     * @return the rank of the type, higher the better.
+     */
+    private int rankNodeType (NodeType type)
+    {
+        switch (type)
+        {
+            case BATH:
+            case REST: return 1;
+            case HALL:
+            case ELEV:
+            case STAI: return 2;
+            case DEPT:
+            case LABS:
+            case INFO:
+            case CONF:
+            case EXIT:
+            case RETL:
+            case SERV: return 3;
+            default: return 0; // this the case of no NodeType recorded.
+        }
+    }
+
 
 }
