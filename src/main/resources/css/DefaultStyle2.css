@@ -1,4 +1,4 @@
 .root                             { -fx-font: 14px "Roboto";    }
 .column-header-background         { -fx-background-color: azure;       }
 .table-row-cell:empty             { -fx-background-color: cornsilk;    }
-.table-row-cell:empty .table-cell { -fx-border-width:     0px;         }
+.table-row-cell:empty .tab le-cell { -fx-border-width:     0px;         }
