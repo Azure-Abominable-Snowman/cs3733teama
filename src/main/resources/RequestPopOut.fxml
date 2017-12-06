@@ -24,12 +24,12 @@
          <children>
             <VBox prefHeight="517.0" prefWidth="320.0">
                <children>
-                  <JFXTextField fx:id="createRequestLabel1" alignment="CENTER" editable="false" text="Open Requests" unFocusColor="BLACK">
+                  <JFXTextField fx:id="createRequestLabel1" alignment="CENTER" editable="false" text="%openrq" unFocusColor="BLACK">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXComboBox fx:id="typeOfRequest1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="28.0" prefWidth="277.0" promptText="Filter" stylesheets="@css/DefaultStyle.css" />
+                  <JFXComboBox fx:id="typeOfRequest1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="28.0" prefWidth="277.0" promptText="%filter" stylesheets="@css/DefaultStyle.css" />
                   <JFXListView fx:id="requestView" prefHeight="378.0" prefWidth="325.0" stylesheets="@css/DefaultStyle.css" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -44,8 +44,8 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteRequest" prefHeight="70.0" prefWidth="159.0" style="-fx-background-color: #4d4dff;" text="Delete" />
-                        <JFXButton fx:id="completeButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#fulfillRequest" prefHeight="71.0" prefWidth="156.0" style="-fx-background-color: #000000;" text="Complete" GridPane.columnIndex="1" />
+                        <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteRequest" prefHeight="70.0" prefWidth="159.0" style="-fx-background-color: #4d4dff;" text="%reqdelete" />
+                        <JFXButton fx:id="completeButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#fulfillRequest" prefHeight="71.0" prefWidth="156.0" style="-fx-background-color: #000000;" text="%complete" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -59,30 +59,30 @@
                      <children>
                         <VBox fx:id="addToThis">
                            <children>
-                              <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" text="Create Request">
+                              <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" text="%createreq">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </JFXTextField>
-                              <JFXTextField fx:id="locationLabel" alignment="CENTER" editable="false" prefHeight="16.0" prefWidth="274.0" text="Location">
+                              <JFXTextField fx:id="locationLabel" alignment="CENTER" editable="false" prefHeight="16.0" prefWidth="274.0" text="%reqlocation">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </JFXTextField>
                               <HBox prefHeight="33.0" prefWidth="379.0">
                                  <children>
-                                    <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="87.0" promptText="Building" styleClass="jfx-combo-box" />
-                                    <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="73.0" promptText="Floor" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
-                                    <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="29.0" prefWidth="164.0" promptText="Long Name" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
+                                    <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="87.0" promptText="%reqbuilding" styleClass="jfx-combo-box" />
+                                    <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="73.0" promptText="%floorlvl" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
+                                    <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="29.0" prefWidth="164.0" promptText="%reqlongname" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
-                              <JFXTextField fx:id="typeLabel" alignment="CENTER" editable="false" text="Type">
+                              <JFXTextField fx:id="typeLabel" alignment="CENTER" editable="false" text="%reqtypel">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </JFXTextField>
-                              <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="120.0" promptText="Select Type:" styleClass="jfx-combo-box" stylesheets="@css/DefaultStyle.css" />
-                              <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="Note">
+                              <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="120.0" promptText="%typeSel" styleClass="jfx-combo-box" stylesheets="@css/DefaultStyle.css" />
+                              <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="%reqnotes">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -91,19 +91,19 @@
                            </children>
                         </VBox>
                         <HBox />
-                        <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="36.0" prefWidth="327.0" text="View Staff">
+                        <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="36.0" prefWidth="327.0" text="%staffview">
                            <padding>
                               <Insets top="10.0" />
                            </padding>
                         </JFXButton>
                         <HBox prefHeight="25.0" prefWidth="303.0">
                            <children>
-                              <JFXButton fx:id="cancelButton" onAction="#clearRequest" prefHeight="31.0" prefWidth="379.0" styleClass="jfx-cancel-button" text="Cancel" textFill="WHITE">
+                              <JFXButton fx:id="cancelButton" onAction="#clearRequest" prefHeight="31.0" prefWidth="379.0" styleClass="jfx-cancel-button" text="%cancelBtn" textFill="WHITE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton fx:id="submitButton" maxHeight="1.7976931348623157E308" onAction="#submitRequest" prefHeight="85.0" prefWidth="374.0" styleClass="jfx-accept-button" text="Submit" textFill="WHITE">
+                              <JFXButton fx:id="submitButton" maxHeight="1.7976931348623157E308" onAction="#submitRequest" prefHeight="85.0" prefWidth="374.0" styleClass="jfx-accept-button" text="%reqsubmit" textFill="WHITE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
