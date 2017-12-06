@@ -16,6 +16,7 @@ import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.translator.Translator;
+import javafx.animation.TranslateTransition;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -31,18 +32,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -101,7 +106,7 @@ public class MainScreenController implements Initializable {
     private ImageView directionsButton;
 
     @FXML
-    private GridPane mainSidebarGrid;
+    private Pane mainSideBarPane;
 
 
     private MapDisplay map;
@@ -127,8 +132,11 @@ public class MainScreenController implements Initializable {
     // Contains all of the event handlers for the buttons on the sidebar
     // Useful for when we need to open something on the sidebar based on another event
     private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap = new HashMap<>();
-
-
+    TranslateTransition mapTransistion;
+    TranslateTransition serviceTransition;
+    TranslateTransition directoryTransition;
+    TranslateTransition settingsTransition;
+    ArrayList<TranslateTransition> transitions;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -168,7 +176,7 @@ public class MainScreenController implements Initializable {
         popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.LOCCLICKED);
 
         // Attach listeners to all the sidebar pop outs to open their respective pane on click
-        for(Node button : mainSidebarGrid.getChildren()) {
+        for(Node button : mainSideBarPane.getChildren()) {
             // Opens the pop out and closes it when it is clicked again
             EventHandler<MouseEvent> buttonEvent = event -> {
                 // Gets the pop out type from the id defined in scenebuilder
@@ -252,23 +260,69 @@ public class MainScreenController implements Initializable {
 
         // Hide stuff until someone is logged in
         ProgramSettings.getInstance().getIsLoggedInProp().addListener((a) -> {
+            System.out.println("logging in");
             setLoginVisibility();
         });
+        final double duration = 1.5;
+        mapTransistion = new TranslateTransition(Duration.seconds(duration), mapEditorButton);
+        serviceTransition = new TranslateTransition(Duration.seconds(duration), serviceRequestButton);
+        directoryTransition = new TranslateTransition(Duration.seconds(duration), directoryButton);
+        settingsTransition = new TranslateTransition(Duration.seconds(duration), settingButton);
+        double YtoStart = directionsButton.getLayoutY();
+        directoryButton.setLayoutY(YtoStart); mapEditorButton.setLayoutY(YtoStart);
+        serviceRequestButton.setLayoutY(YtoStart); settingButton.setLayoutY(YtoStart);
+        transitions = new ArrayList<>();
+        transitions.add(mapTransistion); transitions.add(settingsTransition);
+        transitions.add(directoryTransition); transitions.add(serviceTransition);
         setLoginVisibility();
     }
+    public void makeButtonsVisible(){
 
+        directoryButton.setVisible(true);
+        mapEditorButton.setVisible(true);
+        serviceRequestButton.setVisible(true);
+        settingButton.setVisible(true);
+        System.out.println(directoryButton.isVisible());
+    }
     private void setLoginVisibility() {
+        double startPoint = directionsButton.getLayoutY()-directoryButton.getFitHeight();
+        final double height = 80;
+        final double padding = 15;
+        final double endPoint = 438;
+        double nextLoc = startPoint;
+        directoryButton.setVisible(true);
+        mapEditorButton.setVisible(true);
+        serviceRequestButton.setVisible(true);
+        settingButton.setVisible(true);
         if(ProgramSettings.getInstance().getIsLoggedInProp().get()) {
-            directoryButton.setVisible(true);
-            mapEditorButton.setVisible(true);
-            serviceRequestButton.setVisible(true);
-            settingButton.setVisible(true);
+            System.out.println("here");
+            //inserting animation here:
+            System.out.println(transitions);
+            for(TranslateTransition t: transitions){
+                System.out.println("running anim " + nextLoc);
+              //  System.out.println(nextLoc);
+                t.getNode().setVisible(true);
+                t.setToY(nextLoc);
+                nextLoc += padding;
+                nextLoc += height;
+                t.play();
+                System.out.println("here");
+                Image logOut = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogOut.png"));
+                loginButton.setImage(logOut);
+            }
         } else {
-            directoryButton.setVisible(false);
-            mapEditorButton.setVisible(false);
-            serviceRequestButton.setVisible(false);
-            settingButton.setVisible(false);
-        }
+            System.out.println("I guess not");
+           // mapEditorButton.setY(startPoint);
+                for(TranslateTransition t: transitions){
+                    System.out.println(startPoint);
+                    t.setToY(startPoint);
+                    t.play();
+                    t.getNode().setVisible(false);
+                    System.out.println(t.getNode().getLayoutY());
+                }
+                Image logIn = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogIn.png"));
+                loginButton.setImage(logIn);
+            }
     }
 
     private Node currentPopOut;
