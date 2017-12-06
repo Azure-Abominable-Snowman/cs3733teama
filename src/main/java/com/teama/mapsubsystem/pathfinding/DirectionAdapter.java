@@ -2,22 +2,25 @@ package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 
+import java.awt.*;
+import javax.swing.*;
+
+
 public class DirectionAdapter {
     private Direction d;
-    private int stepNum;
 
-    public DirectionAdapter(int stepNum, Direction d) {
+    public DirectionAdapter(Direction d) {
         this.d = d;
-        this.stepNum = stepNum;
     }
+
 
     public String getDescription() {
         return d.getDescription();
     }
 
     public String getDistance() {
-        return Integer.toString((int)d.getLengthOfPath());
+        return Double.toString(d.getLengthOfPath());
     }
 
-    public int getStepNum() { return stepNum; }
+    //public Icon getIcon(){return d.getIcon();}
 }
