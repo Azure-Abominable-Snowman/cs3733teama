@@ -10,7 +10,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="355.0" prefWidth="255.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane prefHeight="241.0" prefWidth="255.0">
@@ -34,12 +33,12 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <JFXTextField fx:id="nodeID" prefHeight="24.0" prefWidth="209.0" promptText="ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <JFXTextField fx:id="nodeCoord" promptText="Coordinate" GridPane.rowIndex="2" />
-            <JFXTextField fx:id="longName" promptText="Long Name" GridPane.rowIndex="3" />
-            <JFXTextField fx:id="nodeID1" prefHeight="24.0" prefWidth="209.0" promptText="ID" GridPane.rowIndex="6" />
-            <JFXTextField fx:id="nodeCoord1" promptText="Coordinate" GridPane.rowIndex="7" />
-            <JFXTextField fx:id="longName1" promptText="Long Name" GridPane.rowIndex="8" />
+            <JFXTextField fx:id="nodeID1" prefHeight="24.0" prefWidth="209.0" promptText="ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <JFXTextField fx:id="nodeCoord1" promptText="Coordinate" GridPane.rowIndex="2" />
+            <JFXTextField fx:id="longName1" promptText="Long Name" GridPane.rowIndex="3" />
+            <JFXTextField fx:id="nodeID2" prefHeight="24.0" prefWidth="209.0" promptText="ID" GridPane.rowIndex="6" />
+            <JFXTextField fx:id="nodeCoord2" promptText="Coordinate" GridPane.rowIndex="7" />
+            <JFXTextField fx:id="longName2" promptText="Long Name" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Node:" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
                   <Font size="18.0" />
@@ -60,8 +59,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXButton fx:id="deleteNode" text="Delete" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
-            <JFXButton fx:id="addNode" text="Add" GridPane.halignment="RIGHT" />
+            <JFXButton fx:id="deleteEdge" onAction="#onDeleteEdge" text="Delete" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
+            <JFXButton fx:id="addEdge" onAction="#onAddEdge" text="Add" GridPane.halignment="RIGHT" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />

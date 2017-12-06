@@ -41,7 +41,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Text>
-            <JFXTextField fx:id="requestLocation" editable="false" prefHeight="30.0" prefWidth="170.0" GridPane.columnIndex="1">
+            <JFXTextField fx:id="requestLocation" editable="false" prefHeight="30.0" prefWidth="170.0" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" />
                </GridPane.margin>
@@ -54,7 +54,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Text>
-            <JFXTextField fx:id="requiredLanguage" editable="false" prefHeight="26.0" prefWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <JFXTextField fx:id="requiredLanguage" editable="false" prefHeight="26.0" prefWidth="170.0" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" />
                </GridPane.margin>
@@ -62,7 +62,7 @@
                   <Insets bottom="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField fx:id="assignedStaff" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <JFXTextField fx:id="assignedStaff" editable="false" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" />
                </GridPane.margin>
@@ -121,7 +121,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
-            <JFXTextField fx:id="serviceDuration" alignment="CENTER" promptText="Duration of Service (Minutes)" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <JFXTextField fx:id="serviceDuration" alignment="CENTER" promptText="Duration of Service (Minutes)" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
                </font>
@@ -129,7 +129,7 @@
                   <Insets bottom="5.0" left="30.0" right="30.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXTextField fx:id="familySize" alignment="CENTER" promptText="Family Size Assisted" GridPane.rowIndex="2">
+            <JFXTextField fx:id="familySize" alignment="CENTER" promptText="Family Size Assisted" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font>
@@ -162,12 +162,12 @@
             <Insets bottom="10.0" top="10.0" />
          </padding>
          <children>
-            <JFXButton fx:id="cancelBtn" onAction="#onCancel" prefHeight="55.0" prefWidth="189.0" text="Cancel">
+            <JFXButton fx:id="cancelBtn" onAction="#onCancel" prefHeight="55.0" prefWidth="189.0" styleClass="cancel" stylesheets="@css/ApiStyle.css" text="Cancel">
                <font>
                   <Font size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="submitBtn" onAction="#onSubmit" prefHeight="57.0" prefWidth="197.0" text="Submit" GridPane.columnIndex="1">
+            <JFXButton fx:id="submitBtn" onAction="#onSubmit" prefHeight="51.0" prefWidth="196.0" styleClass="submit" stylesheets="@css/ApiStyle.css" text="Submit" GridPane.columnIndex="1">
                <font>
                   <Font size="15.0" />
                </font>

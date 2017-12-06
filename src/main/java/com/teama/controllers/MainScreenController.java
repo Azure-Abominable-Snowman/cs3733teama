@@ -120,7 +120,6 @@ public class MainScreenController implements Initializable {
     private SimpleBooleanProperty showLoginButton = new SimpleBooleanProperty(true);
     private EventHandler<MouseEvent> originalMouseClick;
 
-    private MainScreenSidebarController sidebar;
     private PopOutFactory popOutFactory = new PopOutFactory();
     private BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
 
@@ -258,6 +257,26 @@ public class MainScreenController implements Initializable {
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
+
+        // Hide stuff until someone is logged in
+        ProgramSettings.getInstance().getIsLoggedInProp().addListener((a) -> {
+            setLoginVisibility();
+        });
+        setLoginVisibility();
+    }
+
+    private void setLoginVisibility() {
+        if(ProgramSettings.getInstance().getIsLoggedInProp().get()) {
+            directoryButton.setVisible(true);
+            mapEditorButton.setVisible(true);
+            serviceRequestButton.setVisible(true);
+            settingButton.setVisible(true);
+        } else {
+            directoryButton.setVisible(false);
+            mapEditorButton.setVisible(false);
+            serviceRequestButton.setVisible(false);
+            settingButton.setVisible(false);
+        }
     }
 
     private Node currentPopOut;
@@ -280,7 +299,9 @@ public class MainScreenController implements Initializable {
 
 
             controller.onOpen(xProperty, xOffset, yProperty, yOffset);
-            //mapDrawing.detachListener(popUpID);
+            if(popOutType.equals(PopOutType.EDITOR)) {
+                mapDrawing.detachListener(popUpID);
+            }
             currentPopOut = loader.load();
             currentPopOutController = controller;
 
@@ -289,6 +310,7 @@ public class MainScreenController implements Initializable {
             areaPane.getChildren().add(currentPopOut);
 
             currentPopOutType = popOutType;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -298,6 +320,7 @@ public class MainScreenController implements Initializable {
         // remove it from the screen if one is open
         if(currentPopOut != null) {
             currentPopOutController.onClose();
+            mapDrawing.detachListener(popUpID);
             popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
             areaPane.getChildren().remove(currentPopOut);
             currentPopOut = null;

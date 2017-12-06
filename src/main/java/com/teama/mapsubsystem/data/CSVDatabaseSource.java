@@ -132,6 +132,7 @@ public class CSVDatabaseSource implements MapDataSource {
             System.out.println(
                     "Unable to open file '" +
                             filename + "'");
+
             return null;
         }
 
