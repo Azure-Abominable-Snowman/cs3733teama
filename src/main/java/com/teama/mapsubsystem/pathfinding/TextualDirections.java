@@ -76,11 +76,13 @@ public class TextualDirections implements DirectionsGenerator {
                 }
             }
             // case of the link right out of the elevator, ignore this for now.
+            /*
             if( nextLink.getTurn().equals(TurnType.INTONEWFLOOR) )
             {
                 thisTurn= nextLink;
                 continue;
-            }
+            }*/
+            //TODO double chenck if this work.
             if (nextLink.getTurn().equals(TurnType.STRAIGHT)) {
                 addDistance(thisTurn, nextLink); // combine the next one into this.
 
