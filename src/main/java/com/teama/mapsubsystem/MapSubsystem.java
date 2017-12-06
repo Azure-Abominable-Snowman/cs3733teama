@@ -32,10 +32,18 @@ public class MapSubsystem {
         Path shortest = null;
         double smallestSize = -1;
         MapNode originNode = ProgramSettings.getInstance().getPathOriginNodeProp().getValue();
+        if(originNode == null) {
+            originNode = getKioskNode();
+        }
         for(MapNode n : nodesToFilterThrough) {
             // For every node, find the path to it and calculate distance,
             // keep the shortest path only and return that
-            Path p = getPathGenerator().generatePath(originNode, n);
+            Path p;
+            try {
+                p = getPathGenerator().generatePath(originNode, n);
+            } catch(RuntimeException e) {
+                continue;
+            }
             double size = 0;
             for(MapEdge conn : p.getConnectors()) {
                 size += conn.getWeight();

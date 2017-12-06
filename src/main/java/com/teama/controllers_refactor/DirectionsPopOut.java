@@ -85,6 +85,14 @@ public class DirectionsPopOut extends PopOutController {
         // Populate the combo box and allow fuzzy search by tying it to a search controller
         SearchBarController searchBarController = new SearchBarController(originNodeCombo, true);
 
+        // Initially set the origin node to the current origin node
+        MapNode beginOrigin = ProgramSettings.getInstance().getPathOriginNodeProp().getValue();
+        if(beginOrigin != null) {
+            originNodeCombo.getEditor().setText(beginOrigin.getLongDescription());
+        } else {
+            originNodeCombo.getEditor().setText(mapSubsystem.getKioskNode().getLongDescription());
+        }
+
         // When the origin combo box changes selected value, set the origin of the path to the new one
         originNodeCombo.getSelectionModel().selectedItemProperty().addListener((Observable a) -> {
             System.out.println("CHANGED SELECTION "+originNodeCombo.getSelectionModel().getSelectedItem());
@@ -109,13 +117,15 @@ public class DirectionsPopOut extends PopOutController {
             for(long id : filterFloorListeners) {
                 mapDrawing.detachListener(id);
             }
-            updateFilter();
             drawShortestPathToFilter();
+            updateFilter();
             filterFloorListeners.add(mapDrawing.attachFloorChangeListener((a, b, c) -> {
-                updateFilter();
+                System.out.println(filterBox.getSelectionModel().getSelectedItem());
                 drawShortestPathToFilter();
+                updateFilter();
             }));
         });
+
     }
 
     private MapDrawingSubsystem mapDrawing = MapDrawingSubsystem.getInstance();
@@ -137,8 +147,8 @@ public class DirectionsPopOut extends PopOutController {
         // Find the shortest path to the given nodetype
         Path shortest = mapSubsystem.findClosest(NodeType.fromValue(filterBox.getSelectionModel().getSelectedItem()));
         System.out.println("SHORTEST FOUND TO "+shortest.getEndNode().getId());
-        //ProgramSettings.getInstance().setPathEndNodeProp(shortest.getEndNode());
-        //ProgramSettings.getInstance().setCurrentDisplayedPathProp(shortest);
+        //ProgramSettings.getInstance().setPathOriginNodeProp(shortest.getStartNode());
+        ProgramSettings.getInstance().setPathEndNodeProp(shortest.getEndNode());
     }
 
     private DirectionsGenerator directionsGenerator = new TextualDirections();
@@ -167,8 +177,7 @@ public class DirectionsPopOut extends PopOutController {
 
     @Override
     public void onClose() {
-        // Redisplay all floor nodes to get rid of the filter
-        MapDrawingSubsystem.getInstance().refreshMapNodes();
+
     }
 
     @Override

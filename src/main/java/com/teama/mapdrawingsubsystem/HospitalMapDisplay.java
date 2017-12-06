@@ -409,6 +409,21 @@ public class HospitalMapDisplay implements MapDisplay {
         displayedLocation = getDisplayedLocation();
     }
 
+    @Override
+    public void setDisplayedLocation(Location loc, boolean screenCoords) {
+        System.out.println("OLD X: "+loc.getxCoord()+" OLD Y "+loc.getyCoord());
+        if (!screenCoords) {
+            double newX = (loc.getxCoord())*((canvas.getWidth()*pane.getHmax())/(curMap.getMap().getWidth()*(canvas.getWidth()-pane.getWidth())));
+            double newY = (loc.getyCoord())*((canvas.getHeight()*(pane.getVmax()))/(curMap.getMap().getHeight()*(canvas.getHeight()-pane.getHeight())));
+            loc = new Location((int)(newX), (int)(newY), loc.getLevel(), loc.getBuilding());
+        }
+        System.out.println("NEW X: "+loc.getxCoord()+" NEW Y "+loc.getyCoord());
+        pane.setVvalue(loc.getyCoord());
+        pane.setHvalue(loc.getxCoord());
+        setCurrentFloor(loc.getLevel());
+        displayedLocation = getDisplayedLocation();
+    }
+
     /**
      * Updates and returns the location at the middle of the screen
      * @return
