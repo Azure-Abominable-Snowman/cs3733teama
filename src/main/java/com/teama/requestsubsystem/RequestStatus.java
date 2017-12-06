@@ -6,7 +6,8 @@ package com.teama.requestsubsystem;
 public enum RequestStatus {
     //OPEN("Open"), // may need to add this..
     ASSIGNED("Assigned"),
-    CLOSED("Closed");
+    CLOSED("Closed"),
+    ALL("All");
 
     private final String status;
     RequestStatus(String s) {

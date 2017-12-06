@@ -21,6 +21,7 @@ public class InterpreterAPI extends Application{
         try {
             pane = loader.load();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new ServiceException();
         }
         Stage stage = new Stage();
@@ -54,5 +55,6 @@ public class InterpreterAPI extends Application{
             System.out.println("Caught service exception");
             e.printStackTrace();
         }
+
     }
 }
