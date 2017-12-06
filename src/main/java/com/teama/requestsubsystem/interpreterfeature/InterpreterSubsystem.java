@@ -70,6 +70,14 @@ public class InterpreterSubsystem {
         return false;
     }
 
+    public Request getGenericRequest(int id) {
+        return requestDB.getRequest(id);
+    }
+
+    public InterpreterRequest getInterpreterRequest(int id) {
+        return requestDB.getInterpreterRequest(id);
+    }
+
     // when admin marks a request as fulfilled and fills in the generated form, the InterpRequest table and generic tables will be updated
     public boolean fulfillRequest(InterpreterRequest r) {
         return requestDB.fulfillRequest(r);

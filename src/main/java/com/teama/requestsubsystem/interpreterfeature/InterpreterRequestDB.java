@@ -232,6 +232,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
         try {
             deleteRequest.setInt(1, requestID);
             deleteRequest.execute();
+            deletedInterp = true;
         } catch(SQLException e) {
             e.printStackTrace();
         }

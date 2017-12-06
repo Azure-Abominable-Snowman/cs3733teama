@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="391.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.requestsubsystem.interpreterfeature.API.RequestAPIController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="391.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane prefHeight="150.0" prefWidth="370.0">
          <columnConstraints>
@@ -41,7 +41,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Text>
-            <JFXTextField editable="false" prefHeight="30.0" prefWidth="170.0" GridPane.columnIndex="1">
+            <JFXTextField fx:id="requestLocation" editable="false" prefHeight="30.0" prefWidth="170.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" />
                </GridPane.margin>
@@ -54,7 +54,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Text>
-            <JFXTextField editable="false" prefHeight="26.0" prefWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <JFXTextField fx:id="requiredLanguage" editable="false" prefHeight="26.0" prefWidth="170.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" />
                </GridPane.margin>
@@ -62,7 +62,7 @@
                   <Insets bottom="10.0" />
                </padding>
             </JFXTextField>
-            <JFXTextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <JFXTextField fx:id="assignedStaff" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" />
                </GridPane.margin>
@@ -92,7 +92,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Text>
-            <JFXTextArea editable="false" GridPane.rowIndex="1">
+            <JFXTextArea fx:id="additionalInfo" editable="false" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="15.0" right="15.0" />
                </GridPane.margin>
@@ -121,7 +121,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
-            <JFXTextField alignment="CENTER" promptText="Duration of Service (Minutes)" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <JFXTextField fx:id="serviceDuration" alignment="CENTER" promptText="Duration of Service (Minutes)" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
                </font>
@@ -129,7 +129,7 @@
                   <Insets bottom="5.0" left="30.0" right="30.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXTextField alignment="CENTER" promptText="Family Size Assisted" GridPane.rowIndex="2">
+            <JFXTextField fx:id="familySize" alignment="CENTER" promptText="Family Size Assisted" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font>
@@ -137,7 +137,7 @@
                   <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXComboBox prefHeight="34.0" prefWidth="141.0" promptText="Translation Type" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <JFXComboBox fx:id="translationType" prefHeight="34.0" prefWidth="141.0" promptText="Translation Type" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -162,12 +162,12 @@
             <Insets bottom="10.0" top="10.0" />
          </padding>
          <children>
-            <JFXButton prefHeight="55.0" prefWidth="189.0" text="Cancel">
+            <JFXButton fx:id="cancelBtn" onAction="#onCancel" prefHeight="55.0" prefWidth="189.0" text="Cancel">
                <font>
                   <Font size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton prefHeight="57.0" prefWidth="197.0" text="Submit" GridPane.columnIndex="1">
+            <JFXButton fx:id="submitBtn" onAction="#onSubmit" prefHeight="57.0" prefWidth="197.0" text="Submit" GridPane.columnIndex="1">
                <font>
                   <Font size="15.0" />
                </font>

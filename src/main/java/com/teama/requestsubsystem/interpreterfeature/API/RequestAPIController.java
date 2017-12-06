@@ -12,13 +12,18 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 /**
  * Created by aliss on 12/4/2017.
@@ -58,6 +63,8 @@ public class RequestAPIController {
     private ToggleGroup languageSelectionGroup;
     private BooleanProperty isIncomplete = new SimpleBooleanProperty(true);
     private BooleanProperty isNotSelected = new SimpleBooleanProperty(true);
+    private BooleanProperty isFulfilling = new SimpleBooleanProperty(false);
+    private RequestTableData selectedData = null;
 
     public RequestAPIController(MapNode destination) {
         this.destination = destination;
@@ -104,16 +111,16 @@ public class RequestAPIController {
         });
 
         //submitBtn.disableProperty().bind(isIncomplete);
-        //fulfillBtn.disableProperty().bind(isNotSelected);
+
         //deleteBtn.disableProperty().bind(isNotSelected);
 
-        reqStatus.getItems().clear();
-        reqStatus.getItems().addAll(RequestStatus.values());
+        //reqStatus.getItems().clear();
+        //reqStatus.getItems().addAll(RequestStatus.values());
 
-        requestTable.selectionModelProperty().addListener(new ChangeListener<TableView.TableViewSelectionModel<RequestTableData>>() {
+        requestTable.onMouseClickedProperty().addListener(new ChangeListener<EventHandler<? super MouseEvent>>() {
             @Override
-            public void changed(ObservableValue<? extends TableView.TableViewSelectionModel<RequestTableData>> observable, TableView.TableViewSelectionModel<RequestTableData> oldValue, TableView.TableViewSelectionModel<RequestTableData> newValue) {
-                if (newValue != null && newValue != oldValue) {
+            public void changed(ObservableValue<? extends EventHandler<? super MouseEvent>> observable, EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) {
+                if (requestTable.getSelectionModel().getSelectedItem() != null) {
                     isNotSelected.setValue(false);
                 }
                 else {
@@ -122,6 +129,18 @@ public class RequestAPIController {
             }
         });
 
+        isFulfilling.addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                formBox.getChildren().clear();
+
+                if (!newValue) {
+                    formBox.getChildren().addAll(newForm, newFormBtns);
+                    clearAllNewRequestFields();
+                }
+            }
+        });
+        //fulfillBtn.disableProperty().bind(isNotSelected);
 
         //    private TableColumn statusCol, locCol, langCol, staffCol;
 
@@ -164,12 +183,42 @@ public class RequestAPIController {
         }
 
     }
+    public boolean isIsFulfilling() {
+        return isFulfilling.get();
+    }
 
+    public BooleanProperty isFulfillingProperty() {
+        return isFulfilling;
+    }
+
+    public void setIsFulfilling(boolean isFulfilling) {
+        this.isFulfilling.set(isFulfilling);
+    }
+
+/*
     @FXML
     void onFilter(ActionEvent e) {
-        //TODO
-
+        RequestStatus selected = reqStatus.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            ArrayList<InterpreterRequest> filtered = new ArrayList<>();
+            requestTable.get
+            if (selected == RequestStatus.ASSIGNED || selected == RequestStatus.CLOSED) {
+                filtered =  InterpreterSubsystem.getInstance().getAllRequests(selected);
+            }
+            else {
+                filtered = InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED);
+                for (InterpreterRequest r: InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.CLOSED)) {
+                    filtered.add(r);
+                }
+            }
+            for (InterpreterRequest req: filtered) {
+                RequestTableData updated = new RequestTableData(req, MapSubsystem.getInstance().getNode());
+                requestTable.getItems().add(updated);
+            }
+        }
     }
+    */
+
     private void clearAllNewRequestFields() {
         reqLocation.clear();
         for (Toggle t: languageSelectionGroup.getToggles()) {
@@ -181,14 +230,45 @@ public class RequestAPIController {
 
     @FXML
     void onFulfill(ActionEvent e) {
-        formBox.getChildren().clear();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("FulfillRqAPI.fxml"));
-        FulfillRqAPIController controller = new FulfillRqAPIController();
+        if (requestTable.getSelectionModel().getSelectedItem() != null) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/FullfilRqAPI.fxml"));
+            RequestTableData selected = requestTable.getSelectionModel().getSelectedItem();
+            isFulfilling.setValue(true);
+            FulfillRqAPIController controller = new FulfillRqAPIController(selected, isFulfilling, requestTable);
+            loader.setController(controller);
+            try {
+                Pane node = loader.load();
+                formBox.getChildren().addAll(node);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+
     }
 
     @FXML
     void onDelete(ActionEvent e) {
+        if (requestTable.getSelectionModel().getSelectedItem() != null) {
+            RequestTableData selected = requestTable.getSelectionModel().getSelectedItem();
+
+            if (InterpreterSubsystem.getInstance().deleteRequest(selected.getRequestID())) {
+                requestTable.getItems().removeIf(new Predicate<RequestTableData>() {
+                    @Override
+                    public boolean test(RequestTableData requestTableData) {
+                        return requestTableData.getRequestID() == selected.getRequestID();
+                    }
+                });
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Request Deletion");
+                alert.setHeaderText("Failed to Delete Request");
+                alert.setContentText("An error occured while attempting to delete this request.");
+                alert.showAndWait();
+            }
+        }
 
     }
 
