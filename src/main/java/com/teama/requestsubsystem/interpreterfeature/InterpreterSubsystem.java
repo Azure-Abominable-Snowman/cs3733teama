@@ -94,4 +94,8 @@ public class InterpreterSubsystem {
 
     // Gets a specific staff member
     public InterpreterStaff getIntepreterStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
+
+    public InterpreterStaff getStaff(int staffID){
+        return staffDB.getInterpreterStaff(staffID);
+    }
 }
