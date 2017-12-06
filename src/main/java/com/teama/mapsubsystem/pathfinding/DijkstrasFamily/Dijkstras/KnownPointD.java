@@ -1,18 +1,17 @@
-package com.teama.mapsubsystem.pathfinding.Dijkstras;
+package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras;
 
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.MapEdge;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.KnownPoint;
 
 import java.util.ArrayList;
 
-public class KnownPoint implements  Comparable {
+public class KnownPointD extends KnownPoint {
 
-    private MapNode node;
-    private KnownPoint lastNode;
-    private int pastCost;
+    protected KnownPointD lastNode;
 
     //constructor
-    public KnownPoint(MapNode node, KnownPoint lastNode, int pastCost) {
+    public KnownPointD(MapNode node, KnownPointD lastNode, int pastCost) {
         this.node = node;
         this.lastNode = lastNode;
         this.pastCost = pastCost;
@@ -36,7 +35,7 @@ public class KnownPoint implements  Comparable {
      */
     @Override
     public int compareTo(Object o) {
-        KnownPoint node = (KnownPoint) o;
+        KnownPointD node = (KnownPointD) o;
         if (this.pastCost > node.pastCost) return 1;
         else if (this.pastCost== node.pastCost) return 0;
         else if (this.pastCost< node.pastCost) return -1;
@@ -44,29 +43,11 @@ public class KnownPoint implements  Comparable {
     }
 
     //////////// getter and setter
-    public MapNode getNode() {
-        return node;
-    }
-
-    public void setNode(MapNode node) {
-        this.node = node;
-    }
-
-    public KnownPoint getLastNode() {
+    public KnownPointD getLastNode() {
         return lastNode;
     }
 
-    public void setLastNode(KnownPoint lastNode) {
+    public void setLastNode(KnownPointD lastNode) {
         this.lastNode = lastNode;
     }
-
-    public int getPastCost() {
-        return pastCost;
-    }
-
-    public void setPastCost(int pastCost) {
-        this.pastCost = pastCost;
-    }
-
-
 }
