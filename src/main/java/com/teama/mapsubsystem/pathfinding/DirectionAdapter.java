@@ -17,14 +17,12 @@ public class DirectionAdapter {
     }
 
     public Text getDescription() {
-        System.out.println("DES COL");
         Text t = new Text(d.getDescription());
         t.setWrappingWidth(127);
         return t;
     }
 
     public Text getDistance() {
-        System.out.println("DISTANCE COL");
         Text t = new Text(Integer.toString((int)d.getLengthOfPath())+" meters");
         t.setWrappingWidth(61);
         t.setTextAlignment(TextAlignment.CENTER);
@@ -32,14 +30,12 @@ public class DirectionAdapter {
     }
 
     public Text getStepNum() {
-        System.out.println("STEP COL");
         Text t = new Text(Integer.toString(stepNum));
         t.setTextAlignment(TextAlignment.CENTER);
         return t;
     }
 
     public ImageView getDirection() {
-        System.out.println("GET DIRECTION "+d.getTurn());
         Image i = new Image("/icons/left.png");
         ImageView view = new ImageView();
         switch(d.getTurn()) {
@@ -47,32 +43,44 @@ public class DirectionAdapter {
                 i = new Image(getClass().getResourceAsStream("/icons/left.png"));
                 break;
             case TURNLEFTSLIGHT:
+                i = new Image(getClass().getResourceAsStream("/icons/slightly_left.png"));
                 break;
             case TURENLEFTSHARP:
+                i = new Image(getClass().getResourceAsStream("/icons/sharp_left.png"));
                 break;
             case TURNRIGHT:
+                i = new Image(getClass().getResourceAsStream("/icons/right.png"));
                 break;
             case TURNRIGHTSLIGHT:
+                i = new Image(getClass().getResourceAsStream("/icons/slight_right.png"));
                 break;
             case TURNRIGHTSHARP:
+                i = new Image(getClass().getResourceAsStream("/icons/sharp_right.png"));
                 break;
             case REVERSE:
+                i = new Image(getClass().getResourceAsStream("/icons/Uturn.png"));
                 break;
             case STRAIGHT:
-                i = new Image(getClass().getResourceAsStream("/icons/forward.png"));
+                i = new Image(getClass().getResourceAsStream("/icons/go.png"));
                 break;
             case START:
+                i = new Image(getClass().getResourceAsStream("/icons/end.png"));
                 break;
             case END:
+                i = new Image(getClass().getResourceAsStream("/icons/end.png"));
                 break;
             case INTONEWFLOOR:
                 break;
             case ELEVATOR:
+                i = new Image(getClass().getResourceAsStream("/icons/elevator.png"));
                 break;
             case STAIR:
+                i = new Image(getClass().getResourceAsStream("/icons/stairs.png"));
                 break;
         }
         view.setImage(i);
+        view.setFitWidth(60);
+        view.setFitHeight(60);
         return view;
     }
 
