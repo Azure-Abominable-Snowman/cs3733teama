@@ -27,7 +27,7 @@
             </Text>
          </children>
       </GridPane>
-      <ScrollPane layoutY="44.0" prefHeight="356.0" prefWidth="600.0">
+      <ScrollPane layoutY="44.0" prefHeight="457.0" prefWidth="600.0">
          <content>
             <GridPane prefHeight="562.0" prefWidth="571.0">
               <columnConstraints>
