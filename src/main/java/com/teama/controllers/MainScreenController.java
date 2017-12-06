@@ -268,7 +268,7 @@ public class MainScreenController implements Initializable {
 
 
             controller.onOpen(xProperty, xOffset, yProperty, yOffset);
-            mapDrawing.detachListener(popUpID);
+            //mapDrawing.detachListener(popUpID);
             currentPopOut = loader.load();
             currentPopOutController = controller;
 
@@ -321,31 +321,6 @@ public class MainScreenController implements Initializable {
             areaPane.getChildren().add(nodeInfo);
             System.out.println(areaPane.getChildren().getClass());
             nodePopUp.setInfo(nodeAt, pathfinding, event);
-/*
-            // Create pane to load nodeInfo root node into
-            nodeInfo.toFront(); // bring to front of screen
-
-
-            // Display the pane next to the mouse cursor
-            double windowW = 140;
-            double windowH = nodeInfo.prefHeight(windowW)+35;
-            System.out.println("WINDOWH "+windowH);
-
-            double newX = event.getSceneX()-windowW/2;
-            double newY = event.getSceneY()-windowH;
-
-            if(newX <= mapScroll.getWidth()-nodeInfo.getBoundsInParent().getWidth() && newX >= 0) {
-                nodeInfo.setTranslateX(newX);
-            } else if (newX > 0) {
-                nodeInfo.setTranslateX(mapScroll.getWidth()-nodeInfo.getBoundsInParent().getWidth()*1.2);
-            }
-
-            if(newY <= mapScroll.getHeight() && newY >= 0) {
-                System.out.println("MOVE Y");
-                nodeInfo.setTranslateY(newY);
-            }
-        }
-        */
         }
         else {
             System.out.println("Clicked on a random location.");

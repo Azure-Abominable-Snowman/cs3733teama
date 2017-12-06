@@ -24,6 +24,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,13 +37,13 @@ public class DirectionsPopOut extends PopOutController {
     private TableView<DirectionAdapter> textDirections;
 
     @FXML
-    private TableColumn<String, Integer> stepCol;
+    private TableColumn<String, Text> stepCol;
 
     @FXML
-    private TableColumn<String, String> descriptionCol;
+    private TableColumn<String, Text> descriptionCol;
 
     @FXML
-    private TableColumn<String, String> distanceCol;
+    private TableColumn<String, Text> distanceCol;
 
     @FXML
     private JFXComboBox<String> originNodeCombo;
@@ -77,6 +78,7 @@ public class DirectionsPopOut extends PopOutController {
             TableRow<DirectionAdapter> row = new TableRow<>();
             return row;
         });
+
 
         // Populate the combo box and allow fuzzy search by tying it to a search controller
         SearchBarController searchBarController = new SearchBarController(originNodeCombo, true);

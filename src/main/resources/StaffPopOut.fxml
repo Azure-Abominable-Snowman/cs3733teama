@@ -105,7 +105,7 @@
                                     <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
                                  </rowConstraints>
                                  <children>
-                                    <JFXTextField fx:id="FirstName" promptText="First Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                                    <JFXTextField fx:id="FirstName" promptText="%firstName" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                                     <JFXTextField fx:id="LastName" promptText="Last Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
