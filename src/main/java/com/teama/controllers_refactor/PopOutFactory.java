@@ -20,7 +20,7 @@ public class PopOutFactory {
             case DIRECTIONS:
                 return new DirectionsPopOut();
             case LOGIN:
-                System.out.println("LOGIN SCREEN NOT YET IMPLEMENTED");
+                return new StaffLoginPopOut();
         }
         return null;
     }
