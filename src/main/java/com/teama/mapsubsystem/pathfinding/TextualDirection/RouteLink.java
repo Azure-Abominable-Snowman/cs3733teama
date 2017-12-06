@@ -5,8 +5,7 @@ import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
 import com.teama.translator.Translator;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+
 
 public class RouteLink {
 
@@ -17,6 +16,7 @@ public class RouteLink {
     private RouteLink lastLink;
     private double distance;
     private String textReturn;
+    //private Icon icon;
     private Floor startFloor;
     private  Floor nextFloor; // Can't have an end floor since there is only a start and next, therefore no end
 
