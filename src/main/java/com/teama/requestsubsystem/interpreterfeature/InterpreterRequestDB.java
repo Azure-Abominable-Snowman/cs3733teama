@@ -62,7 +62,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             log.info("Created the Interpreter Request table.");
         } catch (SQLException e) {
             log.info("Does the Interpreter Request table already exist?");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 /*
         // Create the report table linked to request table by foreign key
@@ -106,6 +106,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
             //getRequestID = conn.prepareStatement("")
             addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " (REQUESTID, STAFFID, STATUS, LANG, FAMSIZE, SERVICETIME, TRANSTYPE) " +
                     " VALUES (?, ?, ?, ?, ?, ?, ?)");
+            updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET LANG = ?, STAFFID = ? WHERE REQUESTID = ?");
             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
             deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
             fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
@@ -231,6 +232,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
         try {
             deleteRequest.setInt(1, requestID);
             deleteRequest.execute();
+            deletedInterp = true;
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -238,28 +240,6 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
         return deletedInterp && deletedGeneral;
     }
 
-    /**
-     *
-     * @param requestID
-     * @return
-     */
-    private boolean deleteReq(int requestID) {
-        try {
-            deleteReport.setInt(1, requestID);
-            deleteReport.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-
-            deleteRequest.setInt(1, requestID);
-            deleteRequest.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     /**
      *
@@ -381,35 +361,40 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
 
     /**
      * Ensures that the GenericRequestTable is updated (status set to CLOSED) and fills in all tracking fields
-     * fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
+     * ffulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
      "  WHERE REQUESTID = ? AND STAFFID = ?");
      * @param r
      * @return
      */
     public boolean fulfillRequest(InterpreterRequest r) {
-        System.out.println(r.getRequestID());
-        if (r.getRequestID() == 0) {
-            log.info("Tried to fulfill a request that was not created.");
-            return false;
-        }
-        generalInfo.fulfillRequest(r.getRequestID());
-        try { //mark the request as closed in the Interpreter table
-            fulfillRequest.setString(1, RequestStatus.CLOSED.toString());
-            fulfillRequest.setString(2, r.getRequiredLanguage().toString());
-            fulfillRequest.setInt(3, r.getFamilySize());
-            fulfillRequest.setDouble(4, r.getServiceTime());
-            fulfillRequest.setString(5, r.getTranslType().toString());
-            fulfillRequest.setInt(6, r.getRequestID());
-            fulfillRequest.setInt(7,r.getStaffID());
-            fulfillRequest.executeUpdate();
-            log.info("Filled in all the tracking fields for Interpreter request.");
+        if (fulfillRequest(r.getRequestID())) {
+            if (r.getRequestID() == 0) {
+                log.info("Tried to fulfill a request that was not created.");
+                return false;
+            } else if (r.getStatus() == RequestStatus.CLOSED) {
+                log.info("Tried to fulfill a request that was already closed.");
+                return false;
+            }
+            generalInfo.fulfillRequest(r.getRequestID());
+            try { //mark the request as closed in the Interpreter table
+                fulfillRequest.setString(1, RequestStatus.CLOSED.toString());
+                fulfillRequest.setString(2, r.getRequiredLanguage().toString());
+                fulfillRequest.setInt(3, r.getFamilySize());
+                fulfillRequest.setDouble(4, r.getServiceTime());
+                fulfillRequest.setString(5, r.getTranslType().toString());
+                fulfillRequest.setInt(6, r.getRequestID());
+                fulfillRequest.setInt(7, r.getStaffID());
+                fulfillRequest.executeUpdate();
+                log.info("Filled in all the tracking fields for Interpreter request.");
+                return true;
 
-        }  catch (SQLException e) {
-            e.printStackTrace();
-            log.info("Tried to add a report for request " + r.getRequestID() + " but failed.");
-            return false;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                log.info("Tried to add a report for request " + r.getRequestID() + " but failed.");
+                return false;
+            }
         }
-        return true;
+        return false;
 
     }
 
@@ -433,30 +418,27 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      */
     /*
     ONLY updates the request. if a request is closed, the report is done and cannot be changed.
-     */
-    /*
-    public boolean updateRequest(InterpreterRequest r) {
-        try {
-            updateRequest.setInt(1, r.getStaffID());
-            updateRequest.setInt(2, r.getLocation().getxCoord());
-            updateRequest.setInt(3, r.getLocation().getyCoord());
-            updateRequest.setString(4, r.getLocation().getLevel().toString());
-            updateRequest.setString(5, r.getLocation().getBuilding());
-            updateRequest.setString(6, r.getStatus().toString());
-            updateRequest.setInt(7, r.getFamilySize());
-            updateRequest.setString(8, r.getRequiredLanguage().toString());
-            updateRequest.setString(9, r.getNote());
-            updateRequest.setInt(10, r.getRequestID());
+                updateRequest = conn.prepareStatement("UPDATE " + requestTableName + "SET LANG = ? STAFFID = ? WHERE REQUESTID = ?");
 
-            updateRequest.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            log.info("Failed to update Request " + r.getRequestID());
-            e.printStackTrace();
-            return false;
+     */
+
+    public boolean updateInterpreterRequest(InterpreterRequest r) {
+        if (generalInfo.updateRequest(r)) {
+            try {
+                updateRequest.setString(1, r.getRequiredLanguage().toString());
+                updateRequest.setInt(2, r.getStaffID());
+                updateRequest.setInt(3, r.getRequestID());
+
+                updateRequest.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                log.info("Failed to update Request " + r.getRequestID());
+                e.printStackTrace();
+            }
         }
+        return false;
     }
-    */
+
 
 
 }

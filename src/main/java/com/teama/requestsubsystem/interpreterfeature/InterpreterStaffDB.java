@@ -56,7 +56,7 @@ public class InterpreterStaffDB implements StaffDataSource {
             stmt.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 /*
         DatabaseMetaData meta = null;

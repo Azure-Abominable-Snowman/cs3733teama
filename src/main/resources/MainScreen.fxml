@@ -131,7 +131,7 @@
             <VBox fx:id="floorButtonBox" layoutX="137.0" prefHeight="200.0" prefWidth="63.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="932.0" layoutY="735.0" prefHeight="47.0" prefWidth="89.0">
+      <AnchorPane layoutX="932.0" layoutY="735.0" prefHeight="47.0" prefWidth="89.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="250.0">
          <children>
             <JFXButton layoutX="22.0" layoutY="12.0" onAction="#onAboutClick" prefHeight="47.0" prefWidth="89.0" style="-fx-background-color: TRANSPARENT;" text="About" textFill="#0657a8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
@@ -140,9 +140,9 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="852.0" layoutY="736.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="66.0" AnchorPane.leftAnchor="852.0" AnchorPane.topAnchor="736.0">
+      <AnchorPane layoutX="852.0" layoutY="736.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="66.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="362.0">
          <children>
-            <JFXButton layoutX="-10.0" layoutY="-1.0" onAction="#onHelpClick" prefHeight="48.0" prefWidth="89.0" text="Help" textAlignment="CENTER" textFill="#0657a8">
+            <JFXButton layoutX="-10.0" layoutY="-1.0" onAction="#onHelpClick" prefHeight="48.0" prefWidth="89.0" text="Help" textAlignment="CENTER" textFill="#0657a8" AnchorPane.bottomAnchor="0.0">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
