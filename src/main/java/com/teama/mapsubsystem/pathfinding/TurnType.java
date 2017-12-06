@@ -1,4 +1,4 @@
-package com.teama.mapsubsystem.pathfinding.TextualDirection;
+package com.teama.mapsubsystem.pathfinding;
 
 public enum TurnType {
     TURNLEFT("turnleft"), TURNLEFTSLIGHT("turnleftslight"), TURENLEFTSHARP("turnleftsharp"),
