@@ -19,6 +19,7 @@
 
 <AnchorPane fx:id="areaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.MainScreenController">
     <children>
+      <AnchorPane layoutX="799.0" layoutY="738.0" prefHeight="41.0" prefWidth="101.0" />
       <GridPane fx:id="displayedMaps" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -31,7 +32,7 @@
                <children>
                   <ScrollPane fx:id="mapScroll" hbarPolicy="NEVER" layoutX="-24.0" pannable="true" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
-                        <Canvas fx:id="mapCanvas" height="405.0" width="514.0" />
+                        <Canvas fx:id="mapCanvas" height="334.0" width="514.0" />
                      </content>
                   </ScrollPane>
                   <JFXDrawer fx:id="drawer" alignment="CENTER_RIGHT" defaultDrawerSize="328.0" direction="RIGHT" layoutX="722.0" layoutY="70.0" maxHeight="260.0" overLayVisible="false" prefHeight="325.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
@@ -120,7 +121,7 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+      <AnchorPane prefHeight="40.0" prefWidth="218.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
          <children>
             <JFXSlider fx:id="zoomSlider" prefHeight="40.0" prefWidth="200.0" stylesheets="@css/MainScreenStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
@@ -130,7 +131,23 @@
             <VBox fx:id="floorButtonBox" layoutX="137.0" prefHeight="200.0" prefWidth="63.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="66.0" prefWidth="63.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="90.0" />
+      <AnchorPane layoutX="932.0" layoutY="735.0" prefHeight="47.0" prefWidth="89.0">
+         <children>
+            <JFXButton layoutX="22.0" layoutY="12.0" onAction="#onAboutClick" prefHeight="47.0" prefWidth="89.0" style="-fx-background-color: TRANSPARENT;" text="About" textFill="#0657a8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Font" size="20.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="852.0" layoutY="736.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="66.0" AnchorPane.leftAnchor="852.0" AnchorPane.topAnchor="736.0">
+         <children>
+            <JFXButton layoutX="-10.0" layoutY="-1.0" onAction="#onHelpClick" prefHeight="48.0" prefWidth="89.0" text="Help" textAlignment="CENTER" textFill="#0657a8">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </JFXButton>
+         </children></AnchorPane>
     </children>
 
 </AnchorPane>

@@ -480,7 +480,7 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     /**
-     * finds if a point is on a line, doesn't work yet...
+     * finds if a point is on a line, //TODO doesn't work yet...
      * @param loc
      * @param line
      * @return

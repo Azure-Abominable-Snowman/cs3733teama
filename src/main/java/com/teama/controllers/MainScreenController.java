@@ -20,12 +20,14 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -35,6 +37,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -332,5 +336,47 @@ public class MainScreenController implements Initializable {
             areaPane.getChildren().remove(nodeInfo);
             nodeInfo = null;
         }
+    }
+    //CREATES THE ABOUT PAGE POP UP
+    //TODO attach this method to the about button
+    @FXML
+    private void onAboutClick(ActionEvent e){
+        Stage aboutPopUp = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/AboutPage.fxml"));
+        try {
+            Parent root = (Parent) loader.load();
+            Scene aboutScene = new Scene(root);
+            aboutPopUp.setScene(aboutScene);
+            aboutPopUp.resizableProperty().set(false);
+            aboutPopUp.initModality(Modality.WINDOW_MODAL);
+            aboutPopUp.showAndWait();
+
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+        }
+
+    }
+    //END OF ABOUT PAGE POP UP
+
+    //create the help page pop up
+    @FXML
+    private void onHelpClick(ActionEvent e){
+        Stage helpPopUp = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/HelpPage.fxml"));
+        try {
+            Parent root = (Parent) loader.load();
+            Scene helpScene = new Scene(root);
+            helpPopUp.setScene(helpScene);
+            helpPopUp.resizableProperty().set(false);
+            helpPopUp.initModality(Modality.WINDOW_MODAL);
+            helpPopUp.showAndWait();
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+        }
+
     }
 }
