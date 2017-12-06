@@ -179,7 +179,7 @@ public class StaffLoginPopOut extends PopOutController {
         }
         if(isLoggedIn.getValue() == Boolean.TRUE){
 
-            System.out.println("AAA");
+            System.out.println("Am  AA");
 
         }
         /*
