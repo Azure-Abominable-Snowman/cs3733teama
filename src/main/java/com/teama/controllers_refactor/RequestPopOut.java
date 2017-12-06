@@ -134,7 +134,7 @@ public class RequestPopOut extends PopOutController {
             System.out.println(mapNodeName);
             mapNodeName=newValue;
             if(newValue != null){
-                System.out.println("This is fucking working!");
+                System.out.println("This is freaking working!");
                 MapDrawingSubsystem.getInstance().setZoomFactor(2);
                 Location toMove = new Location((newValue.getCoordinate().getxCoord()+SCALING), newValue.getCoordinate().getyCoord(),
                         newValue.getCoordinate().getLevel(), newValue.getCoordinate().getBuilding());
@@ -147,7 +147,7 @@ public class RequestPopOut extends PopOutController {
             System.out.println(mapNode);
             System.out.println(mapNodeName);
             if(mapNode!=null){
-                System.out.println("This is fucking working!");
+                System.out.println("This is freaking working!");
                 MapDrawingSubsystem.getInstance().setViewportCenter(mapNodeName.getCoordinate());
             }
         });
@@ -164,7 +164,9 @@ public class RequestPopOut extends PopOutController {
     @Override
     public void onClose() {
         System.out.println("CLOSE REQUEST");
-        MapDrawingSubsystem.getInstance().drawNode(mapNodeName, 0, null);
+        if(mapNodeName!=null) {
+            MapDrawingSubsystem.getInstance().drawNode(mapNodeName, 0, null);
+        }
 
     }
 
