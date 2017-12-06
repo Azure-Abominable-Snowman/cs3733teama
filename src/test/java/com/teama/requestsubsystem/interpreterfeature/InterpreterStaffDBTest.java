@@ -5,6 +5,7 @@ import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
 import com.teama.requestsubsystem.GenericStaff;
 import com.teama.requestsubsystem.ServiceStaff;
+import com.teama.requestsubsystem.StaffType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,7 +98,7 @@ public class InterpreterStaffDBTest {
             assertEquals(wilson.getFirstName(), s.getString("FIRSTNAME"));
             assertEquals(wilson.getLastName(), s.getString("LASTNAME"));
             assertEquals(1, s.getInt("STAFFID"));
-            assertEquals("INTERPRETER", s.getString("STAFFTYPE"));
+            assertEquals(StaffType.INTERPRETER.toString(), s.getString("STAFFTYPE"));
             assertEquals(wilson.getPhoneNumber(), s.getString("PHONENUMBER"));
             assertEquals(wilson.getEmail(), s.getString("EMAIL"));
             assertEquals(wilson.getProvider().toString(), s.getString("PROVIDER"));
