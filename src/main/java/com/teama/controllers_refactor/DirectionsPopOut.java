@@ -72,8 +72,11 @@ public class DirectionsPopOut extends PopOutController {
                 new PropertyValueFactory<>("description"));
         distanceCol.setCellValueFactory(
                 new PropertyValueFactory<>("distance"));
+        imageCol.setCellValueFactory(
+                new PropertyValueFactory<>("image"));
 
-        textDirections.setFixedCellSize(75); // cells need to be bigger than default
+
+        textDirections.setFixedCellSize(100); // cells need to be bigger than default
 
         // Factory for each row, set to have the text wrap
         textDirections.setRowFactory(tv -> {
