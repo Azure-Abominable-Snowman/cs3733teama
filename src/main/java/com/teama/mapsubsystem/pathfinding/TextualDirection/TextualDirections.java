@@ -41,7 +41,7 @@ public class TextualDirections implements DirectionsGenerator {
 
 
          dirList = new ArrayList<>();
-        // put RouteLinks into Direction formate and refactor the same RouteLinks.
+        // put RouteLinks into Direction format and refactor the same RouteLinks.
         // make the start Direction and push it into list.
         RouteLink thisTurn = routeLinks.get(0);
         String temp = String.format( "%s %s",
