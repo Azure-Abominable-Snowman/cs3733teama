@@ -1,5 +1,6 @@
 package com.teama.mapsubsystem.pathfinding;
 
+import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -73,5 +74,9 @@ public class DirectionAdapter {
         }
         view.setImage(i);
         return view;
+    }
+
+    public Location getLocToFocus() {
+        return d.getStart();
     }
 }

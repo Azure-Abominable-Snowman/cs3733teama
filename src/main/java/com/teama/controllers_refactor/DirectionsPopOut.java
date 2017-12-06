@@ -131,6 +131,11 @@ public class DirectionsPopOut extends PopOutController {
             }));
         });
 
+
+        // Make a listener on the tableview to focus on the node relating to the direction when selected
+        textDirections.getSelectionModel().selectedItemProperty().addListener((a) -> {
+            mapDrawing.setViewportCenter(textDirections.getSelectionModel().getSelectedItem().getLocToFocus());
+        });
     }
 
     private MapDrawingSubsystem mapDrawing = MapDrawingSubsystem.getInstance();
