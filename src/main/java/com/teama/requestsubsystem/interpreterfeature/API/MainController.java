@@ -27,16 +27,22 @@ public class MainController {
     public void initialize() throws IOException {
         // Set the staff tab and the request tab to their respective loaded FXML files
         FXMLLoader loader = new FXMLLoader();
-        StaffAPIController staffController = new StaffAPIController();
         loader.setLocation(getClass().getResource("/StaffPopOutAPI.fxml"));
-        try {
-            Pane staffComponent;
-            staffComponent = loader.load();
-            staffComponent.getStylesheets().clear();
-            staffComponent.getStylesheets().add(cssPath);
-            staffTab.setContent(staffComponent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Pane staffComponent;
+        staffComponent = loader.load();
+        staffComponent.getStylesheets().clear();
+        staffComponent.getStylesheets().add(cssPath);
+        staffTab.setContent(staffComponent);
+
+        FXMLLoader reqLoader = new FXMLLoader();
+        RequestAPIController requestController = new RequestAPIController(node);
+        reqLoader.setLocation(getClass().getResource("/RequestPopOutAPI.fxml"));
+        reqLoader.setController(requestController);
+        Pane requestComponent;
+        requestComponent = reqLoader.load();
+        requestComponent.getStylesheets().clear();
+        requestComponent.getStylesheets().add(cssPath);
+        requestTab.setContent(requestComponent);
+
     }
 }
