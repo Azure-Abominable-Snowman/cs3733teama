@@ -74,8 +74,14 @@ public class RouteLink {
             distance = ((double) Math.sqrt( dx*dx + dy*dy) )*pixToRealScaleFactor;
 
 
-            if(lastLink.getTextReturn().contains("Elevator") || lastLink.getTextReturn().contains("Stairs")){
-                textReturn = "No Text";
+            if(lastLink.getTextReturn().contains("Elevator") ){
+                textReturn =Translator.getInstance().getText("exitElevator");
+                turn=TurnType.INTONEWFLOOR;
+                return;
+            }
+            else if(lastLink.getTextReturn().contains("Stairs"))
+            {
+                textReturn =Translator.getInstance().getText("exitStair");
                 turn=TurnType.INTONEWFLOOR;
                 return;
             }
