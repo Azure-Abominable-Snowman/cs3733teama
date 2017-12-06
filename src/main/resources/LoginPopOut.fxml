@@ -27,28 +27,28 @@
                   <Image url="@materialicons/User.png" />
                </image>
             </ImageView>
-            <JFXTextField fx:id="uname" labelFloat="true" layoutX="75.0" layoutY="147.0" maxWidth="316.0" minWidth="233.0" prefHeight="31.0" prefWidth="316.0" promptText="Enter Username">
+            <JFXTextField fx:id="uname" labelFloat="true" layoutX="75.0" layoutY="147.0" maxWidth="316.0" minWidth="233.0" prefHeight="31.0" prefWidth="316.0" promptText="%usernamelog">
                <font>
                   <Font name="Roboto Medium" size="14.0" />
                </font>
             </JFXTextField>
-            <JFXPasswordField fx:id="pword" labelFloat="true" layoutX="75.0" layoutY="195.0" maxWidth="316.0" minWidth="235.0" onKeyPressed="#onEnterPressed" prefHeight="31.0" prefWidth="316.0" promptText="Enter password">
+            <JFXPasswordField fx:id="pword" labelFloat="true" layoutX="75.0" layoutY="195.0" maxWidth="316.0" minWidth="235.0" onKeyPressed="#onEnterPressed" prefHeight="31.0" prefWidth="316.0" promptText="%staffpassword">
                <font>
                   <Font name="Roboto Medium" size="14.0" />
                </font>
             </JFXPasswordField>
-            <JFXButton fx:id="loginButton" layoutX="185.0" layoutY="286.0" onAction="#onLoginClick" onKeyPressed="#onLoginClick" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: #2196f3;" text="Login" textFill="WHITE">
+            <JFXButton fx:id="loginButton" layoutX="185.0" layoutY="286.0" onAction="#onLoginClick" onKeyPressed="#onLoginClick" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: #2196f3;" text="%serlogin" textFill="WHITE">
                <font>
                   <Font name="Roboto Bold" size="14.0" />
                </font>
             </JFXButton>
             <JFXButton fx:id="resetBtn" layoutX="358.0" layoutY="149.0" onAction="#onResetBtnClick" prefHeight="22.0" prefWidth="26.0" text="X" />
-            <JFXRadioButton fx:id="admin" layoutX="98.0" layoutY="241.0" text="Admin">
+            <JFXRadioButton fx:id="admin" layoutX="98.0" layoutY="241.0" text="%adminlog">
                <font>
                   <Font size="14.0" />
                </font>
             </JFXRadioButton>
-            <JFXRadioButton fx:id="staff" layoutX="300.0" layoutY="242.0" text="Staff">
+            <JFXRadioButton fx:id="staff" layoutX="300.0" layoutY="242.0" text="%stafflog">
                <font>
                   <Font size="14.0" />
                </font>

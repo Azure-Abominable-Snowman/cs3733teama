@@ -16,6 +16,7 @@ import com.teama.messages.Message;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.*;
+import com.teama.translator.Translator;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -396,8 +397,10 @@ public class MainScreenSidebarController extends PopOutController {
 
             loginPopup.setTitle("B&W Login");
             //ResourceBundle resources = ResourceBundle.getBundle("lang_en");
-            ResourceBundle resources = ResourceBundle.getBundle("lang_es");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LogInScreen.fxml"),resources);
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/LogInScreen.fxml"),resources);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LogInScreen.fxml"));
+            loader.setResources(Translator.getInstance().getNewBundle());
+
             Parent root = (Parent) loader.load();
             //loader.setLocation(getClass().getResource("/LogInScreen.fxml"));
             StaffLoginController loginController = loader.getController();
@@ -697,6 +700,7 @@ public class MainScreenSidebarController extends PopOutController {
             System.out.println("Firing");
             if (typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.INTR)) {
                 System.out.println("Firing");
+                loader.setResources(Translator.getInstance().getNewBundle());
                 loader.setLocation(getClass().getResource("/InterpreterReq.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
