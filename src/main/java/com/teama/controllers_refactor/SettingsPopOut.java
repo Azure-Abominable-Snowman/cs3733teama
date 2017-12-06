@@ -1,12 +1,10 @@
 package com.teama.controllers_refactor;
 
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 
 public class SettingsPopOut extends PopOutController {
     private int xOffset, yOffset;
     private ReadOnlyDoubleProperty xProperty, yProperty;
-    private InterpreterStaff insertStaff;
 
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
