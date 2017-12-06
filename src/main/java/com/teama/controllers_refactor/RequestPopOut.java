@@ -18,6 +18,7 @@ import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.Language;
+import com.teama.translator.Translator;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -268,6 +269,7 @@ public class RequestPopOut extends PopOutController {
                 System.out.println(getClass().getResource("/InterpreterReq.fxml"));
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/InterpreterReq.fxml"));
+                loader.setResources(Translator.getInstance().getNewBundle());
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
                     System.out.println("Hello Jake");
@@ -377,7 +379,7 @@ public class RequestPopOut extends PopOutController {
                 }
                     staffPopUp.setTitle("View B&W Staff");
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
-
+                    loader.setResources(Translator.getInstance().getNewBundle());
                     Scene staffPopUpScene = new Scene(loader.load());
                     ViewStaffController viewStaffController = loader.getController();
                     viewStaffController.setLanguage(controller.getLanguage());
@@ -445,9 +447,11 @@ public class RequestPopOut extends PopOutController {
         Stage fulfillStage = new Stage();
         //TODO change name of that plz
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FulfillIntReq.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         Scene fulfillScene;
         try {
             fulfillScene = new Scene(loader.load());
+            loader.setResources(Translator.getInstance().getNewBundle());
             FulfillRequestController fillReqController = loader.getController();
             fillReqController.setReqToFulfill(requestView.getSelectionModel().getSelectedItem());
             fillReqController.getSubmitted().addListener(((observable, oldValue, submitted) -> {
