@@ -308,6 +308,7 @@ public class MainScreenController implements Initializable {
 
             // Load the screen in and display it on the cursor
             FXMLLoader loader = new FXMLLoader();
+            loader.setResources(Translator.getInstance().getNewBundle());
             loader.setLocation(getClass().getResource("/NodeInfoPopUp.fxml"));
             NodeInfoPopUpController nodePopUp = new NodeInfoPopUpController();
             loader.setController(nodePopUp);
