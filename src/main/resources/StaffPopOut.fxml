@@ -19,11 +19,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="mainPane" prefHeight="592.0" prefWidth="788.0" styleClass="popOutPaneStyle" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="mainPane" prefHeight="592.0" prefWidth="817.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="576.0" prefWidth="780.0">
+      <VBox prefHeight="592.0" prefWidth="817.0" styleClass="popOutPaneStyle">
          <children>
-            <GridPane prefHeight="45.0" prefWidth="788.0">
+            <GridPane prefHeight="62.0" prefWidth="789.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -46,6 +46,9 @@
                <opaqueInsets>
                   <Insets bottom="5.0" />
                </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
             </GridPane>
             <HBox prefHeight="555.0" prefWidth="788.0" VBox.vgrow="ALWAYS">
                <children>
@@ -105,7 +108,7 @@
                                     <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
                                  </rowConstraints>
                                  <children>
-                                    <JFXTextField fx:id="FirstName" promptText="%firstName" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                                    <JFXTextField fx:id="FirstName" promptText="First Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                                     <JFXTextField fx:id="LastName" promptText="Last Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
@@ -155,7 +158,7 @@
                   </VBox>
                   <VBox alignment="CENTER" fillWidth="false" maxWidth="800.0" prefHeight="543.0" prefWidth="378.0" HBox.hgrow="NEVER">
                      <children>
-                        <TableView fx:id="InterpInfoTable" prefWidth="369.0" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="InterpInfoTable" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="firstCol" prefWidth="75.0" text="First Name" />
                               <TableColumn fx:id="lastCol" prefWidth="75.0" text="Last Name" />
@@ -166,12 +169,15 @@
                            </columns>
                         </TableView>
                      </children>
+                     <HBox.margin>
+                        <Insets bottom="15.0" right="15.0" />
+                     </HBox.margin>
                   </VBox>
                </children>
             </HBox>
          </children>
       </VBox>
-      <ImageView fx:id="arrow" fitHeight="45.0" fitWidth="51.0" layoutX="788.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="arrow" fitHeight="45.0" fitWidth="51.0" layoutX="817.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" styleClass="popOutPaneStyle">
          <image>
             <Image url="@triangle.png" />
          </image>
@@ -179,7 +185,6 @@
    </children>
    <stylesheets>
       <URL value="@css/StaffPopOutStyle.css" />
-      <URL value="@css/DefaultStyle2.css" />
       <URL value="@css/MainScreenStyle.css" />
    </stylesheets>
 </Pane>
