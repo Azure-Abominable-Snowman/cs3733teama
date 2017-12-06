@@ -82,7 +82,7 @@ public class TextualDirections implements DirectionsGenerator {
                 thisTurn= nextLink;
                 continue;
             }*/
-            //TODO double chenck if this work.
+            //TODO double check if this work.
             if (nextLink.getTurn().equals(TurnType.STRAIGHT)) {
                 addDistance(thisTurn, nextLink); // combine the next one into this.
 
