@@ -144,7 +144,7 @@
          <children>
             <JFXButton layoutX="-10.0" layoutY="-1.0" onAction="#onHelpClick" prefHeight="48.0" prefWidth="89.0" text="Help" textAlignment="CENTER" textFill="#0657a8">
                <font>
-                  <Font name="System Bold" size="20.0" />
+                  <Font size="20.0" />
                </font>
             </JFXButton>
          </children></AnchorPane>

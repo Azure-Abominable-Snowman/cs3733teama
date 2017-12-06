@@ -377,6 +377,6 @@ public class MainScreenController implements Initializable {
         catch(IOException exception){
             exception.printStackTrace();
         }
-
     }
+    //end of help page pop up
 }
