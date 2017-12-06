@@ -1,6 +1,7 @@
 package entities.db;
 
 import com.teama.login.*;
+import com.teama.requestsubsystem.StaffType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,6 +55,7 @@ public class JavaCredentialsDBTest {
     SystemUser a = new SystemUser(login1, STAFF);
     SystemUser b = new SystemUser(login2, ADMIN);
     SystemUser c = new SystemUser(login3, ADMIN);
+    SystemUser d = new SystemUser(login3, STAFF, 31, StaffType.INTERPRETER);
 
 
 /*
@@ -76,11 +78,13 @@ public class JavaCredentialsDBTest {
     @Test
     public void getUser() {
         try {
-            assertNull(db.getUser(login2));
-            PreparedStatement x = conn.prepareStatement("INSERT INTO " + credsTable + " VALUES(?,?,?) ");
+            //assertNull(db.getUser(login2));
+            PreparedStatement x = conn.prepareStatement("INSERT INTO " + credsTable + " (USERNAME, PASSWORD,ACCESS, STAFFID, STAFFTYPE) VALUES(?,?,?, ?, ?) ");
             x.setString(1, login1.getUsername());
             x.setInt(2, login1.getPassword().hashCode());
             x.setString(3, AccessType.STAFF.toString());
+            x.setInt(4, 12312);
+            x.setString(5, StaffType.INTERPRETER.toString());
             x.executeUpdate();
             SystemUser found = db.getUser(login1);
 
@@ -97,12 +101,27 @@ public class JavaCredentialsDBTest {
     public void addUser() {
         assertNull(db.getUser(login2));
         assertTrue(db.addUser(b));
+        assertTrue(db.addUser(d));
         SystemUser retrieved = db.getUser(login2);
         assertNotNull(retrieved);
         assertEquals(login2.getUsername(), retrieved.getUsername());
         assertEquals(login2.getPassword(), retrieved.getPassword());
         assertEquals(b.getAccess(), retrieved.getAccess());
         assertFalse(db.addUser(new SystemUser(b.getLoginInfo(), AccessType.ADMIN))); //make sure not to add a user if input username already exists
+        SystemUser retrieved2 = db.getUser(login3);
+        assertEquals(retrieved2.getStaffID(), 31, 0.02);
+        assertNull(retrieved.getStaffType());
+        try {
+            PreparedStatement s = conn.prepareStatement("SELECT * FROM " + credsTable);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getInt("STAFFID") + " " + rs.getString("STAFFTYPE"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
     @Test
     public void checkCredentials() {

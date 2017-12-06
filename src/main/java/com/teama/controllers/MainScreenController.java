@@ -15,17 +15,20 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.translator.Translator;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -35,6 +38,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -84,6 +89,9 @@ public class MainScreenController implements Initializable {
     private ImageView serviceRequestButton;
 
     @FXML
+    private ImageView settingButton;
+
+    @FXML
     private JFXSlider zoomSlider;
 
     @FXML
@@ -115,9 +123,13 @@ public class MainScreenController implements Initializable {
     private MainScreenSidebarController sidebar;
     private PopOutFactory popOutFactory = new PopOutFactory();
 
+    private long popUpID;
+
     // Contains all of the event handlers for the buttons on the sidebar
     // Useful for when we need to open something on the sidebar based on another event
     private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap = new HashMap<>();
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -137,10 +149,10 @@ public class MainScreenController implements Initializable {
         }
 
         mapDrawing = MapDrawingSubsystem.getInstance();
-        mapDrawing.initialize(mapCanvas, mapScroll, floorNumberDisplay, floorButtonBox);
+        mapDrawing.initialize(mapCanvas, mapScroll, floorNumberDisplay, floorButtonBox, areaPane);
 
         mapDrawing.setGrow(true);
-        mapDrawing.setZoomFactor(minZoom);
+        mapDrawing.setZoomFactor(1.7); // Initial zoom
 
         // Add a listener that displays the correct nodes for the floor
         mapDrawing.clearMap();
@@ -153,6 +165,8 @@ public class MainScreenController implements Initializable {
                 mapDrawing.drawNode(n, 0, null);
             }
         });
+        // Make a pop up on the user's mouse cursor every time a node is clicked
+        popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.LOCCLICKED);
 
         // Attach listeners to all the sidebar pop outs to open their respective pane on click
         for(Node button : mainSidebarGrid.getChildren()) {
@@ -177,8 +191,7 @@ public class MainScreenController implements Initializable {
             mainSidebarMap.put(PopOutType.valueOf(button.getId()), openEvent);
         }
 
-        // Make a pop up on the user's mouse cursor every time a node is clicked
-        mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
+
 
         // Pop up goes away on a floor switch
         mapDrawing.attachFloorChangeListener((a, b, c) -> removeCurrentPopUp());
@@ -222,6 +235,7 @@ public class MainScreenController implements Initializable {
         // When the zoom slider is moved, change the zoom factor on the screen
         zoomSlider.valueProperty().addListener((a, b, after) -> {
             mapDrawing.setZoomFactor(after.doubleValue());
+            removeCurrentPopUp();
         });
 
         // Populate and create the search bar
@@ -245,18 +259,24 @@ public class MainScreenController implements Initializable {
     private void openInMainSidebar(PopOutType popOutType, ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
         try {
             // Remove the last pop out if present
+            removeCurrentPopUp();
             if(currentPopOut != null) {
                 currentPopOutController.onClose();
                 areaPane.getChildren().remove(currentPopOut);
             }
             PopOutController controller = popOutFactory.makePopOut(popOutType);
             FXMLLoader loader = new FXMLLoader();
+            loader.setResources(Translator.getInstance().getNewBundle());
             loader.setLocation(getClass().getResource(controller.getFXMLPath()));
             loader.setController(controller);
+
+
             controller.onOpen(xProperty, xOffset, yProperty, yOffset);
+            //mapDrawing.detachListener(popUpID);
             currentPopOut = loader.load();
             currentPopOutController = controller;
 
+            System.out.println(currentPopOutController);
             // Add it to the area pane in the correct spot next to the button
             areaPane.getChildren().add(currentPopOut);
 
@@ -270,6 +290,7 @@ public class MainScreenController implements Initializable {
         // remove it from the screen if one is open
         if(currentPopOut != null) {
             currentPopOutController.onClose();
+            popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
             areaPane.getChildren().remove(currentPopOut);
             currentPopOut = null;
             currentPopOutType = null;
@@ -288,42 +309,27 @@ public class MainScreenController implements Initializable {
         // Get the node clicked on (if any)
         MapNode nodeAt = mapDrawing.nodeAt(new Location(event, mapDrawing.getCurrentFloor()));
 
-        if(nodeAt != null) {
-            System.out.println("CLICKED ON "+nodeAt.getId());
+        if (nodeAt != null) {
+            System.out.println("CLICKED ON " + nodeAt.getId());
 
             // Load the screen in and display it on the cursor
             FXMLLoader loader = new FXMLLoader();
+            loader.setResources(Translator.getInstance().getNewBundle());
             loader.setLocation(getClass().getResource("/NodeInfoPopUp.fxml"));
+            NodeInfoPopUpController nodePopUp = new NodeInfoPopUpController();
+            loader.setController(nodePopUp);
             try {
                 nodeInfo = loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            NodeInfoPopUpController ni = loader.getController();
-            ni.setInfo(nodeAt, pathfinding);
-
-            // Create pane to load nodeInfo root node into
-            nodeInfo.toFront(); // bring to front of screen
             areaPane.getChildren().add(nodeInfo);
-
-            // Display the pane next to the mouse cursor
-            double windowW = 140;
-            double windowH = nodeInfo.prefHeight(windowW)+35;
-            System.out.println("WINDOWH "+windowH);
-
-            double newX = event.getSceneX()-windowW/2;
-            double newY = event.getSceneY()-windowH;
-
-            if(newX <= mapScroll.getWidth()-nodeInfo.getBoundsInParent().getWidth() && newX >= 0) {
-                nodeInfo.setTranslateX(newX);
-            } else if (newX > 0) {
-                nodeInfo.setTranslateX(mapScroll.getWidth()-nodeInfo.getBoundsInParent().getWidth()*1.2);
-            }
-
-            if(newY <= mapScroll.getHeight() && newY >= 0) {
-                System.out.println("MOVE Y");
-                nodeInfo.setTranslateY(newY);
-            }
+            System.out.println(areaPane.getChildren().getClass());
+            nodePopUp.setInfo(nodeAt, pathfinding, event);
+        }
+        else {
+            System.out.println("Clicked on a random location.");
+            removeCurrentPopUp();
         }
     }
 
@@ -332,5 +338,47 @@ public class MainScreenController implements Initializable {
             areaPane.getChildren().remove(nodeInfo);
             nodeInfo = null;
         }
+    }
+    //CREATES THE ABOUT PAGE POP UP
+    //TODO attach this method to the about button
+    @FXML
+    private void onAboutClick(ActionEvent e){
+        Stage aboutPopUp = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/AboutPage.fxml"));
+        try {
+            Parent root = (Parent) loader.load();
+            Scene aboutScene = new Scene(root);
+            aboutPopUp.setScene(aboutScene);
+            aboutPopUp.resizableProperty().set(false);
+            aboutPopUp.initModality(Modality.WINDOW_MODAL);
+            aboutPopUp.showAndWait();
+
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+        }
+
+    }
+    //END OF ABOUT PAGE POP UP
+
+    //create the help page pop up
+    @FXML
+    private void onHelpClick(ActionEvent e){
+        Stage helpPopUp = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/HelpPage.fxml"));
+        try {
+            Parent root = (Parent) loader.load();
+            Scene helpScene = new Scene(root);
+            helpPopUp.setScene(helpScene);
+            helpPopUp.resizableProperty().set(false);
+            helpPopUp.initModality(Modality.WINDOW_MODAL);
+            helpPopUp.showAndWait();
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+        }
+
     }
 }

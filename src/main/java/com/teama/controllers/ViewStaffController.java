@@ -68,7 +68,8 @@ public class ViewStaffController {
                 staffViewList.getItems().add(interpreter);
             }
         } catch(NullPointerException e) {
-            return;
+            System.out.println("somethings fucked");
+            e.printStackTrace();
         }
     }
 

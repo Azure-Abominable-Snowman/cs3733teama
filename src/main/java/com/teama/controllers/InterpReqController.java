@@ -38,8 +38,7 @@ public class InterpReqController{
 
         public Language getLanguage(){
                 System.out.println(cmbLang);
-                //return Language.Spanish;
-                return cmbLang.getSelectionModel().getSelectedItem();
+            return cmbLang.getSelectionModel().getSelectedItem();
         }
 
         public String getFamilySize(){

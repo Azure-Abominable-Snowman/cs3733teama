@@ -64,10 +64,21 @@ public class InterpreterSubsystem {
 
     // updates a request that has been assigned but not closed yet. cannot update closed requests
     public boolean updateRequest(InterpreterRequest r) {
-        return requestDB.updateRequest(r);
+        if (r.getStatus() != RequestStatus.CLOSED) {
+            return requestDB.updateRequest(r);
+        }
+        return false;
     }
 
-    // when admin marks a request as fulfilled and fills in the generated form, the InterpReqest table and Report tables will be updated
+    public Request getGenericRequest(int id) {
+        return requestDB.getRequest(id);
+    }
+
+    public InterpreterRequest getInterpreterRequest(int id) {
+        return requestDB.getInterpreterRequest(id);
+    }
+
+    // when admin marks a request as fulfilled and fills in the generated form, the InterpRequest table and generic tables will be updated
     public boolean fulfillRequest(InterpreterRequest r) {
         return requestDB.fulfillRequest(r);
     }
@@ -77,7 +88,7 @@ public class InterpreterSubsystem {
         return requestDB.getAllInterpreterRequests(s);
     }
     // returns all generic requests
-    public ArrayList<Request> getAllRequest(RequestStatus s) {
+    public ArrayList<Request> getAllGenericRequests(RequestStatus s) {
         return requestDB.getAllRequests(s);
     }
 

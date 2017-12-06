@@ -2,6 +2,7 @@ package com.teama.controllers_refactor;
 import com.jfoenix.controls.*;
 import com.teama.controllers.InterpReqController;
 import com.teama.controllers.ViewStaffController;
+import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
@@ -416,6 +417,19 @@ public class RequestPopOut extends PopOutController {
                 longName.getItems().add(n);
             }
         }
+        /*
+        class MyThread implements Runnable {
+
+            public void run(){
+                MapDrawingSubsystem.getInstance().setViewportCenter();
+
+            }
+        }
+        Thread t = new Thread(new MyThread());
+        System.out.println("Message has been sent!");
+        t.start();
+        */
+
     }
 
     @FXML
