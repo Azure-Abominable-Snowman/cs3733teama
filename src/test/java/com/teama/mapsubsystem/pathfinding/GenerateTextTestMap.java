@@ -1,4 +1,4 @@
-package com.teama.mapsubsystem.pathfinding.TextualDirection;
+package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.mapsubsystem.data.*;
 

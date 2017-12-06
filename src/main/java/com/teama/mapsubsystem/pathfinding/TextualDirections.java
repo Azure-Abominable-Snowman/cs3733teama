@@ -1,9 +1,7 @@
-package com.teama.mapsubsystem.pathfinding.TextualDirection;
+package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
-import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
-import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.translator.Translator;
 
 
