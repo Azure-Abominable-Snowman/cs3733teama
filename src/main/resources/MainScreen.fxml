@@ -79,7 +79,7 @@
       </Text>
       <AnchorPane maxHeight="1.7976931348623157E308" minHeight="300.0" prefHeight="421.0" prefWidth="80.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <children>
-            <GridPane fx:id="mainSidebarGrid" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" prefWidth="80.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <GridPane fx:id="mainSidebarGrid" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" prefHeight="608.0" prefWidth="80.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
@@ -93,27 +93,27 @@
                <children>
                   <ImageView id="LOGIN" fx:id="loginButton" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.valignment="TOP">
                      <image>
-                        <Image url="@materialicons/ic_vpn_key_black_48dp/android/drawable-xxxhdpi/ic_vpn_key_black_48dp.png" />
+                        <Image url="@materialicons/mainscreenicons/user-3-1%20(1).png" />
                      </image>
                   </ImageView>
                   <ImageView id="STAFFDIRECTORY" fx:id="directoryButton" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" GridPane.valignment="TOP">
                      <image>
-                        <Image url="@materialicons/ic_book_white_36dp/android/drawable-xxxhdpi/ic_book_white_36dp.png" />
+                        <Image url="@materialicons/mainscreenicons/group-1%20(1).png" />
                      </image>
                   </ImageView>
                   <ImageView id="EDITOR" fx:id="mapEditorButton" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" GridPane.valignment="TOP">
                      <image>
-                        <Image url="@materialicons/ic_mode_edit_white_36dp/android/drawable-xxxhdpi/ic_mode_edit_white_36dp.png" />
+                        <Image url="@materialicons/mainscreenicons/pencil-1%20(1).png" />
                      </image>
                   </ImageView>
                   <ImageView id="REQUESTS" fx:id="serviceRequestButton" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" GridPane.valignment="TOP">
                      <image>
-                        <Image url="@materialicons/ic_room_service_white_36dp/android/drawable-xxxhdpi/ic_room_service_white_36dp.png" />
+                        <Image url="@materialicons/mainscreenicons/notification-1%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView id="DIRECTIONS" fx:id="directionsButton" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
+                  <ImageView id="DIRECTIONS" fx:id="directionsButton" fitHeight="87.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
                      <image>
-                        <Image url="@materialicons/ic_directions_white_36dp/android/drawable-xxxhdpi/ic_directions_white_36dp.png" />
+                        <Image url="@materialicons/mainscreenicons/placeholder-1%20(1).png" />
                      </image>
                   </ImageView>
                </children>
