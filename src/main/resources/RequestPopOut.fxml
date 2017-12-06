@@ -24,13 +24,22 @@
          <children>
             <VBox prefHeight="517.0" prefWidth="320.0">
                <children>
+<<<<<<< HEAD
                   <JFXTextField fx:id="createRequestLabel1" alignment="CENTER" editable="false" text="%openrq" unFocusColor="BLACK">
+=======
+                  <JFXTextField fx:id="createRequestLabel1" alignment="CENTER" editable="false" prefHeight="41.0" prefWidth="315.0" text="Open Requests" unFocusColor="BLACK">
+>>>>>>> 430639354c8ed7a38ff219d8d81b7fde258934e2
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </JFXTextField>
+<<<<<<< HEAD
                   <JFXComboBox fx:id="typeOfRequest1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="28.0" prefWidth="277.0" promptText="%filter" stylesheets="@css/DefaultStyle.css" />
                   <JFXListView fx:id="requestView" prefHeight="378.0" prefWidth="325.0" stylesheets="@css/DefaultStyle.css" VBox.vgrow="ALWAYS">
+=======
+                  <JFXComboBox fx:id="typeOfRequest1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="28.0" prefWidth="277.0" promptText="Filter" />
+                  <JFXListView fx:id="requestView" prefHeight="378.0" prefWidth="325.0" VBox.vgrow="ALWAYS">
+>>>>>>> 430639354c8ed7a38ff219d8d81b7fde258934e2
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
@@ -44,14 +53,28 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
+<<<<<<< HEAD
                         <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteRequest" prefHeight="70.0" prefWidth="159.0" style="-fx-background-color: #4d4dff;" text="%reqdelete" />
                         <JFXButton fx:id="completeButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#fulfillRequest" prefHeight="71.0" prefWidth="156.0" style="-fx-background-color: #000000;" text="%complete" GridPane.columnIndex="1" />
+=======
+                        <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteRequest" prefHeight="70.0" prefWidth="159.0" styleClass="resetButton" text="Delete" textFill="#eee4e4">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin></JFXButton>
+                        <JFXButton fx:id="completeButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#fulfillRequest" prefHeight="71.0" prefWidth="156.0" styleClass="confirmButton" text="Complete" textFill="WHITE" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin></JFXButton>
+>>>>>>> 430639354c8ed7a38ff219d8d81b7fde258934e2
                      </children>
                   </GridPane>
                </children>
                <padding>
                   <Insets left="5.0" />
                </padding>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
             </VBox>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="275.0">
                <children>
@@ -59,7 +82,11 @@
                      <children>
                         <VBox fx:id="addToThis">
                            <children>
+<<<<<<< HEAD
                               <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" text="%createreq">
+=======
+                              <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" prefHeight="41.0" prefWidth="318.0" text="Create Request">
+>>>>>>> 430639354c8ed7a38ff219d8d81b7fde258934e2
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
@@ -81,8 +108,13 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </JFXTextField>
+<<<<<<< HEAD
                               <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="120.0" promptText="%typeSel" styleClass="jfx-combo-box" stylesheets="@css/DefaultStyle.css" />
                               <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="%reqnotes">
+=======
+                              <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="120.0" promptText="Select Type:" />
+                              <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="Note">
+>>>>>>> 430639354c8ed7a38ff219d8d81b7fde258934e2
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -91,22 +123,43 @@
                            </children>
                         </VBox>
                         <HBox />
+<<<<<<< HEAD
                         <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="36.0" prefWidth="327.0" text="%staffview">
+=======
+                        <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="36.0" prefWidth="327.0" styleClass="viewStaffButton" text="View Staff" textFill="WHITE">
+>>>>>>> 430639354c8ed7a38ff219d8d81b7fde258934e2
                            <padding>
                               <Insets top="10.0" />
                            </padding>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                           </VBox.margin>
                         </JFXButton>
                         <HBox prefHeight="25.0" prefWidth="303.0">
                            <children>
+<<<<<<< HEAD
                               <JFXButton fx:id="cancelButton" onAction="#clearRequest" prefHeight="31.0" prefWidth="379.0" styleClass="jfx-cancel-button" text="%cancelBtn" textFill="WHITE">
+=======
+                              <JFXButton fx:id="cancelButton" onAction="#clearRequest" prefHeight="31.0" prefWidth="379.0" styleClass="cancelButton" text="Cancel" textFill="WHITE">
+>>>>>>> 430639354c8ed7a38ff219d8d81b7fde258934e2
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
                               </JFXButton>
+<<<<<<< HEAD
                               <JFXButton fx:id="submitButton" maxHeight="1.7976931348623157E308" onAction="#submitRequest" prefHeight="85.0" prefWidth="374.0" styleClass="jfx-accept-button" text="%reqsubmit" textFill="WHITE">
+=======
+                              <JFXButton fx:id="submitButton" maxHeight="1.7976931348623157E308" onAction="#submitRequest" prefHeight="85.0" prefWidth="374.0" styleClass="confirmButton" text="Submit" textFill="WHITE">
+>>>>>>> 430639354c8ed7a38ff219d8d81b7fde258934e2
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
                               </JFXButton>
                            </children>
                         </HBox>
@@ -127,6 +180,6 @@
    </children>
    <stylesheets>
       <URL value="@css/MainScreenStyle.css" />
-      <URL value="@css/DefaultStyle.css" />
+      <URL value="@css/DefaultStyle2.css" />
    </stylesheets>
 </Pane>

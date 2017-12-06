@@ -2,3 +2,67 @@
 .column-header-background         { -fx-background-color: azure;       }
 .table-row-cell:empty             { -fx-background-color: cornsilk;    }
 .table-row-cell:empty .tab le-cell { -fx-border-width:     0px;         }
+
+
+.resetButton {
+    -fx-background-color: #E57373
+;
+}
+
+.confirmButton {
+    -fx-background-color: #2196F3
+;
+}
+
+.field {
+    -fx-background-color: #29B6F6
+;
+}
+
+.cancelButton {
+    -fx-background-color: #78909C;
+}
+
+.viewStaffButton{
+    -fx-background-color: #9E9E9E;
+}
+
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #4DD0E1;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #4DD0E1;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: #75bc1b;
+    -fx-stroke-width: 3pt;
+}
+.table-view .column-header
+{
+    -fx-font: 13px "Roboto";
+    -fx-background-color: #90A4AE;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+}
+
+.table-view .column-header .filter
+{
+    -fx-background-color: #AAAAAA;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+}
+
+.table-row-cell:odd{
+    -fx-background-color: -fx-table-cell-border-color, #9E9E9E;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #2196F3;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
