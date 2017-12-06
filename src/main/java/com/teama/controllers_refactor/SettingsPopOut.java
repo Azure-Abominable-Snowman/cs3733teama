@@ -6,7 +6,7 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 public class SettingsPopOut extends PopOutController {
     private int xOffset, yOffset;
     private ReadOnlyDoubleProperty xProperty, yProperty;
-    private InterpreterStaff staffToInsert;
+    private InterpreterStaff insertStaff;
 
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
