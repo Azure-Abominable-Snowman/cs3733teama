@@ -23,7 +23,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -38,9 +37,6 @@ public class DirectionsPopOut extends PopOutController {
 
     @FXML
     private TableColumn<String, Integer> stepCol;
-
-    @FXML
-    private TableColumn<String, Image> imageCol;
 
     @FXML
     private TableColumn<String, String> descriptionCol;
@@ -73,7 +69,8 @@ public class DirectionsPopOut extends PopOutController {
         distanceCol.setCellValueFactory(
                 new PropertyValueFactory<>("distance"));
 
-        textDirections.setFixedCellSize(75); // cells need to be bigger than default
+
+        textDirections.setFixedCellSize(100); // cells need to be bigger than default
 
         // Factory for each row, set to have the text wrap
         textDirections.setRowFactory(tv -> {
