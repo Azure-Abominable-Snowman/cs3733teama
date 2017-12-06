@@ -118,7 +118,7 @@
                         <Image url="@materialicons/mainscreenicons/placeholder-1%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView id="SETTINGS" fx:id="settingsButton" fitHeight="87.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
+                  <ImageView id="SETTINGS" fx:id="settingButton" fitHeight="87.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
                      <image>
                         <Image url="@materialicons/mainscreenicons/settings.png" />
                      </image>
