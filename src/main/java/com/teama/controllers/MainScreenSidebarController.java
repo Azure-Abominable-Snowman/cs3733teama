@@ -396,7 +396,7 @@ public class MainScreenSidebarController extends PopOutController {
 
             loginPopup.setTitle("B&W Login");
             //ResourceBundle resources = ResourceBundle.getBundle("lang_en");
-            ResourceBundle resources = ResourceBundle.getBundle("lang_es");
+            ResourceBundle resources = ResourceBundle.getBundle("lang_en");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/LogInScreen.fxml"),resources);
             Parent root = (Parent) loader.load();
             //loader.setLocation(getClass().getResource("/LogInScreen.fxml"));
