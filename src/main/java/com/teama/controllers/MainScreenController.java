@@ -351,6 +351,7 @@ public class MainScreenController implements Initializable {
             aboutPopUp.resizableProperty().set(false);
             aboutPopUp.initModality(Modality.WINDOW_MODAL);
             aboutPopUp.showAndWait();
+
         }
         catch(IOException exception){
             exception.printStackTrace();
