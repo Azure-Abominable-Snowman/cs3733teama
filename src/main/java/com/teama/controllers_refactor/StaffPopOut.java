@@ -230,6 +230,7 @@ public class StaffPopOut extends PopOutController {
                 alert.close();
             }
             updateInterpList();
+            editing.setValue(false);
         }
     }
     @FXML
