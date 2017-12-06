@@ -23,8 +23,6 @@ public class PopOutFactory {
                 return new StaffLoginPopOut();
             case SETTINGS:
                 return new SettingsPopOut();
-            case HELP:
-                return new HelpPopOut();
         }
         return null;
     }
