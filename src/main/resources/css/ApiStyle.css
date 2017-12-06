@@ -18,7 +18,7 @@
 
 .cancel {
 
-    -fx-background-color: #ff0000;
+    -fx-background-color: #E57373;
     -fx-background-image: -webkit-linear-gradient(top, #ff0000, #d15858);
     -fx-background-image: -moz-linear-gradient(top, #ff0000, #d15858);
     -fx-background-image: -ms-linear-gradient(top, #ff0000, #d15858);
@@ -108,7 +108,7 @@
 }
 
 .submit {
-    -fx-background-color: #70baeb;
+    -fx-background-color: #2196F3;
     -fx-background-image: -webkit-linear-gradient(top, #70baeb, #2980b9);
     -fx-background-image: -moz-linear-gradient(top, #70baeb, #2980b9);
     -fx-background-image: -ms-linear-gradient(top, #70baeb, #2980b9);
@@ -133,4 +133,14 @@
     -fx-padding: 10px 20px 10px 20px;
 
 
+}
+
+.text-field {
+    -fx-background-color: #a9a9a9 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+}
+
+.text-field:focused {
+    -fx-background-color: #a9a9a9 , white , white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
 }
