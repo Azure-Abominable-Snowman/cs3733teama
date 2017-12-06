@@ -73,54 +73,76 @@
                         <JFXToggleButton fx:id="editEdges" prefHeight="47.0" prefWidth="128.0" text="Edges" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
-                  <GridPane prefHeight="221.0" prefWidth="255.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                  <VBox fx:id="editorInfo" prefHeight="321.0" prefWidth="255.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Details:" textAlignment="CENTER" GridPane.halignment="LEFT">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Text>
-                        <JFXTextField fx:id="nodeID" prefHeight="24.0" prefWidth="209.0" promptText="ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <JFXTextField fx:id="nodeCoord" promptText="Coordinate" GridPane.rowIndex="2" />
-                        <JFXTextField fx:id="longName" promptText="Long Name" GridPane.rowIndex="3" />
-                        <JFXTextField fx:id="shortName" promptText="Short Name" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-                           <GridPane.margin>
+                        <GridPane prefHeight="254.0" prefWidth="255.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Details:" textAlignment="CENTER" GridPane.halignment="LEFT">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <JFXTextField fx:id="nodeID" prefHeight="24.0" prefWidth="209.0" promptText="ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <JFXTextField fx:id="nodeCoord" promptText="Coordinate" GridPane.rowIndex="2" />
+                              <JFXTextField fx:id="longName" promptText="Long Name" GridPane.rowIndex="3" />
+                              <JFXTextField fx:id="shortName" promptText="Short Name" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </JFXTextField>
+                              <JFXComboBox fx:id="nodeType" prefHeight="21.0" prefWidth="167.0" promptText="Node Type" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </JFXComboBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </GridPane>
+                        <GridPane prefHeight="29.0" prefWidth="255.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.5" minWidth="10.0" prefWidth="128.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.5" minWidth="10.0" prefWidth="127.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <JFXButton fx:id="alignBtn" onAction="#onAlignNode" text="Align" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </JFXButton>
+                              <JFXComboBox fx:id="alignmentOptions" promptText="Alignment">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </JFXComboBox>
+                           </children>
+                           <VBox.margin>
                               <Insets />
-                           </GridPane.margin>
-                        </JFXTextField>
-                        <JFXComboBox fx:id="nodeType" prefHeight="21.0" prefWidth="167.0" promptText="Node Type" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </GridPane>
                      </children>
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets bottom="50.0" />
                      </VBox.margin>
-                  </GridPane>
-                  <GridPane prefHeight="29.0" prefWidth="255.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.5" minWidth="10.0" prefWidth="128.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.5" minWidth="10.0" prefWidth="127.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <VBox.margin>
-                        <Insets bottom="48.0" />
-                     </VBox.margin>
-                     <children>
-                        <JFXButton fx:id="alignBtn" text="Align" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                        <JFXComboBox fx:id="alignmentOptions" promptText="Alignment" />
-                     </children>
-                  </GridPane>
+                  </VBox>
                   <GridPane prefHeight="47.0" prefWidth="255.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="123.5" />

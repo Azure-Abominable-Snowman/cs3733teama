@@ -23,8 +23,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -40,15 +40,16 @@ public class EditorPopOut extends PopOutController {
     @FXML
     private JFXToggleButton viewEdges, viewNodes, editNodes, editEdges;
     @FXML
-    private ImageView editNode, deleteNode;
-    @FXML
     private JFXTextField nodeID, nodeCoord, longName, shortName;
     @FXML
     private JFXComboBox<NodeType> nodeType;
     @FXML
     private JFXComboBox<String> alignmentOptions;
     @FXML
-    private JFXButton confirmBtn, cancelBtn, alignBtn;
+    private JFXButton confirmBtn, cancelBtn, alignBtn, editNode, addNode, deleteNode;
+    @FXML
+    private VBox editorInfo;
+
 
 
     private Parent currentPopOut;
@@ -57,6 +58,7 @@ public class EditorPopOut extends PopOutController {
     private Map<Long, EventHandler<MouseEvent>> mouseEvents = new HashMap<>();
     private Map<Long, ChangeListener<Boolean>> floorEvents = new HashMap<>();
     BooleanProperty updateCurrentNode = new SimpleBooleanProperty(true);
+
     @FXML
     public void initialize() {
         mapDraw = MapDrawingSubsystem.getInstance();

@@ -78,7 +78,7 @@ public class JavaCredentialsDBTest {
     @Test
     public void getUser() {
         try {
-            assertNull(db.getUser(login2));
+            //assertNull(db.getUser(login2));
             PreparedStatement x = conn.prepareStatement("INSERT INTO " + credsTable + " (USERNAME, PASSWORD,ACCESS, STAFFID, STAFFTYPE) VALUES(?,?,?, ?, ?) ");
             x.setString(1, login1.getUsername());
             x.setInt(2, login1.getPassword().hashCode());
