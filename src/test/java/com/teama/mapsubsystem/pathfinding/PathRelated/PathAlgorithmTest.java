@@ -1,8 +1,8 @@
-package entities.PathRelated;
+package com.teama.mapsubsystem.pathfinding.PathRelated;
 
 import com.teama.mapsubsystem.data.*;
-import com.teama.mapsubsystem.pathfinding.AStar.AStar;
-import com.teama.mapsubsystem.pathfinding.AStar.BeamSearch;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.AStar;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
