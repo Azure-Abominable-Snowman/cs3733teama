@@ -1,11 +1,25 @@
 package com.teama.controllers_refactor;
 
+import com.teama.mapsubsystem.ExportFormat;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.fxml.FXML;
+import com.teama.mapsubsystem.MapSubsystem;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 public class SettingsPopOut extends PopOutController {
     private int xOffset, yOffset;
     private ReadOnlyDoubleProperty xProperty, yProperty;
+    MapSubsystem mapSubsystem = MapSubsystem.getInstance();
 
+
+
+    @FXML
+    private void exportCSV(ActionEvent event){
+        mapSubsystem.export(ExportFormat.CSV, "1", "2");
+    }
+    
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
     }
@@ -25,4 +39,5 @@ public class SettingsPopOut extends PopOutController {
 
     @Override
     public String getFXMLPath(){return "/SettingsPopOut.fxml";}
+
 }

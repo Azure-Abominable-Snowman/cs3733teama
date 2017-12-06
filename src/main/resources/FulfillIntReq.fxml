@@ -51,11 +51,12 @@
                               <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="150.0" minHeight="150.0" prefHeight="150.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="145.0" minHeight="145.0" prefHeight="150.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <JFXTextField fx:id="txtTimeToFulfill" promptText="How long did it take you to complete the request?" />
-                              <JFXTextArea fx:id="txtDescription" prefHeight="118.0" prefWidth="314.0" promptText="Please describe the encounter below:" GridPane.rowIndex="3" />
+                              <JFXTextArea fx:id="txtDescription" prefHeight="118.0" prefWidth="314.0" promptText="Please describe the encounter below:" GridPane.rowIndex="4" />
                               <JFXTextField fx:id="groupSize" promptText="How many people did you help?" GridPane.rowIndex="1" />
                               <JFXComboBox fx:id="cmbxTransType" prefHeight="69.0" prefWidth="367.0" promptText="What type of translation did you do?" GridPane.rowIndex="2" />
                            </children>
