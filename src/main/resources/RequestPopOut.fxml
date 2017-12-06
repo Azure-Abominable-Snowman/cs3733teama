@@ -73,7 +73,7 @@
                                  <children>
                                     <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="87.0" promptText="%reqbuilding" styleClass="jfx-combo-box" />
                                     <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="73.0" promptText="%floorlvl" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
-                                    <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="29.0" prefWidth="164.0" promptText="%reqlongnames" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
+                                    <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="29.0" prefWidth="164.0" promptText="%reqlongname" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <JFXTextField fx:id="typeLabel" alignment="CENTER" editable="false" text="%reqtypel">
