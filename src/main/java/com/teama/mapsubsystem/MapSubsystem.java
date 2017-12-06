@@ -2,8 +2,10 @@ package com.teama.mapsubsystem;
 
 import com.teama.Configuration;
 import com.teama.mapsubsystem.data.*;
-import com.teama.mapsubsystem.pathfinding.*;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
+import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
+import com.teama.mapsubsystem.pathfinding.PathGenerator;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
 
 import java.util.*;
@@ -41,16 +43,15 @@ public class MapSubsystem {
         //TODO: Automatically detect to see if we need to populate the database with the CSV files
         csvSource = new CSVDatabaseSource(nList, eList, null, null); // Don't specify output files
         javaDBSource = new JavaDatabaseSource(Configuration.dbURL, Configuration.nodeTable, Configuration.edgeTable);
+        javaDBSource = new TotalMapCache(javaDBSource);
 
         pathGenerator = new PathGenerator(new AStar());
 
         // Initially populate the tables with the data from CSV (Not needed every time)
-        javaDBSource.addAll(csvSource);
+        //javaDBSource.addAll(csvSource);
 
         // Populate the kiosknode with a default value
-        if(originNode == null) {
-           originNode = getNode("AINFO0020G");
-        }
+        resetKioskNode();
     }
 
 
@@ -164,12 +165,16 @@ public class MapSubsystem {
         return null;
     }
 
-    public MapNode getOriginNode() {
+    public MapNode getKioskNode() {
         return originNode;
     }
 
-    public void setOriginNode(String id) {
+    public void setKioskNode(String id) {
         originNode = getNode(id);
+    }
+
+    public void resetKioskNode() {
+        originNode = getNode("AINFO0020G"); // reset to default kiosk location
     }
 
     // TODO: Should we be able to find a node by any descriptive attribute?

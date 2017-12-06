@@ -3,9 +3,9 @@ package com.teama.mapsubsystem.pathfinding.TextualDirection;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
+import com.teama.translator.Translator;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+
 
 public class RouteLink {
 
@@ -16,15 +16,12 @@ public class RouteLink {
     private RouteLink lastLink;
     private double distance;
     private String textReturn;
+    //private Icon icon;
     private Floor startFloor;
     private  Floor nextFloor; // Can't have an end floor since there is only a start and next, therefore no end
 
     private  boolean endFlag = false;
-
-    String lang = "en";
-    Locale locale = new Locale(lang);
-    ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
-
+    private  TurnType turn;
 
     RouteLink(MapNode start, MapNode next, RouteLink lastLink) {
 
@@ -43,6 +40,10 @@ public class RouteLink {
         }
         else {
             textReturn = "Start";
+            double dx = next.getCoordinate().getxCoord() - start.getCoordinate().getxCoord();
+            double dy = next.getCoordinate().getyCoord() - start.getCoordinate().getyCoord();
+            distance = (double) Math.sqrt( dx*dx + dy*dy);
+            turn=TurnType.START;
         }
 
     }
@@ -74,39 +75,48 @@ public class RouteLink {
 
             if(lastLink.getTextReturn().contains("Elevator") || lastLink.getTextReturn().contains("Stairs")){
                 textReturn = "No Text";
+                turn=TurnType.INTONEWFLOOR;
                 return;
             }
 
 
             if(-15 <= turnAngle && turnAngle <= 15){
                 textReturn = "Straight: ";
+                turn=TurnType.STRAIGHT;
             }
 
             else if(-120 <= turnAngle && turnAngle <= -60){
-                textReturn = String.format("%s", bundle.getString("turnleft"));
+                textReturn = String.format("%s", Translator.getInstance().getText("turnleft"));
+                turn=TurnType.TURNLEFT;
             }
 
             else if(-60 < turnAngle && turnAngle < -15){
-                textReturn = String.format("%s", bundle.getString("turnleftslight"));
+                textReturn = String.format("%s", Translator.getInstance().getText("turnleftslight"));
+                turn=TurnType.TURNLEFTSLIGHT;
             }
 
             else if(-165 < turnAngle && turnAngle < -120){
-                textReturn = String.format("%s", bundle.getString("turnleftsharp"));
+                textReturn = String.format("%s", Translator.getInstance().getText("turnleftsharp"));
+                turn=TurnType.TURENLEFTSHARP;
             }
 
             else if(60 <= turnAngle && turnAngle <= 120){
-                textReturn = String.format("%s", bundle.getString("turnright"));
+                textReturn = String.format("%s", Translator.getInstance().getText("turnright"));
+                turn=TurnType.TURNRIGHT;
             }
 
             else if(15 < turnAngle && turnAngle < 60){
-                textReturn = String.format("%s", bundle.getString("turnrightslight"));
+                textReturn = String.format("%s", Translator.getInstance().getText("turnrightslight"));
+                turn=TurnType.TURNLEFTSLIGHT;
             }
 
             else if(120 < turnAngle && turnAngle < 165){
-                textReturn = String.format("%s", bundle.getString("turnrightsharp"));
+                textReturn = String.format("%s", Translator.getInstance().getText("turnrightsharp"));
+                turn=TurnType.TURNRIGHTSHARP;
             }
             else {
-                textReturn = String.format("%s", bundle.getString("reverse"));
+                textReturn = String.format("%s", Translator.getInstance().getText("reverse"));
+                turn=TurnType.REVERSE;
             }
 
 
@@ -119,10 +129,12 @@ public class RouteLink {
             Integer stairNum;
             stairNum = 2;
             if(start.getNodeType().equals(NodeType.ELEV)){
-                textReturn = String.format("%s", bundle.getString("elevat"));
+                textReturn = String.format("%s", Translator.getInstance().getText("elevat"));
+                turn=TurnType.ELEVATOR;
             }
             else{
-                textReturn = String.format("%s", bundle.getString("stairs"));
+                textReturn = String.format("%s", Translator.getInstance().getText("stairs"));
+                turn=TurnType.STAIR;
             }
             
         }
@@ -180,5 +192,13 @@ public class RouteLink {
 
     public void setEndFlag(boolean endFlag) {
         this.endFlag = endFlag;
+    }
+
+    public TurnType getTurn() {
+        return turn;
+    }
+
+    public void setTurn(TurnType turn) {
+        this.turn = turn;
     }
 }

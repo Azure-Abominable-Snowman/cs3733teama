@@ -1,14 +1,14 @@
 package com.teama.requestsubsystem.securityfeature;
 
-import com.teama.requestsubsystem.GenericStaffInfo;
+import com.teama.requestsubsystem.GenericStaff;
 import com.teama.messages.Provider;
 import java.util.Set;
 
 public class SecurityStaff {
-    private GenericStaffInfo info;
+    private GenericStaff info;
     private SecurityInfo securitySpecs;
 
-    public SecurityStaff(GenericStaffInfo i, SecurityInfo s){
+    public SecurityStaff(GenericStaff i, SecurityInfo s){
         info = i;
         securitySpecs = s;
     }
