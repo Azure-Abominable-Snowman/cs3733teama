@@ -24,7 +24,7 @@ public class InterpReqController{
         protected String familySize;
 
         @FXML
-        private JFXComboBox<Language> cmbLang = new JFXComboBox<Language>();
+        private JFXComboBox<Language> cmbLang;
         protected Language language;
 
         public void initialize(){
@@ -37,6 +37,7 @@ public class InterpReqController{
         }
 
         public Language getLanguage(){
+                System.out.println(cmbLang);
             return cmbLang.getSelectionModel().getSelectedItem();
         }
 
