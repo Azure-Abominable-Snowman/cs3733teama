@@ -11,6 +11,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -34,6 +35,7 @@ public class MapDrawingSubsystem {
     private MapSubsystem mapDB =  MapSubsystem.getInstance();
     private Text floorNumberDisplay;
 
+    private AnchorPane areaPane;
     private static class MapDrawingSubsystemGetter {
         private static final MapDrawingSubsystem instance = new MapDrawingSubsystem();
     }
@@ -74,7 +76,7 @@ public class MapDrawingSubsystem {
      * @param mapCanvas
      * @param mapScroll
      */
-    public void initialize(Canvas mapCanvas, ScrollPane mapScroll, Text floorNumberDisplay, Pane floorButtonBox) {
+    public void initialize(Canvas mapCanvas, ScrollPane mapScroll, Text floorNumberDisplay, Pane floorButtonBox, AnchorPane areaPane) {
         clickedListenerMap = new HashMap<>();
         floorBoxListenerMap = new HashMap<>();
         Map<Floor, HospitalMap> imgs = new HashMap<>();
@@ -90,6 +92,7 @@ public class MapDrawingSubsystem {
 
         this.floorNumberDisplay = floorNumberDisplay;
         this.floorButtonBox = floorButtonBox;
+        this.areaPane = areaPane;
 
         this.mapScroll = mapScroll;
 
@@ -101,6 +104,10 @@ public class MapDrawingSubsystem {
                 floorNumberDisplay.setText(getCurrentFloor().toString());
             });
         }
+    }
+
+    public AnchorPane getAreaPane() {
+        return this.areaPane;
     }
 
     public Floor getCurrentFloor() {
@@ -132,6 +139,7 @@ public class MapDrawingSubsystem {
         }
         return mapDB.getEdge(id);
     }
+
 
     public long attachFloorChangeListener(ChangeListener<? super Boolean> event) {
         if(floorButtonBox == null) {
@@ -334,7 +342,7 @@ public class MapDrawingSubsystem {
     }
 
     public void unDrawEdge(MapEdge edge) {
-        map.deletePoint(edge.getId());
+        map.deleteLine(edge.getId());
     }
 
     public void unDrawPath(long pathID) {
@@ -369,6 +377,11 @@ public class MapDrawingSubsystem {
 
     public double getHeight() {
         return map.getMaxY();
+    }
+
+    public Location convertEventToImg(MouseEvent e, Floor current) {
+        Location canvLoc = new Location(e, current);
+        return map.convToImageCoords(canvLoc);
     }
 
     public void setViewportCenter(Location center) {

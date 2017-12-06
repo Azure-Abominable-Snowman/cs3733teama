@@ -119,9 +119,13 @@ public class MainScreenController implements Initializable {
     private MainScreenSidebarController sidebar;
     private PopOutFactory popOutFactory = new PopOutFactory();
 
+    private long popUpID;
+
     // Contains all of the event handlers for the buttons on the sidebar
     // Useful for when we need to open something on the sidebar based on another event
     private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap = new HashMap<>();
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -141,7 +145,7 @@ public class MainScreenController implements Initializable {
         }
 
         mapDrawing = MapDrawingSubsystem.getInstance();
-        mapDrawing.initialize(mapCanvas, mapScroll, floorNumberDisplay, floorButtonBox);
+        mapDrawing.initialize(mapCanvas, mapScroll, floorNumberDisplay, floorButtonBox, areaPane);
 
         mapDrawing.setGrow(true);
         mapDrawing.setZoomFactor(minZoom);
@@ -157,6 +161,8 @@ public class MainScreenController implements Initializable {
                 mapDrawing.drawNode(n, 0, null);
             }
         });
+        // Make a pop up on the user's mouse cursor every time a node is clicked
+        popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.LOCCLICKED);
 
         // Attach listeners to all the sidebar pop outs to open their respective pane on click
         for(Node button : mainSidebarGrid.getChildren()) {
@@ -181,8 +187,7 @@ public class MainScreenController implements Initializable {
             mainSidebarMap.put(PopOutType.valueOf(button.getId()), openEvent);
         }
 
-        // Make a pop up on the user's mouse cursor every time a node is clicked
-        mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
+
 
         // Pop up goes away on a floor switch
         mapDrawing.attachFloorChangeListener((a, b, c) -> removeCurrentPopUp());
@@ -240,6 +245,8 @@ public class MainScreenController implements Initializable {
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
+
+
     }
 
     private Node currentPopOut;
@@ -249,6 +256,7 @@ public class MainScreenController implements Initializable {
     private void openInMainSidebar(PopOutType popOutType, ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
         try {
             // Remove the last pop out if present
+            removeCurrentPopUp();
             if(currentPopOut != null) {
                 currentPopOutController.onClose();
                 areaPane.getChildren().remove(currentPopOut);
@@ -257,10 +265,14 @@ public class MainScreenController implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(controller.getFXMLPath()));
             loader.setController(controller);
+
+
             controller.onOpen(xProperty, xOffset, yProperty, yOffset);
+            mapDrawing.detachListener(popUpID);
             currentPopOut = loader.load();
             currentPopOutController = controller;
 
+            System.out.println(currentPopOutController);
             // Add it to the area pane in the correct spot next to the button
             areaPane.getChildren().add(currentPopOut);
 
@@ -274,6 +286,7 @@ public class MainScreenController implements Initializable {
         // remove it from the screen if one is open
         if(currentPopOut != null) {
             currentPopOutController.onClose();
+            popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
             areaPane.getChildren().remove(currentPopOut);
             currentPopOut = null;
             currentPopOutType = null;
@@ -292,23 +305,26 @@ public class MainScreenController implements Initializable {
         // Get the node clicked on (if any)
         MapNode nodeAt = mapDrawing.nodeAt(new Location(event, mapDrawing.getCurrentFloor()));
 
-        if(nodeAt != null) {
-            System.out.println("CLICKED ON "+nodeAt.getId());
+        if (nodeAt != null) {
+            System.out.println("CLICKED ON " + nodeAt.getId());
 
             // Load the screen in and display it on the cursor
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/NodeInfoPopUp.fxml"));
+            NodeInfoPopUpController nodePopUp = new NodeInfoPopUpController();
+            loader.setController(nodePopUp);
             try {
                 nodeInfo = loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            NodeInfoPopUpController ni = loader.getController();
-            ni.setInfo(nodeAt, pathfinding);
-
+            areaPane.getChildren().add(nodeInfo);
+            System.out.println(areaPane.getChildren().getClass());
+            nodePopUp.setInfo(nodeAt, pathfinding, event);
+/*
             // Create pane to load nodeInfo root node into
             nodeInfo.toFront(); // bring to front of screen
-            areaPane.getChildren().add(nodeInfo);
+
 
             // Display the pane next to the mouse cursor
             double windowW = 140;
@@ -328,6 +344,12 @@ public class MainScreenController implements Initializable {
                 System.out.println("MOVE Y");
                 nodeInfo.setTranslateY(newY);
             }
+        }
+        */
+        }
+        else {
+            System.out.println("Clicked on a random location.");
+            removeCurrentPopUp();
         }
     }
 

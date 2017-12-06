@@ -8,9 +8,10 @@ import com.teama.Configuration;
 
 // Facade for interacting with Login; used by Login Controller and controllers that need to see the access priveleges of the current user
 public class LoginSubsystem {
-    private LoginInfoDataSource loginDatabase = new JavaCredentialsDB(Configuration.dbURL, Configuration.credentialsTable);
+    private LoginInfoDataSource loginDatabase;
     private SystemUser user = new SystemUser(); // by default is Guest with no LoginInfo; updated in checkCredentials if valid login
     private LoginSubsystem() {
+        loginDatabase = new JavaCredentialsDB(Configuration.dbURL, Configuration.credentialsTable);
     }
 
     private static class LoginSubsystemGetter {
