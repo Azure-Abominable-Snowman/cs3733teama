@@ -120,7 +120,6 @@ public class MainScreenController implements Initializable {
     private SimpleBooleanProperty showLoginButton = new SimpleBooleanProperty(true);
     private EventHandler<MouseEvent> originalMouseClick;
 
-    private MainScreenSidebarController sidebar;
     private PopOutFactory popOutFactory = new PopOutFactory();
 
     private long popUpID;
