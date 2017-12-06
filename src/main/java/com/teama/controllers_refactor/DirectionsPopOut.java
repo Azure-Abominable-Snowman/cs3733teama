@@ -23,6 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -47,6 +48,9 @@ public class DirectionsPopOut extends PopOutController {
 
     @FXML
     private JFXComboBox<String> originNodeCombo;
+
+    @FXML
+    private TableColumn<String, ImageView> directionCol;
 
     @FXML
     private JFXComboBox<String> filterBox;
