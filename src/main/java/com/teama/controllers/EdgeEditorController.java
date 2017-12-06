@@ -2,7 +2,7 @@ package com.teama.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.teama.drawing.MapDisplay;
+import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
 import javafx.event.ActionEvent;
@@ -286,6 +286,8 @@ public class EdgeEditorController {
     public void setButtons(JFXButton add, JFXButton delete) {
         this.addMode = add;
         this.deleteMode = delete;
+        addMode.setDisable(false);
+        delete.setDisable(false);
         this.addMode.setOnAction((ActionEvent e) -> {
             restoreToDefault();
             inAddMode = true;

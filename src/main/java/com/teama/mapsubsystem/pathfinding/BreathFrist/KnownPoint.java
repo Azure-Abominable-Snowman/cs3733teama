@@ -27,7 +27,7 @@ public class KnownPoint  {
         return result;
     }
 
-
+    //getters and setters
     public int getLayer() {
         return layer;
     }

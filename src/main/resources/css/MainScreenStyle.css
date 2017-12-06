@@ -9,5 +9,15 @@
 }
 
 .normalButton {
-    -fx-background-color: gray;
+    -fx-background-color: #78909C
+;
+}
+
+.popOutPaneStyle {
+    -fx-background-size: 1200 900;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-background-color: #ededed;
+    /* Make pop out have a drop shadow */
+    -fx-effect: dropshadow(three-pass-box, gray, 10, 0, 4, 4);
 }

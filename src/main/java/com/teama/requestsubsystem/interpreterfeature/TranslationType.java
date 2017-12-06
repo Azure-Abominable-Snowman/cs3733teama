@@ -17,4 +17,13 @@ public enum TranslationType {
     public String toString() {
         return s;
     }
+
+    public static TranslationType getTranslationType(String s) {
+        for (TranslationType t: TranslationType.values()) {
+            if (t.toString().equals(s)) {
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("No such translation type, " + s);
+    }
 }

@@ -1,161 +1,79 @@
 package com.teama.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.teama.drawing.MapDisplay;
+import com.teama.ProgramSettings;
+import com.teama.controllers_refactor.PopOutType;
+import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.DrawNodeInstantly;
-import com.teama.mapsubsystem.data.Floor;
-import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
-import com.teama.mapsubsystem.pathfinding.DisplayPath;
-import com.teama.mapsubsystem.pathfinding.DisplayPathInstantly;
 import com.teama.mapsubsystem.pathfinding.Path;
-import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
-import com.teama.mapsubsystem.pathfinding.TextualDirection.TextualDirections;
-import javafx.beans.Observable;
-import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ScrollPane;
+import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
-import java.util.Set;
+import java.util.Map;
 
 public class PathfindingController {
 
-    private MapDisplay map;
-    private MapSubsystem mapSubsystem;
-    private AnchorPane mapAreaPane;
-    private ScrollPane mapScrollPane;
-    private Canvas mapCanvas;
-    private VBox floorButtonBox;
-    private JFXButton curFloorButton;
 
-    private final String illuminatedFloorButtonClass = "illuminatedfloorbutton";
-    private final String regularFloorButtonClass = "floorbutton";
-    private final String pressedFloorButtonClass = "pressedfloorbutton";
+    private long curPathID = -1;
+    private MapDrawingSubsystem drawingSubsystem = MapDrawingSubsystem.getInstance();
+    private MapSubsystem mapSubsystem = MapSubsystem.getInstance();
+    private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap;
 
+    public PathfindingController(Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap) {
+        this.mainSidebarMap = mainSidebarMap;
 
-    public PathfindingController(MapSubsystem mapSubsystem, MapDisplay map, AnchorPane mapAreaPane, VBox floorButtonBox, Text floorDisplay) {
-        this.map = map;
-        this.mapAreaPane = mapAreaPane;
-        this.mapSubsystem = mapSubsystem;
-        this.mapScrollPane = map.getUnderlyingScrollPane();
-        this.mapCanvas = map.getUnderlyingCanvas();
-        this.floorButtonBox = floorButtonBox;
+        ProgramSettings settings = ProgramSettings.getInstance();
 
-        // Stuff for the node pop up window
+        // Set the pathfinding controller to update its path automatically on a changed start node
+        settings.getPathOriginNodeProp().addListener((a) -> {
+            genPath(settings.getPathOriginNodeProp().getValue(), settings.getPathEndNodeProp().getValue());
+        });
+    }
 
-        switchFloor(Floor.GROUND);
-        floorDisplay.setText(Floor.GROUND.toString());
+    public void genPath(MapNode dest) {
+        genPath(mapSubsystem.getKioskNode(), dest);
+    }
 
-        /*for(MapNode n : mapSubsystem.getFloorNodes(map.getCurrentFloor()).values()) {
-            // Display all edges (DEBUG)
-            for(MapEdge e : n.getEdges()) {
-                new DrawEdgeInstantly(e).displayOnScreen(map);
+    private boolean listen = true;
+
+    public void genPath(MapNode origin, MapNode dest) {
+        if(listen) {
+            if(origin == null || dest == null) {
+                return;
             }
-        }*/
-
-        // Populate the floor button box
-        for(Floor floor : Floor.values()) {
-            curFloorButton = new JFXButton();
-            curFloorButton.setText(floor.toString());
-            curFloorButton.getStylesheets().add("css/MainScreenStyle.css");
-            curFloorButton.getStyleClass().add(regularFloorButtonClass);
-            curFloorButton.setId(floor.toString());
-            curFloorButton.setPrefWidth(35);
-            curFloorButton.pressedProperty().addListener((Observable obs) -> {
-                switchFloor(floor);
-                floorDisplay.setText(floor.toString());
-            });
-
-            floorButtonBox.getChildren().add(curFloorButton);
-        }
-    }
-
-
-    /**
-     * Called when floors are switched
-     * @param floor
-     */
-    private void switchFloor(Floor floor) {
-        Floor prevFloor = map.getCurrentFloor();
-
-        // Wipe the whole map
-        map.clear();
-        // Changes the floor then updates the nodes
-        map.setCurrentFloor(floor);
-        // Display all the nodes for the given floor
-        for(MapNode n : mapSubsystem.getVisibleFloorNodes(map.getCurrentFloor()).values()) {
-            new DrawNodeInstantly(n).displayOnScreen(map);
-        }
-
-        // Display the path on the floor if needed
-        if(curPath != null) {
-            curPath.displayOnScreen(map, map.getCurrentFloor());
-        }
-    }
-    private DisplayPath curPath;
-    public JFXButton getCurFloorButton() {
-        return this.curFloorButton;
-    }
-
-    /**
-     * Generates a path using a mouse event (x and y coordinates)
-     * @param mouseEvent
-     */
-    public void genPathWithClicks(MouseEvent mouseEvent) {
-        Location clickedLoc = new Location((int)mouseEvent.getX(), (int)mouseEvent.getY(), map.getCurrentFloor(), "Unknown");
-        String curPointId = map.pointAt(clickedLoc);
-
-        System.out.println("PATH CLICK");
-
-        if(curPointId != null) {
-            MapNode curNode = mapSubsystem.getNode(curPointId);
-            System.out.println("PATH NODE SPECIFIED");
-            genPath(curNode);
-        }
-    }
-
-    /**
-     * Generates a path using the destination node specified
-     * @param dest
-     */
-    public TextDirections genPath(MapNode dest) {
-        return genPath(mapSubsystem.getOriginNode(), dest);
-    }
-
-    public TextDirections genPath(MapNode origin, MapNode dest) {
-        Path path = mapSubsystem.getPathGenerator().generatePath(mapSubsystem.getNode(origin.getId()), mapSubsystem.getNode(dest.getId()));
-        if(curPath != null) {
-            curPath.deleteFromScreen(map);
-            // unlight floors traveled on the button box
-            for(Node button : floorButtonBox.getChildren()) {
-                if(button.getStyleClass().contains(illuminatedFloorButtonClass)) {
-                    button.getStyleClass().remove(illuminatedFloorButtonClass);
+            // Generate the path and put it on the screen
+            MapNode newOrigin = mapSubsystem.getNode(origin.getId());
+            MapNode newEnd = mapSubsystem.getNode(dest.getId());
+            Path path;
+            if (newOrigin != null && newEnd != null) {
+                if (newOrigin.getId().equals(newEnd.getId())) {
+                    System.out.println("Path start and end are the same");
+                    // Remove the current path if there is one
+                    drawingSubsystem.unDrawPath(curPathID);
+                    curPathID = -1;
+                    return;
                 }
+                path = mapSubsystem.getPathGenerator().generatePath(newOrigin, newEnd);
+            } else {
+                System.out.println("Path cannot be generated");
+                return;
             }
-        }
-        DisplayPath dpi = new DisplayPathInstantly(path);
-        dpi.displayOnScreen(map, map.getCurrentFloor());
-        Set<Floor> floorsTraveled = path.getFloorsCrossedExceptTrans();
-        System.out.println(floorsTraveled);
 
-        // Light up floors traveled on the button box
-        for(Node button : floorButtonBox.getChildren()) {
-            if(floorsTraveled.contains(Floor.getFloor(button.getId()))) {
-                button.getStyleClass().add(illuminatedFloorButtonClass);
+            if (curPathID != -1) {
+                drawingSubsystem.unDrawPath(curPathID);
             }
+
+            curPathID = drawingSubsystem.drawPath(path);
+
+            // Update the origin, end node and path without regenerating the path that was just created
+            listen = false;
+            ProgramSettings.getInstance().setCurrentDisplayedPathProp(path);
+            ProgramSettings.getInstance().setPathOriginNodeProp(origin);
+            ProgramSettings.getInstance().setPathEndNodeProp(dest);
+            listen = true;
+
+            // Open the directions pop out
+            mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
         }
-
-        // Generate directions
-        DirectionsGenerator directionsGenerator = new TextualDirections();
-
-        curPath = dpi;
-
-        return directionsGenerator.generateDirections(path);
     }
 }

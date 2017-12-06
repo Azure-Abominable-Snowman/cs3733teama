@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="43.0" prefWidth="609.0" text="Map Editor" textAlignment="CENTER">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <JFXTabPane prefHeight="361.0" prefWidth="602.0" stylesheets="@css/MapEditorStyle.css">
+               <tabs>
+                  <Tab fx:id="nodeEditorTab" text="Node Editor">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="160.0">
+                           <children>
+                              <GridPane prefHeight="331.0" prefWidth="600.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="212.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="409.0" minWidth="10.0" prefWidth="388.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="283.0" minHeight="10.0" prefHeight="282.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="161.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <VBox prefHeight="283.0" prefWidth="282.0">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Node ID" textFill="WHITE">
+                                             <VBox.margin>
+                                                <Insets bottom="2.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Long Name" textFill="WHITE">
+                                             <VBox.margin>
+                                                <Insets bottom="2.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Short Name" textFill="WHITE">
+                                             <VBox.margin>
+                                                <Insets bottom="2.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Location Type" textFill="WHITE">
+                                             <VBox.margin>
+                                                <Insets bottom="2.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Floor" textFill="WHITE">
+                                             <VBox.margin>
+                                                <Insets bottom="2.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="X Coordinate" textFill="WHITE">
+                                             <VBox.margin>
+                                                <Insets bottom="2.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="46.0" prefWidth="204.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Y Coordinate" textFill="WHITE">
+                                             <VBox.margin>
+                                                <Insets bottom="2.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                       <children>
+                                          <VBox prefHeight="292.0" prefWidth="388.0">
+                                             <children>
+                                                <JFXTextField fx:id="nodeID" prefHeight="34.0" prefWidth="328.0" promptText="Type Long Name here" text="Node ID">
+                                                   <VBox.margin>
+                                                      <Insets bottom="8.0" left="40.0" right="40.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXTextField fx:id="longName" alignment="CENTER" prefHeight="34.0" prefWidth="388.0" promptText="Type Long Name here" text="Long Name">
+                                                   <VBox.margin>
+                                                      <Insets bottom="8.0" left="40.0" right="40.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXTextField fx:id="shortName" alignment="CENTER" prefHeight="34.0" prefWidth="388.0" promptText="Type Long Name here" text="Short Name">
+                                                   <VBox.margin>
+                                                      <Insets bottom="8.0" left="40.0" right="40.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXComboBox fx:id="locationType" prefHeight="27.0" prefWidth="389.0" promptText="Location Type">
+                                                   <VBox.margin>
+                                                      <Insets bottom="8.0" left="40.0" right="40.0" />
+                                                   </VBox.margin>
+                                                </JFXComboBox>
+                                                <JFXTextField fx:id="floor" alignment="CENTER" prefHeight="34.0" prefWidth="200.0" promptText="Type Long Name here" text="Floor">
+                                                   <VBox.margin>
+                                                      <Insets bottom="8.0" left="40.0" right="40.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXTextField alignment="CENTER" prefHeight="34.0" prefWidth="388.0" promptText="Type Long Name here" text="X" fx:id="xCoordinate">
+                                                   <VBox.margin>
+                                                      <Insets bottom="8.0" left="40.0" right="40.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXTextField fx:id="yCoordinate" alignment="CENTER" prefHeight="34.0" prefWidth="388.0" promptText="Type Long Name here" styleClass="normalButton" text="Y">
+                                                   <VBox.margin>
+                                                      <Insets bottom="8.0" left="40.0" right="40.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                    <HBox prefHeight="49.0" prefWidth="364.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                                       <children>
+                                          <JFXButton fx:id="resetBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onResetBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="resetButton" stylesheets="@css/MapEditorStyle.css" text="Reset" textAlignment="CENTER" textFill="WHITE">
+                                             <HBox.margin>
+                                                <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
+                                             </HBox.margin>
+                                          </JFXButton>
+                                          <JFXButton fx:id="confirmBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onConfirmBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="confirmButton" stylesheets="@css/MapEditorStyle.css" text="Confirm" textAlignment="CENTER" textFill="WHITE">
+                                             <HBox.margin>
+                                                <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
+                                             </HBox.margin>
+                                          </JFXButton>
+                                          <JFXButton fx:id="cancelBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onCancleBtnClick" prefHeight="34.0" prefWidth="100.0" styleClass="cancelButton" stylesheets="@css/MapEditorStyle.css" text="Cancel" textAlignment="CENTER" textFill="WHITE">
+                                             <HBox.margin>
+                                                <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
+                                             </HBox.margin>
+                                          </JFXButton>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="edgeEditorTab" text="Edge Editor">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="160.0">
+                           <children>
+                              <VBox layoutY="2.0" prefHeight="326.0" prefWidth="600.0">
+                                 <children>
+                                    <GridPane prefHeight="328.0" prefWidth="600.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="327.0" minWidth="10.0" prefWidth="299.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="303.0" minWidth="10.0" prefWidth="301.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="278.0" minHeight="10.0" prefHeight="273.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="147.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <GridPane prefHeight="272.0" prefWidth="300.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="114.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="10.0" prefWidth="186.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="235.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <VBox prefHeight="198.0" prefWidth="114.0" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Name" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="X-Coordinate" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Y-Coordinate" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Floor" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Type" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Node" textAlignment="CENTER" wrappingWidth="301.26318359375" GridPane.columnSpan="2147483647">
+                                                         <font>
+                                                            <Font size="17.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <JFXTextField fx:id="startName" alignment="CENTER" prefHeight="35.0" prefWidth="186.0" promptText="Name" />
+                                                            <JFXTextField fx:id="startXCoordinate" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" promptText="X" />
+                                                            <JFXTextField fx:id="startYCoordinate" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" text="Y" />
+                                                            <JFXTextField fx:id="startFloor" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" promptText="Floor" />
+                                                            <JFXTextField fx:id="startType" alignment="CENTER" prefHeight="39.0" prefWidth="186.0" promptText="Type" />
+                                                            <ImageView fx:id="startNodeConfirm" fitHeight="38.0" fitWidth="38.0" onMouseClicked="#onStartNodeConfirmClick">
+                                                               <image>
+                                                                  <Image url="@check.png" />
+                                                               </image>
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="75.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </ImageView>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </VBox>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                             <children>
+                                                <GridPane prefHeight="272.0" prefWidth="300.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="114.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="10.0" prefWidth="186.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="235.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <VBox prefHeight="199.0" prefWidth="114.0" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Name" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="X-Coordinate" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Y-Coordinate" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Floor" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="37.0" prefWidth="107.0" styleClass="field" stylesheets="@css/MapEditorStyle.css" text="Type" textAlignment="CENTER" textFill="WHITE">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="4.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </Label>
+                                                         </children>
+                                                      </VBox>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Node" textAlignment="CENTER" wrappingWidth="301.26318359375" GridPane.columnSpan="2147483647">
+                                                         <font>
+                                                            <Font size="17.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <children>
+                                                            <JFXTextField fx:id="endName" alignment="CENTER" prefHeight="35.0" prefWidth="186.0" promptText="Name" />
+                                                            <JFXTextField fx:id="endXCoordinate" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" promptText="X" />
+                                                            <JFXTextField fx:id="endYCoordinate" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" text="Y" />
+                                                            <JFXTextField fx:id="endFloor" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" promptText="Floor" />
+                                                            <JFXTextField fx:id="endType" alignment="CENTER" prefHeight="42.0" prefWidth="186.0" promptText="Type" />
+                                                            <ImageView fx:id="endNodeConfirm" fitHeight="38.0" fitWidth="38.0" onMouseClicked="#onEndNodeConfirmClick">
+                                                               <image>
+                                                                  <Image url="@check.png" />
+                                                               </image>
+                                                               <VBox.margin>
+                                                                  <Insets bottom="2.0" left="75.0" top="2.0" />
+                                                               </VBox.margin>
+                                                            </ImageView>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </VBox>
+                                          <HBox prefHeight="48.0" prefWidth="168.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                                             <children>
+                                                <JFXButton fx:id="resetBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onRestBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="resetButton" stylesheets="@css/MapEditorStyle.css" text="Reset" textAlignment="CENTER" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </JFXButton>
+                                                <JFXButton fx:id="confirmBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onConfirmBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="confirmButton" stylesheets="@css/MapEditorStyle.css" text="Confirm" textAlignment="CENTER" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </JFXButton>
+                                                <JFXButton fx:id="cancelBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onCancelBtnClick" prefHeight="33.0" prefWidth="136.0" styleClass="cancelButton" stylesheets="@css/MapEditorStyle.css" text="Cancel" textAlignment="CENTER" textFill="WHITE">
+                                                   <HBox.margin>
+                                                      <Insets bottom="5.0" left="50.0" right="50.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </JFXButton>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+               <styleClass>
+                  <String fx:value="jfx-tab-pane" />
+                  <String fx:value="tab-header-background" />
+                  <String fx:value="tab-selected-line" />
+               </styleClass>
+            </JFXTabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
