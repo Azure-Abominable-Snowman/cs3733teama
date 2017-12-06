@@ -20,6 +20,7 @@ public enum CertificationType {
     public String toString() {
         return name;
     }
+
     public static CertificationType getCertificationType(String s) {
         for (CertificationType c: CertificationType.values()) {
             if (c.toString().equals(s)) {

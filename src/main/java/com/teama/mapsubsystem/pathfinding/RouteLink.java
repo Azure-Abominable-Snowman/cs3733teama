@@ -1,4 +1,4 @@
-package com.teama.mapsubsystem.pathfinding.TextualDirection;
+package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
@@ -74,8 +74,14 @@ public class RouteLink {
             distance = ((double) Math.sqrt( dx*dx + dy*dy) )*pixToRealScaleFactor;
 
 
-            if(lastLink.getTextReturn().contains("Elevator") || lastLink.getTextReturn().contains("Stairs")){
-                textReturn = "No Text";
+            if(lastLink.getTurn().equals(TurnType.ELEVATOR) ){
+                textReturn =Translator.getInstance().getText("exitElevator");
+                turn=TurnType.INTONEWFLOOR;
+                return;
+            }
+            else if(lastLink.getTurn().equals(TurnType.STAIR))
+            {
+                textReturn =Translator.getInstance().getText("exitStair");
                 turn=TurnType.INTONEWFLOOR;
                 return;
             }
@@ -108,7 +114,7 @@ public class RouteLink {
 
             else if(15 < turnAngle && turnAngle < 60){
                 textReturn = String.format("%s", Translator.getInstance().getText("turnrightslight"));
-                turn=TurnType.TURNLEFTSLIGHT;
+                turn=TurnType.TURNRIGHTSLIGHT;
             }
 
             else if(120 < turnAngle && turnAngle < 165){
