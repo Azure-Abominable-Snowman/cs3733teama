@@ -89,6 +89,9 @@ public class MainScreenController implements Initializable {
     private ImageView serviceRequestButton;
 
     @FXML
+    private ImageView settingButton;
+
+    @FXML
     private JFXSlider zoomSlider;
 
     @FXML
