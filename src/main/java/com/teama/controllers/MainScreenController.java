@@ -152,7 +152,7 @@ public class MainScreenController implements Initializable {
         mapDrawing.initialize(mapCanvas, mapScroll, floorNumberDisplay, floorButtonBox, areaPane);
 
         mapDrawing.setGrow(true);
-        mapDrawing.setZoomFactor(minZoom);
+        mapDrawing.setZoomFactor(1.7); // Initial zoom
 
         // Add a listener that displays the correct nodes for the floor
         mapDrawing.clearMap();
@@ -235,6 +235,7 @@ public class MainScreenController implements Initializable {
         // When the zoom slider is moved, change the zoom factor on the screen
         zoomSlider.valueProperty().addListener((a, b, after) -> {
             mapDrawing.setZoomFactor(after.doubleValue());
+            removeCurrentPopUp();
         });
 
         // Populate and create the search bar
@@ -249,8 +250,6 @@ public class MainScreenController implements Initializable {
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
-
-
     }
 
     private Node currentPopOut;
