@@ -1,12 +1,13 @@
 package com.teama.controllers_refactor;
 
+import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.ExportFormat;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import com.teama.mapsubsystem.MapSubsystem;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import java.io.File;
 
 public class SettingsPopOut extends PopOutController {
     private int xOffset, yOffset;
@@ -17,7 +18,11 @@ public class SettingsPopOut extends PopOutController {
 
     @FXML
     private void exportCSV(ActionEvent event){
-        mapSubsystem.export(ExportFormat.CSV, "1", "2");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export To CSV");
+        Stage s = new Stage();
+        File selectedFile = fileChooser.showSaveDialog(s);
+        mapSubsystem.export(ExportFormat.CSV, selectedFile.getAbsolutePath()+"_nodes.csv", selectedFile.getAbsolutePath()+"_edges.csv");
     }
 
     public void initialize() {
