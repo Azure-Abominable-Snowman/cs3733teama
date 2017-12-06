@@ -250,6 +250,24 @@ public class MainScreenController implements Initializable {
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
+
+        // Hide stuff until someone is logged in
+        ProgramSettings.getInstance().getIsLoggedInProp().addListener((a) -> {
+            setLoginVisibility();
+        });
+        setLoginVisibility();
+    }
+
+    private void setLoginVisibility() {
+        if(ProgramSettings.getInstance().getIsLoggedInProp().get()) {
+            directoryButton.setVisible(true);
+            mapEditorButton.setVisible(true);
+            serviceRequestButton.setVisible(true);
+        } else {
+            directoryButton.setVisible(false);
+            mapEditorButton.setVisible(false);
+            serviceRequestButton.setVisible(false);
+        }
     }
 
     private Node currentPopOut;
