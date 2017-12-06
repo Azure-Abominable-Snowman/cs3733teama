@@ -1,6 +1,7 @@
 package com.teama.mapsubsystem;
 
 import com.teama.Configuration;
+import com.teama.ProgramSettings;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.AStar.AStar;
 import com.teama.mapsubsystem.pathfinding.Path;
@@ -22,6 +23,49 @@ public class MapSubsystem {
     private PathGenerator pathGenerator;
     private MapNode originNode; // Default origin (1st floor info desk)
 
+    public Path findClosest(NodeType nodeType) {
+        // Find the shortest distance from the origin node to the given type of node
+        ArrayList<MapNode> nodesToFilterThrough = new ArrayList<>();
+        for(Floor f : Floor.values()) {
+            nodesToFilterThrough.addAll(getNodesByType(f, nodeType));
+        }
+        Path shortest = null;
+        double smallestSize = -1;
+        MapNode originNode = ProgramSettings.getInstance().getPathOriginNodeProp().getValue();
+        if(originNode == null) {
+            originNode = getKioskNode();
+        }
+        for(MapNode n : nodesToFilterThrough) {
+            // For every node, find the path to it and calculate distance,
+            // keep the shortest path only and return that
+            Path p;
+            try {
+                p = getPathGenerator().generatePath(originNode, n);
+            } catch(RuntimeException e) {
+                continue;
+            }
+            double size = 0;
+            for(MapEdge conn : p.getConnectors()) {
+                size += conn.getWeight();
+            }
+            if(size < smallestSize || smallestSize == -1) {
+                smallestSize = size;
+                shortest = p;
+            }
+        }
+        return shortest;
+    }
+
+    public ArrayList<MapNode> getNodesByType(Floor floor, NodeType nodeType) {
+        Map<String, MapNode> floorNodes = getFloorNodes(floor);
+        ArrayList<MapNode> nodesOfType = new ArrayList<>();
+        for(MapNode n : floorNodes.values()) {
+            if(n.getNodeType().equals(nodeType)) {
+                nodesOfType.add(n);
+            }
+        }
+        return nodesOfType;
+    }
 
 
     private static class MapSubsystemGetter {
