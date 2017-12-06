@@ -24,6 +24,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import javax.swing.*;
 
 public class StaffLoginPopOut extends PopOutController {
     private int xOffset, yOffset;
@@ -74,6 +77,9 @@ public class StaffLoginPopOut extends PopOutController {
     private GridPane gPane;
     @FXML
     private Label errorMsg;
+
+    @FXML
+    private JFXButton resetBtn;
     private final BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
 
     public void initialize() {
@@ -87,7 +93,7 @@ public class StaffLoginPopOut extends PopOutController {
         System.out.println(s);
         LoginSubsystem.getInstance().addUser(s);
         errorMsg.setVisible(false);
-        gPane.requestFocus();
+        //gPane.requestFocus();
         uname.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -132,13 +138,13 @@ public class StaffLoginPopOut extends PopOutController {
 
     }
 
-        //ToggleGroup radioButtons = new ToggleGroup();
+    //ToggleGroup radioButtons = new ToggleGroup();
 
-        //radioButtons.getProperties().addListener;
-        //admin.getProperties().
-        //admin.setSelectedColor(Color.DARKBLUE);
-        //staff.setSelectedColor(Color.DARKBLUE);
-        //radioButtons.getToggles().setAll(admin, staff);
+    //radioButtons.getProperties().addListener;
+    //admin.getProperties().
+    //admin.setSelectedColor(Color.DARKBLUE);
+    //staff.setSelectedColor(Color.DARKBLUE);
+    //radioButtons.getToggles().setAll(admin, staff);
 /*
     private String adminID = "admin";
     private String adminPassword = "adminPW";
@@ -158,6 +164,11 @@ public class StaffLoginPopOut extends PopOutController {
         isLoggedIn.set(update);
     }
 
+    @FXML
+    private void onResetBtnClick(ActionEvent event){
+        uname.setText("");
+        pword.setText("");
+    }
 
     @FXML
     private void onLoginClick(ActionEvent event){
@@ -165,6 +176,11 @@ public class StaffLoginPopOut extends PopOutController {
         String password = pword.getText().trim();
         if (!setErrorMessage(username, password)) {
             validate(new LoginInfo(username, password));
+        }
+        if(isLoggedIn.getValue() == Boolean.TRUE){
+
+            System.out.println("AAA");
+
         }
         /*
         inputUserID = IDfield.getText();
@@ -206,7 +222,8 @@ public class StaffLoginPopOut extends PopOutController {
         //have this set the flag for logged in so the map system knows to close
         if (LoginSubsystem.getInstance().checkCredentials(l)) {
             setLoggedIn(true);
-            errorMsg.setVisible(false);
+            errorMsg.setText("Login Successful");
+            errorMsg.setVisible(true);
             //parent.hideLoginButton();
         }
         else {
@@ -240,6 +257,3 @@ public class StaffLoginPopOut extends PopOutController {
         passwordField.setText("");
     }
 */
-
-
-
