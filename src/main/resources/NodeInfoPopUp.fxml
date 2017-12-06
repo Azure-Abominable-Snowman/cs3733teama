@@ -34,7 +34,7 @@
                   <Insets bottom="15.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </VBox>
-            <JFXButton alignment="CENTER" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#getDirections" style="-fx-background-color: #c1c1c1;" text="Get Directions" VBox.vgrow="SOMETIMES">
+            <JFXButton alignment="CENTER" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#getDirections" style="-fx-background-color: #c1c1c1;" text="%getDirection" VBox.vgrow="SOMETIMES">
                <VBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" />
                </VBox.margin>

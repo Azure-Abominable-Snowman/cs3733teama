@@ -15,6 +15,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.translator.Translator;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -151,7 +152,7 @@ public class MainScreenController implements Initializable {
         mapDrawing.initialize(mapCanvas, mapScroll, floorNumberDisplay, floorButtonBox, areaPane);
 
         mapDrawing.setGrow(true);
-        mapDrawing.setZoomFactor(minZoom);
+        mapDrawing.setZoomFactor(1.7); // Initial zoom
 
         // Add a listener that displays the correct nodes for the floor
         mapDrawing.clearMap();
@@ -234,6 +235,7 @@ public class MainScreenController implements Initializable {
         // When the zoom slider is moved, change the zoom factor on the screen
         zoomSlider.valueProperty().addListener((a, b, after) -> {
             mapDrawing.setZoomFactor(after.doubleValue());
+            removeCurrentPopUp();
         });
 
         // Populate and create the search bar
@@ -248,8 +250,6 @@ public class MainScreenController implements Initializable {
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
-
-
     }
 
     private Node currentPopOut;
@@ -266,6 +266,7 @@ public class MainScreenController implements Initializable {
             }
             PopOutController controller = popOutFactory.makePopOut(popOutType);
             FXMLLoader loader = new FXMLLoader();
+            loader.setResources(Translator.getInstance().getNewBundle());
             loader.setLocation(getClass().getResource(controller.getFXMLPath()));
             loader.setController(controller);
 
@@ -313,6 +314,7 @@ public class MainScreenController implements Initializable {
 
             // Load the screen in and display it on the cursor
             FXMLLoader loader = new FXMLLoader();
+            loader.setResources(Translator.getInstance().getNewBundle());
             loader.setLocation(getClass().getResource("/NodeInfoPopUp.fxml"));
             NodeInfoPopUpController nodePopUp = new NodeInfoPopUpController();
             loader.setController(nodePopUp);

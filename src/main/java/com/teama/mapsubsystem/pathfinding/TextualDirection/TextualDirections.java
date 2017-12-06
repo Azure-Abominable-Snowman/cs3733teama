@@ -60,40 +60,43 @@ public class TextualDirections implements DirectionsGenerator {
 
         // The start of rest of all combining job of directions.
         for(int i=2;i<routeLinks.size();i++) {
-            if(holdNodeName(thisTurn.getNext(),oldNodeType)){
-                oldNodeType = thisTurn.getNext().getNodeType();
+            nextLink=routeLinks.get(i);
+            if(holdNodeName(nextLink.getNext(),oldNodeType))
+            {
+                oldNodeType = nextLink.getNext().getNodeType();
                 // ignore the case of only a bathroom link in the middle.
                 if(! ( oldNodeType.equals(NodeType.BATH)|| oldNodeType.equals((NodeType.REST))) ) {
-                    intoNodeName = thisTurn.getNext().getLongDescription();
+                    intoNodeName = nextLink.getNext().getLongDescription();
                 }
             } // This is to record any good node name comming after the turn node.
-            nextLink=routeLinks.get(i);
 
+            // Link for both nodes are in elevator.
             if( (thisTurn.getTurn().equals(TurnType.ELEVATOR) || thisTurn.getTurn().equals(TurnType.STAIR))){
-                if((thisTurn.getTurn().equals(TurnType.ELEVATOR) || thisTurn.getTurn().equals(TurnType.STAIR))){
+                if((nextLink.getTurn().equals(TurnType.ELEVATOR) || nextLink.getTurn().equals(TurnType.STAIR))){
                     combineFloorChange(thisTurn,nextLink); // combine the next one into this.
                     continue;
                 }
             }
             // case of the link right out of the elevator, ignore this for now.
-            if( thisTurn.getTurn().equals(TurnType.INTONEWFLOOR) )
+            if( nextLink.getTurn().equals(TurnType.INTONEWFLOOR) )
             {
                 thisTurn= nextLink;
                 continue;
             }
-            if (thisTurn.getTurn().equals(TurnType.STRAIGHT)) {
+            if (nextLink.getTurn().equals(TurnType.STRAIGHT)) {
                 addDistance(thisTurn, nextLink); // combine the next one into this.
 
                 continue;
             }
             // condenced turn and floor change case.
-            dirList.add(formDirection(thisTurn,intoNodeName)); // TODO put in name
+            dirList.add(formDirection(thisTurn,intoNodeName));
+            oldNodeType = NodeType.BATH;// reset the oldNodeType
+            intoNodeName="";
             thisTurn=nextLink;
         }
         // create the end link.
         thisTurn.setEndFlag(true);
         dirList.add(formDirection(thisTurn,intoNodeName));
-
         //warp the list into the TextDirection and return it.
         return new TextDirections(dirList);
     }
