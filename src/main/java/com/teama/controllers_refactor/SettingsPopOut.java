@@ -19,7 +19,7 @@ public class SettingsPopOut extends PopOutController {
     private void exportCSV(ActionEvent event){
         mapSubsystem.export(ExportFormat.CSV, "1", "2");
     }
-    
+
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
     }
