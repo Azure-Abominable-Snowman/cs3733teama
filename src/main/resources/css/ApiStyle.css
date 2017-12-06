@@ -28,7 +28,7 @@
     -moz-border-radius: 13;
     -fx-border-radius: 13px;
     -fx-text-shadow: 1px 1px 3px #211a21;
-    -fx-font-family: Courier New;
+    -fx-font-family: "Roboto";
     -fx-color: #ffffff;
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
@@ -117,7 +117,7 @@
     -fx--webkit-border-radius: 12;
     moz-border-radius: 12;
     -fx-border-radius: 12px;
-    -fx-font-family: Courier New;
+    -fx-font-family: "Roboto";
     -fx-color: #ffffff;
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
@@ -131,6 +131,7 @@
     -fx-color: #ffffff;
     -fx-font-size: 20px;
     -fx-padding: 10px 20px 10px 20px;
+    -fx-font-family: "Roboto";
 
 
 }
