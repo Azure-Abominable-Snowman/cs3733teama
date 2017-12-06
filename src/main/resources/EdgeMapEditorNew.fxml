@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="355.0" prefWidth="255.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane prefHeight="241.0" prefWidth="255.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="22.5" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.5" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Node:" textAlignment="CENTER" GridPane.halignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <JFXTextField fx:id="nodeID" prefHeight="24.0" prefWidth="209.0" promptText="ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <JFXTextField fx:id="nodeCoord" promptText="Coordinate" GridPane.rowIndex="2" />
+            <JFXTextField fx:id="longName" promptText="Long Name" GridPane.rowIndex="3" />
+            <JFXTextField fx:id="nodeID1" prefHeight="24.0" prefWidth="209.0" promptText="ID" GridPane.rowIndex="6" />
+            <JFXTextField fx:id="nodeCoord1" promptText="Coordinate" GridPane.rowIndex="7" />
+            <JFXTextField fx:id="longName1" promptText="Long Name" GridPane.rowIndex="8" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Node:" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+         <VBox.margin>
+            <Insets bottom="20.0" left="10.0" right="10.0" />
+         </VBox.margin>
+      </GridPane>
+      <GridPane prefHeight="41.0" prefWidth="255.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="99.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.0" minWidth="10.0" prefWidth="45.5" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.5" minWidth="10.0" prefWidth="110.5" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <JFXButton fx:id="deleteNode" text="Delete" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
+            <JFXButton fx:id="addNode" text="Add" GridPane.halignment="RIGHT" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </GridPane>
+      <GridPane prefHeight="29.0" prefWidth="255.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="123.5" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.5" minWidth="10.0" prefWidth="119.5" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <JFXButton fx:id="confirmBtn" graphicTextGap="0.0" prefHeight="23.0" prefWidth="66.0" text="Confirm" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <JFXButton fx:id="cancelBtn" text="Cancel" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+   </children>
+</VBox>
