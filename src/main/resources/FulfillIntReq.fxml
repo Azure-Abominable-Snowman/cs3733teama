@@ -4,11 +4,13 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
@@ -63,9 +65,21 @@
                                     <JFXTextArea fx:id="txtDescription" prefHeight="137.0" prefWidth="444.0" promptText="Please describe the encounter below:" GridPane.rowIndex="4" />
                                     <JFXTextField editable="false" prefHeight="12.0" prefWidth="444.0" promptText="Please fill out the additional information" />
                                     <JFXTextField fx:id="groupSize" promptText="How many people did you help?" GridPane.rowIndex="2" />
-                                    <JFXComboBox fx:id="cmbxTransType" prefHeight="27.0" prefWidth="445.0" promptText="What type of translation did you do?" GridPane.rowIndex="3" />
-                                    <JFXButton prefHeight="30.0" prefWidth="235.0" styleClass="cancelButton" text="Cancel" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                                    <JFXButton prefHeight="30.0" prefWidth="234.0" styleClass="confirmButton" text="Submit" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                                    <JFXComboBox fx:id="cmbxTransType" prefHeight="30.0" prefWidth="470.0" promptText="What type of translation did you do?" GridPane.rowIndex="3" />
+                                    <HBox GridPane.rowIndex="5">
+                                       <children>
+                                          <JFXButton fx:id="cancelButton" prefHeight="30.0" prefWidth="222.0" styleClass="cancelButton" text="Cancel">
+                                             <HBox.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="12.0" />
+                                             </HBox.margin>
+                                          </JFXButton>
+                                          <JFXButton fx:id="submitButton" prefHeight="30.0" prefWidth="222.0" styleClass="confirmButton" text="Submit">
+                                             <HBox.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="12.0" />
+                                             </HBox.margin>
+                                          </JFXButton>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </GridPane>
                            </children>
