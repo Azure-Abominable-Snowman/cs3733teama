@@ -1,5 +1,6 @@
 package com.teama.mapsubsystem.pathfinding;
 
+import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.pathfinding.TextualDirection.Direction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,11 +39,13 @@ public class DirectionAdapter {
     }
 
     public ImageView getDirection() {
-        System.out.println("GET DIRECTION");
+        System.out.println("GET DIRECTION "+d.getTurn());
+        Image i = new Image("/icons/left.png");
+        ImageView view = new ImageView();
         switch(d.getTurn()) {
             case TURNLEFT:
-                Image i = new Image(getClass().getResourceAsStream("/icons/left.png"));
-                //return;
+                i = new Image(getClass().getResourceAsStream("/icons/left.png"));
+                break;
             case TURNLEFTSLIGHT:
                 break;
             case TURENLEFTSHARP:
@@ -56,9 +59,10 @@ public class DirectionAdapter {
             case REVERSE:
                 break;
             case STRAIGHT:
+                i = new Image(getClass().getResourceAsStream("/icons/forward.png"));
                 break;
             case START:
-                //return new Image(getClass().getResourceAsStream("/icons/forward.png"));
+                break;
             case END:
                 break;
             case INTONEWFLOOR:
@@ -68,6 +72,11 @@ public class DirectionAdapter {
             case STAIR:
                 break;
         }
-        return null;
+        view.setImage(i);
+        return view;
+    }
+
+    public Location getLocToFocus() {
+        return d.getStart();
     }
 }

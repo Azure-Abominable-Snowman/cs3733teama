@@ -6,7 +6,10 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
+import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
+import com.teama.messages.SMSMessage;
+import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
@@ -149,18 +152,16 @@ public class RequestPopOut extends PopOutController {
         requestType = typeOfRequest.getSelectionModel().getSelectedItem();
         additionalInfoMessage = additionalInfo.getText();
 
-        /*switch (requestType) {
+        switch (requestType) {
             case FOOD:
                 break;
             case INTR:
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
-                curRequest = new InterpreterRequest(new GenericRequestInfo(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), additionalInfoMessage),
-                        Integer.parseInt(familySize),
-                        lang);
+                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), lang);
                 InterpreterSubsystem.getInstance().addRequest(curRequest);
                 System.out.println("It was successful");
-                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhone());
+                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
                 if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
                     EmailMessage message2 = new EmailMessage();
                     message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
@@ -174,7 +175,9 @@ public class RequestPopOut extends PopOutController {
                 break;
             default:
                 break;
-        }*/
+        }
+        requestView.getItems().clear();
+        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
 
         System.out.println(buildingName);
         System.out.println(floorName);
@@ -226,13 +229,13 @@ public class RequestPopOut extends PopOutController {
 
         Stage staffPopUp = new Stage();
         try {
-            controller = new InterpReqController();
           //  if(controller.getLanguage()!=null) {
                 staffPopUp.setTitle("View B&W Staff");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
 
                 Scene staffPopUpScene = new Scene(loader.load());
                 ViewStaffController viewStaffController = loader.getController();
+                System.out.println(viewStaffController);
                 viewStaffController.setLanguage(controller.getLanguage());
                 // viewStaffController.setRequestViewList(controller.getLanguage());
                 viewStaffController.setIsComplete(false);

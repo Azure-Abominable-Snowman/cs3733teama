@@ -17,7 +17,7 @@ public class Direction {
         this.start = start;
         this.end = end;
         this.description = description;
-      //  this.icon = icon;
+        this.turn = turn;
     }
 
     public double getLengthOfPath() {

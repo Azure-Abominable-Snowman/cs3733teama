@@ -85,9 +85,6 @@ public class PathfindingController {
 
             // Open the directions pop out
             mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
-
-            // Set the map to focus on the first node of the generated path
-            //drawingSubsystem.setViewportCenter(new Location(2500, 1700, Floor.ONE, ""));
         }
     }
 }
