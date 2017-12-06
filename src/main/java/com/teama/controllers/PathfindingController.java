@@ -26,12 +26,23 @@ public class PathfindingController {
 
         // Set the pathfinding controller to update its path automatically on a changed start node
         settings.getPathOriginNodeProp().addListener((a) -> {
+            System.out.println("UPDATED PATH ON CHANGED START NODE");
+            genPath(settings.getPathOriginNodeProp().getValue(), settings.getPathEndNodeProp().getValue());
+        });
+
+        settings.getPathEndNodeProp().addListener((a) -> {
+            System.out.println("UPDATED PATH ON CHANGED END NODE");
             genPath(settings.getPathOriginNodeProp().getValue(), settings.getPathEndNodeProp().getValue());
         });
     }
 
     public void genPath(MapNode dest) {
-        genPath(mapSubsystem.getKioskNode(), dest);
+        MapNode newOrigin = ProgramSettings.getInstance().getPathOriginNodeProp().getValue();
+        if(newOrigin != null) {
+            genPath(newOrigin, dest);
+        } else {
+            genPath(mapSubsystem.getKioskNode(), dest);
+        }
     }
 
     private boolean listen = true;

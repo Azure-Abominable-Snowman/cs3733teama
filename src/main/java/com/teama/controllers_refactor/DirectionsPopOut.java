@@ -19,12 +19,14 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,19 +39,19 @@ public class DirectionsPopOut extends PopOutController {
     private TableView<DirectionAdapter> textDirections;
 
     @FXML
-    private TableColumn<String, Integer> stepCol;
+    private TableColumn<String, Text> stepCol;
 
     @FXML
-    private TableColumn<String, Image> imageCol;
+    private TableColumn<String, Text> descriptionCol;
 
     @FXML
-    private TableColumn<String, String> descriptionCol;
-
-    @FXML
-    private TableColumn<String, String> distanceCol;
+    private TableColumn<String, Text> distanceCol;
 
     @FXML
     private JFXComboBox<String> originNodeCombo;
+
+    @FXML
+    private TableColumn<String, ImageView> directionCol;
 
     @FXML
     private JFXComboBox<String> filterBox;
@@ -72,21 +74,30 @@ public class DirectionsPopOut extends PopOutController {
                 new PropertyValueFactory<>("description"));
         distanceCol.setCellValueFactory(
                 new PropertyValueFactory<>("distance"));
-        imageCol.setCellValueFactory(
-                new PropertyValueFactory<>("image"));
+        directionCol.setCellValueFactory(
+                new PropertyValueFactory<>("direction"));
 
 
-        textDirections.setFixedCellSize(100); // cells need to be bigger than default
+        textDirections.setFixedCellSize(75); // cells need to be bigger than default
 
         // Factory for each row, set to have the text wrap
         textDirections.setRowFactory(tv -> {
             TableRow<DirectionAdapter> row = new TableRow<>();
-            row.setWrapText(true);
+            row.setAlignment(Pos.CENTER);
             return row;
         });
 
+
         // Populate the combo box and allow fuzzy search by tying it to a search controller
         SearchBarController searchBarController = new SearchBarController(originNodeCombo, true);
+
+        // Initially set the origin node to the current origin node
+        MapNode beginOrigin = ProgramSettings.getInstance().getPathOriginNodeProp().getValue();
+        if(beginOrigin != null) {
+            originNodeCombo.getEditor().setText(beginOrigin.getLongDescription());
+        } else {
+            originNodeCombo.getEditor().setText(mapSubsystem.getKioskNode().getLongDescription());
+        }
 
         // When the origin combo box changes selected value, set the origin of the path to the new one
         originNodeCombo.getSelectionModel().selectedItemProperty().addListener((Observable a) -> {
@@ -115,9 +126,15 @@ public class DirectionsPopOut extends PopOutController {
             updateFilter();
             drawShortestPathToFilter();
             filterFloorListeners.add(mapDrawing.attachFloorChangeListener((a, b, c) -> {
+                System.out.println(filterBox.getSelectionModel().getSelectedItem());
                 updateFilter();
-                drawShortestPathToFilter();
             }));
+        });
+
+
+        // Make a listener on the tableview to focus on the node relating to the direction when selected
+        textDirections.getSelectionModel().selectedItemProperty().addListener((a) -> {
+            mapDrawing.setViewportCenter(textDirections.getSelectionModel().getSelectedItem().getLocToFocus());
         });
     }
 
@@ -140,8 +157,8 @@ public class DirectionsPopOut extends PopOutController {
         // Find the shortest path to the given nodetype
         Path shortest = mapSubsystem.findClosest(NodeType.fromValue(filterBox.getSelectionModel().getSelectedItem()));
         System.out.println("SHORTEST FOUND TO "+shortest.getEndNode().getId());
-        //ProgramSettings.getInstance().setPathEndNodeProp(shortest.getEndNode());
-        //ProgramSettings.getInstance().setCurrentDisplayedPathProp(shortest);
+        ProgramSettings.getInstance().setPathOriginNodeProp(shortest.getStartNode());
+        ProgramSettings.getInstance().setPathEndNodeProp(shortest.getEndNode());
     }
 
     private DirectionsGenerator directionsGenerator = new TextualDirections();
@@ -170,8 +187,7 @@ public class DirectionsPopOut extends PopOutController {
 
     @Override
     public void onClose() {
-        // Redisplay all floor nodes to get rid of the filter
-        MapDrawingSubsystem.getInstance().refreshMapNodes();
+
     }
 
     @Override

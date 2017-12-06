@@ -1,5 +1,6 @@
 package com.teama.mapdrawingsubsystem;
 
+import com.teama.ProgramSettings;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.Path;
@@ -68,6 +69,8 @@ public class MapDrawingSubsystem {
         // TODO: do the same for images and paths
     };
 
+    private ScrollPane mapScroll;
+
     /**
      * Initializes the drawing subsystem with a canvas and a scrollpane
      * @param mapCanvas
@@ -90,6 +93,8 @@ public class MapDrawingSubsystem {
         this.floorNumberDisplay = floorNumberDisplay;
         this.floorButtonBox = floorButtonBox;
         this.areaPane = areaPane;
+
+        this.mapScroll = mapScroll;
 
         // Attach a listener that changes the current floor when a button is pressed
         floorNumberDisplay.setText(getCurrentFloor().toString());
@@ -380,7 +385,15 @@ public class MapDrawingSubsystem {
     }
 
     public void setViewportCenter(Location center) {
-        map.setDisplayedLocation(center);
+        map.setDisplayedLocation(center, false);
+        // Notify all the floor changed listeners about the floor change
+        for(ChangeListener<? super Boolean> listener : floorBoxListenerMap.values()) {
+            listener.changed(null, false, true);
+        }
+
+        /*attachClickedListener((MouseEvent a) -> {
+            System.out.println("X: "+mapScroll.getHvalue()+" Y: "+mapScroll.getVvalue());
+        }, ClickedListener.LOCCLICKED);*/
     }
 
     public void clearMap() {
@@ -390,6 +403,11 @@ public class MapDrawingSubsystem {
     public void refreshMapNodes() {
         for(MapNode n : mapDB.getVisibleFloorNodes(getCurrentFloor()).values()) {
             drawNode(n, 0, null);
+        }
+        // Redraw the path
+        Path curPath = ProgramSettings.getInstance().getCurrentDisplayedPathProp().getValue();
+        if(curPath != null) {
+            drawPathOnScreen(curPath);
         }
     }
 }
