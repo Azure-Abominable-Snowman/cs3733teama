@@ -68,6 +68,7 @@ public class SettingsPopOut extends PopOutController {
         beamSearch.setUserData(new BeamSearch((int)beamSearchQueue.getValue()));
 
         // Select the default algorithm
+     //   mapSubsystem.getPathGenerator().
         mapSubsystem.setPathGeneratorStrategy((PathAlgorithm) algoToggleGroup.getSelectedToggle().getUserData());
 
         // When the toggle group changes, make the algorithm reflect that
