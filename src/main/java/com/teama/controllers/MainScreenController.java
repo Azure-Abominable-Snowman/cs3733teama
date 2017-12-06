@@ -289,7 +289,9 @@ public class MainScreenController implements Initializable {
 
 
             controller.onOpen(xProperty, xOffset, yProperty, yOffset);
-            //mapDrawing.detachListener(popUpID);
+            if(popOutType.equals(PopOutType.EDITOR)) {
+                mapDrawing.detachListener(popUpID);
+            }
             currentPopOut = loader.load();
             currentPopOutController = controller;
 
@@ -298,6 +300,7 @@ public class MainScreenController implements Initializable {
             areaPane.getChildren().add(currentPopOut);
 
             currentPopOutType = popOutType;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -307,6 +310,7 @@ public class MainScreenController implements Initializable {
         // remove it from the screen if one is open
         if(currentPopOut != null) {
             currentPopOutController.onClose();
+            mapDrawing.detachListener(popUpID);
             popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
             areaPane.getChildren().remove(currentPopOut);
             currentPopOut = null;

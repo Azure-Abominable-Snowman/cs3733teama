@@ -41,8 +41,7 @@ public class EditorPopOut extends PopOutController {
     private JFXToggleButton viewEdges, viewNodes, editNodes, editEdges;
     @FXML
     private JFXTextField nodeID, nodeCoord, longName, shortName;
-    @FXML
-    private JFXTextField nodeID1, nodeCoord1, longName1, nodeID2, nodeCoord2, longName2;
+
     @FXML
     private JFXComboBox<NodeType> nodeType;
     @FXML
@@ -154,15 +153,16 @@ public class EditorPopOut extends PopOutController {
                     edgeEditor.setValue(true);
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(getClass().getResource("/EdgeMapEditorNew.fxml"));
-                    loader.setController(this);
+                    EditorDetailsController editor = new EditorDetailsController(viewEdges, viewNodes);
+                    loader.setController(editor);
                     try {
                         Pane node = loader.load();
                         editorInfo.getChildren().add(node);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    edgeEditorListenerID = masterMap.attachClickedListener(onNodeClickEdges, ClickedListener.NODECLICKED);
-                    mouseEvents.put(edgeEditorListenerID, onNodeClickEdges);
+                    //edgeEditorListenerID = masterMap.attachClickedListener(onNodeClickEdges, ClickedListener.NODECLICKED);
+                    //mouseEvents.put(edgeEditorListenerID, onNodeClickEdges);
                 } else {
                     edgeEditor.setValue(false);
                     editorInfo.getChildren().clear();
@@ -176,7 +176,7 @@ public class EditorPopOut extends PopOutController {
         editNodes.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue && newValue != oldValue) {
+                if (newValue) {
                     nodeEditor.setValue(true);
                     editorInfo.getChildren().clear();
                     editorInfo.getChildren().addAll(nodeDetails, alignNodes, actionButtons, finishButtons);
@@ -184,12 +184,15 @@ public class EditorPopOut extends PopOutController {
                     //alignBtn.disableProperty().setValue(false);
                     nodeEditorListenerID = masterMap.attachClickedListener(onLocClickEditNodes, ClickedListener.LOCCLICKED);
                     mouseEvents.put(nodeEditorListenerID, onLocClickEditNodes);
+                    System.out.println("Selecting nodes for ediitng and such.");
+
                 } else {
                     nodeEditor.setValue(false);
                     alignmentOptions.disableProperty().setValue(true);
                     alignBtn.disableProperty().setValue(true);
                     mapDraw.detachListener(nodeEditorListenerID);
                     mouseEvents.remove(nodeEditorListenerID);
+                    System.out.println("No longer selecting nodes.");
                 }
             }
         });
@@ -332,7 +335,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
 
     private MapNode startNodeEdge = null;
     private MapNode endNodeEdge = null;
-
+/*
     //public void clearSelect
     private EventHandler<MouseEvent> onNodeClickEdges = new EventHandler<MouseEvent>() {
         @Override
@@ -367,6 +370,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
         }
     }
 
+*/
     private void drawNodes() {
         for (MapNode m : mapData.getVisibleFloorNodes(masterMap.getCurrentFloor()).values()) {
             masterMap.drawNode(m, 5, Color.DARKBLUE);
@@ -535,6 +539,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
                     MapNode update = nodeFieldsToNode();
                     MapSubsystem.getInstance().addNode(update);
                 }
+                clearTextFieldsNodes();
             }
         });
         cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -568,6 +573,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
                     mapData.deleteNode(selectedNode.getId());
                     mapDraw.unDrawNode(selectedNode);
                 }
+                clearTextFieldsNodes();
             }
         });
         cancelBtn.setOnAction(new EventHandler<ActionEvent>() {

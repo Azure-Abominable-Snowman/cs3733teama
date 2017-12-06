@@ -1,4 +1,4 @@
-package entities.PathRelated;
+package com.teama.mapsubsystem.pathfinding.PathRelated;
 
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.MapNodeData;

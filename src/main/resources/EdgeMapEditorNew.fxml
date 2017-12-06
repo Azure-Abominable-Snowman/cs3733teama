@@ -59,8 +59,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXButton fx:id="deleteNode" text="Delete" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
-            <JFXButton fx:id="addNode" text="Add" GridPane.halignment="RIGHT" />
+            <JFXButton fx:id="deleteEdge" onAction="#onDeleteEdge" text="Delete" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
+            <JFXButton fx:id="addEdge" onAction="#onAddEdge" text="Add" GridPane.halignment="RIGHT" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />
