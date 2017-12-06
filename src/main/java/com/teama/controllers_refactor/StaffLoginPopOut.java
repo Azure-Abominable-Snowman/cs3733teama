@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import com.teama.ProgramSettings;
 import com.teama.login.AccessType;
 import com.teama.login.LoginInfo;
 import com.teama.login.LoginSubsystem;
@@ -14,7 +15,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -25,6 +28,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import javax.swing.*;
 
@@ -80,7 +85,6 @@ public class StaffLoginPopOut extends PopOutController {
 
     @FXML
     private JFXButton resetBtn;
-    private final BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
 
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
@@ -138,30 +142,8 @@ public class StaffLoginPopOut extends PopOutController {
 
     }
 
-    //ToggleGroup radioButtons = new ToggleGroup();
-
-    //radioButtons.getProperties().addListener;
-    //admin.getProperties().
-    //admin.setSelectedColor(Color.DARKBLUE);
-    //staff.setSelectedColor(Color.DARKBLUE);
-    //radioButtons.getToggles().setAll(admin, staff);
-/*
-    private String adminID = "admin";
-    private String adminPassword = "adminPW";
-    private String inputUserID, inputUserPassword;
-    */
-
-
-    public BooleanProperty getLoggedInProperty() {
-        return isLoggedIn;
-    }
-
-    public final boolean getLoggedIn() {
-        return isLoggedIn.get();
-    }
-
     public final void setLoggedIn(Boolean update) {
-        isLoggedIn.set(update);
+        ProgramSettings.getInstance().setIsLoggedIn(update);
     }
 
     @FXML
@@ -177,11 +159,7 @@ public class StaffLoginPopOut extends PopOutController {
         if (!setErrorMessage(username, password)) {
             validate(new LoginInfo(username, password));
         }
-        if(isLoggedIn.getValue() == Boolean.TRUE){
 
-            System.out.println("Am  AA");
-
-        }
         /*
         inputUserID = IDfield.getText();
         inputUserPassword = passwordField.getText();
@@ -221,6 +199,19 @@ public class StaffLoginPopOut extends PopOutController {
     private void validate(LoginInfo l) {
         //have this set the flag for logged in so the map system knows to close
         if (LoginSubsystem.getInstance().checkCredentials(l)) {
+            Notifications notifications = Notifications.create()
+                    .title("Log In Complete")
+                    .text("Welcome "+ uname.getText())
+                    .graphic(null)
+                    .hideAfter(Duration.seconds(2))
+                    .position(Pos.BOTTOM_CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications.showConfirm();
             setLoggedIn(true);
             errorMsg.setText("Login Successful");
             errorMsg.setVisible(true);
