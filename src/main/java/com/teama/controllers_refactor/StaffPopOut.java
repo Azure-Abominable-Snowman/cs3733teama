@@ -214,30 +214,44 @@ public class StaffPopOut extends PopOutController {
 
     @FXML
     private void deleteInterpeter(ActionEvent event){
-        String firstName = staffToInsert.getFirstName();
-        String lastName = staffToInsert.getLastName();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Delete Interpreter");
-        alert.setHeaderText("Remove Interpreter from database");
-        alert.setContentText("Are your sure you want to delete \n"+firstName +" "
-                +lastName+" from the database.");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            InterpreterSubsystem.getInstance().removeStaff(staffToInsert.getStaffID());
-            blankEditor();
-        } else {
-            alert.close();
+        if(staffToInsert!=null) {
+            String firstName = staffToInsert.getFirstName();
+            String lastName = staffToInsert.getLastName();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Interpreter");
+            alert.setHeaderText("Remove Interpreter from database");
+            alert.setContentText("Are your sure you want to delete \n" + firstName + " "
+                    + lastName + " from the database.");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                InterpreterSubsystem.getInstance().removeStaff(staffToInsert.getStaffID());
+                blankEditor();
+            } else {
+                alert.close();
+            }
+            updateInterpList();
+            editing.setValue(false);
         }
-        updateInterpList();
     }
     @FXML
     private void cancelInterpreter(ActionEvent event) {
         blankEditor();
+        staffToInsert=null;
         editing.setValue(false);
     }
     @FXML
     private void submitInterpreter(ActionEvent e){
         try {
+            //makes sure there is at least 1 language picked
+            boolean filled=false;
+            for(JFXCheckBox check: languageBoxList){
+                if(check.selectedProperty().get()){
+                    filled = true;
+                }
+            }
+            if(!filled){
+                throw new NullPointerException();
+            }
             Set<ContactInfoTypes> contactTypes = new HashSet<>();
             contactTypes.add(ContactInfoTypes.EMAIL);
             contactTypes.add(ContactInfoTypes.TEXT);
@@ -259,13 +273,15 @@ public class StaffPopOut extends PopOutController {
             if (!editing.get()) {
                 InterpreterStaff interpreterStaff = new InterpreterStaff(staffInfo, langs, certification);
                 InterpreterSubsystem.getInstance().addStaff(interpreterStaff);
-            } else if(InterpInfoTable.getSelectionModel().getSelectedCells().size() > 0) {
+                blankEditor();
+            } else {
                 InterpreterStaff interpreterStaff = InterpInfoTable.getItems().get(InterpInfoTable.getSelectionModel().getFocusedIndex()).getInterpreter();
                 interpreterStaff.setGenInfo(staffInfo);
                 interpreterStaff.setLanguages(langs);
                 interpreterStaff.setCertification(certification);
                 InterpreterSubsystem.getInstance().updateStaff(interpreterStaff);
             }
+            updateInterpList();
         }
         catch(NullPointerException pointer){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -273,7 +289,6 @@ public class StaffPopOut extends PopOutController {
             alert.setContentText("Invalid or empty field, please check information and \n submit again");
             Optional<ButtonType> result = alert.showAndWait();
         }
-        updateInterpList();
     }
 
     private void initComboBoxes(){

@@ -9,7 +9,8 @@ public class Direction {
     private Location start, end;
     private String description;
     private TurnType turn;
-
+    private double timeInSec;
+    private final double meterPerSec = 1.4 ; // from wikipedia
 
     public Direction(double length, Location start, Location end, String description , TurnType turn) {
 
@@ -17,7 +18,8 @@ public class Direction {
         this.start = start;
         this.end = end;
         this.description = description;
-      //  this.icon = icon;
+        this.turn = turn;
+        timeInSec = lengthOfPath / meterPerSec ;
     }
 
     public double getLengthOfPath() {
@@ -40,5 +42,7 @@ public class Direction {
         return turn;
     }
 
-
+    public double getTimeInSec() {
+        return timeInSec;
+    }
 }

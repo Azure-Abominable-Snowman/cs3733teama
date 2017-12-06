@@ -409,6 +409,24 @@ public class HospitalMapDisplay implements MapDisplay {
         displayedLocation = getDisplayedLocation();
     }
 
+    @Override
+    public void setDisplayedLocation(Location loc, boolean screenCoords) {
+        System.out.println("OLD X: "+loc.getxCoord()+" OLD Y "+loc.getyCoord());
+        if (!screenCoords) {
+            double newX = (loc.getxCoord()*canvas.getWidth()) / curMap.getMap().getWidth(); // map it onto canvas
+            newX =  (newX - pane.getHmax()/2) * ( pane.getHmax() / (canvas.getWidth()-pane.getHmax())); // map it onto scrollbar
+
+            double  newY = (loc.getyCoord()*canvas.getHeight()) / curMap.getMap().getHeight(); // map it onto canvas
+            newY = (newY - pane.getVmax()/2) * (pane.getVmax()) / (canvas.getHeight()-pane.getVmax()); // map it onto scrollbar
+            loc = new Location((int)(newX), (int)(newY), loc.getLevel(), loc.getBuilding());
+        }
+        System.out.println("NEW X: "+loc.getxCoord()+" NEW Y "+loc.getyCoord());
+        pane.setVvalue(loc.getyCoord());
+        pane.setHvalue(loc.getxCoord());
+        setCurrentFloor(loc.getLevel());
+        displayedLocation = getDisplayedLocation();
+    }
+
     /**
      * Updates and returns the location at the middle of the screen
      * @return
@@ -465,47 +483,73 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     /**
-     * finds if a point is on a line, doesn't work yet...
+     * finds if a point is on a line, //TODO doesn't work yet...
      * @param loc
      * @param line
      * @return
      */
     private boolean isPointOnLine(Location loc, Line line) {
         System.out.println("SX: "+line.getStart().getxCoord()+" SY: "+line.getStart().getyCoord()+" EX: "+line.getEnd().getxCoord()+" EY: "+line.getEnd().getyCoord());
-        try {
-            double slope = ((line.getStart().getyCoord() - line.getEnd().getyCoord())/(line.getStart().getxCoord() - line.getEnd().getxCoord()));
-            double invSlope = 1 / slope;
-            loc = convToImageCoords(loc);
-            System.out.println("CONVY: "+loc.getyCoord()+" CONVX: "+loc.getxCoord());
 
-            double yGuess = slope*loc.getxCoord()-slope*line.getStart().getxCoord()+line.getStart().getyCoord();
-            double xGuess = loc.getyCoord()*invSlope-line.getStart().getyCoord()*invSlope+line.getStart().getxCoord();
-            System.out.println("YGUESS: "+yGuess+" XGUESS: "+xGuess);
+        Vector edge = new Vector(line.start,line.end);
+        Vector mouse = new Vector(loc,line.end);
+        Vector proj = edge.projection(mouse);
+        Vector perb = new Vector();
+        perb.x=edge.x-mouse.x;
+        perb.y=edge.y-mouse.y;
 
-            double yDist = yGuess-loc.getyCoord();
-            double xDist = xGuess-loc.getxCoord();
+        if(perb.getNorm()>line.weight) return false; // the point is out side of the thickness TODO check if this weight need to be doubled?
+        if(proj.getNorm()>edge.getNorm()) return false; // the point is at least out side of end of line.
+        if(edge.x>=0  ) {
+            if( proj.x>=0) return  true;
+            else return false;
+        }
+        else {
+            if( proj.x<=0) return  true;
+            else return false;
+        }
+    }
 
-            System.out.println("YDIST: "+yDist+" XDIST: "+xDist);
+    private class Vector{
+        public double x=0  , y=0 ;
+        public double norm=-1;
+        public Vector(Location start,Location end){
+            x = end.getxCoord() - start.getxCoord();
+            y = end.getyCoord() - start.getyCoord();
+        }
+        public Vector(){}
 
-            /*double bound = Math.cos(Math.atan((xDist/yDist)))*yDist;
-
-            System.out.println("BOUND: "+bound);*/
-
-        } catch(ArithmeticException e) {
-            return false;
+        /**
+         * get the projection from b onto this vector
+         * @param b the vector that will project onto this vector.
+         * @return the this proj b result.
+         */
+        public Vector projection(Vector b){
+            Vector result  = new Vector();
+            result.norm= (this.x*b.x+this.y*b.y) / b.getNorm();
+            result.x = b.x/b.getNorm();
+            result.y = b.y/b.getNorm();
+            return result;
         }
 
-        return false;
+        public double  getNorm (){
+            if ( norm<0) norm = Math.sqrt(x*x+y*y); // lazy initialize.
+            return norm;
+        }
+
+
+
     }
 
     @Override
     public String lineAt(Location loc) {
         System.out.println("Y: "+loc.getyCoord()+" X: "+loc.getxCoord());
+        loc = convToImageCoords(loc);
         for(Line l : lineMap.values()) {
             if(isPointOnLine(loc, l)) {
-                //return l.getId();
+                return l.getId();
                 //TODO: make this work
-                return null;
+                //return null;
             }
         }
         return null;
