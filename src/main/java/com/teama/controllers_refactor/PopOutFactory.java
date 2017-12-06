@@ -21,6 +21,8 @@ public class PopOutFactory {
                 return new DirectionsPopOut();
             case LOGIN:
                 return new StaffLoginPopOut();
+            case SETTINGS:
+                return new SettingsPopOut();
         }
         return null;
     }
