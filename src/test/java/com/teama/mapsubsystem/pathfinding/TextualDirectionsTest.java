@@ -1,14 +1,10 @@
-package com.teama.mapsubsystem.pathfinding.TextualDirection;
+package com.teama.mapsubsystem.pathfinding;
 
-import com.teama.mapsubsystem.data.CSVDatabaseSource;
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.pathfinding.AStar.AStar;
-import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.AStar;
 import com.teama.translator.Translator;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 

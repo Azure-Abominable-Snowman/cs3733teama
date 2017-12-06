@@ -184,6 +184,7 @@ public class InterpreterStaffDB implements StaffDataSource {
         ArrayList<InterpreterStaff> foundStaff = new ArrayList<InterpreterStaff>();
         // Use all of the attributes to build a query for the database
         try {
+            System.out.println(lang);
             getQualifiedStaff.setString(1, lang.toString());
             ResultSet rs = getQualifiedStaff.executeQuery();
             while (rs.next()) {

@@ -3,11 +3,11 @@ package com.teama.mapsubsystem;
 import com.teama.Configuration;
 import com.teama.ProgramSettings;
 import com.teama.mapsubsystem.data.*;
-import com.teama.mapsubsystem.pathfinding.AStar.AStar;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.AStar;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.mapsubsystem.pathfinding.PathGenerator;
-import com.teama.mapsubsystem.pathfinding.TextualDirection.TextDirections;
+import com.teama.mapsubsystem.pathfinding.TextDirections;
 
 import java.util.*;
 
