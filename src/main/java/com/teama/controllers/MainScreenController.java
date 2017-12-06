@@ -371,6 +371,7 @@ public class MainScreenController implements Initializable {
             Scene helpScene = new Scene(root);
             helpPopUp.setScene(helpScene);
             helpPopUp.resizableProperty().set(false);
+            helpPopUp.initModality(Modality.WINDOW_MODAL);
             helpPopUp.showAndWait();
         }
         catch(IOException exception){

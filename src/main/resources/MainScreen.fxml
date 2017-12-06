@@ -142,7 +142,7 @@
       </AnchorPane>
       <AnchorPane layoutX="852.0" layoutY="736.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="66.0" AnchorPane.leftAnchor="852.0" AnchorPane.topAnchor="736.0">
          <children>
-            <JFXButton layoutX="-10.0" layoutY="-1.0" prefHeight="48.0" prefWidth="89.0" text="Help" textAlignment="CENTER" textFill="#0657a8">
+            <JFXButton layoutX="-10.0" layoutY="-1.0" onAction="#onHelpClick" prefHeight="48.0" prefWidth="89.0" text="Help" textAlignment="CENTER" textFill="#0657a8">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
