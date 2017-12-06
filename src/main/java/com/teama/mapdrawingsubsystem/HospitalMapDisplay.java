@@ -413,8 +413,11 @@ public class HospitalMapDisplay implements MapDisplay {
     public void setDisplayedLocation(Location loc, boolean screenCoords) {
         System.out.println("OLD X: "+loc.getxCoord()+" OLD Y "+loc.getyCoord());
         if (!screenCoords) {
-            double newX = (loc.getxCoord())*((canvas.getWidth()*pane.getHmax())/(curMap.getMap().getWidth()*(canvas.getWidth()-pane.getWidth())));
-            double newY = (loc.getyCoord())*((canvas.getHeight()*(pane.getVmax()))/(curMap.getMap().getHeight()*(canvas.getHeight()-pane.getHeight())));
+            double newX = (loc.getxCoord()*canvas.getWidth()) / curMap.getMap().getWidth(); // map it onto canvas
+            newX =  (newX - pane.getHmax()/2) * ( pane.getHmax() / (canvas.getWidth()-pane.getHmax())); // map it onto scrollbar
+
+            double  newY = (loc.getyCoord()*canvas.getHeight()) / curMap.getMap().getHeight(); // map it onto canvas
+            newY = (newY - pane.getVmax()/2) * (pane.getVmax()) / (canvas.getHeight()-pane.getVmax()); // map it onto scrollbar
             loc = new Location((int)(newX), (int)(newY), loc.getLevel(), loc.getBuilding());
         }
         System.out.println("NEW X: "+loc.getxCoord()+" NEW Y "+loc.getyCoord());
