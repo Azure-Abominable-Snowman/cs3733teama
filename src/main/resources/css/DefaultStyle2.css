@@ -56,8 +56,13 @@
 }
 
 .table-row-cell:odd{
-    -fx-background-color: -fx-table-cell-border-color, #E0E0E0;
+    -fx-background-color: -fx-table-cell-border-color, #9E9E9E;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em; /* 0 */
 }
 
+.table-row-cell:selected {
+    -fx-background-color: #2196F3;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
