@@ -2,9 +2,7 @@ package com.teama;
 
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.Path;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 
 public class ProgramSettings {
 
@@ -24,6 +22,16 @@ public class ProgramSettings {
         this.currentDisplayedPath.set(getCurrentDisplayedPath);
     }
 
+    private BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
+
+    public BooleanProperty getIsLoggedInProp() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn.set(isLoggedIn);
+    }
+
     public void setPathOriginNodeProp(MapNode pathOriginNode) {
         this.pathOriginNode.set(pathOriginNode);
     }
@@ -37,4 +45,6 @@ public class ProgramSettings {
     }
     public ReadOnlyObjectProperty<MapNode> getPathOriginNodeProp() { return pathOriginNode; }
     public ReadOnlyObjectProperty<MapNode> getPathEndNodeProp() { return pathEndNode; }
+
+
 }
