@@ -16,7 +16,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane>
@@ -135,7 +134,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="cancelBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onCancel" prefHeight="14.0" prefWidth="210.0" style="-fx-background-color: grey;" text="Cancel">
+                        <JFXButton fx:id="cancelBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onCancel" prefHeight="14.0" prefWidth="210.0" styleClass="cancel" stylesheets="@css/ApiStyle.css" text="Cancel">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -143,7 +142,7 @@
                               <Font size="15.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="submitBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onSubmit" prefHeight="62.0" prefWidth="159.0" style="-fx-background-color: GREY;" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                        <JFXButton fx:id="submitBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onSubmit" prefHeight="62.0" prefWidth="159.0" styleClass="submit" stylesheets="@css/ApiStyle.css" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -190,7 +189,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                      <children>
-                        <JFXButton fx:id="deleteBtn" buttonType="RAISED" onAction="#onDelete" prefHeight="55.0" prefWidth="143.0" style="-fx-background-color: GREY;" text="Delete " GridPane.halignment="CENTER">
+                        <JFXButton fx:id="deleteBtn" buttonType="RAISED" onAction="#onDelete" prefHeight="55.0" prefWidth="143.0" stylesheets="@css/ApiStyle.css" text="Delete " GridPane.halignment="CENTER">
                            <font>
                               <Font size="15.0" />
                            </font>
