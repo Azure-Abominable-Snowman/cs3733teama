@@ -185,6 +185,7 @@
    </children>
    <stylesheets>
       <URL value="@css/StaffPopOutStyle.css" />
+      <URL value="@css/DefaultStyle2.css" />
       <URL value="@css/MainScreenStyle.css" />
    </stylesheets>
 </Pane>
