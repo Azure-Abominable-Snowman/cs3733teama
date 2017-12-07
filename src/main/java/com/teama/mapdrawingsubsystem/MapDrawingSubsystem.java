@@ -191,7 +191,7 @@ public class MapDrawingSubsystem {
      */
     public void drawNode(MapNode node, int size, Color color) {
         if(size == 0) {
-            size = 8;
+            size = 5;
         }
         if(color == null) {
             color = Color.BLACK;
