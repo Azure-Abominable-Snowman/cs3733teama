@@ -1,5 +1,6 @@
 package com.teama;
 
+import com.teama.messages.Message;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +19,7 @@ public class Main extends Application{
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/MainScreen.fxml"));
+            loader.setLocation(getClass().getResource("/Direction&Search.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setTitle("Brigham and Women's Hospital Kiosk");
