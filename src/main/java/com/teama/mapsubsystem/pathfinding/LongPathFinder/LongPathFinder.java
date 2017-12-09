@@ -17,7 +17,8 @@ public class LongPathFinder implements PathAlgorithm{
 
     @Override
     public Path generatePath(MapNode start, MapNode end) {
-
+        this.start=start;
+        this.end=end;
         if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
         return formOutput(longestRouteFromThis(start,new HashMap<>(disableNodes)));
 
@@ -42,6 +43,7 @@ public class LongPathFinder implements PathAlgorithm{
             if(thisRoute == null){
                 continue;
             }
+            thisRoute.addNodeToBack(start);
             if(thisRoute.getDistance() > longest.getDistance()) {
                 longest = thisRoute;
             }

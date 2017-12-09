@@ -6,6 +6,7 @@ import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.reverseAStar.ReverseAstar;
+import com.teama.mapsubsystem.pathfinding.LongPathFinder.LongPathFinder;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import org.junit.Before;
@@ -182,5 +183,18 @@ public class PathAlgorithmTest {
         }
         System.out.println(resultList.size());
 
+    }
+
+    @Test
+    public void LongPathFinderTest()
+    {
+        ArrayList<MapNode> result;
+        finder = new LongPathFinder();
+         result = finder.generatePath(map1[0][0],map1[12][1]).getNodes();
+        assertEquals(result.get(result.size()-1).getId(),map1[12][1].getId());
+        System.out.printf("The LongestPath result is %d in length\n",result.size());
+        result = finder.generatePath(map2[0][0],map2[99][99]).getNodes();
+        assertEquals(result.get(result.size()-1).getId(),map2[99][99].getId());
+        System.out.printf("The LongestPath result is %d in length\n",result.size());
     }
 }
