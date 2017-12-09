@@ -175,7 +175,6 @@ public class EditorPopOut extends PopOutController {
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
                 if (newValue != null) {
-                    updateFields.set(true);
                     if (editNodes.isSelected()) {
                         nodeEditor.setValue(true);
                         edgeEditor.setValue(false);
@@ -190,6 +189,7 @@ public class EditorPopOut extends PopOutController {
                     } else if (editEdges.isSelected()) {
                         nodeEditor.setValue(false);
                         edgeEditor.setValue(true);
+
                         //alignmentOptions.disableProperty().setValue(true);
                         //alignBtn.disableProperty().setValue(true);
                         mapDraw.detachListener(nodeEditorListenerID);
@@ -431,6 +431,10 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
         @Override
         public void handle(MouseEvent event) {
             System.out.println("Found an edge!");
+            Location mouseLoc = new Location(event, masterMap.getCurrentFloor());
+            MapEdge foundEdge = masterMap.edgeAt(mouseLoc);
+           // masterMap.drawLine(foundEdge.getId(), l.getStart(), l.getEnd(), l.getWeight(), Color.RED, false);
+
 
         }
     };

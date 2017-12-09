@@ -483,95 +483,94 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     /**
-     * finds if a point is on a line, //TODO doesn't work yet...
+     * finds if a point is on a line,
      * @param loc
      * @param line
      * @return
      */
     private boolean isPointOnLine(Location loc, Line line) {
 
+
         //System.out.println("SX: "+line.getStart().getxCoord()+" SY: "+line.getStart().getyCoord()+" EX: "+line.getEnd().getxCoord()+" EY: "+line.getEnd().getyCoord());
         //System.out.println("Weight: " + line.getWeight());
+        if (isInBounds(loc, line)) {
+            Vector edge = new Vector(line.getStart(), line.getEnd());
+            Vector click = new Vector(line.getStart(), loc);
+
+            double weight = line.getWeight();
+            if (weight <= 5) {
+                weight = 12;
+            }
+
+            double scalarProj = click.scalarProjection(edge); // scalar project of click onto edge
+            double yCompClick = Math.sqrt(Math.pow(click.magntiude(), 2) - Math.pow(scalarProj, 2)); // get y component of clicked location
+            //System.out.println("Click Magnitude: " + click.magntiude() + " Scalar Projection: " + scalarProj + " yComponent of Click: " + yCompClick);
+
+            return (yCompClick <= weight / 2);
+        }
+        return false;
+
+
+
+    }
+
+    private boolean isInBounds(Location loc, Line line) {
+        double weight = line.getWeight();
+        if (line.getWeight() <= 5) {
+            weight = 12;
+        }
 
         double inputX = loc.getxCoord();
         double inputY = loc.getyCoord();
 
         double x1 = line.getStart().getxCoord();
         double y1 = line.getStart().getyCoord();
-        double weight = 8;
+        double bound = weight/2;
 
         double x2 = line.getEnd().getxCoord();
         double y2 = line.getEnd().getyCoord();
+        boolean inXBounds = false;
+        if (line.getStart().getxCoord() <= line.getEnd().getxCoord()) {
+            inXBounds = inputX >= (line.getStart().getxCoord()-bound) && (inputX <=(line.getEnd().getxCoord()+ bound));
 
-        if (line.getStart().getxCoord() > line.getEnd().getxCoord()) {
+        }
+        else {
+            inXBounds = inputX >= (line.getEnd().getxCoord()-bound) && inputX <= (line.getStart().getxCoord() + bound);
+        }
+
+        boolean inYBounds = false;
+        if (line.getStart().getyCoord() <= line.getEnd().getyCoord()) {
+            inYBounds = inputY >= (line.getStart().getyCoord()-bound) && inputY <= (line.getEnd().getyCoord() + bound);
+        }
+        else {
+            inYBounds = inputY >= (line.getEnd().getyCoord()-bound) && inputY <= (line.getStart().getyCoord()+bound);
+
+        }
+        if (inXBounds && inYBounds) {
+            System.out.println(" Input x: " + inputX + " Input Y: " + inputY + " Xbound: " + line.getStart().getxCoord() + " " + line.getEnd().getxCoord());
+            System.out.println(" YBound: " + line.getStart().getyCoord() + " " + line.getEnd().getyCoord());
+        }
+        return inXBounds && inYBounds;
+
+            /*
             x1 = line.getEnd().getxCoord();
             y1 = line.getEnd().getyCoord();
             x2 = line.getStart().getxCoord();
             y2 = line.getStart().getyCoord();
-        }
-/*
-        if (y2>=y1 && (!(inputY<=y2 && inputY >=y1))) {
-            return false;
-        }
-        else if (y1>=y2&& (!(inputY>=y2 && inputY <= y1))) {
-            return false;
-        }
-        */
-        // central line:
-        //TODO: KINDA works. make this work for nearly vertical or vertical lines...
-        double slope = (y2-y1)/(x2-x1);
-        double b = y1-slope*x1;
-        double alpha = Math.atan(slope);
-
-        double yBounds = weight/(2*Math.sin((Math.PI/2)-alpha));
-
-
-
-
-        double originY = slope*inputX + b;
-        System.out.print("Origin Y: "+ originY);
-        //boolean isOnLine = false;
-        double maxY = originY + yBounds;
-        double minY = originY - yBounds;
-        System.out.println("LOC: " +  inputX + " " + inputY +  " " + "maxY: " + maxY + " Min Y: " + minY);
-        if (inputY <= maxY && inputY >= minY) {
-            System.out.println("In y bounds.");
-        }
-        if (inputX<= x2 && inputX >= x1) {
-            System.out.println("In x bounds.");
-        }
-        return(inputY <= maxY && inputY >= minY) && (inputX<= x2 && inputX >= x1);
-        /*
-        if (x2>=x1) {
-            isOnLine =  (inputY <= maxY && inputY >= minY) && (inputX<= x2 && inputX >= x1);
-        }
-        else {
-            isOnLine = (inputY <= maxY && inputY >= minY) && (inputX<= x1 && inputX >= x2);
-
-        }
-
-        return isOnLine;
-*/
+            */
 
         /*
-        Vector edge = new Vector(line.start,line.end);
-        Vector mouse = new Vector(loc,line.end);
-        Vector proj = edge.projection(mouse);
-        Vector perb = new Vector();
-        perb.x=edge.x-mouse.x;
-        perb.y=edge.y-mouse.y;
+        boolean inBounds = false;
+        if ((loc.getxCoord()>=x1 && loc.getxCoord() <= x2 ) && (loc.getyCoord()>= y1 && loc.getyCoord() <= y2)) {
+            System.out.println("Line: x1 = " + x1 + " x2 = " + x2 + " y1 = " + y1 + " y2 = " + y2 + " clicked: " + loc.getxCoord() + " y: " + loc.getyCoord());
+            inBounds = true;
+        }
+        System.out.println("Line: x1 = " + x1 + " x2 = " + x2 + " y1 = " + y1 + " y2 = " + y2 + " clicked: " + loc.getxCoord() + " y: " + loc.getyCoord());
 
-        if(perb.getNorm()>line.weight) return false; // the point is out side of the thickness TODO check if this weight need to be doubled?
-        if(proj.getNorm()>edge.getNorm()) return false; // the point is at least out side of end of line.
-        if(edge.x>=0  ) {
-            if( proj.x>=0) return  true;
-            else return false;
-        }
-        else {
-            if( proj.x<=0) return  true;
-            else return false;
-        }
+        System.out.println("Not in bounds. ");
+        return inBounds;
         */
+
     }
 
     private class Vector{
@@ -588,12 +587,28 @@ public class HospitalMapDisplay implements MapDisplay {
          * @param b the vector that will project onto this vector.
          * @return the this proj b result.
          */
+
         public Vector projection(Vector b){
             Vector result  = new Vector();
             result.norm= (this.x*b.x+this.y*b.y) / b.getNorm();
             result.x = b.x/b.getNorm();
             result.y = b.y/b.getNorm();
             return result;
+        }
+
+        public double magntiude() {
+            return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        }
+
+        /**
+         *
+         * @return double, scalar project of 'this' vector onto second vector
+         */
+        public double scalarProjection(Vector b) {
+            double dotProd = this.x*b.x + this.y*b.y;
+            double magnitudeB = b.magntiude();
+            System.out.println(dotProd/magnitudeB);
+            return dotProd/magnitudeB;
         }
 
         public double  getNorm (){
@@ -612,9 +627,7 @@ public class HospitalMapDisplay implements MapDisplay {
         for(Line l : lineMap.values()) {
             if(isPointOnLine(loc, l)) {
                 String id = l.getId();
-                drawLine(id, l.getStart(), l.getEnd(), l.getWeight(), Color.RED, false);
-                //TODO: make this work
-                //return null;
+                return id;
             }
         }
         return null;

@@ -40,25 +40,11 @@ public class EdgeEditorController {
 
     private MapDisplay map;
     private MapSubsystem masterMap;
-    private Canvas c;
-    private boolean inAddMode = false;
-    private boolean inEditMode = false;
-    private boolean isDeleting = false;
-    private boolean isEditing = false;
-
-    private MapNode startNode = null; // populated when user clicks set
-    private MapNode endNode = null; // populated when user clicks set
-    private MapNode selectedNode = null;
-
-    private Location selectedLocation = null;
-    private Location startLoc = null;
-    private Location endLoc = null;
 
 
 
-    private String selectedLocID = "selected";
-    private String startLocID = "startLoc";
-    private String endLocID = "endLoc";
+
+
     private String selectedEdgeID = "selectedEdge";
 
     private String defaultPrompt = "Select Add New to add an edge or Edit Existing to edit or delete an edge.";
