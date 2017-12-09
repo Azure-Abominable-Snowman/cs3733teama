@@ -6,6 +6,7 @@ import com.teama.mapsubsystem.pathfinding.Path;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class BeamSearch extends AStar {
 
@@ -47,6 +48,12 @@ public class BeamSearch extends AStar {
         // Done generating, output the path
         // make it into the format of outputting.
         return formatOutput(collectPath(checking));
+    }
+
+    //TODO fill this function
+    public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        grabDisableNodes(disableNodes);
+        return null;
     }
 
     /**

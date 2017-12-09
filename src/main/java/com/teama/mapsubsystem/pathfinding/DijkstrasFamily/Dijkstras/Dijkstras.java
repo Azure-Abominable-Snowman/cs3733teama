@@ -5,7 +5,6 @@ import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.DijkstrasTemplate;
 import com.teama.mapsubsystem.pathfinding.Path;
-import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +18,7 @@ public class Dijkstras extends DijkstrasTemplate {
     private HashMap<String,KnownPointD> checkedPoints;
     private PriorityQueue<KnownPointD> queue;
     private MapNode start, end;
+    private HashMap<String, MapNode> disableNodes;
 
 
     /**
@@ -55,9 +55,25 @@ public class Dijkstras extends DijkstrasTemplate {
         return formatOutput(collectPath(checking));
     }
 
+    //TODO fill this function
+    @Override
+    public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        grabDisableNodes(disableNodes);
+        return null;
+    }
+
 
     ////////////////////// helper ///////////////////////
 
+    /**
+     * This helper function is to convert ArrayList to HashMap
+     * @param nodes is the ArrayList needed to convert
+     */
+    protected void grabDisableNodes(ArrayList<MapNode> nodes){
+        for(int i = 0; i < nodes.size(); i++){
+            this.disableNodes.put(nodes.get(i).getId(), nodes.get(i));
+        }
+    }
 
     /**
      * This helper function is to use the abs value of coordinates difference to calculate difference.

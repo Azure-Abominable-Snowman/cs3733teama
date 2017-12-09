@@ -54,6 +54,12 @@ public class AStar extends Dijkstras {
         return formatOutput(collectPath(checking));
     }
 
+    //TODO fill this function
+    @Override
+    public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        grabDisableNodes(disableNodes);
+        return null;
+    }
 
     ////////////////////// helper ///////////////////////
 

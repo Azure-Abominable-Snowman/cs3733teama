@@ -10,6 +10,7 @@ import java.util.*;
 public class BreathFirst implements PathAlgorithm {
     private Queue<KnownPoint> open ;
     private HashMap<String,KnownPoint> visited;
+    private HashMap<String, MapNode> disableNodes;
 
     @Override
     public Path generatePath(MapNode start, MapNode end) {
@@ -31,6 +32,24 @@ public class BreathFirst implements PathAlgorithm {
         return formatOutput(collectPath(checking));
     }
 
+    //TODO Fill this function
+    @Override
+    public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        grabDisableNodes(disableNodes);
+        return null;
+    }
+
+
+    /**
+     * This helper function is to convert ArrayList to HashMap
+     * @param nodes is the ArrayList needed to convert
+     */
+    protected void grabDisableNodes(ArrayList<MapNode> nodes){
+        for(int i = 0; i < nodes.size(); i++){
+            this.disableNodes.put(nodes.get(i).getId(), nodes.get(i));
+        }
+    }
+
     /**
      * put all the unvisited nodes into open list (no duplicates in open list)
      * @param checking is the current node
@@ -45,6 +64,7 @@ public class BreathFirst implements PathAlgorithm {
                 open.add(nextPoint);
         }
     }
+
 
     private Stack<MapNode> collectPath(KnownPoint lastPoint)
     {
@@ -64,6 +84,7 @@ public class BreathFirst implements PathAlgorithm {
 
         return output;
     }
+
 
     private Path formatOutput(Stack<MapNode> finalPath)
     {
