@@ -95,8 +95,31 @@ public class LongPathFinder implements PathAlgorithm{
         if(route == null){
             throw new java.lang.RuntimeException("Cannot generate a route from the given start and end.");
         }
+        ArrayList<MapNode> reversePath = route.getRoute();
+
         Path output = new Path();
-       return null;
+        MapNode currentNode = reversePath.get(reversePath.size()-1); // extract the first Node of the list.
+        output.addNode(currentNode); // put the start node into it.
+        MapNode nextNode;
+        for(int i =reversePath.size()-2;i>-1;--i)
+        {
+            nextNode=reversePath.get(i); // extract the second node
+            output.addNode(nextNode);             //store the next node
+            output.addEdge(getEdgeBetweenNodes(nextNode,currentNode)); // store the edge between them.
+            currentNode=nextNode;   // move forward one step.
+        }
+        return output;
+    }
+
+
+    public static MapEdge getEdgeBetweenNodes(MapNode a, MapNode b)
+    {
+        for (MapEdge mapEdge : a.getEdges()) {
+            if(mapEdge.getStart().getId().equals(b.getId()) || mapEdge.getEnd().getId().equals(b.getId())) {
+                return mapEdge;
+            }
+        }
+        return null;
     }
 
 }
