@@ -1,9 +1,10 @@
-package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar;
-import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.data.MapEdge;
-import com.teama.mapsubsystem.pathfinding.Path;
-import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
+package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.reverseAStar;
 
+import com.teama.mapsubsystem.data.MapEdge;
+import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.KnownPointR;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
+import com.teama.mapsubsystem.pathfinding.Path;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.PriorityQueue;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 
-public class AStar extends Dijkstras {
+public class ReverseAstar extends Dijkstras {
 
 
     protected HashMap<String,KnownPointR> checkedPoints;

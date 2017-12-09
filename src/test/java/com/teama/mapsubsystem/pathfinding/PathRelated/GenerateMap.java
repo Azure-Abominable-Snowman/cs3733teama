@@ -37,13 +37,13 @@ public class  GenerateMap  {
         linkNodes(map[0][0], map[0][1],1);
         linkNodes(map[0][1], map[0][2],2);
         linkNodes(map[0][4], map[0][5],3);
-        linkNodes(map[0][0],map[1][0],2);
-        linkNodes(map[1][0],map[1][1],1);
-        linkNodes(map[1][1],map[2][1],15);
-        linkNodes(map[2][1],map[3][1],14);
-        linkNodes(map[0][5],map[1][5],8);
-        linkNodes(map[1][5],map[2][5],8);
-        linkNodes(map[3][1],map[3][2],12);
+        linkNodes(map[0][0], map[1][0],2);
+        linkNodes(map[1][0], map[1][1],1);
+        linkNodes(map[1][1], map[2][1],15);
+        linkNodes(map[2][1], map[3][1],14);
+        linkNodes(map[0][5], map[1][5],8);
+        linkNodes(map[1][5], map[2][5],8);
+        linkNodes(map[3][1], map[3][2],12);
 
         for(int i=4 ,col=4;i<sizeX;++i) // create the map for part 5th col
             linkNodes(map[col][i-1],map[col][i],3+(i%10));
