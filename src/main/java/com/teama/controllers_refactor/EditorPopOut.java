@@ -133,6 +133,8 @@ public class EditorPopOut extends PopOutController {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         floorEvents.put(masterMap.attachFloorChangeListener(onFloorChange), onFloorChange);
 
+        long id = masterMap.attachClickedListener(onEdgeClicked, ClickedListener.EDGECLICKED);
+        mouseEvents.put(id, onEdgeClicked);
 
         editorGroup = new ToggleGroup();
         editNodes.setToggleGroup(editorGroup);
@@ -181,8 +183,8 @@ public class EditorPopOut extends PopOutController {
                         editorInfo.getChildren().addAll(nodeDetails, alignNodes, actionButtons, finishButtons);
                         //alignmentOptions.disableProperty().setValue(false);
                         //alignBtn.disableProperty().setValue(false);
-                        nodeEditorListenerID = masterMap.attachClickedListener(onLocClickEditNodes, ClickedListener.LOCCLICKED);
-                        mouseEvents.put(nodeEditorListenerID, onLocClickEditNodes);
+                        //nodeEditorListenerID = masterMap.attachClickedListener(onLocClickEditNodes, ClickedListener.LOCCLICKED);
+                        //mouseEvents.put(nodeEditorListenerID, onLocClickEditNodes);
                         System.out.println("Selecting nodes for ediitng and such.");
 
                     } else if (editEdges.isSelected()) {
@@ -422,6 +424,14 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
             }
             //node.setInfo(event);
             */
+        }
+    };
+
+    private EventHandler<MouseEvent> onEdgeClicked = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            System.out.println("Found an edge!");
+
         }
     };
 
