@@ -20,12 +20,12 @@
                <children>
                   <VBox fillWidth="false" layoutX="47.0" layoutY="64.0" maxWidth="-Infinity" prefHeight="798.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ImageView fitHeight="175.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="188.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@adminPaneicons/ic_account_circle_black_24dp/web/ic_account_circle_black_24dp_2x.png" />
                            </image>
                         </ImageView>
-                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" prefHeight="53.0" prefWidth="180.0" text="Requests">
+                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" onAction="#Requestclick" onMouseClicked="#mouseclick" prefHeight="53.0" prefWidth="180.0" text="Requests">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -34,7 +34,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="241.0" text="Staff Database">
+                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" onAction="#Staffclick" prefHeight="62.0" prefWidth="241.0" text="Staff Database">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -46,7 +46,7 @@
                               <Insets />
                            </VBox.margin>
                         </JFXButton>
-                        <JFXButton fx:id="tool" alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="196.0" text="Map tools">
+                        <JFXButton fx:id="tool" alignment="BASELINE_LEFT" onAction="#Mapclick" prefHeight="62.0" prefWidth="196.0" text="Map tools">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -55,7 +55,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="setting" alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="200.0" text="Setting">
+                        <JFXButton fx:id="setting" alignment="BASELINE_LEFT" onAction="#Settingclick" prefHeight="62.0" prefWidth="200.0" text="Setting">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
