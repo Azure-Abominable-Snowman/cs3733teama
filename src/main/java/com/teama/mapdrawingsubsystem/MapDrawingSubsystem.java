@@ -57,6 +57,7 @@ public class MapDrawingSubsystem {
         if(listenerLists.containsKey(ClickedListener.EDGECLICKED) && map.lineAt(mouseLoc) != null) {
             for(Long id : listenerLists.get(ClickedListener.EDGECLICKED)) {
                 clickedListenerMap.get(id).handle(event);
+                ;
             }
         }
 

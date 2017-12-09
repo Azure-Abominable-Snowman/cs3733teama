@@ -17,6 +17,7 @@ import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.translator.Translator;
 import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -116,11 +117,11 @@ public class MainScreenController implements Initializable {
     private MapDrawingSubsystem mapDrawing;
 
     private PathfindingController pathfinding;
-    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty showLoginButton = new SimpleBooleanProperty(true);
     private EventHandler<MouseEvent> originalMouseClick;
 
     private PopOutFactory popOutFactory = new PopOutFactory();
+    private BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
 
     private long popUpID;
 
@@ -152,7 +153,14 @@ public class MainScreenController implements Initializable {
 
         mapDrawing.setGrow(true);
         mapDrawing.setZoomFactor(1.7); // Initial zoom
+        isLoggedIn.addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
 
+                }
+            }
+        });
         // Add a listener that displays the correct nodes for the floor
         mapDrawing.clearMap();
         for (MapNode n : mapSubsystem.getVisibleFloorNodes(mapDrawing.getCurrentFloor()).values()) {
