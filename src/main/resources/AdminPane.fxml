@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.SplitPane?>
@@ -15,16 +16,16 @@
    <children>
       <SplitPane dividerPositions="0.3" layoutX="300.0" layoutY="120.0" prefHeight="800.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="300.0">
+          <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" prefHeight="160.0" prefWidth="180.0">
                <children>
-                  <VBox fillWidth="false" layoutX="47.0" layoutY="64.0" prefHeight="798.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fillWidth="false" layoutX="47.0" layoutY="64.0" maxWidth="-Infinity" prefHeight="798.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ImageView fitHeight="175.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@adminPaneicons/ic_account_circle_black_24dp/web/ic_account_circle_black_24dp_2x.png" />
                            </image>
                         </ImageView>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="53.0" prefWidth="180.0" text="Requests">
+                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" prefHeight="53.0" prefWidth="180.0" text="Requests">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -33,7 +34,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="241.0" text="Staff Database">
+                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="241.0" text="Staff Database">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -45,7 +46,7 @@
                               <Insets />
                            </VBox.margin>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="196.0" text="Map tools">
+                        <JFXButton fx:id="tool" alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="196.0" text="Map tools">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -54,7 +55,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="200.0" text="Setting">
+                        <JFXButton fx:id="setting" alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="200.0" text="Setting">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -63,17 +64,18 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
+                        <JFXListView />
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="500.0" SplitPane.resizableWithParent="false">
                <children>
                   <JFXTabPane fx:id="tabepane" layoutX="139.0" layoutY="174.0" prefHeight="798.0" prefWidth="415.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <tabs>
                         <Tab text="Interpreter">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="400.0" />
                           </content>
                         </Tab>
                         <Tab text="Transport">
