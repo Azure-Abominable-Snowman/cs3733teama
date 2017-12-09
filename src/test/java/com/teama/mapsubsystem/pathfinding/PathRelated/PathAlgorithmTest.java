@@ -5,6 +5,7 @@ import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.AStar;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.reverseAStar.ReverseAstar;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import org.junit.Before;
@@ -18,6 +19,7 @@ public class PathAlgorithmTest {
     MapNode[][] map1 = new MapNode[20][20];
     MapNode[][] mapd = new MapNode[30][30];
     MapNode[][] map2 = new MapNode[100][100];
+    MapNode[][] map3 = new MapNode[100][100];
     PathAlgorithm finder;
 
     @Before
@@ -26,6 +28,7 @@ public class PathAlgorithmTest {
         map1=g.GenerateNewMap(1);
         mapd=g.GenerateNewMap('d');
         map2=g.GenerateNewMap(2);
+        map3=g.GenerateNewMap(3);
         g.printMap(map1,20,20);
         System.out.println();
         System.out.println();
@@ -35,6 +38,7 @@ public class PathAlgorithmTest {
         System.out.println();
         System.out.println();
         g.printMap(map2,100,100);
+        g.printMap(map3,100,100);
     }
 
     @Test
@@ -166,5 +170,17 @@ public class PathAlgorithmTest {
             System.out.printf("Testing new Path at it's Node %s  \n",normalResult.get(index).getId());
             assertNotEquals(disableResult.get(index).getId(), normalResult.get(index).getId());
         }
+    }
+
+    @Test
+    public void reverseAStarTest()
+    {
+        finder = new ReverseAstar();
+        ArrayList<MapNode> resultList = finder.generatePath(map3[0][0],map3[99][99]).getNodes();
+        for (MapNode mapNode : resultList) {
+            System.out.println(mapNode.getLongDescription());
+        }
+        System.out.println(resultList.size());
+
     }
 }

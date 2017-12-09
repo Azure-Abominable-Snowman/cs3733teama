@@ -2,7 +2,7 @@ package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.reverseAStar;
 
 import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.KnownPointR;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.KnownPointA;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.Path;
 

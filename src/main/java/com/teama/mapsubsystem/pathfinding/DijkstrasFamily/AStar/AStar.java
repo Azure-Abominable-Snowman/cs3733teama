@@ -15,8 +15,8 @@ import static java.lang.Math.sqrt;
 public class AStar extends Dijkstras {
 
 
-    protected HashMap<String,KnownPointR> checkedPoints;
-    private PriorityQueue<KnownPointR> queue;
+    protected HashMap<String,KnownPointA> checkedPoints;
+    private PriorityQueue<KnownPointA> queue;
     protected MapNode start, end;
     private HashMap<String, MapNode> disableNodes ;
 
@@ -35,10 +35,10 @@ public class AStar extends Dijkstras {
         queue=new PriorityQueue<>();
         if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
 
-        KnownPointR checking ; // create a temp variable to keep track of which node are we on.
+        KnownPointA checking ; // create a temp variable to keep track of which node are we on.
 
         //Generate Path
-        for(checking = new KnownPointR(start,null,0,calDistance(start,end));
+        for(checking = new KnownPointA(start,null,0,calDistance(start,end));
             !checking.getNode().getId().equals(end.getId());   // reached end
             checking=queue.poll() // move forward one step
                 )
@@ -84,7 +84,7 @@ public class AStar extends Dijkstras {
      * This helper function is to put all the nodes that are linked to checking into the queue.
      * @param checking is the node currently under examining.
      */
-    protected void putNodesIntoQueue (KnownPointR checking)
+    protected void putNodesIntoQueue (KnownPointA checking)
     {
         for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
@@ -94,7 +94,7 @@ public class AStar extends Dijkstras {
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
-                KnownPointR nextPoint = new KnownPointR(nextNode, checking, newPastCost,
+                KnownPointA nextPoint = new KnownPointA(nextNode, checking, newPastCost,
                         newPastCost + calDistance(nextNode, end)); // Generate a new Point from checking point to add into queue.
                 queue.add(nextPoint); // add into queue
             }
@@ -107,7 +107,7 @@ public class AStar extends Dijkstras {
      * @param lastPoint the end point the Path
      * @return  the reversed Path
      */
-    protected ArrayList<MapNode> collectPath(KnownPointR lastPoint)
+    protected ArrayList<MapNode> collectPath(KnownPointA lastPoint)
     {
         ArrayList<MapNode> finalPath = new ArrayList<>();
         for (;lastPoint.getLastNode()!=null;)
@@ -118,6 +118,4 @@ public class AStar extends Dijkstras {
         finalPath.add(lastPoint.getNode());
         return finalPath;
     }
-
-
 }
