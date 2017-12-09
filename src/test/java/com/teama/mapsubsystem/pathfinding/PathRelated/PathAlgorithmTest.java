@@ -4,6 +4,7 @@ import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.AStar;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import org.junit.Before;
@@ -130,12 +131,23 @@ public class PathAlgorithmTest {
         ArrayList<Integer> disIndex = new ArrayList<Integer>();
         disIndex.add(2);
         disIndex.add(3);
-
-
+        //test Astar
         finder = new AStar();
         System.out.println("Testing AStart disable node.");
         disableNodeTestHelper(finder,map1[0][0],map1[4][4],disIndex);
-
+        //test for Dijkstars
+        finder = new Dijkstras();
+        System.out.println("Testing Dinkstars disable node.");
+        disableNodeTestHelper(finder, map1[0][0],map1[4][4],disIndex);
+        //test for Beam Search
+        int queueSize = 7;
+        finder = new BeamSearch(queueSize);
+        System.out.println("Testing Beam Search disable node.");
+        disableNodeTestHelper(finder, map1[0][0],map1[4][4],disIndex);
+        //test for BreathFirstSearch
+        finder = new BreathFirst();
+        System.out.println("Testing Breath First Search disable node.");
+        disableNodeTestHelper(finder, map1[0][0],map1[4][4],disIndex);
     }
 
     private void disableNodeTestHelper (PathAlgorithm finder, MapNode start, MapNode end, ArrayList<Integer> disIndex)
