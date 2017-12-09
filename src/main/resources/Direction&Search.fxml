@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="400.0" stylesheets="@Direction&amp;SearchBar.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="28.0" layoutY="29.0" prefHeight="900.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <StackPane>
+               <children>
+                  <VBox prefHeight="180.0" prefWidth="545.0" styleClass="hbox_google">
+                     <children>
+                        <JFXTextField promptText="Your location" unFocusColor="WHITE" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="39.0" right="39.0" top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial" size="17.0" />
+                           </font>
+                        </JFXTextField>
+                        <HBox prefHeight="32.0" prefWidth="0.0">
+                           <VBox.margin>
+                              <Insets bottom="40.0" />
+                           </VBox.margin>
+                           <children>
+                              <ImageView blendMode="SOFT_LIGHT" fitHeight="30.0" fitWidth="30.0">
+                                 <image>
+                                    <Image url="@ic_accessible_white_48pt_3x.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets left="6.0" right="3.0" top="6.0" />
+                                 </HBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                              <StackPane prefHeight="32.0" prefWidth="334.0">
+                                 <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" StackPane.alignment="CENTER_RIGHT">
+                                       <image>
+                                          <Image url="@ic_directions_white_48pt_3x.png" />
+                                       </image>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </ImageView>
+                                    <JFXTextField prefHeight="32.0" prefWidth="340.0" promptText="Destination" unFocusColor="WHITE">
+                                       <font>
+                                          <Font name="Arial" size="17.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets />
+                                       </StackPane.margin>
+                                    </JFXTextField>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="39.0" />
+                                 </HBox.margin>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <ImageView blendMode="SOFT_LIGHT" fitHeight="28.0" fitWidth="28.0" StackPane.alignment="CENTER_RIGHT">
+                     <image>
+                        <Image url="@ic_compare_arrows_white_48pt.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <StackPane.margin>
+                        <Insets right="10.0" />
+                     </StackPane.margin>
+                  </ImageView>
+                  <ImageView blendMode="SOFT_LIGHT" fitHeight="32.0" fitWidth="32.0" StackPane.alignment="TOP_RIGHT">
+                     <image>
+                        <Image url="@ic_close_white_48pt_3x.png" />
+                     </image>
+                     <StackPane.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </StackPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <HBox prefHeight="39.0" prefWidth="400.0" styleClass="hbox_sendToPhone">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" HBox.hgrow="ALWAYS">
+                     <image>
+                        <Image url="@ic_phonelink_ring_black_48px.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Text fill="#376ef1" opacity="0.98" strokeType="OUTSIDE" strokeWidth="0.0" text="Send directions to your phone" wrappingWidth="244.21875" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="40.0" right="5.0" top="10.0" />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Text>
+               </children></HBox>
+            <TableView prefHeight="651.0" prefWidth="380.0">
+              <columns>
+                <TableColumn prefWidth="84.0" text="C1" />
+                <TableColumn minWidth="0.0" prefWidth="66.0" text="C2" />
+              </columns>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </TableView>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="hbox_floorBtn_hbox">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <children>
+                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" cache="true" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="L1">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="G">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="F1">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="F2">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="F3">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="F4">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
