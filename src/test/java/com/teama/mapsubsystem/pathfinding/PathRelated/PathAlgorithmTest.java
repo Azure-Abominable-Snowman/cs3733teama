@@ -9,6 +9,8 @@ import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class PathAlgorithmTest {
@@ -123,4 +125,34 @@ public class PathAlgorithmTest {
         assertTrue(thrown);
     }
 
+    @Test
+    public void disableNodeTest() throws Exception{
+        ArrayList<Integer> disIndex = new ArrayList<Integer>();
+        disIndex.add(2);
+        disIndex.add(3);
+
+
+        finder = new AStar();
+        System.out.println("Testing AStart disable node.");
+        disableNodeTestHelper(finder,map1[0][0],map1[4][4],disIndex);
+
+    }
+
+    private void disableNodeTestHelper (PathAlgorithm finder, MapNode start, MapNode end, ArrayList<Integer> disIndex)
+    {
+        // generate the result from normal mode
+        ArrayList<MapNode> normalResult = finder.generatePath(start,end).getNodes();
+        // grab a few nodes that are gonna be disabled.
+        ArrayList<MapNode> disableNodes = new ArrayList<>();
+        for (Integer index : disIndex) {
+            disableNodes.add(normalResult.get(normalResult.size()-index));
+        }
+
+        ArrayList<MapNode> disableResult = finder.generatePath(start,end,disableNodes).getNodes();
+
+        for (Integer index : disIndex) {
+            System.out.printf("Testing new Path at it's Node %s  \n",normalResult.get(index).getId());
+            assertNotEquals(disableResult.get(index).getId(), normalResult.get(index).getId());
+        }
+    }
 }

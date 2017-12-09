@@ -18,7 +18,7 @@ public class Dijkstras extends DijkstrasTemplate {
     private HashMap<String,KnownPointD> checkedPoints;
     private PriorityQueue<KnownPointD> queue;
     private MapNode start, end;
-    private HashMap<String, MapNode> disableNodes;
+    private HashMap<String, MapNode> disableNodes  ;
 
 
     /**
@@ -34,6 +34,7 @@ public class Dijkstras extends DijkstrasTemplate {
         this.end=end;
         checkedPoints= new HashMap<>();
         queue=new PriorityQueue<>();
+        if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
 
         KnownPointD checking ; // create a temp variable to keep track of which node are we on.
 
@@ -58,8 +59,7 @@ public class Dijkstras extends DijkstrasTemplate {
     //TODO fill this function
     @Override
     public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
-        this.disableNodes = new HashMap<String, MapNode>();
-        grabDisableNodes(disableNodes);
+        this.disableNodes=grabDisableNodes(disableNodes);
         return generatePath(start, end);
     }
 
@@ -67,13 +67,15 @@ public class Dijkstras extends DijkstrasTemplate {
     ////////////////////// helper ///////////////////////
 
     /**
-     * This helper function is to convert ArrayList to HashMap
+     * This helper function is to convert the disabled MapNode ArrayList to HashMap with ID as key
      * @param nodes is the ArrayList needed to convert
      */
-    protected void grabDisableNodes(ArrayList<MapNode> nodes){
+    protected HashMap<String,MapNode> grabDisableNodes(ArrayList<MapNode> nodes){
+        HashMap<String,MapNode> temp = new HashMap<>();
         for(int i = 0; i < nodes.size(); i++){
-            this.disableNodes.put(nodes.get(i).getId(), nodes.get(i));
+            temp.put(nodes.get(i).getId(), nodes.get(i));
         }
+        return temp;
     }
 
     /**

@@ -10,13 +10,15 @@ import java.util.*;
 public class BreathFirst implements PathAlgorithm {
     private Queue<KnownPoint> open ;
     private HashMap<String,KnownPoint> visited;
-    private HashMap<String, MapNode> disableNodes;
+    private HashMap<String, MapNode> disableNodes ;
 
     @Override
     public Path generatePath(MapNode start, MapNode end) {
 
         open = new LinkedList<>();
         visited = new HashMap<>();
+        if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
+
 
         KnownPoint checking;
         for( checking = new KnownPoint(start, 0);
@@ -35,21 +37,23 @@ public class BreathFirst implements PathAlgorithm {
     //TODO Fill this function
     @Override
     public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
-        this.disableNodes = new HashMap<String, MapNode>();
-        grabDisableNodes(disableNodes);
+        this.disableNodes=grabDisableNodes(disableNodes);
         return generatePath(start, end);
     }
 
 
     /**
-     * This helper function is to convert ArrayList to HashMap
+     * This helper function is to convert the disabled MapNode ArrayList to HashMap with ID as key
      * @param nodes is the ArrayList needed to convert
      */
-    protected void grabDisableNodes(ArrayList<MapNode> nodes){
+    protected HashMap<String,MapNode> grabDisableNodes(ArrayList<MapNode> nodes){
+        HashMap<String,MapNode> temp = new HashMap<>();
         for(int i = 0; i < nodes.size(); i++){
-            this.disableNodes.put(nodes.get(i).getId(), nodes.get(i));
+            temp.put(nodes.get(i).getId(), nodes.get(i));
         }
+        return temp;
     }
+
 
     /**
      * put all the unvisited nodes into open list (no duplicates in open list)

@@ -13,7 +13,7 @@ public class BeamSearch extends AStar {
     private HashMap<String,KnownPointA> checkedPoints;
     private LimitedPriorityQueue limitedQueue;
     private MapNode start, end;
-    private  HashMap<String, MapNode> disableNodes;
+    private  HashMap<String, MapNode> disableNodes ;
 
     public BeamSearch(int queueSize)
     {
@@ -30,6 +30,7 @@ public class BeamSearch extends AStar {
         this.start=start;
         this.end=end;
         checkedPoints= new HashMap<>();
+        if (disableNodes==null) this.disableNodes= new HashMap<String, MapNode>();
 
 
         KnownPointA checking ; // create a temp variable to keep track of which node are we on.
@@ -53,8 +54,7 @@ public class BeamSearch extends AStar {
 
     //TODO fill this function
     public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
-        this.disableNodes = new HashMap<String, MapNode>();
-        grabDisableNodes(disableNodes);
+        this.disableNodes=grabDisableNodes(disableNodes);
         return generatePath(start, end);
     }
 
