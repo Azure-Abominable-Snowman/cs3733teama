@@ -9,99 +9,65 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane dividerPositions="0.3" layoutX="300.0" layoutY="120.0" prefHeight="800.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="300.0">
                <children>
-                  <VBox layoutX="47.0" layoutY="64.0" prefHeight="798.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fillWidth="false" layoutX="47.0" layoutY="64.0" prefHeight="798.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox prefHeight="140.0" prefWidth="175.0">
-                           <children>
-                              <ImageView fitHeight="175.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="175.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@adminPaneicons/ic_account_circle_black_24dp/web/ic_account_circle_black_24dp_2x.png" />
+                           </image>
+                        </ImageView>
+                        <JFXButton alignment="BASELINE_LEFT" prefHeight="53.0" prefWidth="180.0" text="Requests">
+                           <graphic>
+                              <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../Desktop/adminPaneicons/ic_account_circle_black_24dp/web/ic_account_circle_black_24dp_2x.png" />
+                                    <Image url="@adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
-                           </children>
-                        </HBox>
-                        <HBox minHeight="-Infinity" prefHeight="55.0" prefWidth="175.0">
-                           <children>
-                              <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="241.0" text="Staff Database">
+                           <graphic>
+                              <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../Desktop/adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
+                                    <Image url="@adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
                                  </image>
-                                 <HBox.margin>
-                                    <Insets bottom="13.0" left="5.0" right="13.0" top="13.0" />
-                                 </HBox.margin>
                               </ImageView>
-                              <JFXButton prefHeight="62.0" prefWidth="135.0" text="Requests" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                        <HBox minHeight="-Infinity" prefHeight="55.0" prefWidth="175.0">
-                           <children>
-                              <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                           </graphic>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="196.0" text="Map tools">
+                           <graphic>
+                              <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../Desktop/adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
+                                    <Image url="@adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
                                  </image>
-                                 <HBox.margin>
-                                    <Insets bottom="13.0" left="5.0" right="13.0" top="13.0" />
-                                 </HBox.margin>
                               </ImageView>
-                              <JFXButton prefHeight="62.0" prefWidth="135.0" text="Staff Database" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                        <HBox minHeight="-Infinity" prefHeight="55.0" prefWidth="175.0">
-                           <children>
-                              <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton alignment="BASELINE_LEFT" prefHeight="62.0" prefWidth="200.0" text="Setting">
+                           <graphic>
+                              <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../Desktop/adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
+                                    <Image url="@adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
                                  </image>
-                                 <HBox.margin>
-                                    <Insets bottom="13.0" left="5.0" right="13.0" top="13.0" />
-                                 </HBox.margin>
                               </ImageView>
-                              <JFXButton prefHeight="62.0" prefWidth="135.0" text="Map tools" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                        <HBox minHeight="-Infinity" prefHeight="55.0" prefWidth="175.0">
-                           <children>
-                              <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-                                 <image>
-                                    <Image url="@../../../../../../Desktop/adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets bottom="13.0" left="5.0" right="13.0" top="13.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <JFXButton prefHeight="62.0" prefWidth="135.0" text="Setting" HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                           </children>
-                        </HBox>
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
                <children>
                   <JFXTabPane fx:id="tabepane" layoutX="139.0" layoutY="174.0" prefHeight="798.0" prefWidth="415.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <tabs>
