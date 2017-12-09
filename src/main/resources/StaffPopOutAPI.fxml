@@ -95,6 +95,12 @@
                            </padding>
                         </GridPane>
                      </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets bottom="60.0" />
+                     </VBox.margin>
                   </HBox>
                   <GridPane prefHeight="60.0" prefWidth="163.0">
                      <columnConstraints>
@@ -106,14 +112,24 @@
                         <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelInterpreter" prefHeight="48.0" prefWidth="80.0" styleClass="cancel" stylesheets="@css/ApiStyle.css" text="Cancel" />
-                        <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitInterpreter" prefHeight="75.0" prefWidth="90.0" styleClass="submit" stylesheets="@css/ApiStyle.css" text="Add" GridPane.columnIndex="1" />
-                        <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#deleteInterpeter" prefHeight="69.0" prefWidth="107.0" styleClass="delete" stylesheets="@css/ApiStyle.css" text="Delete" GridPane.columnIndex="2" />
+                        <JFXButton fx:id="Cancel" buttonType="RAISED" onAction="#cancelInterpreter" prefHeight="50.0" prefWidth="108.0" text="Cancel" GridPane.halignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font></JFXButton>
+                        <JFXButton fx:id="btnSubmit" buttonType="RAISED" onAction="#submitInterpreter" prefHeight="50.0" prefWidth="108.0" text="Add" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font></JFXButton>
+                        <JFXButton fx:id="btnDelete" buttonType="RAISED" onAction="#deleteInterpeter" prefHeight="50.0" prefWidth="108.0" text="Delete" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </GridPane>
                </children>
             </VBox>
-            <TableView fx:id="InterpInfoTable" prefWidth="373.0" HBox.hgrow="ALWAYS">
+            <TableView fx:id="InterpInfoTable" prefHeight="560.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="firstCol" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="First Name" />
                   <TableColumn fx:id="lastCol" maxWidth="1.7976931348623157E308" prefWidth="72.0" text="Last Name" />

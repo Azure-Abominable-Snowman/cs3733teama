@@ -8,26 +8,22 @@ import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,14 +61,32 @@ public class EditorPopOut extends PopOutController {
     BooleanProperty edgeEditor = new SimpleBooleanProperty(false);
     BooleanProperty nodeEditor = new SimpleBooleanProperty(false);
 
+
+    // NEW
+    private BooleanProperty unknownLoc = new SimpleBooleanProperty();
+    private BooleanProperty knownLoc = new SimpleBooleanProperty();
+    private BooleanProperty updateFields = new SimpleBooleanProperty(true);
+    private BooleanProperty isAligning = new SimpleBooleanProperty(false);
+
+    private StringProperty selectedNodeID = new SimpleStringProperty("selected");
+
+    private ObjectProperty<Location> selectedLocation = new SimpleObjectProperty<Location>();
+    private ObjectProperty<MapNode> selectedNode = new SimpleObjectProperty<MapNode>();
+    private ObjectProperty<MapNode> alignmentNode = new SimpleObjectProperty<MapNode>();
+    //
+
+
     BooleanProperty alignNode = new SimpleBooleanProperty(false);
 
 
-    MapNode selectedNode = null;
-    Location selectedLocation = null;
-    MapNode alignmentNode = null;
+    //MapNode selectedNode = null;
+    //Location selectedLocation = null;
+    //MapNode alignmentNode = null;
     MapNode startNode = null;
     MapNode endNode = null;
+
+    private MapDrawingSubsystem masterMap;
+    private MapSubsystem mapData;
 
     private long nodeEditorListenerID, edgeEditorListenerID;
 
@@ -80,6 +94,8 @@ public class EditorPopOut extends PopOutController {
     public void initialize() {
         mapDraw = MapDrawingSubsystem.getInstance();
         alignPane(xProperty, xOffset, yProperty, yOffset);
+        masterMap = MapDrawingSubsystem.getInstance();
+        mapData = MapSubsystem.getInstance();
         // viewEdges = new JFXToggleButton();
         //viewNodes = new JFXToggleButton();
         viewEdges.setText("View Edges");
@@ -88,36 +104,46 @@ public class EditorPopOut extends PopOutController {
         nodeType.getItems().addAll(NodeType.values());
         alignmentOptions.getItems().clear();
         alignmentOptions.getItems().addAll("X", "Y");
-        alignmentOptions.setDisable(true);
-        alignBtn.setDisable(true);
+        //alignmentOptions.setDisable(true);
+        //alignBtn.setDisable(true);
+
+
 
         alignmentOptions.getSelectionModel().selectedItemProperty()
                 .addListener(new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                         if (!(alignmentOptions.disabledProperty().getValue()) && alignmentOptions.getSelectionModel().getSelectedItem() != null) {
-                            updateCurrentNode.setValue(false);
-                            alignNode.setValue(true);
+                            isAligning.setValue(true);
+                            updateFields.setValue(false);
                             System.out.println("User would like to align nodes.");
-                            cancelBtn.disableProperty().setValue(true);
-                            confirmBtn.disableProperty().setValue(true);
+                            //cancelBtn.disableProperty().setValue(true);
+                            //confirmBtn.disableProperty().setValue(true);
                             //alignBtn.setDisable(true);
                         } else {
-                            updateCurrentNode.setValue(true);
-                            cancelBtn.disableProperty().setValue(false);
-                            confirmBtn.disableProperty().setValue(false);
+                            //cancelBtn.disableProperty().setValue(false);
+                            //confirmBtn.disableProperty().setValue(false);
 
                             alignNode.setValue(false);
                         }
                     }
                 });
 
+
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        floorEvents.put(masterMap.attachFloorChangeListener(onFloorChange), onFloorChange);
+
+        long id = masterMap.attachClickedListener(onEdgeClicked, ClickedListener.EDGECLICKED);
+        mouseEvents.put(id, onEdgeClicked);
 
         editorGroup = new ToggleGroup();
         editNodes.setToggleGroup(editorGroup);
         editEdges.setToggleGroup(editorGroup);
-
+        addNode.disableProperty().bind(knownLoc);
+        editNode.disableProperty().bind(unknownLoc);
+        deleteNode.disableProperty().bind(unknownLoc);
+        alignmentOptions.disableProperty().bind(unknownLoc);
+        alignBtn.disableProperty().bind(unknownLoc);
 
         viewNodes.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -145,62 +171,89 @@ public class EditorPopOut extends PopOutController {
             }
         });
 
+        editorGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (newValue != null) {
+                    updateFields.set(true);
+                    if (editNodes.isSelected()) {
+                        nodeEditor.setValue(true);
+                        edgeEditor.setValue(false);
+                        editorInfo.getChildren().clear();
+                        editorInfo.getChildren().addAll(nodeDetails, alignNodes, actionButtons, finishButtons);
+                        //alignmentOptions.disableProperty().setValue(false);
+                        //alignBtn.disableProperty().setValue(false);
+                        //nodeEditorListenerID = masterMap.attachClickedListener(onLocClickEditNodes, ClickedListener.LOCCLICKED);
+                        //mouseEvents.put(nodeEditorListenerID, onLocClickEditNodes);
+                        System.out.println("Selecting nodes for ediitng and such.");
+
+                    } else if (editEdges.isSelected()) {
+                        nodeEditor.setValue(false);
+                        edgeEditor.setValue(true);
+                        //alignmentOptions.disableProperty().setValue(true);
+                        //alignBtn.disableProperty().setValue(true);
+                        mapDraw.detachListener(nodeEditorListenerID);
+                        mouseEvents.remove(nodeEditorListenerID);
+                        System.out.println("No longer selecting nodes.");
+                    }
+
+                }
+                else {
+
+                    //updateFields.set(false);
+                }
+            }
+        });
+        editNode.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                editNode.visibleProperty().setValue(false);
+                deleteNode.visibleProperty().setValue(false);
+            }
+        });
+        addNode.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                editNode.visibleProperty().setValue(false);
+                deleteNode.visibleProperty().set(false);
+            }
+        });
+        mouseEvents.put(masterMap.attachClickedListener(onLocClickEditNodes, ClickedListener.LOCCLICKED),onLocClickEditNodes);
+        confirmBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                editNode.visibleProperty().setValue(true);
+                deleteNode.visibleProperty().set(true);
+
+            }
+        });
+        cancelBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                editNode.visibleProperty().setValue(true);
+                deleteNode.visibleProperty().set(true);
+            }
+        });
+        /*
         editEdges.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (newValue) {
-                    editorInfo.getChildren().clear();
-                    edgeEditor.setValue(true);
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("/EdgeMapEditorNew.fxml"));
-                    EditorDetailsController editor = new EditorDetailsController(viewEdges, viewNodes);
-                    loader.setController(editor);
-                    try {
-                        Pane node = loader.load();
-                        editorInfo.getChildren().add(node);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    //edgeEditorListenerID = masterMap.attachClickedListener(onNodeClickEdges, ClickedListener.NODECLICKED);
-                    //mouseEvents.put(edgeEditorListenerID, onNodeClickEdges);
-                } else {
-                    edgeEditor.setValue(false);
-                    editorInfo.getChildren().clear();
-                    editorInfo.getChildren().addAll(nodeDetails, alignNodes, actionButtons, finishButtons);
-                    mapDraw.detachListener(edgeEditorListenerID);
-                    mouseEvents.remove(edgeEditorListenerID);
+
                 }
             }
         });
-
         editNodes.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (newValue) {
-                    nodeEditor.setValue(true);
-                    editorInfo.getChildren().clear();
-                    editorInfo.getChildren().addAll(nodeDetails, alignNodes, actionButtons, finishButtons);
-                    alignmentOptions.disableProperty().setValue(false);
-                    //alignBtn.disableProperty().setValue(false);
-                    nodeEditorListenerID = masterMap.attachClickedListener(onLocClickEditNodes, ClickedListener.LOCCLICKED);
-                    mouseEvents.put(nodeEditorListenerID, onLocClickEditNodes);
-                    System.out.println("Selecting nodes for ediitng and such.");
 
-                } else {
-                    nodeEditor.setValue(false);
-                    alignmentOptions.disableProperty().setValue(true);
-                    alignBtn.disableProperty().setValue(true);
-                    mapDraw.detachListener(nodeEditorListenerID);
-                    mouseEvents.remove(nodeEditorListenerID);
-                    System.out.println("No longer selecting nodes.");
-                }
             }
-        });
-        //mouseEvents.put(masterMap.attachClickedListener(onNodeClick, ClickedListener.NODECLICKED), onNodeClick);
-    }
+        };
+        */
+        }
+  //  }//
 
-    private MapDrawingSubsystem masterMap;
-    private MapSubsystem mapData;
 
     @Override
     public void onOpen(ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
@@ -211,10 +264,8 @@ public class EditorPopOut extends PopOutController {
         this.xProperty = xProperty;
         this.yProperty = yProperty;
 
-        masterMap = MapDrawingSubsystem.getInstance();
-        mapData = MapSubsystem.getInstance();
 
-        floorEvents.put(masterMap.attachFloorChangeListener(onFloorChange), onFloorChange);
+
 
     }
 
@@ -238,14 +289,15 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
             nType = nodeTypeSelector.getSelectionModel().getSelectedItem().toString();
         }
  */
-
+    private void resetToDefault() {
+    }
 
     private void clearTextFieldsNodes() {
 
-        nodeID.setText(nodeID.getPromptText());
-        longName.setText(longName.getPromptText());
-        shortName.setText(shortName.getPromptText());
-        nodeType.setDisable(false);
+        nodeID.clear();
+        longName.clear();
+        shortName.clear();
+        //nodeType.setDisable(false);
         nodeType.getSelectionModel().clearSelection();
         nodeType.setDisable(true);
         //confirmBtn.setDisable(true);
@@ -270,6 +322,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
     }
 
 
+
     EventHandler<MouseEvent> onLocClickEditNodes = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
@@ -278,6 +331,46 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
             //double yCanv = event.getY();
             Location selected = mouseClickToLocation(event);
             MapNode clickedNode = masterMap.nodeAt(selected);
+            selectedLocation.set(selected);
+
+            if (clickedNode != null) {
+                System.out.println(clickedNode.getId());
+            }
+
+            if (updateFields.getValue()) {
+                if (clickedNode == null) {
+
+                    unknownLoc.set(true);
+                    knownLoc.set(false);
+                    clearTextFieldsNodes();
+                    nodeCoord.setText("(" + selected.getxCoord() + ", " +selected.getyCoord() + ")");
+
+                } else {
+                    System.out.println("Update the selected node and node fields.");
+                    unknownLoc.set(false);
+                    knownLoc.set(true);
+                    selectedNode.setValue(clickedNode);
+                    if (updateFields.get()) {
+                        nodeID.setText(clickedNode.getId());
+                        nodeCoord.setText("(" + clickedNode.getCoordinate().getxCoord() + ", " + clickedNode.getCoordinate().getyCoord() + ")");
+                        longName.setText(clickedNode.getLongDescription());
+                        shortName.setText(clickedNode.getShortDescription());
+                        nodeType.setValue(clickedNode.getNodeType());
+                    }
+                    //selectedLocation.set(selected);
+                }
+            }
+            else if (isAligning.getValue()) {
+                if (clickedNode != null) {
+                    System.out.println("The selected Node is: " + selectedNode.getValue().getId());
+
+                    System.out.println("Got an alignment node.");
+                    alignmentNode.setValue(clickedNode);
+                    System.out.println("The alignment node is: " + alignmentNode.getValue().getId());
+
+                }
+            }
+            /*
             if (updateCurrentNode.getValue()) {
                 clearTextFieldsNodes();
                 if (clickedNode != null) {
@@ -311,6 +404,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
 
                 }
             }
+            */
 
 
             /*
@@ -330,6 +424,14 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
             }
             //node.setInfo(event);
             */
+        }
+    };
+
+    private EventHandler<MouseEvent> onEdgeClicked = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            System.out.println("Found an edge!");
+
         }
     };
 
@@ -424,74 +526,91 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
 
     @FXML
     void onAlignNode(ActionEvent e) {
-        System.out.println(alignmentNode.getId());
-        if (alignmentOptions.getSelectionModel().getSelectedItem() != null && alignmentNode != null && selectedNode != null) {
+        MapNode selected = selectedNode.getValue();
+        System.out.println("The selected Node is: " + selectedNode.getValue().getId());
+        System.out.println("AlignmentNode: " + alignmentNode.getValue().getId());
+        if (alignmentOptions.getSelectionModel().getSelectedItem() != null && alignmentNode.getValue() != null && selectedNode != null) {
             String direction = alignmentOptions.getSelectionModel().getSelectedItem();
 
             if (direction.equals("X")) {
-                MapNode toUpdate = new MapNodeData(selectedNode.getId(), new Location(selectedNode.getCoordinate().getxCoord(),
-                        alignmentNode.getCoordinate().getyCoord(), selectedNode.getCoordinate().getLevel(), selectedNode.getCoordinate().getBuilding()),
-                        selectedNode.getNodeType(), selectedNode.getLongDescription(), selectedNode.getShortDescription(), selectedNode.getTeamAssignment(), selectedNode.getEdges());
-                mapDraw.unDrawNode(selectedNode);
+                MapNode toUpdate = new MapNodeData(selected.getId(), new Location(selected.getCoordinate().getxCoord(),
+                        alignmentNode.getValue().getCoordinate().getyCoord(), selected.getCoordinate().getLevel(), selected.getCoordinate().getBuilding()),
+                        selected.getNodeType(), selected.getLongDescription(), selected.getShortDescription(), selected.getTeamAssignment(), selected.getEdges());
+                mapDraw.unDrawNode(selected);
                 mapDraw.drawNode(toUpdate, 5, Color.DARKBLUE);
                 mapData.addNode(toUpdate);
+                nodeCoord.setText("(" + selected.getCoordinate().getxCoord() + ", " + alignmentNode.getValue().getCoordinate().getyCoord() + ")");
                 //mapData.deleteNode(selectedNode.getId());
 
 
                 //mapData.addNode(selectedNode);
             }
             else if (direction.equals("Y")) {
-                MapNode toUpdate = new MapNodeData(selectedNode.getId(), new Location(alignmentNode.getCoordinate().getxCoord(),
-                        selectedNode.getCoordinate().getyCoord(), selectedNode.getCoordinate().getLevel(), selectedNode.getCoordinate().getBuilding()),
-                        selectedNode.getNodeType(), selectedNode.getLongDescription(), selectedNode.getShortDescription(), selectedNode.getTeamAssignment(), selectedNode.getEdges());
-                mapDraw.unDrawNode(selectedNode);
+                MapNode toUpdate = new MapNodeData(selected.getId(), new Location(alignmentNode.getValue().getCoordinate().getxCoord(),
+                        selected.getCoordinate().getyCoord(), selected.getCoordinate().getLevel(), selected.getCoordinate().getBuilding()),
+                        selected.getNodeType(), selected.getLongDescription(), selected.getShortDescription(), selected.getTeamAssignment(), selected.getEdges());
+                mapDraw.unDrawNode(selected);
                 mapDraw.drawNode(toUpdate, 5, Color.DARKBLUE);
                 mapData.addNode(toUpdate);
                 //mapData.deleteNode(selectedNode.getId());
 
 
             }
+            isAligning.setValue(false);
+            alignmentNode.setValue(null);
+            alignmentOptions.getSelectionModel().clearSelection();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Alignment Error");
+            alert.setHeaderText("Failed to Align Node");
+            alert.setContentText("Please select a valid node to align to.");
+            alert.showAndWait();
 
         }
-        clearTextFieldsNodes();
-        alignmentNode = null;
-        alignBtn.disableProperty().setValue(true);
+        //clearTextFieldsNodes();
+        //alignmentNode = null;
+        //alignBtn.disableProperty().setValue(true);
         alignmentOptions.getSelectionModel().clearSelection();
-        updateCurrentNode.setValue(true);
+        //updateCurrentNode.setValue(true);
     }
 
 
     @FXML
     void onConfirm(ActionEvent e) {
-        updateCurrentNode.setValue(true);
+        updateFields.setValue(true);
+        clearTextFieldsNodes();
 
     }
 
     @FXML
     void onCancel(ActionEvent e) {
-        updateCurrentNode.setValue(true);
+        updateFields.setValue(true);
+        clearTextFieldsNodes();
 
     }
 
     @FXML
     void onAddNode(ActionEvent e) {
-        updateCurrentNode.setValue(false);
-        addNode.setVisible(false);
-        editNode.setVisible(false);
-        deleteNode.setVisible(false);
-        nodeType.setDisable(false);
-        confirmBtn.setDisable(false);
-        cancelBtn.setDisable(false);
+        updateFields.setValue(false);
+        System.out.println("user wants to add a node.");
+        //addNode.setVisible(false);
+        //editNode.setVisible(false);
+        //deleteNode.setVisible(false);
+        //nodeType.setDisable(false);
+        //confirmBtn.setDisable(false);
+        //cancelBtn.setDisable(false);
         confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (selectedLocation != null) {
+                if (selectedLocation.getValue() != null) {
                         /*
                         MapNode toAdd = new MapNodeData(nodeID.getText(), new Location(selectedLocation.getxCoord(), selectedLocation.getyCoord(), masterMap.getCurrentFloor(), ""),
                                 nodeType.getSelectionModel().getSelectedItem(), longName.getText(), shortName.getText(), "A");
                                 */
                     MapNode toAdd = nodeFieldsToNode();
-                    if (mapData.addNode(toAdd) != null) {
+                    if (toAdd != null) {
+                        mapData.addNode(toAdd);
                         System.out.println("Adding a node");
                         clearTextFieldsNodes();
                         mapDraw.drawNode(toAdd, 5, Color.DARKBLUE);
@@ -506,80 +625,85 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
                 }
             }
         });
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clearTextFieldsNodes();
-            }
-        });
+
     }
 
     private MapNode nodeFieldsToNode() {
-        MapNode created = new MapNodeData(nodeID.getText(), new Location(selectedLocation.getxCoord(), selectedLocation.getyCoord(), masterMap.getCurrentFloor(), ""),
+        MapNode created = null;
+        Location chosen = selectedLocation.get();
+        if (chosen != null)
+        if (!(nodeID.getText().equals("") && longName.getText().equals("") && nodeType.getSelectionModel().getSelectedItem()== null && shortName.getText().equals(""))) {
+        created = new MapNodeData(nodeID.getText(), new Location(chosen.getxCoord(), chosen.getyCoord(), masterMap.getCurrentFloor(), ""),
                 nodeType.getSelectionModel().getSelectedItem(), longName.getText(), shortName.getText(), "A");
         if (created != null) {
             System.out.println("jawieor");
-        }
+        }}
         return created;
     }
 
     @FXML
     void onEditNode(ActionEvent e) {
-        updateCurrentNode.setValue(false);
-        addNode.setVisible(false);
-        editNode.setVisible(false);
-        deleteNode.setVisible(false);
-        nodeType.setDisable(false);
-        confirmBtn.setDisable(false);
-        cancelBtn.setDisable(false);
-        confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (selectedNode != null) {
-                    MapNode update = nodeFieldsToNode();
-                    MapSubsystem.getInstance().addNode(update);
-                }
-                clearTextFieldsNodes();
-            }
-        });
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clearTextFieldsNodes();
+        updateFields.setValue(false);
+        if (selectedNode.getValue() != null) {
+            //addNode.setVisible(false);
+            //editNode.setVisible(false);
+            //deleteNode.setVisible(false);
+            nodeType.setDisable(false);
+            confirmBtn.setDisable(false);
+            cancelBtn.setDisable(false);
+            confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
 
-            }
-        });
+                    MapNode update = nodeFieldsToNode();
+                    if (update != null) {
+                        MapSubsystem.getInstance().addNode(update);
+                        clearTextFieldsNodes();
+                        updateFields.setValue(true);
+                    }
+                    else {
+                        clearTextFieldsNodes();
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid Edit");
+                        alert.setHeaderText("Failed to Edit Node");
+                        alert.setContentText("Select an existing node to edit.");
+                        alert.showAndWait();
+                    }
+
+                }
+            });
+        }
+
     }
 
     @FXML
     void onDeleteNode(ActionEvent e) {
-        updateCurrentNode.setValue(false);
-        updateCurrentNode.setValue(false);
-        addNode.setVisible(false);
-        editNode.setVisible(false);
-        deleteNode.setVisible(false);
-        nodeType.setDisable(false);
-        confirmBtn.setDisable(false);
-        cancelBtn.setDisable(false);
+        updateFields.setValue(false);
+        //updateCurrentNode.setValue(false);
+        //addNode.setVisible(false);
+        //editNode.setVisible(false);
+        //deleteNode.setVisible(false);
+        //nodeType.setDisable(false);
+        //confirmBtn.setDisable(false);
+        //cancelBtn.setDisable(false);
 
         confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (selectedNode != null) {
-                    for (MapEdge e : selectedNode.getEdges()) {
+                if (selectedNode.get() != null) {
+                    for (MapEdge e : selectedNode.get().getEdges()) {
                         mapData.deleteEdge(e.getId());
                         mapDraw.unDrawEdge(e);
                     }
-                    mapData.deleteNode(selectedNode.getId());
-                    mapDraw.unDrawNode(selectedNode);
+                    mapData.deleteNode(selectedNode.get().getId());
+                    mapDraw.unDrawNode(selectedNode.get());
+                    updateFields.setValue(true);
+                    clearTextFieldsNodes();
                 }
-                clearTextFieldsNodes();
-            }
-        });
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clearTextFieldsNodes();
+                else {
+
+                }
+
             }
         });
     }
