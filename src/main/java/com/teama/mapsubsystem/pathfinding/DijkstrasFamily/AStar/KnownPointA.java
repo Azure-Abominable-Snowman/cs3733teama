@@ -3,14 +3,14 @@ package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.KnownPoint;
 
-public class KnownPointR extends KnownPoint {
+public class KnownPointA extends KnownPoint {
 
 
-    private KnownPointR lastNode;
+    private KnownPointA lastNode;
     private int completeCost;
 
     //constructor
-    public KnownPointR(MapNode node, KnownPointR lastNode, int pastCost, int completeCost) {
+    public KnownPointA(MapNode node, KnownPointA lastNode, int pastCost, int completeCost) {
         this.node = node;
         this.lastNode = lastNode;
         this.pastCost = pastCost;
@@ -24,7 +24,7 @@ public class KnownPointR extends KnownPoint {
      */
     @Override
     public int compareTo(Object o) {
-        KnownPointR node = (KnownPointR) o;
+        KnownPointA node = (KnownPointA) o;
         if (this.completeCost > node.completeCost) return 1;
         else if (this.completeCost == node.completeCost) return 0;
         else if (this.completeCost < node.completeCost) return -1;
@@ -32,11 +32,11 @@ public class KnownPointR extends KnownPoint {
     }
 
     //////////// getter and setter
-    public KnownPointR getLastNode() {
+    public KnownPointA getLastNode() {
         return lastNode;
     }
 
-    public void setLastNode(KnownPointR lastNode) {
+    public void setLastNode(KnownPointA lastNode) {
         this.lastNode = lastNode;
     }
 
