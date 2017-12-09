@@ -35,8 +35,9 @@ public class BreathFirst implements PathAlgorithm {
     //TODO Fill this function
     @Override
     public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        this.disableNodes = new HashMap<String, MapNode>();
         grabDisableNodes(disableNodes);
-        return null;
+        return generatePath(start, end);
     }
 
 
@@ -59,6 +60,7 @@ public class BreathFirst implements PathAlgorithm {
     {
         KnownPoint nextPoint;
         for (MapNode node: checking.getAdjacentNodes()) {
+            if(disableNodes.containsKey(node.getId())) continue; //skip this node if it is in the disabled list
             nextPoint = new KnownPoint(node,layer);
             if(  (! visited.containsKey(node.getId())) && (! open.contains(nextPoint))  )
                 open.add(nextPoint);

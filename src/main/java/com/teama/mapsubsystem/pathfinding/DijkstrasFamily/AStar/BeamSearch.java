@@ -13,6 +13,7 @@ public class BeamSearch extends AStar {
     private HashMap<String,KnownPointA> checkedPoints;
     private LimitedPriorityQueue limitedQueue;
     private MapNode start, end;
+    private  HashMap<String, MapNode> disableNodes;
 
     public BeamSearch(int queueSize)
     {
@@ -52,8 +53,9 @@ public class BeamSearch extends AStar {
 
     //TODO fill this function
     public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        this.disableNodes = new HashMap<String, MapNode>();
         grabDisableNodes(disableNodes);
-        return null;
+        return generatePath(start, end);
     }
 
     /**
@@ -66,7 +68,7 @@ public class BeamSearch extends AStar {
         for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
             MapNode nextNode= adjacentNode(e,checking.getNode());  // get the node to be calculated.
-
+            if(disableNodes.containsKey(nextNode.getId())) continue; //skip this node if it is in the disabled list
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 

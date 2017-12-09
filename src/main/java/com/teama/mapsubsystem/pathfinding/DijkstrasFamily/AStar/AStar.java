@@ -18,6 +18,7 @@ public class AStar extends Dijkstras {
     protected HashMap<String,KnownPointA> checkedPoints;
     private PriorityQueue<KnownPointA> queue;
     protected MapNode start, end;
+    private HashMap<String, MapNode> disableNodes;
 
 
     /**
@@ -57,8 +58,9 @@ public class AStar extends Dijkstras {
     //TODO fill this function
     @Override
     public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        this.disableNodes = new HashMap<String, MapNode>();
         grabDisableNodes(disableNodes);
-        return null;
+        return generatePath(start, end);
     }
 
     ////////////////////// helper ///////////////////////
@@ -88,7 +90,7 @@ public class AStar extends Dijkstras {
         for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
             MapNode nextNode= adjacentNode(e,checking.getNode());  // get the node to be calculated.
-
+            if(disableNodes.containsKey(nextNode.getId())) continue; //skip this node if it is in the disabled list
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
