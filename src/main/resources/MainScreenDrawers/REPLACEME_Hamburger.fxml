@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane fx:id="parentPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="368.0" styleClass="parentPane" stylesheets="@../css/SearchStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="imgBack" fitHeight="73.0" fitWidth="100.0" layoutX="200.0" onMouseClicked="#onBackClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons_i4/back.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
