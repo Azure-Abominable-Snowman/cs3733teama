@@ -1,10 +1,10 @@
-package com.teama.controllers;
+package com.teama.controllers_refactor2;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.*;
 import com.teama.ProgramSettings;
+import com.teama.controllers.NodeInfoPopUpController;
+import com.teama.controllers.PathfindingController;
+import com.teama.controllers.SearchBarController;
 import com.teama.controllers_refactor.PopOutController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
@@ -16,9 +16,7 @@ import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.translator.Translator;
-import javafx.animation.TranslateTransition;
 import javafx.beans.Observable;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -44,25 +42,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-/**
- * Delegates tasks to the other controllers on the main screen
- */
-public class MainScreenController implements Initializable {
+public class MainMapScreen implements Initializable {
 
     @FXML
     private AnchorPane areaPane;
-
-    @FXML
-    private GridPane displayedMaps;
 
     @FXML
     private ScrollPane mapScroll;
@@ -73,45 +63,34 @@ public class MainScreenController implements Initializable {
     @FXML
     private JFXDrawer drawer;
 
+    @FXML private Pane searchPane;
+
     @FXML
     private JFXComboBox<String> searchBar;
 
     @FXML
-    private JFXButton searchButton;
-//get rid of this
-    @FXML
-    private Text floorNumberDisplay;
+    private JFXHamburger hmbDrawerOpener;
 
     @FXML
-    private ImageView loginButton;
+    private ImageView searchButton;
 
-    @FXML
-    private ImageView directoryButton;
+    @FXML private ImageView loginButton;
 
-    @FXML
-    private ImageView mapEditorButton;
+    @FXML private ImageView translateButton;
 
-    @FXML
-    private ImageView serviceRequestButton;
-
-    @FXML
-    private ImageView settingButton;
-//to this
     @FXML
     private JFXSlider zoomSlider;
 
     @FXML
-    //private VBox floorButtonBox;
     private GridPane floorButtonBox;
+
     @FXML
     private ImageView directionsButton;
 
-    @FXML
-    private Pane mainSideBarPane;
 
 
     private MapDisplay map;
-
+    private HamburgerController curController;
     private boolean drawerExtended = false;
 
     private double maxZoom = 3.0;
@@ -122,11 +101,11 @@ public class MainScreenController implements Initializable {
     private MapDrawingSubsystem mapDrawing;
 
     private PathfindingController pathfinding;
+    private SimpleBooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty showLoginButton = new SimpleBooleanProperty(true);
     private EventHandler<MouseEvent> originalMouseClick;
 
     private PopOutFactory popOutFactory = new PopOutFactory();
-    private BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
 
     private long popUpID;
 
@@ -140,32 +119,18 @@ public class MainScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         mapSubsystem = MapSubsystem.getInstance();
         pathfinding = new PathfindingController(mainSidebarMap);
-        //get rid of this --attach the listeners elsewhere
-        // Populate the floor button box
-        for(Floor floor : Floor.values()) {
-            JFXButton curFloorButton = new JFXButton();
-            curFloorButton.setText(floor.toString());
-            curFloorButton.getStylesheets().add("css/MainScreenStyle.css");
-            curFloorButton.getStyleClass().add("floorbutton");
-            curFloorButton.setId(floor.toString());
-            curFloorButton.setPrefWidth(35);
-
-            floorButtonBox.getChildren().add(curFloorButton);
+        //set up buttonBox IDs
+        for(int i=0; i<Floor.values().length; i++) {
+            floorButtonBox.getChildren().get(i).setId(Floor.values()[floorButtonBox.getChildren().size()-1-i].toString());
         }
-
         mapDrawing = MapDrawingSubsystem.getInstance();
+        //have the button box be the gridPane here
+        System.out.println(mapScroll);
         mapDrawing.initialize(mapCanvas, mapScroll, floorButtonBox, areaPane);
 
         mapDrawing.setGrow(true);
         mapDrawing.setZoomFactor(1.7); // Initial zoom
-        isLoggedIn.addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
 
-                }
-            }
-        });
         // Add a listener that displays the correct nodes for the floor
         mapDrawing.clearMap();
         for (MapNode n : mapSubsystem.getVisibleFloorNodes(mapDrawing.getCurrentFloor()).values()) {
@@ -180,33 +145,6 @@ public class MainScreenController implements Initializable {
         // Make a pop up on the user's mouse cursor every time a node is clicked
         popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.LOCCLICKED);
         //will need to change this to create the child in the drawer and adjust the drawer
-        // Attach listeners to all the sidebar pop outs to open their respective pane on click
-
-        //get rid of this
-        for(Node button : mainSideBarPane.getChildren()) {
-            // Opens the pop out and closes it when it is clicked again
-            EventHandler<MouseEvent> buttonEvent = event -> {
-                // Gets the pop out type from the id defined in scenebuilder
-                PopOutType type = PopOutType.valueOf(button.getId());
-                if(type.equals(currentPopOutType)) {
-                    closeInMainSidebar(type);
-                } else {
-                    openInMainSidebar(type, areaPane.widthProperty(), -(int) button.prefWidth(80),
-                            button.layoutYProperty(), 0);
-                }
-            };
-            // Opens the pop out
-            EventHandler<MouseEvent> openEvent = event -> {
-                PopOutType type = PopOutType.valueOf(button.getId());
-                openInMainSidebar(type, areaPane.widthProperty(), -(int)button.prefWidth(80),
-                        button.layoutYProperty(), 0);
-            };
-            button.setOnMouseClicked(buttonEvent);
-            mainSidebarMap.put(PopOutType.valueOf(button.getId()), openEvent);
-            //to this
-        }
-
-
 
         // Pop up goes away on a floor switch
         mapDrawing.attachFloorChangeListener((a, b, c) -> removeCurrentPopUp());
@@ -221,16 +159,16 @@ public class MainScreenController implements Initializable {
 
         // Zoom in and out using plus and minus keys
         mapScroll.onKeyTypedProperty().set((KeyEvent event) -> {
-            switch(event.getCharacter()) {
+            switch (event.getCharacter()) {
                 case "=":
                     // zoom in
-                    if(mapDrawing.getZoomFactor() < maxZoom) {
+                    if (mapDrawing.getZoomFactor() < maxZoom) {
                         mapDrawing.setZoomFactor(mapDrawing.getZoomFactor() + 0.1);
                     }
                     break;
                 case "-":
                     // zoom out
-                    if(mapDrawing.getZoomFactor() > minZoom) {
+                    if (mapDrawing.getZoomFactor() > minZoom) {
                         mapDrawing.setZoomFactor(mapDrawing.getZoomFactor() - 0.1);
                     }
                     break;
@@ -265,7 +203,6 @@ public class MainScreenController implements Initializable {
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             searchBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
-
         // Hide stuff until someone is logged in
         ProgramSettings.getInstance().getIsLoggedInProp().addListener((a) -> {
             System.out.println("logging in");
@@ -273,92 +210,79 @@ public class MainScreenController implements Initializable {
         });
         setLoginVisibility();
     }
-    //get rid of this
-    public void makeButtonsVisible(){
 
-        directoryButton.setVisible(true);
-        mapEditorButton.setVisible(true);
-        serviceRequestButton.setVisible(true);
-        settingButton.setVisible(true);
-        System.out.println(directoryButton.isVisible());
-    }
     private void setLoginVisibility() {
-        double startPoint = directionsButton.getLayoutY()-directoryButton.getFitHeight();
-        final double height = 80;
-        final double padding = 15;
-        final double endPoint = 438;
-        double nextLoc = startPoint;
-        directoryButton.setVisible(true);
-        mapEditorButton.setVisible(true);
-        serviceRequestButton.setVisible(true);
-        settingButton.setVisible(true);
-        if(ProgramSettings.getInstance().getIsLoggedInProp().get()) {
+        if (ProgramSettings.getInstance().getIsLoggedInProp().get()) {
             System.out.println("here");
             //inserting animation here
             Image logOut = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogOut.png"));
             loginButton.setImage(logOut);
         } else {
             System.out.println("I guess not");
-           // mapEditorButton.setY(startPoint);
-                Image logIn = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogIn.png"));
-                loginButton.setImage(logIn);
-            }
-    }
-
-    private Node currentPopOut;
-    private PopOutController currentPopOutController;
-    private PopOutType currentPopOutType = null;
-    //can remove both of these because they aren't needed anymore
-    //this needs to be edited to support the new controllers
-    private void openInMainSidebar(PopOutType popOutType, ReadOnlyDoubleProperty xProperty, int xOffset, ReadOnlyDoubleProperty yProperty, int yOffset) {
-        try {
-            // Remove the last pop out if present
-            removeCurrentPopUp();
-            if(currentPopOut != null) {
-                currentPopOutController.onClose();
-                areaPane.getChildren().remove(currentPopOut);
-            }
-            PopOutController controller = popOutFactory.makePopOut(popOutType);
-            FXMLLoader loader = new FXMLLoader();
-            loader.setResources(Translator.getInstance().getNewBundle());
-            loader.setLocation(getClass().getResource(controller.getFXMLPath()));
-            loader.setController(controller);
-
-
-            controller.onOpen(xProperty, xOffset, yProperty, yOffset);
-            if(popOutType.equals(PopOutType.EDITOR)) {
-                mapDrawing.detachListener(popUpID);
-            }
-            currentPopOut = loader.load();
-            currentPopOutController = controller;
-
-            System.out.println(currentPopOutController);
-            // Add it to the area pane in the correct spot next to the button
-            areaPane.getChildren().add(currentPopOut);
-
-            currentPopOutType = popOutType;
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            // mapEditorButton.setY(startPoint);
+            Image logIn = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogIn.png"));
+            loginButton.setImage(logIn);
         }
     }
-    //get rid of this
-    private void closeInMainSidebar(PopOutType popOutType) {
-        // remove it from the screen if one is open
-        if(currentPopOut != null) {
-            currentPopOutController.onClose();
-            mapDrawing.detachListener(popUpID);
-            popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.NODECLICKED);
-            areaPane.getChildren().remove(currentPopOut);
-            currentPopOut = null;
-            currentPopOutType = null;
-        }
-    }
+
 
     private Parent nodeInfo;
+    //TODO update this stuff to create and contain the search info
+    @FXML public void onSearchClick(MouseEvent e){
+
+    }
+    //TODO update this to create and contain the pathfinding stuff
+    @FXML public void onDirectionsClick(MouseEvent e){
+        if(drawerExtended){
+            //do nothing
+        }
+        else{
+            System.out.println("We need to implement this");
+        }
+    }
+    @FXML public void onOpenerClick(MouseEvent e){
+        //TODO fix double click breaking this guy
+        try {
+            disableSearchPane();
+            drawer.setVisible(true);
+            FXMLLoader openerLoader = new FXMLLoader();
+            curController = new hamburgerDrawerController();
+            openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
+            openerLoader.setController(curController);
+            openerLoader.load();
+            curController.onOpen();
+            System.out.println("in the main "+curController);
+            System.out.println(curController.getParentPane().getPrefWidth());
+            drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
+            drawer.setSidePane(curController.getParentPane());
+            drawer.open();
+            curController.getClosing().addListener((a, oldVal, newVal) -> {
+                if (newVal) {
+                    curController.onClose();
+                    drawer.close();
+                    drawer.setVisible(false);
+                   enableSearchPane();
+                }
+            });
+        }
+        catch(IOException error){
+            error.printStackTrace();
+        }
+    }
+    private void enableSearchPane(){
+       hmbDrawerOpener.setDisable(false);
+        searchPane.getStyleClass().clear();
+        searchPane.getStyleClass().add("searchPane");
+    }
+    private void disableSearchPane() {
+        hmbDrawerOpener.setDisable(true);
+        searchPane.getStyleClass().clear();
+        searchPane.getStyleClass().add("searchPane-disabled");
+    }
 
     /**
      * Generates a node pop up if able from the given mouse event
+     *
      * @param event
      */
     private void generateNodePopUp(MouseEvent event) {
@@ -384,23 +308,25 @@ public class MainScreenController implements Initializable {
             areaPane.getChildren().add(nodeInfo);
             System.out.println(areaPane.getChildren().getClass());
             nodePopUp.setInfo(nodeAt, pathfinding, event);
-        }
-        else {
+        } else {
             System.out.println("Clicked on a random location.");
             removeCurrentPopUp();
         }
     }
+
     //this needs to be edited to close the drawer instead
     private void removeCurrentPopUp() {
-        if(nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
+        if (nodeInfo != null && areaPane.getChildren().contains(nodeInfo)) {
             areaPane.getChildren().remove(nodeInfo);
             nodeInfo = null;
         }
-    }
+
+    }//add methods for login click and translate click
+
     //CREATES THE ABOUT PAGE POP UP
     //TODO attach this method to the about button
     @FXML
-    private void onAboutClick(ActionEvent e){
+    private void onAboutClick(ActionEvent e) {
         Stage aboutPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AboutPage.fxml"));
@@ -412,8 +338,7 @@ public class MainScreenController implements Initializable {
             aboutPopUp.initModality(Modality.WINDOW_MODAL);
             aboutPopUp.showAndWait();
 
-        }
-        catch(IOException exception){
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
 
@@ -422,7 +347,7 @@ public class MainScreenController implements Initializable {
 
     //create the help page pop up
     @FXML
-    private void onHelpClick(ActionEvent e){
+    private void onHelpClick(ActionEvent e) {
         Stage helpPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/HelpPage.fxml"));
@@ -433,10 +358,10 @@ public class MainScreenController implements Initializable {
             helpPopUp.resizableProperty().set(false);
             helpPopUp.initModality(Modality.WINDOW_MODAL);
             helpPopUp.showAndWait();
-        }
-        catch(IOException exception){
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
+
     }
-    //end of help page pop up
 }
+
