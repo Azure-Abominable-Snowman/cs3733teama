@@ -51,9 +51,7 @@ public class InterpreterStaff  implements ServiceStaff {
     public String getFirstName() {
         return genInfo.getFirstName();
     }
-    public String getLastName() {
-        return genInfo.getLastName();
-    }
+    public String getLastName() { return genInfo.getLastName(); }
     /*public int getStaffID() {
         return interpSpecs.getStaffID();
     }

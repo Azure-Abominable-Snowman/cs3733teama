@@ -2,6 +2,7 @@ package com.teama.mapdrawingsubsystem;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.data.MapNode;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -677,6 +678,10 @@ public class HospitalMapDisplay implements MapDisplay {
                     convUnits(end.getxCoord(), getMaxX(), width),
                     convUnits(end.getyCoord(), getMaxY(), height));*/
             draw(gc, arrow);
+        }
+
+        public void highlightNode(MapNode n,id) {
+
         }
 
         public void draw(GraphicsContext gc, boolean arrow) {

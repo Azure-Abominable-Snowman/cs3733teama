@@ -414,6 +414,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
     };
     EventHandler<MouseEvent> onNodeClickAndDrag = new EventHandler<MouseEvent>() {
         @Override
+
         public void handle(MouseEvent event) {
 
         }
