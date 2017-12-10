@@ -17,7 +17,7 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
     private String reportTableName;
     private Connection conn = null;
     private Statement stmt = null;
-    private PreparedStatement addRequest, getRequest, deleteRequest, updateRequest, markStatus, getRequestReqTypeStatus, getRequestByStatus;
+    private PreparedStatement addRequest, getRequest, getStaffRequest, deleteRequest, updateRequest, markStatus, getRequestReqTypeStatus, getRequestByStatus;
     private PreparedStatement addReport, updateReport, deleteReport, getReport;
 
     public GeneralRequestDB(String dbURL, String reqTableName) {
@@ -296,6 +296,9 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
         }
         return requests;
     }
+
+/*    //TODO
+    public ArrayList<Request> getStaffRequest()*/
 
     /**
      *  Marks the request as Closed. Returns true on success, false on failure.
