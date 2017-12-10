@@ -202,8 +202,8 @@ public class StaffLoginPopOut extends PopOutController {
         //have this set the flag for logged in so the map system knows to close
         if (LoginSubsystem.getInstance().checkCredentials(l)) {
             Notifications notifications = Notifications.create()
-                    .title("Log In Complete")
-                    .text("Welcome "+ uname.getText())
+                    .title("Log In Complete!")
+                    .text("             Welcome "+ uname.getText() + "!")
                     .graphic(new ImageView(new Image("/check.png")))
                     .hideAfter(Duration.seconds(2))
                     .position(Pos.BOTTOM_CENTER)
