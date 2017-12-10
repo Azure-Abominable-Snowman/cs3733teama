@@ -1,7 +1,8 @@
 package com.teama.mapdrawingsubsystem;
 
-import com.teama.mapsubsystem.data.Floor;
-import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.data.*;
+import com.teama.mapsubsystem.pathfinding.Path;
+import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,9 +10,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
+import static java.lang.Math.PI;
 
 public class HospitalMapDisplay implements MapDisplay {
 
@@ -38,6 +41,9 @@ public class HospitalMapDisplay implements MapDisplay {
 
     // Map of all the text on the screen
     private Map<String, Text> textMap = new HashMap<>();
+
+    // Map of all the paths on the screen
+    private Map<String, DrawPath> pathMap = new HashMap<>();
 
     public HospitalMapDisplay(ScrollPane pane, Canvas canvas, Map<Floor, HospitalMap> maps) {
         this.pane = pane;
@@ -233,6 +239,11 @@ public class HospitalMapDisplay implements MapDisplay {
         // Draw the background image
         gc.drawImage(curMap.getMap(), 0,0, canvas.getWidth(), canvas.getHeight());
 
+        // Draw Paths
+        for(DrawPath p : pathMap.values()) {
+            p.draw(gc);
+        }
+
         // Draw all of the lines and edges
 
         // Lines
@@ -353,6 +364,14 @@ public class HospitalMapDisplay implements MapDisplay {
     }
 
     @Override
+    public void drawPath(String id, Path path) {
+        DrawPath p = new DrawPath(id, path);
+        pathMap.put(id, p);
+        p.startAnimation();
+        render();
+    }
+
+    @Override
     public void deletePoint(String id) {
         pointMap.remove(id);
         render();
@@ -373,6 +392,13 @@ public class HospitalMapDisplay implements MapDisplay {
     @Override
     public void deleteText(String id) {
         textMap.remove(id);
+        render();
+    }
+
+    @Override
+    public void deletePath(String id) {
+        pathMap.get(id).remove();
+        pathMap.remove(id);
         render();
     }
 
@@ -735,5 +761,215 @@ public class HospitalMapDisplay implements MapDisplay {
 
         public Location getLoc() { return loc; }
         public String getId() { return id; }
+    }
+
+    private class DrawPath {
+        private Path path;
+        private String id;
+        private boolean correctedPath = false;
+        private Map<Floor, ArrayList<Text>> textOnFloor = new HashMap<>();
+        private MapNode firstOnFloor;
+        private MapNode endOnFloor;
+        private Point origFirstOnFloor;
+        private Point origEndOnFloor;
+        private AnimationTimer timer;
+        private int curEdgeIdx = 0;
+        private ArrayList<MapEdge> edgesOnFloor;
+        private double curLenAcc = 0;
+
+        private DrawPath(String id, Path path) {
+            this.path = path;
+            this.id = id;
+
+            for(Floor f : Floor.values()) {
+                textOnFloor.put(f, new ArrayList<>());
+            }
+        }
+
+        private void startAnimation() {
+            timer = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    if (edgesOnFloor.size() <= curEdgeIdx) {
+                        curEdgeIdx = 0;
+                        return;
+                    }
+                    render();
+                    MapEdge curEdge = edgesOnFloor.get(curEdgeIdx);
+                    Location startLoc = curEdge.getStart().getCoordinate();
+                    Location endLoc = curEdge.getEnd().getCoordinate();
+                    // Find the length of the edge
+                    double length = Math.sqrt(Math.pow(startLoc.getxCoord() - endLoc.getxCoord(), 2) +
+                            Math.pow(startLoc.getyCoord() - endLoc.getyCoord(), 2));
+                    // Find angle of the vector
+                    // Add 90 degrees or pi radians to take into account differences in coordinate systems
+                    double angle = Math.atan2(startLoc.getyCoord() - endLoc.getyCoord(), startLoc.getxCoord() - endLoc.getxCoord()) + PI;
+                    // Increment from 0 to the length of the vector
+                    curLenAcc += 4;
+                    // Calculate the X and Y position of the point to be placed
+                    double ptX = Math.cos(angle) * curLenAcc + startLoc.getxCoord();
+                    double ptY = Math.sin(angle) * curLenAcc + startLoc.getyCoord();
+                    // Display animated point on the screen
+                    gc.fillOval(convUnits(ptX, getMaxX(), canvas.getWidth()) - 4, convUnits(ptY, getMaxY(), canvas.getHeight()) - 4, 8, 8);
+                    if (curLenAcc >= length) {
+                        curLenAcc = 0;
+                        // Switch to the next node
+                        curEdgeIdx = (curEdgeIdx + 1) % (edgesOnFloor.size());
+                    }
+                    //System.out.println("LENGTH: "+length+" ANGLE: "+angle+" PTX: "+ptX+" PTY: "+ptY);
+                }
+            };
+            timer.start();
+        }
+
+        private void stopAnimation() {
+            timer.stop();
+        }
+
+        private void remove() {
+            // Remove edges
+            for(MapEdge e : path.getConnectors()) {
+                lineMap.remove(e.getId());
+            }
+            // Remove annotations
+            Set<String> s = new HashSet<>(textMap.keySet());
+            for(String id : s) {
+                textMap.remove(id);
+            }
+            // Remove the differently colored front and end node
+            if(origFirstOnFloor != null && pointMap.containsKey(origFirstOnFloor.getId())) {
+                pointMap.remove(origFirstOnFloor.getId());
+            }
+            if(origEndOnFloor != null && pointMap.containsKey(origEndOnFloor.getId())) {
+                pointMap.remove(origEndOnFloor.getId());
+            }
+            stopAnimation();
+        }
+
+        private void draw(GraphicsContext gc) {
+            if(!correctedPath) {
+                correctedPath = true;
+                path = genCorrPath();
+            }
+
+            // Remove the old annotations from this floor
+            for(Text t : textOnFloor.get(getCurrentFloor())) {
+                textMap.remove(t.getId());
+            }
+
+            // Draw the annotations for this particular floor
+            for(Text t : textOnFloor.get(getCurrentFloor())) {
+                textMap.put(t.getId(), t);
+            }
+
+            // Draw the first and last node on this floor special
+            firstOnFloor = null;
+            endOnFloor = null;
+            edgesOnFloor = new ArrayList<>();
+
+            // Draw all the edges on this floor
+            for(MapEdge e : path.getConnectors()) {
+                boolean isCurStartOnFloor = e.getStart().getCoordinate().getLevel().equals(getCurrentFloor());
+                boolean isCurEndOnFloor = e.getEnd().getCoordinate().getLevel().equals(getCurrentFloor());
+                if(firstOnFloor == null && isCurStartOnFloor) {
+                    firstOnFloor = e.getStart();
+                    endOnFloor = e.getEnd();
+                }
+                if(isCurEndOnFloor) {
+                    endOnFloor = e.getEnd();
+                }
+                if(isCurStartOnFloor && isCurEndOnFloor) {
+                    lineMap.put(e.getId(), new Line(e.getId(), e.getStart().getCoordinate(), e.getEnd().getCoordinate(), 4, Color.CADETBLUE, false));
+                    edgesOnFloor.add(e);
+                }
+            }
+
+            // Draw the start and end nodes special
+            if(firstOnFloor != null) {
+                origFirstOnFloor = pointMap.get(firstOnFloor.getId());
+                pointMap.put(firstOnFloor.getId(), new Point(firstOnFloor.getId(), firstOnFloor.getCoordinate(), 12, Color.RED, true));
+            }
+            if(endOnFloor != null) {
+                origEndOnFloor = pointMap.get(endOnFloor.getId());
+                pointMap.put(endOnFloor.getId(), new Point(endOnFloor.getId(), endOnFloor.getCoordinate(), 12, Color.RED, true));
+            }
+        }
+
+        private Path genCorrPath() {
+            Path corrP = new Path();
+            // Turn them the right way and then store the edges the correct orientation
+            MapNode startNode = path.getNodes().get(0);
+            System.out.println("START NODE: " + startNode.getShortDescription());
+            // Node where the first part of the path ends
+            MapNode lastEnd = null;
+            // Start from the second edge and turn all of the connectors the right way around and store them in
+            // the new path object
+            for (int i = 0; i < path.getConnectors().size(); i++) {
+                MapEdge curEdge = path.getConnectors().get(i);
+                if (lastEnd == null) {
+                    lastEnd = curEdge.getEnd();
+                    // The first one always gets swapped, so make it initially backward
+                    if (!lastEnd.getId().equals(startNode.getId())) {
+                        // Flip so the start node is first
+                        lastEnd = path.getConnectors().get(0).getStart();
+                    }
+                }
+                if (curEdge.getStartID().compareTo(lastEnd.getId()) == 0) {
+                    // Doesn't need to be swapped
+                    //System.out.println(curEdge.getStartID()+" "+curEdge.getEndID()+" NO SWAP");
+                    lastEnd = curEdge.getEnd();
+                } else {
+                    // Needs to be swapped
+                    curEdge = new MapEdgeData(curEdge.getId(), curEdge.getEnd(), curEdge.getStart());
+                    //System.out.println(curEdge.getStartID()+" "+curEdge.getEndID()+" SWAP");
+                    lastEnd = curEdge.getEnd();
+                }
+                corrP.addNode(curEdge.getStart());
+                corrP.addNode(curEdge.getEnd());
+                corrP.addEdge(curEdge);
+
+                // See if the floor changes on this, if it does then store an annotation in the hashmap on which floor it goes to
+                Floor endFloor = curEdge.getEnd().getCoordinate().getLevel();
+                Floor startFloor = curEdge.getStart().getCoordinate().getLevel();
+                String annoText = "";
+                for(Floor floorToUse : Floor.values()) {
+                    if (!startFloor.equals(endFloor) && (startFloor.equals(floorToUse) || endFloor.equals(floorToUse))) {
+                        MapNode chFloorNode = curEdge.getStart();
+                        // We now know that the floor is being changed, but we need to follow the path until we arrive at the correct floor
+                        // Iterate through the the nodes in the path until we arrive on the next floor or the path ends.
+                        if (startFloor.equals(floorToUse)) {
+                            // For start floor -> different floor
+                            for (int j = i + 1; j < path.getConnectors().size(); j++) {
+                                // Check if the start and end nodes are on the same floor
+                                // If they are then this is the destination floor
+                                MapEdge checkEdge = path.getConnectors().get(j);
+                                if (checkEdge.getStart().getCoordinate().getLevel().equals(checkEdge.getEnd().getCoordinate().getLevel())) {
+                                    annoText = "To " + checkEdge.getStart().getCoordinate().getLevel().toString();
+                                    break;
+                                }
+                            }
+                        } else {
+                            // For other floor -> start floor
+                            // For loop must be reversed
+                            for (int j = i; j < path.getConnectors().size(); j--) {
+                                MapEdge checkEdge = path.getConnectors().get(j);
+                                if (checkEdge.getStart().getCoordinate().getLevel().equals(checkEdge.getEnd().getCoordinate().getLevel())) {
+                                    annoText = "From " + checkEdge.getStart().getCoordinate().getLevel().toString();
+                                    break;
+                                }
+                            }
+                        }
+                        //System.out.println("DRAW "+annoText+" AS AN ANNOTATION WITH ID "+chFloorNode.getId());
+                        // TODO: Migrate to images of arrows, and have those be clickable
+                        Text newT = new Text(chFloorNode.getId(), annoText, Font.font("Courier", FontWeight.BOLD, 16), chFloorNode.getCoordinate());
+                        ArrayList<Text> arrayOfText = textOnFloor.get(floorToUse);
+                        arrayOfText.add(newT);
+                    }
+                }
+
+
+            }
+            return corrP;
+        }
     }
 }
