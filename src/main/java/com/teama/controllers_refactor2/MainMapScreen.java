@@ -233,11 +233,17 @@ public class MainMapScreen implements Initializable {
     }
     //TODO update this to create and contain the pathfinding stuff
     @FXML public void onDirectionsClick(MouseEvent e){
-
+        if(drawerExtended){
+            //do nothing
+        }
+        else{
+            System.out.println("We need to implement this");
+        }
     }
     @FXML public void onOpenerClick(MouseEvent e){
+        //TODO fix double click breaking this guy
         try {
-            searchPane.setVisible(false);
+            disableSearchPane();
             drawer.setVisible(true);
             FXMLLoader openerLoader = new FXMLLoader();
             curController = new hamburgerDrawerController();
@@ -255,7 +261,7 @@ public class MainMapScreen implements Initializable {
                     curController.onClose();
                     drawer.close();
                     drawer.setVisible(false);
-                    searchPane.setVisible(true);
+                   enableSearchPane();
                 }
             });
         }
@@ -263,6 +269,17 @@ public class MainMapScreen implements Initializable {
             error.printStackTrace();
         }
     }
+    private void enableSearchPane(){
+       hmbDrawerOpener.setDisable(false);
+        searchPane.getStyleClass().clear();
+        searchPane.getStyleClass().add("searchPane");
+    }
+    private void disableSearchPane() {
+        hmbDrawerOpener.setDisable(true);
+        searchPane.getStyleClass().clear();
+        searchPane.getStyleClass().add("searchPane-disabled");
+    }
+
     /**
      * Generates a node pop up if able from the given mouse event
      *
