@@ -21,6 +21,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -202,7 +204,7 @@ public class StaffLoginPopOut extends PopOutController {
             Notifications notifications = Notifications.create()
                     .title("Log In Complete")
                     .text("Welcome "+ uname.getText())
-                    .graphic(null)
+                    .graphic(new ImageView(new Image("/check.png")))
                     .hideAfter(Duration.seconds(2))
                     .position(Pos.BOTTOM_CENTER)
                     .onAction(new EventHandler<ActionEvent>() {
@@ -211,7 +213,7 @@ public class StaffLoginPopOut extends PopOutController {
                             System.out.println("Hi Kent");
                         }
                     });
-            notifications.showConfirm();
+            notifications.show();
             setLoggedIn(true);
             errorMsg.setText("Login Successful");
             errorMsg.setVisible(true);
