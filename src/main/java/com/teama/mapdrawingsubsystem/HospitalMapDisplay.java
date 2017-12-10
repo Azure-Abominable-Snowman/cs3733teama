@@ -2,7 +2,6 @@ package com.teama.mapdrawingsubsystem;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapNode;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -291,6 +290,23 @@ public class HospitalMapDisplay implements MapDisplay {
     @Override
     public void drawPoint(String id, Location loc, double size, Color color, boolean screenCoords) {
         drawPoint(id, loc, size, color, true, screenCoords);
+    }
+
+    /**
+     *
+     * @param id
+     * @param newLoc
+     */
+    public void dragPoint(String id, Location newLoc) {
+        Point oldPoint = pointMap.get(id);
+
+        pointMap.remove(id);
+        render();
+        pointMap.put(id, new Point(id, newLoc, oldPoint.getWeight(), oldPoint.getColor(), oldPoint.getClickable()));
+        render();
+
+
+
     }
 
     @Override
@@ -680,9 +696,7 @@ public class HospitalMapDisplay implements MapDisplay {
             draw(gc, arrow);
         }
 
-        public void highlightNode(MapNode n,id) {
 
-        }
 
         public void draw(GraphicsContext gc, boolean arrow) {
             double width = canvas.getWidth();
@@ -758,6 +772,9 @@ public class HospitalMapDisplay implements MapDisplay {
 
         public Location getLoc() {
             return loc;
+        }
+        public Color getColor() {
+            return color;
         }
 
         public double getWeight() {

@@ -11,21 +11,31 @@ import java.util.Set;
 /**
  * Created by jakepardue on 12/8/17.
  */
-public class ElevatorStaff {
+public class ElevatorStaff implements ServiceStaff{
     private ServiceStaff genInfo;
-    private Set<MaintenanceType> typesToWorkOn;
 
-    public ElevatorStaff(ServiceStaff i,Set<MaintenanceType> types ) {
+
+
+    private Set<MaintenanceType> specialization;
+
+    public ElevatorStaff(ServiceStaff i, Set<MaintenanceType> specializations ) {
         genInfo = i;
-        this.typesToWorkOn = types;
-        genInfo.setStaffType(StaffType.MAINTENANCE);
+        this.specialization = specializations;
+        genInfo.setStaffType(StaffType.ELEVATOR);
     }
 
-    public ElevatorStaff(int id, ElevatorStaff s, Set<MaintenanceType> types) {
+
+    /**
+     * COPY CONSTRUCTOR. NOT TO BE USED FOR ANY OTHER PURPOSE EXCEPT COPYING EXISTING ELEVATOR STAFF.
+     * @param id
+     * @param s
+     *
+     */
+    public ElevatorStaff(int id, ElevatorStaff s) {
         GenericStaff genInfo = new GenericStaff(id, s.getFirstName(), s.getLastName(), s.getUsername(), s.getContactInfo());
         this.genInfo = genInfo;
-        this.typesToWorkOn = types;
-        genInfo.setStaffType(StaffType.INTERPRETER);
+        this.specialization = s.getSpecialization();
+        genInfo.setStaffType(StaffType.ELEVATOR);
     }
 
     public void setGenInfo(ServiceStaff staff) {
@@ -45,6 +55,13 @@ public class ElevatorStaff {
     }
     public void remove() {
 
+    }
+    public Set<MaintenanceType> getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Set<MaintenanceType> specialization) {
+        this.specialization = specialization;
     }
 
     public String getFirstName() {

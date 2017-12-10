@@ -12,6 +12,7 @@ public class ElevatorRequest implements Request {
     private Request info;
     private PriorityLevel pLevel;
     private MaintenanceType maintenanceType;
+    private String brokenElevatorID;
 
     // THESE FIELDS WILL BE FILLED OUT AFTER THE SERVICE IS COMPLETED:
     double serviceTime;
@@ -21,11 +22,12 @@ public class ElevatorRequest implements Request {
      * for making an interpreter request that has not been fulfilled yet
      * @param g
      */
-    public ElevatorRequest(Request g, PriorityLevel level, MaintenanceType m) {
+    public ElevatorRequest(Request g, PriorityLevel level, MaintenanceType m, String nodeID) {
         this.info = g;
         this.pLevel = level;
         this.serviceTime = 0;
         this.maintenanceType = m;
+        this.brokenElevatorID = nodeID;
     }
 
     /**

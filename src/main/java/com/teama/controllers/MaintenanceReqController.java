@@ -20,8 +20,7 @@ public class MaintenanceReqController {
         priorityBox.getItems().addAll(PriorityLevel.LOW, PriorityLevel.MEDIUM, PriorityLevel.HIGH);
 
         maintenanceTypeBox.getItems().clear();
-        maintenanceTypeBox.getItems().addAll( MaintenanceType.CODECHECK, MaintenanceType.MONTHLYINSPECTION, MaintenanceType.SAFETYCHECKS, MaintenanceType.TESTS,
-              MaintenanceType.PERSONTRAPPED);
+        maintenanceTypeBox.getItems().addAll( MaintenanceType.values());
     }
 
     public MaintenanceType getMaintenanceType(){
