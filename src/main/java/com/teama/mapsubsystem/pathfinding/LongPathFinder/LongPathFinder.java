@@ -14,14 +14,53 @@ import static java.lang.Math.sqrt;
 public class LongPathFinder implements PathAlgorithm{
     protected MapNode start, end;
     private HashMap<String, MapNode> disableNodes ;
+    private HashMap<String,MapNode> nonuseableNodes ;
+    private long mapsizeCounter =0;
 
     @Override
     public Path generatePath(MapNode start, MapNode end) {
         this.start=start;
         this.end=end;
         if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
-        return formOutput(longestRouteFromThis(start,new HashMap<>(disableNodes)));
 
+        nonuseableNodes = new HashMap<>(disableNodes);
+        return formOutput((longRouteFromThisLessMemory(start)));
+        //return formOutput(longestRouteFromThis(start,new HashMap<>(disableNodes)));
+
+    }
+
+    // by removing itself from the hashMap, it only need one global copy of the nodes that have already been through or can't
+    private LongRoute longRouteFromThisLessMemory(MapNode start)
+    {
+        nonuseableNodes.put(start.getId(), start);
+        System.out.printf("hashMapsize is now %d\n",nonuseableNodes.values().size());
+        //end condition
+        if(start.getId().equals(end.getId())){
+            System.out.println("Reached end");
+            return new LongRoute(start);
+        }
+        // not the end, keep looking
+        LongRoute longest = new LongRoute(start);
+        for (MapEdge edge : start.getEdges()) {
+            MapNode nextNode = adjacentNode(edge, start);
+            if (nonuseableNodes.containsKey(nextNode.getId())) {
+                continue;
+            }
+            LongRoute thisRoute = longRouteFromThisLessMemory(nextNode);
+            if(thisRoute == null){
+                continue;
+            }
+            thisRoute.addNodeToBack(start);
+            if(thisRoute.getDistance() > longest.getDistance()) {
+                longest = thisRoute;
+            }
+        }
+        if(longest.getDistance()==0){
+            nonuseableNodes.remove(start.getId());
+            return null;
+        }
+        nonuseableNodes.remove(start.getId());
+        return  longest;
     }
 
     private LongRoute longestRouteFromThis(MapNode start, HashMap<String,MapNode> unusableNode) {
