@@ -4,6 +4,8 @@ import com.teama.requestsubsystem.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class InterpreterRequestDB implements ServiceRequestDataSource {
@@ -334,8 +336,8 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
      * @param status
      * @return
      */
-    public ArrayList<InterpreterRequest> getAllInterpreterRequests(RequestStatus status) {
-        ArrayList<InterpreterRequest> requestList = new ArrayList<>();
+    public Set<InterpreterRequest> getAllInterpreterRequests(RequestStatus status) {
+        Set<InterpreterRequest> requestList = new HashSet<>();
         try {
             getRequestByStatus.setString(1, status.toString());
             ResultSet rs = getRequestByStatus.executeQuery();

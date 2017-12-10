@@ -12,4 +12,13 @@ public enum PriorityLevel {
     public int getValue() {
         return value;
     }
+
+    public static PriorityLevel getPriorityLevel(int level) {
+        for (PriorityLevel p: PriorityLevel.values()) {
+            if (p.getValue() == level) {
+                return p;
+            }
+        }
+        throw new IllegalArgumentException("No such priority level, " + level + ", exists.");
+    }
 }

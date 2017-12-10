@@ -12,32 +12,39 @@ public class ElevatorRequest implements Request {
     private Request info;
     private PriorityLevel pLevel;
     private MaintenanceType maintenanceType;
-    private String brokenElevatorID;
+    private String brokenElevatorID; // letter of elevator that is currently out of service --
 
     // THESE FIELDS WILL BE FILLED OUT AFTER THE SERVICE IS COMPLETED:
     double serviceTime;
 
 
     /**
-     * for making an interpreter request that has not been fulfilled yet
+     *
      * @param g
+     * @param level
+     * @param m
+     * @param nodeID - may just pass in the letter of the elevator on the floor
      */
+
     public ElevatorRequest(Request g, PriorityLevel level, MaintenanceType m, String nodeID) {
         this.info = g;
         this.pLevel = level;
         this.serviceTime = 0;
         this.maintenanceType = m;
-        this.brokenElevatorID = nodeID;
+        this.brokenElevatorID = nodeID; // TODO: DISABLE THE ELEVATOR (ALL FLOORS)FOR PATHFINDING
     }
 
     /**
-     * for making an interpreter request that is fulfilled
+     * for making an elevator request that is fulfilled
      * @param g
      * @param serviceTime
      */
 
-    public ElevatorRequest(Request g, double serviceTime) {
+    public ElevatorRequest(Request g,  PriorityLevel level, MaintenanceType m, String nodeID, double serviceTime) {
         this.info = g;
+        this.pLevel = level;
+        this.maintenanceType = m;
+        this.brokenElevatorID = nodeID;
         this.serviceTime = serviceTime;
     }
 
@@ -50,7 +57,13 @@ protected void setRequestID(int ID) { //protected, only used by DB
     this.id = ID;
 } // set by DB when request is entered into Request Table
 */
+    public String getBrokenElevatorID() {
+        return brokenElevatorID;
+    }
 
+    public void setBrokenElevatorID(String brokenElevatorID) {
+        this.brokenElevatorID = brokenElevatorID;
+    }
     public Location getLocation() {
         return info.getLocation();
     }

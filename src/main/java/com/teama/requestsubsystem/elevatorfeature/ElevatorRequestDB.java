@@ -1,12 +1,11 @@
 package com.teama.requestsubsystem.elevatorfeature;
 
 import com.teama.requestsubsystem.*;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import com.teama.requestsubsystem.interpreterfeature.Language;
-import com.teama.requestsubsystem.interpreterfeature.TranslationType;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -49,76 +48,39 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
 
         try {
             stmt = conn.createStatement();
-            log.info("Preparing to create Request Table.");
+            log.info("Preparing to create Elevator Request Table.");
             stmt.execute(
                     " CREATE TABLE " + this.requestTableName + " (" +
                             "REQUESTID INTEGER NOT NULL PRIMARY KEY, " +
                             "STAFFID INTEGER NOT NULL, " +
                             "STATUS VARCHAR(50) NOT NULL, " +
-                            "LANG VARCHAR(30) NOT NULL, " +
-                            "FAMSIZE INTEGER, " +
+                            "PRIORITY INTEGER NOT NULL, " +
+                            "MAINTENANCE VARCHAR(300) NOT NULL, " +
+                            "ELEVATORID VARCHAR(10) NOT NULL, " +
                             "SERVICETIME DOUBLE, " +
-                            "TRANSTYPE VARCHAR(40), " +
                             "FOREIGN KEY(REQUESTID) REFERENCES " + genericReqTableName + " (REQUESTID))");
-            //" FOREIGN KEY(STAFFID) REFERENCES INTERPRETER_STAFF(STAFFID)" +
-            //" PRIMARY KEY(REQUESTID) " +
 
             System.out.println(requestTableName);
             stmt.close();
-            log.info("Created the Interpreter Request table.");
+            log.info("Created the Elevator Request table.");
         } catch (SQLException e) {
-            log.info("Does the Interpreter Request table already exist?");
+            log.info("Does the Elevator Request table already exist?");
             //e.printStackTrace();
         }
-/*
-        // Create the report table linked to request table by foreign key
-        try {
-            stmt = conn.createStatement();
-            stmt.execute(" CREATE TABLE " + this.reportTableName + " (" +
-                    "REQUESTID INTEGER PRIMARY KEY NOT NULL, " +
-                    "SERVICETIME DOUBLE NOT NULL, " +
-                    "TRANSTYPE VARCHAR(40) NOT NULL, " +
-                    "FOREIGN KEY (REQUESTID) " +
-                    "REFERENCES " + requestTableName + "(REQUESTID)" +
-                    ")"
-            );
-            stmt.close();
-        } catch (SQLException e) {
-            log.info("Does the report table already exist?");
-            //e.printStackTrace();
-        }
-        */
-        /*
-        DatabaseMetaData meta = null;
-        try {
-            meta = conn.getMetaData();
-            ResultSet res = meta.getTables(null, null, reqTableName,
-                    new String[] {"TABLE"});
-            while (res.next()) {
-                System.out.println(
-                        "   "+res.getString("TABLE_CAT")
-                                + ", "+res.getString("TABLE_SCHEM")
-                                + ", "+res.getString("TABLE_NAME")
-                                + ", "+res.getString("TABLE_TYPE")
-                                + ", "+res.getString("REMARKS"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        */
 
 
         try {
             //getRequestID = conn.prepareStatement("")
-            addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " (REQUESTID, STAFFID, STATUS, LANG, FAMSIZE, SERVICETIME, TRANSTYPE) " +
+            addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " (REQUESTID, STAFFID, STATUS, PRIORITY, MAINTENANCE, ELEVATORID, SERVICETIME) " +
                     " VALUES (?, ?, ?, ?, ?, ?, ?)");
-            updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET LANG = ?, STAFFID = ? WHERE REQUESTID = ?");
+            updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET PRIORITY = ?, STAFFID = ?, MAINTENANCE = ? WHERE REQUESTID = ?");
             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
             deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
-            fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
+            fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, SERVICETIME = ? " +
                     "  WHERE REQUESTID = ? AND STAFFID = ?");
             getRequestStaffIDStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STAFFID = ? AND STATUS = ?");
             getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
+
             //selectRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
 
             //markClosed = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ? WHERE REQUESTID = ?", ResultSet.CONCUR_UPDATABLE);
@@ -132,11 +94,13 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
     }
 
     /**
-     * For adding a new InterpreterRequest to the InterpreterRequestDB
+     *     addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " (REQUESTID, STAFFID, STATUS, PRIORITY, MAINTENANCE, ELEVATORID, SERVICETIME) " +
+     " VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
      * @param request
      * @return
      */
-    public InterpreterRequest addRequest(InterpreterRequest request) {
+
+    public ElevatorRequest addRequest(ElevatorRequest request) {
         int reqID = request.getRequestID();
         int staffID = request.getStaffID();
         Request req = null;
@@ -153,14 +117,14 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
             addRequest.setInt(1, reqID);
             addRequest.setInt(2, staffID);
             addRequest.setString(3, status.toString());
-            addRequest.setString(4, request.getRequiredLanguage().toString()); // a request only added to db if assigned to staff member
-            addRequest.setNull(5, Types.DOUBLE); // not filled in yet
-            addRequest.setNull(6, Types.VARCHAR);
-            addRequest.setNull(7, Types.VARCHAR);
+            addRequest.setInt(4, request.getpLevel().getValue());
+            addRequest.setString(5, request.getMaintenanceType().toString()); // a request only added to db if assigned to staff member
+            addRequest.setString(6, request.getBrokenElevatorID()); // not filled in yet
+            addRequest.setNull(7, Types.DOUBLE);
 
             addRequest.executeUpdate();
-            log.info("Interpreter request added to Database.");
-            return new InterpreterRequest(req, request.getRequiredLanguage());
+            log.info("Elevator request added to Database.");
+            return new ElevatorRequest(req, request.getpLevel(), request.getMaintenanceType(), request.getBrokenElevatorID());
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
@@ -229,50 +193,35 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
     }
 
     /**
-     *
+     * deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
+
      * @param requestID
      * @return
      */
     public boolean deleteRequest(int requestID) {
-        boolean deletedInterp = false;
-        try {
-            deleteRequest.setInt(1, requestID);
-            deleteRequest.execute();
-            deletedInterp = true;
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
         boolean deletedGeneral = generalInfo.deleteRequest(requestID);
-        return deletedInterp && deletedGeneral;
-    }
-
-
-    /**
-     *
-     * @param set
-     * @return
-     */
-/*
-    private InterpreterRequest requestFromResultSet(ResultSet set) {
-        try {
-            InterpreterRequest r = new InterpreterRequest(new GenericRequest(new Location(set.getInt("XCOORD"), set.getInt("YCOORD"),
-                    Floor.getFloor(set.getString("LVL")), set.getString("BUILDING")), set.getInt("STAFFID"),
-                    set.getString("NOTE")), RequestStatus.getRequestStatus(set.getString("STATUS")), set.getInt("FAMSIZE"), Language.valueOf(set.getString("LANG")), set.getInt("REQUESTID"));
-            r.setRequestID(set.getInt("REQUESTID"));
-            return r;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+        if (deletedGeneral) {
+            try {
+                deleteRequest.setInt(1, requestID);
+                deleteRequest.execute();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return false;
     }
-*/
+
+
     /**
-     * returns a specific InterpreterRequest that was asked for
+     * returns a specific ElevatorRequest that was asked for
+     * getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
+
      * @param requestID
      * @return
      */
-    public InterpreterRequest getInterpreterRequest(int requestID) {
-        InterpreterRequest r = null;
+    public ElevatorRequest getElevatorRequest(int requestID) {
+        ElevatorRequest r = null;
         try {
             getRequest.setInt(1, requestID);
             ResultSet set = getRequest.executeQuery();
@@ -284,17 +233,18 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
                 Request info = generalInfo.getRequest(requestID);
                 if (info != null) {
                     if (info.getStatus() == RequestStatus.ASSIGNED) {
-                        r = new InterpreterRequest(info, Language.getLanguage(set.getString("LANG")));
+                        r = new ElevatorRequest(info, PriorityLevel.getPriorityLevel(set.getInt("PRIORITY")), MaintenanceType.getMaintenanceType(set.getString("MAINTENANCE")), set.getString("ELEVATORID") );
                     }
                     else if (info.getStatus() == RequestStatus.CLOSED){
-                        r = new InterpreterRequest(info, Language.getLanguage(set.getString("LANG")), set.getInt("FAMSIZE"), set.getDouble("SERVICETIME"),
-                                TranslationType.getTranslationType(set.getString("TRANSTYPE")));
+                        r = new ElevatorRequest(info, PriorityLevel.getPriorityLevel(set.getInt("PRIORITY")), MaintenanceType.getMaintenanceType(set.getString("MAINTENANCE")), set.getString("ELEVATORID"), set.getInt("SERVICETIME"));
                     }
                 }
             }
             set.close();
+            log.info("Retrieved desired elevator request.");
         } catch (SQLException e) {
             e.printStackTrace();
+            log.severe("Failed to retrieve desired request.");
         }
         return r;
     }
@@ -306,8 +256,8 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
      * @param status
      * @return
      */
-    public ArrayList<InterpreterRequest> getInterpreterRequestsByStaff(int staffID, RequestStatus status) {
-        ArrayList<InterpreterRequest> interpreters = new ArrayList<>();
+    public Set<ElevatorRequest> getElevatorRequestsByStaff(int staffID, RequestStatus status) {
+        Set<ElevatorRequest> elevators = new HashSet<>();
         try {
             getRequestStaffIDStatus.setInt(1, staffID);
             getRequestStaffIDStatus.setString(2, status.toString());
@@ -316,23 +266,16 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
                 int reqId = reqs.getInt("STAFFID");
                 if (reqId != 0) {
                     Request generalInfo = this.generalInfo.getRequest(reqId);
-                    InterpreterRequest found = null;
-                    if (status == RequestStatus.ASSIGNED) {
-                        found = new InterpreterRequest(generalInfo, Language.getLanguage(reqs.getString("LANG")));
-                    }
-                    else if (status == RequestStatus.CLOSED) {
-                        found = new InterpreterRequest(generalInfo, Language.getLanguage(reqs.getString("LANG")), reqs.getInt("FAMSIZE"), reqs.getDouble("SERVICETIME"),
-                                TranslationType.getTranslationType(reqs.getString("TRANSTYPE")));
-                    }
-                    interpreters.add(found);
-
+                    ElevatorRequest retrieved = getElevatorRequest(reqId);
+                    elevators.add(retrieved);
                 }
 
             }
+            log.info("Successfully added all elevator requests by given staff and status filters.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return interpreters;
+        return elevators;
     }
     /**
      *     getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
@@ -340,24 +283,23 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
      * @param status
      * @return
      */
-    public ArrayList<InterpreterRequest> getAllInterpreterRequests(RequestStatus status) {
-        ArrayList<InterpreterRequest> requestList = new ArrayList<>();
+    public Set<ElevatorRequest> getAllElevatorRequests(RequestStatus status) {
+        Set<ElevatorRequest> requestList = new HashSet<>();
         try {
             getRequestByStatus.setString(1, status.toString());
-            ResultSet rs = getRequestByStatus.executeQuery();
-            while (rs.next()) {
-                Request generalInfo = this.generalInfo.getRequest(rs.getInt("REQUESTID"));
-                InterpreterRequest f = null;
-                if (status == RequestStatus.ASSIGNED) {
-                    f = new InterpreterRequest(generalInfo, Language.getLanguage(rs.getString("LANG")));
+            ResultSet set = getRequestByStatus.executeQuery();
+            while (set.next()) {
+                Request info = this.generalInfo.getRequest(set.getInt("REQUESTID"));
+                ElevatorRequest f = null;
+                if (info.getStatus() == RequestStatus.ASSIGNED) {
+                    f = new ElevatorRequest(info, PriorityLevel.getPriorityLevel(set.getInt("PRIORITY")), MaintenanceType.getMaintenanceType(set.getString("MAINTENANCE")), set.getString("ELEVATORID") );
                 }
-                else if (status == RequestStatus.CLOSED) {
-                    f = new InterpreterRequest(generalInfo, Language.getLanguage(rs.getString("LANG")), rs.getInt("FAMSIZE"), rs.getDouble("SERVICETIME"),
-                            TranslationType.getTranslationType(rs.getString("TRANSTYPE")));
+                else if (info.getStatus() == RequestStatus.CLOSED){
+                    f = new ElevatorRequest(info, PriorityLevel.getPriorityLevel(set.getInt("PRIORITY")), MaintenanceType.getMaintenanceType(set.getString("MAINTENANCE")), set.getString("ELEVATORID"), set.getInt("SERVICETIME"));
                 }
                 requestList.add(f);
             }
-            rs.close();
+            set.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -367,41 +309,37 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
 
     /**
      * Ensures that the GenericRequestTable is updated (status set to CLOSED) and fills in all tracking fields
-     * ffulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
+     *   fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, SERVICETIME = ? " +
      "  WHERE REQUESTID = ? AND STAFFID = ?");
      * @param r
      * @return
      */
-    public boolean fulfillRequest(InterpreterRequest r) {
+    public boolean fulfillRequest(ElevatorRequest r) {
         if (fulfillRequest(r.getRequestID())) {
             if (r.getRequestID() == 0) {
-                log.info("Tried to fulfill a request that was not created.");
+                log.info("Tried to fulfill an elevator request that was not created.");
                 return false;
             } else if (r.getStatus() == RequestStatus.CLOSED) {
-                log.info("Tried to fulfill a request that was already closed.");
+                log.info("Tried to fulfill an elevator request that was already closed.");
                 return false;
             }
             generalInfo.fulfillRequest(r.getRequestID());
             try { //mark the request as closed in the Interpreter table
                 fulfillRequest.setString(1, RequestStatus.CLOSED.toString());
-                fulfillRequest.setString(2, r.getRequiredLanguage().toString());
-                fulfillRequest.setInt(3, r.getFamilySize());
-                fulfillRequest.setDouble(4, r.getServiceTime());
-                fulfillRequest.setString(5, r.getTranslType().toString());
-                fulfillRequest.setInt(6, r.getRequestID());
-                fulfillRequest.setInt(7, r.getStaffID());
+                fulfillRequest.setDouble(2, r.getServiceTime());
+                fulfillRequest.setInt(3, r.getRequestID());
+                fulfillRequest.setInt(4, r.getStaffID());
                 fulfillRequest.executeUpdate();
-                log.info("Filled in all the tracking fields for Interpreter request.");
+                log.info("Filled in all the tracking fields for Elevator request.");
                 return true;
 
             } catch (SQLException e) {
                 e.printStackTrace();
-                log.info("Tried to add a report for request " + r.getRequestID() + " but failed.");
+                log.info("Tried to fulfill Elevator request " + r.getRequestID() + " but failed.");
                 return false;
             }
         }
         return false;
-
     }
 
 
@@ -424,21 +362,22 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
      */
     /*
     ONLY updates the request. if a request is closed, the report is done and cannot be changed.
-                updateRequest = conn.prepareStatement("UPDATE " + requestTableName + "SET LANG = ? STAFFID = ? WHERE REQUESTID = ?");
+            updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET PRIORITY = ?, STAFFID = ?, MAINTENANCE = ? WHERE REQUESTID = ?");
 
      */
 
-    public boolean updateInterpreterRequest(InterpreterRequest r) {
+    public boolean updateElevatorRequest(ElevatorRequest r) {
         if (generalInfo.updateRequest(r)) {
             try {
-                updateRequest.setString(1, r.getRequiredLanguage().toString());
+                updateRequest.setInt(1, r.getpLevel().getValue());
                 updateRequest.setInt(2, r.getStaffID());
-                updateRequest.setInt(3, r.getRequestID());
+                updateRequest.setString(3, r.getMaintenanceType().toString());
+                updateRequest.setInt(4, r.getRequestID());
 
                 updateRequest.executeUpdate();
                 return true;
             } catch (SQLException e) {
-                log.info("Failed to update Request " + r.getRequestID());
+                log.info("Failed to update Elevator Request " + r.getRequestID());
                 e.printStackTrace();
             }
         }
