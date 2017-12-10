@@ -6,7 +6,7 @@ import org.junit.Test;
  * Created by aliss on 12/10/2017.
  */
 public class ElevatorStaffDBTest {
-    // TODO 
+    // TODO
     @Test
     public void addStaff() throws Exception {
 

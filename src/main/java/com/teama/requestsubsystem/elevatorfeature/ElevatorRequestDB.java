@@ -38,11 +38,6 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
             except.printStackTrace();
         }
 
-        // Creates the Interpreter request table if it isn't there already
-        // This request table stores the info of an interpreter request made by a staff or admin member
-        // Already has an assigned staff member, location, status, as well as extra info for filling request - family size, language, note
-        // Admin will later access the table to pull up a request and mark it as fulfilled by filling out the form
-        // database sets ID of request; this ID links to database of InterpreterReports
 
 
 
@@ -324,7 +319,7 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
                 return false;
             }
             generalInfo.fulfillRequest(r.getRequestID());
-            try { //mark the request as closed in the Interpreter table
+            try { //mark the request as closed in the Elevator Staff table
                 fulfillRequest.setString(1, RequestStatus.CLOSED.toString());
                 fulfillRequest.setDouble(2, r.getServiceTime());
                 fulfillRequest.setInt(3, r.getRequestID());
