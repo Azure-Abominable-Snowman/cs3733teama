@@ -24,19 +24,18 @@ public class LongPathFinder implements PathAlgorithm{
         if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
 
         nonuseableNodes = new HashMap<>(disableNodes);
-        return formOutput((longRouteFromThisLessMemory(start)));
-        //return formOutput(longestRouteFromThis(start,new HashMap<>(disableNodes)));
+        //return formOutput((longRouteFromThisLessMemory(start)));
+        return formOutput(longestRouteFromThis(start,new HashMap<>(disableNodes)));
 
     }
 
     // by removing itself from the hashMap, it only need one global copy of the nodes that have already been through or can't
     private LongRoute longRouteFromThisLessMemory(MapNode start)
     {
-        nonuseableNodes.put(start.getId(), start);
-        System.out.printf("hashMapsize is now %d\n",nonuseableNodes.values().size());
+            nonuseableNodes.put(start.getId(), start);
         //end condition
         if(start.getId().equals(end.getId())){
-            System.out.println("Reached end");
+            nonuseableNodes.remove(start.getId());
             return new LongRoute(start);
         }
         // not the end, keep looking
@@ -47,10 +46,8 @@ public class LongPathFinder implements PathAlgorithm{
                 continue;
             }
             LongRoute thisRoute = longRouteFromThisLessMemory(nextNode);
-            if(thisRoute == null){
-                continue;
-            }
-            thisRoute.addNodeToBack(start);
+            if(thisRoute == null)  continue;
+            thisRoute.addNodeToBack(start,edge.getWeight());
             if(thisRoute.getDistance() > longest.getDistance()) {
                 longest = thisRoute;
             }
@@ -59,7 +56,7 @@ public class LongPathFinder implements PathAlgorithm{
             nonuseableNodes.remove(start.getId());
             return null;
         }
-        nonuseableNodes.remove(start.getId());
+       // nonuseableNodes.remove(start.getId());
         return  longest;
     }
 
@@ -82,7 +79,7 @@ public class LongPathFinder implements PathAlgorithm{
             if(thisRoute == null){
                 continue;
             }
-            thisRoute.addNodeToBack(start);
+            thisRoute.addNodeToBack(start,edge.getWeight());
             if(thisRoute.getDistance() > longest.getDistance()) {
                 longest = thisRoute;
             }

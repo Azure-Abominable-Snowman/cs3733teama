@@ -15,10 +15,10 @@ import static java.lang.Math.sqrt;
 
 public class Dijkstras extends DijkstrasTemplate {
 
-    private HashMap<String,KnownPointD> checkedPoints;
-    private PriorityQueue<KnownPointD> queue;
-    private MapNode start, end;
-    private HashMap<String, MapNode> disableNodes  ;
+    protected HashMap<String,KnownPointD> checkedPoints;
+    protected PriorityQueue<KnownPointD> queue;
+    protected MapNode start, end;
+    protected HashMap<String, MapNode> disableNodes  ;
 
 
     /**
@@ -146,7 +146,7 @@ public class Dijkstras extends DijkstrasTemplate {
      * @param lastPoint the end point the Path
      * @return  the reversed Path
      */
-    private ArrayList<MapNode> collectPath(KnownPointD lastPoint)
+    protected ArrayList<MapNode> collectPath(KnownPointD lastPoint)
     {
         ArrayList<MapNode> finalPath = new ArrayList<>();
         for (;lastPoint.getLastNode()!=null;)

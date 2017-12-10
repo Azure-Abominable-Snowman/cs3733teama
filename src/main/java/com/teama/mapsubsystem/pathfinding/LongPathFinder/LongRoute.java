@@ -17,10 +17,10 @@ public class LongRoute {
      * This function is to add the next node into the end of the list and accumulate the distance
      * @param newNode is the node needed to add
      */
-    public void addNodeToBack (MapNode newNode)
+    public void addNodeToBack (MapNode newNode,double weight)
     {
         route.add(newNode);
-        distance = distance + LongPathFinder.calDistance(newNode,route.get(route.size()-2));
+        distance+=weight;
     }
 
     //getters
