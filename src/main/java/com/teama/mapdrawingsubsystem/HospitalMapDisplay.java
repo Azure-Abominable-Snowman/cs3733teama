@@ -299,6 +299,7 @@ public class HospitalMapDisplay implements MapDisplay {
         }
 
         Point p = new Point(id, loc, size, color, clickable);
+
         pointMap.put(id, p);
         render();
     }

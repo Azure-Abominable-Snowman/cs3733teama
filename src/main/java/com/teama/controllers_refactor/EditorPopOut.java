@@ -52,23 +52,22 @@ public class EditorPopOut extends PopOutController {
     private ScrollPane scrollPane;
 
 
-    private Parent currentPopOut;
+   // private Parent currentPopOut;
     private ToggleGroup editorGroup;
 
     private Map<Long, EventHandler<MouseEvent>> mouseEvents = new HashMap<>();
     private Map<Long, ChangeListener<Boolean>> floorEvents = new HashMap<>();
-    BooleanProperty updateCurrentNode = new SimpleBooleanProperty(true);
+    private Map<String, MapNode> alignmentNodes = new HashMap<>();
+    private Map<String, MapNode> selectedNodes = new HashMap<>();
+
     BooleanProperty edgeEditor = new SimpleBooleanProperty(false);
     BooleanProperty nodeEditor = new SimpleBooleanProperty(false);
-
 
     // NEW
     private BooleanProperty unknownLoc = new SimpleBooleanProperty();
     private BooleanProperty knownLoc = new SimpleBooleanProperty();
     private BooleanProperty updateFields = new SimpleBooleanProperty(true);
     private BooleanProperty isAligning = new SimpleBooleanProperty(false);
-
-    private StringProperty selectedNodeID = new SimpleStringProperty("selected");
 
     private ObjectProperty<Location> selectedLocation = new SimpleObjectProperty<Location>();
     private ObjectProperty<MapNode> selectedNode = new SimpleObjectProperty<MapNode>();
@@ -79,16 +78,9 @@ public class EditorPopOut extends PopOutController {
     BooleanProperty alignNode = new SimpleBooleanProperty(false);
 
 
-    //MapNode selectedNode = null;
-    //Location selectedLocation = null;
-    //MapNode alignmentNode = null;
-    MapNode startNode = null;
-    MapNode endNode = null;
-
     private MapDrawingSubsystem masterMap;
     private MapSubsystem mapData;
 
-    private long nodeEditorListenerID, edgeEditorListenerID;
 
     @FXML
     public void initialize() {
@@ -96,16 +88,12 @@ public class EditorPopOut extends PopOutController {
         alignPane(xProperty, xOffset, yProperty, yOffset);
         masterMap = MapDrawingSubsystem.getInstance();
         mapData = MapSubsystem.getInstance();
-        // viewEdges = new JFXToggleButton();
-        //viewNodes = new JFXToggleButton();
         viewEdges.setText("View Edges");
         viewNodes.setText("View Hall Nodes");
         nodeType.getItems().clear();
         nodeType.getItems().addAll(NodeType.values());
         alignmentOptions.getItems().clear();
         alignmentOptions.getItems().addAll("X", "Y");
-        //alignmentOptions.setDisable(true);
-        //alignBtn.setDisable(true);
 
 
 
@@ -182,8 +170,8 @@ public class EditorPopOut extends PopOutController {
                         editorInfo.getChildren().addAll(nodeDetails, alignNodes, actionButtons, finishButtons);
                         //alignmentOptions.disableProperty().setValue(false);
                         //alignBtn.disableProperty().setValue(false);
-                        //nodeEditorListenerID = masterMap.attachClickedListener(onLocClickEditNodes, ClickedListener.LOCCLICKED);
-                        //mouseEvents.put(nodeEditorListenerID, onLocClickEditNodes);
+                        //nodeEditorListenerID = masterMap.attachClickedListener(onClickNodeEditor, ClickedListener.LOCCLICKED);
+                        //mouseEvents.put(nodeEditorListenerID, onClickNodeEditor);
                         System.out.println("Selecting nodes for ediitng and such.");
 
                     } else if (editEdges.isSelected()) {
@@ -192,8 +180,8 @@ public class EditorPopOut extends PopOutController {
 
                         //alignmentOptions.disableProperty().setValue(true);
                         //alignBtn.disableProperty().setValue(true);
-                        mapDraw.detachListener(nodeEditorListenerID);
-                        mouseEvents.remove(nodeEditorListenerID);
+                        //mapDraw.detachListener(nodeEditorListenerID);
+                        //mouseEvents.remove(nodeEditorListenerID);
                         System.out.println("No longer selecting nodes.");
                     }
 
@@ -218,7 +206,7 @@ public class EditorPopOut extends PopOutController {
                 deleteNode.visibleProperty().set(false);
             }
         });
-        mouseEvents.put(masterMap.attachClickedListener(onLocClickEditNodes, ClickedListener.LOCCLICKED),onLocClickEditNodes);
+        mouseEvents.put(masterMap.attachClickedListener(onClickNodeEditor, ClickedListener.LOCCLICKED), onClickNodeEditor);
         confirmBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -322,11 +310,9 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
     }
 
 
-
-    EventHandler<MouseEvent> onLocClickEditNodes = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> onClickNodeEditor = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            //TODO: GENERATE EDIT/ADD POPUP
             //double xCanv = event.getX();
             //double yCanv = event.getY();
             Location selected = mouseClickToLocation(event);
@@ -426,6 +412,12 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
             */
         }
     };
+    EventHandler<MouseEvent> onNodeClickAndDrag = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+
+        }
+    };
 
     private EventHandler<MouseEvent> onEdgeClicked = new EventHandler<MouseEvent>() {
         @Override
@@ -439,8 +431,7 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
         }
     };
 
-    private MapNode startNodeEdge = null;
-    private MapNode endNodeEdge = null;
+
 /*
     //public void clearSelect
     private EventHandler<MouseEvent> onNodeClickEdges = new EventHandler<MouseEvent>() {
