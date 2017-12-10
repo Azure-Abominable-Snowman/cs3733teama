@@ -192,8 +192,8 @@ public class StaffLoginPopOut extends PopOutController {
         if (LoginSubsystem.getInstance().checkCredentials(l)) {
             /*
             Notifications notifications = Notifications.create()
-                    .title("Log In Complete")
-                    .text("Welcome "+ uname.getText())
+                    .title("Log In Complete!")
+                    .text("             Welcome "+ uname.getText() + "!")
                     .graphic(new ImageView(new Image("/check.png")))
                     .hideAfter(Duration.seconds(2))
                     .position(Pos.BOTTOM_CENTER)
