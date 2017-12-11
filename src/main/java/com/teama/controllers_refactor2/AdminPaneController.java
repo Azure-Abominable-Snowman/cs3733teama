@@ -9,6 +9,7 @@ import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -19,9 +20,11 @@ import java.util.logging.Logger;
 import com.teama.requestsubsystem.requestCard;
 import com.teama.login.LoginSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
+import javax.swing.*;
 import javax.swing.text.html.ImageView;
 
 public class AdminPaneController extends HamburgerController{
@@ -48,24 +51,34 @@ public class AdminPaneController extends HamburgerController{
 
     @FXML
     private AnchorPane mainPane;
+    @FXML private AnchorPane apnToLoad;
+    @FXML
+    void onMapClick(ActionEvent event) {
+        try {
+            apnToLoad.getChildren().clear();
+            MapEditorController editorController = new MapEditorController();
+            FXMLLoader mapLoader = new FXMLLoader(getClass().getResource(editorController.getFXMLPath()));
+            mapLoader.setController(editorController);
+            mapLoader.load();
+            apnToLoad.getChildren().add(editorController.getParentPane());
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     @FXML
-    void Mapclick(ActionEvent event) {
+    void onRequestClick(ActionEvent event) {
 
     }
 
     @FXML
-    void Requestclick(ActionEvent event) {
+    void onSettingsClick(ActionEvent event) {
 
     }
 
     @FXML
-    void Settingclick(ActionEvent event) {
-
-    }
-
-    @FXML
-    void Staffclick(ActionEvent event) {
+    void onStaffClick(ActionEvent event) {
 
     }
 
@@ -73,7 +86,7 @@ public class AdminPaneController extends HamburgerController{
     void mouseclick(ActionEvent event) {
 
     }
-    @FXML private void onBackClicked(MouseEvent e){
+    @FXML private void onBackClick(ActionEvent e){
         this.closing.set(true);
     }
     @FXML
