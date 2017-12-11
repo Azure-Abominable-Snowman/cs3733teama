@@ -93,7 +93,7 @@ public class AdminPaneController extends HamburgerController{
 
     @FXML
     void onStaffClick(ActionEvent event) {
-
+        loadPane(new RequestsController());
     }
 
     @FXML
