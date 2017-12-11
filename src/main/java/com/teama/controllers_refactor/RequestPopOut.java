@@ -23,8 +23,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javafx.scene.image.*;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import static com.teama.requestsubsystem.RequestType.*;
 import static javafx.scene.paint.Color.color;
@@ -286,7 +290,7 @@ public class RequestPopOut extends PopOutController {
 
                 t.start();
                 break;
-                */
+
             case MAIN:
                 PriorityLevel p = controller2.getPriority();
                 MaintenanceType m = controller2.getMaintenanceType();
