@@ -19,20 +19,19 @@ import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.Language;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -287,6 +286,7 @@ public class RequestPopOut extends PopOutController {
 
                 t.start();
                 break;
+                */
             case MAIN:
                 PriorityLevel p = controller2.getPriority();
                 MaintenanceType m = controller2.getMaintenanceType();
@@ -302,9 +302,10 @@ public class RequestPopOut extends PopOutController {
 
                 viewStaffButton.setText("View Staff");
 
-                curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p,m);
-                //add request to the database here
 
+                curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p,m, "");
+                //add request to the database here
+/*
                 Notifications notification = Notifications.create()
                         .title("Success!")
                         .text("Your elevator maintenance request has been added.")
@@ -319,6 +320,7 @@ public class RequestPopOut extends PopOutController {
                         });
                 t.start();
                 break;
+                */
             case SEC:
                 break;
             case TRANS:

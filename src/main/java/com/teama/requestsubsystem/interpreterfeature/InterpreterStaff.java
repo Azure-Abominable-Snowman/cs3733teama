@@ -21,6 +21,11 @@ public class InterpreterStaff  implements ServiceStaff {
         genInfo.setStaffType(StaffType.INTERPRETER);
     }
 
+    /**
+     * COPY-CONSTRUCTOR: IMPORTANT -- ONLY CREATE IF ABSOLUTELY NECESSARY.
+     * @param id
+     * @param s
+     */
     public InterpreterStaff(int id, InterpreterStaff s) {
         GenericStaff genInfo = new GenericStaff(id, s.getFirstName(), s.getLastName(), s.getUsername(), s.getContactInfo());
         this.genInfo = genInfo;

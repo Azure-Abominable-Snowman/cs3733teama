@@ -4,15 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import com.teama.mapsubsystem.data.Floor;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 
@@ -31,7 +26,7 @@ public class EdgeEditorController {
     @FXML
     private JFXButton delete, editConfirm, cancel;
     @FXML
-    private GridPane startNodeLocInfo, endNodeLocInfo,buttonGrid;
+    private GridPane startNodeLocInfo, endNodeLocInfo, buttonGrid;
     @FXML
     private JFXButton setStart, setEnd;
 
@@ -40,36 +35,20 @@ public class EdgeEditorController {
 
     private MapDisplay map;
     private MapSubsystem masterMap;
-    private Canvas c;
-    private boolean inAddMode = false;
-    private boolean inEditMode = false;
-    private boolean isDeleting = false;
-    private boolean isEditing = false;
-
-    private MapNode startNode = null; // populated when user clicks set
-    private MapNode endNode = null; // populated when user clicks set
-    private MapNode selectedNode = null;
-
-    private Location selectedLocation = null;
-    private Location startLoc = null;
-    private Location endLoc = null;
 
 
-
-    private String selectedLocID = "selected";
-    private String startLocID = "startLoc";
-    private String endLocID = "endLoc";
     private String selectedEdgeID = "selectedEdge";
 
     private String defaultPrompt = "Select Add New to add an edge or Edit Existing to edit or delete an edge.";
 
     public void initialize() {
         masterMap = MapSubsystem.getInstance();
+        /*
         startFloor = new JFXComboBox<>();
         startFloor.getItems().clear();
         startFloor.getItems().addAll(Floor.values());
 
-        clearAllText();
+        //clearAllText();
         startNodePrompt.setText(defaultPrompt);
 
         startNodeLocInfo.add(startFloor, 2, 0);
@@ -94,7 +73,7 @@ public class EdgeEditorController {
         editConfirm.getStyleClass().add("normalButton");
         cancel.getStylesheets().add("css/MainScreenStyle.css");
         cancel.getStyleClass().add("normalButton");
-
+/*
         setStart.setOnMouseClicked((MouseEvent e) -> {
 
             if (setStart.getText().equals("Edit")) {
@@ -283,6 +262,7 @@ public class EdgeEditorController {
         return newNode;
     }
     */
+/*
     public void setButtons(JFXButton add, JFXButton delete) {
         this.addMode = add;
         this.deleteMode = delete;
@@ -416,5 +396,6 @@ public class EdgeEditorController {
             }
         });
     }
-
+*/
+    }
 }
