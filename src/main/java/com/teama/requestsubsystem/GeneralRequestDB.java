@@ -17,7 +17,7 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
     private String reportTableName;
     private Connection conn = null;
     private Statement stmt = null;
-    private PreparedStatement addRequest, getRequest, getStaffRequest, deleteRequest, updateRequest, markStatus, getRequestReqTypeStatus, getRequestByStatus;
+    private PreparedStatement addRequest, getRequest, getRequestStaffIDStatus, deleteRequest, updateRequest, markStatus, getRequestReqTypeStatus, getRequestByStatus;
     private PreparedStatement addReport, updateReport, deleteReport, getReport;
 
     public GeneralRequestDB(String dbURL, String reqTableName) {
@@ -100,6 +100,8 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
             markStatus = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ? WHERE REQUESTID = ?", ResultSet.CONCUR_UPDATABLE);
             getRequestReqTypeStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQTYPE = ? AND STATUS = ?");
             getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
+            getRequestStaffIDStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STAFFID = ? AND STATUS = ?");
+
 
             /*
             addReport = conn.prepareStatement("INSERT INTO " + reportTableName + " VALUES(?, ?, ?)");
@@ -297,8 +299,34 @@ public class GeneralRequestDB implements ServiceRequestDataSource {
         return requests;
     }
 
-/*    //TODO
-    public ArrayList<Request> getStaffRequest()*/
+   /* public ArrayList<GenericRequest> getInterpreterRequestsByStaff(int staffID, RequestStatus status) {
+        ArrayList<GenericRequest> interpreters = new ArrayList<>();
+        try {
+            getRequestStaffIDStatus.setInt(1, staffID);
+            getRequestStaffIDStatus.setString(2, status.toString());
+            ResultSet reqs = getRequestStaffIDStatus.executeQuery();
+            while (reqs.next()) {
+                int reqId = reqs.getInt("STAFFID");
+                if (reqId != 0) {
+                    Request generalInfo = this.generalInfo.getRequest(reqId);
+                    InterpreterRequest found = null;
+                    if (status == RequestStatus.ASSIGNED) {
+                        found = new InterpreterRequest(generalInfo, Language.getLanguage(reqs.getString("LANG")));
+                    }
+                    else if (status == RequestStatus.CLOSED) {
+                        found = new InterpreterRequest(generalInfo, Language.getLanguage(reqs.getString("LANG")), reqs.getInt("FAMSIZE"), reqs.getDouble("SERVICETIME"),
+                                TranslationType.getTranslationType(reqs.getString("TRANSTYPE")));
+                    }
+                    interpreters.add(found);
+
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return interpreters;
+    }*/
 
     /**
      *  Marks the request as Closed. Returns true on success, false on failure.

@@ -34,7 +34,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" onAction="#Staffclick" prefHeight="62.0" prefWidth="241.0" text="Staff Database">
+                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" onAction="#Staffclick" prefHeight="62.0" prefWidth="241.0" text="View Staff">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -78,12 +78,12 @@
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="400.0" />
                           </content>
                         </Tab>
-                        <Tab text="Transport">
+                        <Tab text="Spritual Service">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                           </content>
                         </Tab>
-                        <Tab text="ETC">
+                        <Tab text="Elevator Repair">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                           </content>
