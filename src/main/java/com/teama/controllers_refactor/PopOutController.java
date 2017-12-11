@@ -41,7 +41,7 @@ public abstract class PopOutController {
             mainPane.setTranslateY(15);  // buffer from the top of the screen
         });
 
-        arrow.setTranslateY(yProperty.getValue()+yOffset);
+        //arrow.setTranslateY(yProperty.getValue()+yOffset);
         mainPane.setTranslateY(15); // buffer from the top of the screen
         mainPane.setTranslateX(xProperty.getValue()+xOffset-arrow.getFitWidth()-mainPane.getPrefWidth()-5); // 5 as a buffer from the button
     }

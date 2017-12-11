@@ -17,12 +17,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+
 
 public class StaffLoginController implements Controller{
     private final BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
@@ -155,20 +159,6 @@ public class StaffLoginController implements Controller{
         validate(new LoginInfo(username, password));
 /*
         if (!setErrorMessage(username, password)) {
-            System.out.println("This is working");
-            Notifications notifications = Notifications.create()
-                    .title("Log In Complete")
-                    .text("Welcome ")
-                    .graphic(null)
-                    .hideAfter(Duration.seconds(4))
-                    .position(Pos.CENTER)
-                    .onAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Hi Kent");
-                        }
-                    });
-            notifications.showConfirm();
             validate(new LoginInfo(username, password));
 
         }

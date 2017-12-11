@@ -16,7 +16,7 @@ import java.util.Map;
 public class PathfindingController {
 
 
-    private long curPathID = -1;
+    private String curPathID = null;
     private MapDrawingSubsystem drawingSubsystem = MapDrawingSubsystem.getInstance();
     private MapSubsystem mapSubsystem = MapSubsystem.getInstance();
     private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap;
@@ -63,7 +63,7 @@ public class PathfindingController {
                     System.out.println("Path start and end are the same");
                     // Remove the current path if there is one
                     drawingSubsystem.unDrawPath(curPathID);
-                    curPathID = -1;
+                    curPathID = null;
                     return;
                 }
                  // path = new NodeTypeDijkstras().generatePath(newOrigin, NodeType.EXIT); // TODO the line to test NodeTypeDijkstras.
@@ -73,7 +73,7 @@ public class PathfindingController {
                 return;
             }
 
-            if (curPathID != -1) {
+            if (curPathID != null) {
                 drawingSubsystem.unDrawPath(curPathID);
             }
 
