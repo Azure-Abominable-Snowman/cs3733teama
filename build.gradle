@@ -29,6 +29,8 @@ repositories {
 
 dependencies {
     compile 'com.jfoenix:jfoenix:1.10.0'
+    compile files('libs/helpAPI.jar')
+    compile group: 'org.controlsfx', name: 'controlsfx', version: '8.0.5'
 
     testCompile "org.testfx:testfx-core:4.0.+"
     testCompile "org.testfx:testfx-junit:4.0.+"

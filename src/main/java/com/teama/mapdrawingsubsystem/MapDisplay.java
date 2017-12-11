@@ -2,6 +2,7 @@ package com.teama.mapdrawingsubsystem;
 
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.pathfinding.Path;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -15,11 +16,13 @@ public interface MapDisplay {
     void drawLine(String id, Location start, Location end, double weight, Color color, boolean arrow, boolean screenCoords);
     void drawImage(String id, Image img, Location center, boolean screenCoords);
     void drawText(String id, String text, Location center, Font f, boolean screenCoords);
+    void drawPath(String id, Path path);
 
     void deletePoint(String id);
     void deleteLine(String id);
     void deleteImage(String id);
     void deleteText(String id);
+    void deletePath(String id);
 
     void clearText();
 
@@ -47,7 +50,7 @@ public interface MapDisplay {
     Canvas getUnderlyingCanvas();
     ScrollPane getUnderlyingScrollPane();
 
-    public Location convToImageCoords(Location loc);
+    Location convToImageCoords(Location loc);
 
     void clear();
 }
