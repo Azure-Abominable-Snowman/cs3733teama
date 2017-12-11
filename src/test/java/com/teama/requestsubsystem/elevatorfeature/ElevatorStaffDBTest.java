@@ -182,7 +182,7 @@ public class ElevatorStaffDBTest {
         assertTrue(db.findQualified(MaintenanceType.TESTS).isEmpty());
 
     }
-    
+
 
 
 }
