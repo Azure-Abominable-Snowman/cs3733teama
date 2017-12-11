@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="400.0" stylesheets="@Direction&amp;SearchBar.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor.DirectionANDSearchController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="400.0" stylesheets="@Direction&amp;SearchBar.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor2.DirectionController">
    <children>
       <VBox layoutX="28.0" layoutY="29.0" prefHeight="900.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -97,10 +97,12 @@
                   </ImageView>
                </children>
             </StackPane>
-            <TableView prefHeight="651.0" prefWidth="380.0">
+            <TableView fx:id="textDirections" prefHeight="651.0" prefWidth="380.0">
               <columns>
-                <TableColumn prefWidth="84.0" text="C1" />
-                <TableColumn minWidth="0.0" prefWidth="66.0" text="C2" />
+                <TableColumn fx:id="stepCol" editable="false" prefWidth="77.38467973470688" text="C1" />
+                <TableColumn fx:id="directionCol" editable="false" minWidth="0.0" prefWidth="104.47702026367188" text="C2" />
+                  <TableColumn fx:id="descriptionCol" editable="false" minWidth="0.0" prefWidth="142.52297973632812" text="C2" />
+                  <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="76.0" text="C2" />
               </columns>
                <VBox.margin>
                   <Insets />
