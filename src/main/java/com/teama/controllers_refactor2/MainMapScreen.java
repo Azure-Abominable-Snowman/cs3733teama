@@ -267,11 +267,19 @@ public class MainMapScreen implements Initializable {
                 openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
                 openerLoader.setController(curController);
                 openerLoader.load();
-                //curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
+                curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
                 curController.onOpen();
                 drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
                 drawer.setSidePane(curController.getParentPane());
                 drawer.open();
+                curController.getClosing().addListener((a, oldVal, newVal) -> {
+                    if (newVal) {
+                        curController.onClose();
+                        drawer.close();
+                        drawer.setVisible(false);
+                        enableSearchPane();
+                    }
+                });
 
             }catch (IOException e1) {
                 e1.printStackTrace();

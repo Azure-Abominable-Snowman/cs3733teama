@@ -165,16 +165,10 @@ public class DirectionController extends HamburgerController{
 //    distanceCol.setText("distance");
 //    directionCol.setText("direction");
 
+
+
     public void initialize(){
 
-        stepCol.setCellValueFactory(
-                new PropertyValueFactory<>("stepNum"));
-        descriptionCol.setCellValueFactory(
-                new PropertyValueFactory<>("description"));
-        distanceCol.setCellValueFactory(
-                new PropertyValueFactory<>("distance"));
-        directionCol.setCellValueFactory(
-                new PropertyValueFactory<>("direction"));
 
         //requestList.prefHeightProperty().bind(mainPane.heightProperty());
 
