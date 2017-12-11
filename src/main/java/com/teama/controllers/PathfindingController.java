@@ -5,6 +5,8 @@ import com.teama.controllers_refactor.PopOutType;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.NodeTypeDijkstras;
 import com.teama.mapsubsystem.pathfinding.Path;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -64,7 +66,8 @@ public class PathfindingController {
                     curPathID = -1;
                     return;
                 }
-                path = mapSubsystem.getPathGenerator().generatePath(newOrigin, newEnd);
+                 // path = new NodeTypeDijkstras().generatePath(newOrigin, NodeType.EXIT); // TODO the line to test NodeTypeDijkstras. 
+                path = mapSubsystem.getPathGenerator().generatePath(newOrigin, newEnd); // TODO hijack this line to test
             } else {
                 System.out.println("Path cannot be generated");
                 return;

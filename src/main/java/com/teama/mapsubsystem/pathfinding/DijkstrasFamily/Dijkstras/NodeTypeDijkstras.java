@@ -12,6 +12,12 @@ public class NodeTypeDijkstras extends Dijkstras {
     NodeType endtype;
 
 
+    /**
+     * The main function that would find the shortest path to the closest node that is the certain node type.
+     * @param start the start node
+     * @param endNodeType the node type that this function will try to find and return once it found one. which will be the closest one.
+     * @return the path to the closest node that is this type.
+     */
     public Path generatePath(MapNode start, NodeType endNodeType) {
         this.start=start;
         endtype = endNodeType;
@@ -23,7 +29,7 @@ public class NodeTypeDijkstras extends Dijkstras {
 
         //Generate Path
         for(checking = new KnownPointD(start,null,0);
-            !checking.getNode().getNodeType().toString().equals(end.getNodeType().toString());   // reached the proper node type
+            !checking.getNode().getNodeType().toString().equals(endtype.toString());   // reached the proper node type TODO, this could be a lambda.
             checking=queue.poll() // move forward one step
                 )
         {
@@ -32,7 +38,6 @@ public class NodeTypeDijkstras extends Dijkstras {
             if(queue.peek()==null) {
                 throw new java.lang.RuntimeException("Cannot generate a route from the given start and end.");
             }
-            // @TODO double check if this is good enough for errors.
         }
         // Done generating, output the path
         // make it into the format of outputting.
