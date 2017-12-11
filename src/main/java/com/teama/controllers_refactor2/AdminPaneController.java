@@ -1,13 +1,13 @@
-package com.teama.controllers;
+package com.teama.controllers_refactor2;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTabPane;
+import com.teama.controllers_refactor2.HamburgerController;
 import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.sql.Connection;
@@ -19,8 +19,12 @@ import java.util.logging.Logger;
 import com.teama.requestsubsystem.requestCard;
 import com.teama.login.LoginSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
-public class AdminPaneController{
+import javax.swing.text.html.ImageView;
+
+public class AdminPaneController extends HamburgerController{
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     InterpreterSubsystem interpreterSubsystem = InterpreterSubsystem.getInstance();
 
@@ -43,7 +47,7 @@ public class AdminPaneController{
     private JFXButton setting;
 
     @FXML
-    private JFXTabPane tabepane;
+    private AnchorPane mainPane;
 
     @FXML
     void Mapclick(ActionEvent event) {
@@ -66,10 +70,12 @@ public class AdminPaneController{
     }
 
     @FXML
-    void mouseclick(MouseEvent event) {
+    void mouseclick(ActionEvent event) {
 
     }
-
+    @FXML private void onBackClicked(MouseEvent e){
+        this.closing.set(true);
+    }
     @FXML
     private JFXListView<String> requestList;
 
@@ -89,6 +95,7 @@ public class AdminPaneController{
             requestList.getItems().add(IR.toString());
         }
         interpreterRequestList.clear();
+        requestList.prefHeightProperty().bind(mainPane.heightProperty());
     }
 
     public void updateStaffRequestList(){
@@ -105,5 +112,14 @@ public class AdminPaneController{
         requestList.getItems().clear();
         //genericRequestList = interpreterSubsystem.getGenericRequest();
     }
+    public void onOpen(){}
+    public void onClose(){}
+    public Pane getParentPane(){
+        System.out.println(mainPane);
+        return mainPane;}
 
+    @Override
+    public String getFXMLPath() {
+        return "/MainScreenDrawers/AdminPane.fxml";
+    }
 }
