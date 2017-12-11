@@ -66,6 +66,8 @@ public class SettingsPopOut extends PopOutController {
     @FXML
     private JFXSlider beamSearchQueue;
 
+    @FXML
+
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
 
@@ -126,5 +128,26 @@ public class SettingsPopOut extends PopOutController {
 
     @Override
     public String getFXMLPath(){return "/SettingsPopOut.fxml";}
+
+    /*@FXML
+    public void changeToEnglish(ActionEvent event){
+        Translator.getInstance().setLang("en");
+    }
+
+    @FXML
+    public void changeToSpanish(ActionEvent event){
+        Translator.getInstance().setLang("es");
+
+    }
+
+    @FXML
+    void changToFranch(ActionEvent event) {
+        Translator.getInstance().setLang("fr");
+    }
+
+    @FXML
+    void changeToPortuguese(ActionEvent event) {
+        Translator.getInstance().setLang("pt");
+    }*/
 
 }

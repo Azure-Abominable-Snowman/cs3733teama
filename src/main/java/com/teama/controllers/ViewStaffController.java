@@ -8,6 +8,9 @@ import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
 import com.teama.requestsubsystem.GenericStaff;
+import com.teama.requestsubsystem.elevatorfeature.ElevatorStaff;
+import com.teama.requestsubsystem.elevatorfeature.ElevatorSubsystem;
+import com.teama.requestsubsystem.elevatorfeature.MaintenanceType;
 import com.teama.requestsubsystem.interpreterfeature.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,6 +31,7 @@ public class ViewStaffController {
 
     private InterpreterStaff staffToFulfill;
     private Language language;
+    private MaintenanceType type;
     private BooleanProperty isComplete= new SimpleBooleanProperty();
 
 /*
@@ -68,16 +72,34 @@ public class ViewStaffController {
                 staffViewList.getItems().add(interpreter);
             }
         } catch(NullPointerException e) {
-            System.out.println("somethings fucked");
+            System.out.println("somethings fudged");
             e.printStackTrace();
         }
     }
+
+    public void SetMaintenanceType(MaintenanceType type){
+        /*
+        this.type = type;
+        staffViewList.getItems().clear();
+        try{
+            ArrayList<ElevatorStaff> staff = ElevatorSubsystem.getInstance().findQualified(type);
+            for(ElevatorStaff s: staff){
+                staffViewList.getItems().add(s);
+            }
+        }catch(Exception e){
+            System.out.println("something is wrong");
+            e.printStackTrace();
+        }
+        */
+    }
+
+
 
     public BooleanProperty getIsComplete(){return isComplete;}
     public void setIsComplete(boolean complete){
         this.isComplete.set(complete);
     }
-
+    /*
     private ArrayList<InterpreterStaff> getStaff(){
 
         Set<ContactInfoTypes> avail = new HashSet<ContactInfoTypes>();
@@ -107,4 +129,5 @@ public class ViewStaffController {
         staff.add(joe);
         return staff;
     }
+    */
 }

@@ -231,6 +231,7 @@ public class JavaDatabaseSource implements MapDataSource {
                     updateNodeStmt.setString(8, node.getTeamAssignment());
                     updateNodeStmt.setString(9, node.getId());
                     updateNodeStmt.executeUpdate();
+                    log.info("Updated the given node.");
 
                 } catch (SQLException e) {
                     e.printStackTrace();
