@@ -13,20 +13,20 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
+
+
 
 public class StaffLoginController implements Controller{
     private final BooleanProperty isLoggedIn = new SimpleBooleanProperty(false);
@@ -156,24 +156,13 @@ public class StaffLoginController implements Controller{
     private void onLoginClick(ActionEvent event){
         String username = uname.getText().trim();
         String password = pword.getText().trim();
+        validate(new LoginInfo(username, password));
+/*
         if (!setErrorMessage(username, password)) {
-            System.out.println("This is working");
-            Notifications notifications = Notifications.create()
-                    .title("Log In Complete")
-                    .text("Welcome ")
-                    .graphic(null)
-                    .hideAfter(Duration.seconds(4))
-                    .position(Pos.CENTER)
-                    .onAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Hi Kent");
-                        }
-                    });
-            notifications.showConfirm();
             validate(new LoginInfo(username, password));
 
         }
+        */
         /*
         inputUserID = IDfield.getText();
         inputUserPassword = passwordField.getText();
