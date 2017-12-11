@@ -7,6 +7,7 @@ import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
+import com.teama.login.LoginSubsystem;
 import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
@@ -24,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -37,6 +39,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
 import java.net.URL;
@@ -212,11 +216,39 @@ public class MainMapScreen implements Initializable {
             //inserting animation here
             Image logOut = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogOut.png"));
             loginButton.setImage(logOut);
+            Notifications notifications = Notifications.create()
+                    .title("Log In Complete")
+                    .text("Welcome!")
+                    .graphic(loginButton)
+                    .hideAfter(Duration.seconds(2))
+                    .position(Pos.BOTTOM_CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications.owner(areaPane.getScene().getWindow());
+            notifications.showConfirm();
+            System.out.println(notifications);
         } else {
             System.out.println("I guess not");
             // mapEditorButton.setY(startPoint);
             Image logIn = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogIn.png"));
             loginButton.setImage(logIn);
+            /*Notifications notifications = Notifications.create()
+                    .title("Log Out Complete")
+                    .text("Goodbye")
+                    .graphic(null)
+                    .hideAfter(Duration.seconds(2))
+                    .position(Pos.BOTTOM_CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications.showConfirm();*/
         }
     }
 
@@ -265,6 +297,43 @@ public class MainMapScreen implements Initializable {
         catch(IOException error){
             error.printStackTrace();
         }
+    }
+    @FXML private void onLoginClick(MouseEvent e){
+        try {
+            if(!ProgramSettings.getInstance().getIsLoggedInProp().get()) {
+                Stage logInStage = new Stage();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setResources(Translator.getInstance().getNewBundle());
+                loader.setLocation(getClass().getResource("/PopUps/Login.fxml"));
+                logInStage.setScene(new Scene(loader.load()));
+                logInStage.resizableProperty().set(false);
+                logInStage.resizableProperty().set(false);
+                logInStage.initModality(Modality.APPLICATION_MODAL);
+                logInStage.showAndWait();
+            }
+            else{
+                ProgramSettings.getInstance().getIsLoggedInProp().set(false);
+                Notifications notifications = Notifications.create()
+                        .title("Log Out Complete")
+                        .text("Good Bye!")
+                        .graphic(null)
+                        .hideAfter(Duration.seconds(2))
+                        .position(Pos.BOTTOM_CENTER)
+                        .onAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                System.out.println("Hi Kent");
+                            }
+                        });
+                notifications.owner(areaPane.getScene().getWindow());
+                notifications.showConfirm();
+            }
+
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+        }
+
     }
     private void enableSearchPane(){
        hmbDrawerOpener.setDisable(false);
