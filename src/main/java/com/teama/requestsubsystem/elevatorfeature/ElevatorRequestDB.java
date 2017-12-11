@@ -4,8 +4,6 @@ import com.teama.requestsubsystem.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -194,17 +192,17 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
      * @return
      */
     public boolean deleteRequest(int requestID) {
-        boolean deletedGeneral = generalInfo.deleteRequest(requestID);
-        if (deletedGeneral) {
-            try {
-                deleteRequest.setInt(1, requestID);
-                deleteRequest.execute();
-                return true;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        boolean deletedElev = false;
+        try {
+            deleteRequest.setInt(1, requestID);
+            deleteRequest.execute();
+            deletedElev = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
+        boolean deleteGeneral = generalInfo.deleteRequest(requestID);
+        return deletedElev && deleteGeneral;
+
     }
 
 
@@ -251,8 +249,8 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
      * @param status
      * @return
      */
-    public Set<ElevatorRequest> getElevatorRequestsByStaff(int staffID, RequestStatus status) {
-        Set<ElevatorRequest> elevators = new HashSet<>();
+    public ArrayList<ElevatorRequest> getElevatorRequestsByStaff(int staffID, RequestStatus status) {
+        ArrayList<ElevatorRequest> elevators = new ArrayList<>();
         try {
             getRequestStaffIDStatus.setInt(1, staffID);
             getRequestStaffIDStatus.setString(2, status.toString());
@@ -278,8 +276,8 @@ public class ElevatorRequestDB implements ServiceRequestDataSource {
      * @param status
      * @return
      */
-    public Set<ElevatorRequest> getAllElevatorRequests(RequestStatus status) {
-        Set<ElevatorRequest> requestList = new HashSet<>();
+    public ArrayList<ElevatorRequest> getAllElevatorRequests(RequestStatus status) {
+        ArrayList<ElevatorRequest> requestList = new ArrayList<>();
         try {
             getRequestByStatus.setString(1, status.toString());
             ResultSet set = getRequestByStatus.executeQuery();

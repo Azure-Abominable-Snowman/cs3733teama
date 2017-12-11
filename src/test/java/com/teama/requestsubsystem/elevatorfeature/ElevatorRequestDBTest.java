@@ -12,8 +12,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by aliss on 12/10/2017.
@@ -30,7 +29,7 @@ public class ElevatorRequestDBTest {
         // this object connects directly to the db
 
         reqTable = "TEST_ELEV_REQUESTS";
-        genericReqTable = "TEST_GENERIC_REQS";
+        genericReqTable = "TEST_GENREQS_ELEV";
 
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
@@ -79,64 +78,105 @@ public class ElevatorRequestDBTest {
 
     }
 
-    @Test
-    public void addRequest1() throws Exception {
-
-    }
-
-    @Test
-    public void getRequest() throws Exception {
-
-    }
 
     @Test
     public void getAllRequests() throws Exception {
+        // TODO
 
     }
 
-    @Test
-    public void getAllRequests1() throws Exception {
-
-    }
 
     @Test
     public void fulfillRequest() throws Exception {
+        Request g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, RequestType.MAIN,
+                RequestStatus.ASSIGNED, "S elevator broken");
+        ElevatorRequest repairWork = new ElevatorRequest(g, PriorityLevel.HIGH, MaintenanceType.REPAIRPARTS, "elevnodeS");
+        db.addRequest(repairWork);
+
+        ElevatorRequest toFulfill = db.getElevatorRequest(1);
+        assertEquals(RequestStatus.ASSIGNED, toFulfill.getStatus());
+        assertEquals(0, toFulfill.getServiceTime(), 0.1);
+
+        toFulfill.setServiceTime(1412);
+        assertTrue(db.fulfillRequest(toFulfill));
+
+        ElevatorRequest fulfilled = db.getElevatorRequest(1);
+        assertEquals(1412, fulfilled.getServiceTime(), 0.1);
+        assertEquals(RequestStatus.CLOSED, fulfilled.getStatus());
+        assertEquals(g.getNote(), fulfilled.getNote());
 
     }
 
     @Test
     public void updateRequest() throws Exception {
+        Request g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, RequestType.MAIN,
+                RequestStatus.ASSIGNED, "S elevator broken");
+        ElevatorRequest repairWork = new ElevatorRequest(g, PriorityLevel.HIGH, MaintenanceType.REPAIRPARTS, "elevnodeS");
+        db.addRequest(repairWork);
+        ElevatorRequest retrieved = db.getElevatorRequest(1);
+        assertEquals(PriorityLevel.HIGH, retrieved.getpLevel());
+        retrieved.setNote("changing note");
+        retrieved.setpLevel(PriorityLevel.LOW);
+        assertTrue(db.updateElevatorRequest(retrieved));
+
+        ElevatorRequest updated = db.getElevatorRequest(1);
+        assertEquals(retrieved.getNote(), updated.getNote());
+        assertEquals(retrieved.getpLevel(), updated.getpLevel());
 
     }
 
     @Test
     public void deleteRequest() throws Exception {
+        Request g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, RequestType.MAIN,
+                RequestStatus.ASSIGNED, "S elevator broken");
+        ElevatorRequest repairWork = new ElevatorRequest(g, PriorityLevel.HIGH, MaintenanceType.REPAIRPARTS, "elevnodeS");
+        ElevatorRequest trappedPerson = new ElevatorRequest(g, PriorityLevel.HIGH, MaintenanceType.PERSONTRAPPED, "elevnodeB");
+        ElevatorRequest testing = new ElevatorRequest(g, PriorityLevel.MEDIUM, MaintenanceType.SAFETYCHECKS, "elevnodeA");
+
+        db.addRequest(repairWork);
+        db.addRequest(trappedPerson);
+        db.addRequest(testing);
+
+        assertTrue(db.deleteRequest(3));
+        assertNull(db.getRequest(3));
+        assertNull(db.getElevatorRequest(3));
+
 
     }
 
     @Test
     public void getElevatorRequest() throws Exception {
+        Request g = new GenericRequest(new Location(1459, 2009, Floor.GROUND, "BTM"), 35791, RequestType.MAIN,
+                RequestStatus.ASSIGNED, "S elevator broken");
+        ElevatorRequest repairWork = new ElevatorRequest(g, PriorityLevel.HIGH, MaintenanceType.REPAIRPARTS, "elevnodeS");
+        ElevatorRequest trappedPerson = new ElevatorRequest(g, PriorityLevel.HIGH, MaintenanceType.PERSONTRAPPED, "elevnodeB");
+        ElevatorRequest testing = new ElevatorRequest(g, PriorityLevel.MEDIUM, MaintenanceType.SAFETYCHECKS, "elevnodeA");
+
+        db.addRequest(repairWork);
+        db.addRequest(trappedPerson);
+        db.addRequest(testing);
+
+        ElevatorRequest retrieved = db.getElevatorRequest(1);
+        assertNotNull(retrieved);
+        assertEquals(retrieved.getMaintenanceType(), MaintenanceType.REPAIRPARTS);
+        assertEquals(retrieved.getpLevel(), PriorityLevel.HIGH);
+        assertEquals("elevnodeS", retrieved.getBrokenElevatorID());
+        assertEquals(RequestStatus.ASSIGNED, retrieved.getStatus());
+
 
     }
 
     @Test
     public void getElevatorRequestsByStaff() throws Exception {
+        //todo
 
     }
 
     @Test
     public void getAllElevatorRequests() throws Exception {
+        //todo
 
     }
 
-    @Test
-    public void fulfillRequest1() throws Exception {
-
-    }
-
-    @Test
-    public void updateElevatorRequest() throws Exception {
-
-    }
 
 }
