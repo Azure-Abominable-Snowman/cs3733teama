@@ -112,7 +112,9 @@ public class MainMapScreen implements Initializable {
     // Useful for when we need to open something on the sidebar based on another event
     //get rid of this
     private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap = new HashMap<>();
-
+    private final ImageView imgLogIn = new ImageView(new Image(getClass().getResourceAsStream("/icons_i4/user-3-1.png")));
+    private final ImageView imgLogOut = new ImageView(new Image(getClass().getResourceAsStream("/icons_i4/LogOut.png")));
+    final int NOTIFICATION_SIZE=40;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -216,10 +218,13 @@ public class MainMapScreen implements Initializable {
             //inserting animation here
             Image logOut = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogOut.png"));
             loginButton.setImage(logOut);
+            System.out.println(imgLogIn);
+            imgLogIn.setFitHeight(NOTIFICATION_SIZE);
+            imgLogIn.setFitWidth(NOTIFICATION_SIZE);
             Notifications notifications = Notifications.create()
                     .title("Log In Complete")
                     .text("Welcome!")
-                    .graphic(loginButton)
+                    .graphic(imgLogIn)
                     .hideAfter(Duration.seconds(2))
                     .position(Pos.BOTTOM_CENTER)
                     .onAction(new EventHandler<ActionEvent>() {
@@ -229,7 +234,7 @@ public class MainMapScreen implements Initializable {
                         }
                     });
             notifications.owner(areaPane.getScene().getWindow());
-            notifications.showConfirm();
+            notifications.show();
             System.out.println(notifications);
         } else {
             System.out.println("I guess not");
@@ -313,10 +318,12 @@ public class MainMapScreen implements Initializable {
             }
             else{
                 ProgramSettings.getInstance().getIsLoggedInProp().set(false);
+                imgLogOut.setFitHeight(NOTIFICATION_SIZE);
+                imgLogOut.setFitWidth(NOTIFICATION_SIZE);
                 Notifications notifications = Notifications.create()
                         .title("Log Out Complete")
                         .text("Good Bye!")
-                        .graphic(null)
+                        .graphic(imgLogOut)
                         .hideAfter(Duration.seconds(2))
                         .position(Pos.BOTTOM_CENTER)
                         .onAction(new EventHandler<ActionEvent>() {
@@ -326,7 +333,7 @@ public class MainMapScreen implements Initializable {
                             }
                         });
                 notifications.owner(areaPane.getScene().getWindow());
-                notifications.showConfirm();
+                notifications.show();
             }
 
         }
