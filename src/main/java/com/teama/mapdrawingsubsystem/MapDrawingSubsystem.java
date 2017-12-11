@@ -1,6 +1,5 @@
 package com.teama.mapdrawingsubsystem;
 
-import com.teama.ProgramSettings;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.Path;
@@ -12,10 +11,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ import java.util.Map;
 public class MapDrawingSubsystem {
 
     private MapDisplay map;
-    private Pane floorButtonBox;
+    private GridPane floorButtonBox;
 
     private long listenerIDCounter = 0; // keeps track of the listeners added
     private Map<Long, ChangeListener<? super Boolean>> floorBoxListenerMap;
@@ -33,7 +32,7 @@ public class MapDrawingSubsystem {
     private Map<ClickedListener, ArrayList<Long>> listenerLists = new HashMap<>();
 
     private MapSubsystem mapDB =  MapSubsystem.getInstance();
-    private Text floorNumberDisplay;
+   // private Text floorNumberDisplay;
 
     private AnchorPane areaPane;
     private static class MapDrawingSubsystemGetter {
@@ -57,6 +56,7 @@ public class MapDrawingSubsystem {
         if(listenerLists.containsKey(ClickedListener.EDGECLICKED) && map.lineAt(mouseLoc) != null) {
             for(Long id : listenerLists.get(ClickedListener.EDGECLICKED)) {
                 clickedListenerMap.get(id).handle(event);
+
             }
         }
 
@@ -76,7 +76,7 @@ public class MapDrawingSubsystem {
      * @param mapCanvas
      * @param mapScroll
      */
-    public void initialize(Canvas mapCanvas, ScrollPane mapScroll, Text floorNumberDisplay, Pane floorButtonBox, AnchorPane areaPane) {
+    public void initialize(Canvas mapCanvas, ScrollPane mapScroll, GridPane floorButtonBox, AnchorPane areaPane) {
         clickedListenerMap = new HashMap<>();
         floorBoxListenerMap = new HashMap<>();
         Map<Floor, HospitalMap> imgs = new HashMap<>();
@@ -90,18 +90,25 @@ public class MapDrawingSubsystem {
 
         mapCanvas.onMouseClickedProperty().set(masterMouseClickedEvent);
 
-        this.floorNumberDisplay = floorNumberDisplay;
+      //  this.floorNumberDisplay = floorNumberDisplay;
         this.floorButtonBox = floorButtonBox;
         this.areaPane = areaPane;
-
         this.mapScroll = mapScroll;
-
+        //have this attach listeners to all of the buttons where the
+        //loops goes through all of the buttons and makes it transparent
+        //then set the one that was clicked to be filled in
         // Attach a listener that changes the current floor when a button is pressed
-        floorNumberDisplay.setText(getCurrentFloor().toString());
+      //  floorNumberDisplay.setText(getCurrentFloor().toString());
+        System.out.println(floorButtonBox);
         for(Node button : floorButtonBox.getChildren()) {
             button.pressedProperty().addListener((a, b, c) -> {
+                for(Node node: floorButtonBox.getChildren()){
+                    node.getStyleClass().clear();
+                    node.getStyleClass().add("floorButton");
+                }
+                button.getStyleClass().clear();
+                button.getStyleClass().add("floorButtonSelected");
                 map.setCurrentFloor(Floor.getFloor(button.getId()));
-                floorNumberDisplay.setText(getCurrentFloor().toString());
             });
         }
     }
@@ -147,6 +154,7 @@ public class MapDrawingSubsystem {
             return -1;
         }
         for(int i = 0; i < Floor.values().length; i++) {
+           // floorButtonBox.getChildren().get(i).pressedProperty().addListener((a, b, c) -> {});
             floorButtonBox.getChildren().get(i).pressedProperty().addListener(event);
         }
         listenerIDCounter++;
@@ -224,105 +232,16 @@ public class MapDrawingSubsystem {
         // TODO: implement animations
     }
 
-    private Map<Long, Path> displayedPaths = new HashMap<>();
+    private Map<String, Path> displayedPaths = new HashMap<>();
 
     /**
      * Draws a path, returns an ID connected to that particular path to use to remove it from the screen
      * @param path
      * @return
      */
-    public long drawPath(Path path) {
-        drawPathOnScreen(path);
-        long pathID = attachFloorChangeListener((a, b, c) -> {
-            drawPathOnScreen(path);
-        });
-        displayedPaths.put(pathID, path);
-        return pathID;
-    }
-
-    private void drawPathOnScreen(Path path) {
-        // Clear all previous annotations from the screen
-        map.clearText();
-        // boolean to highlight the start of a path on the floor special
-        boolean drawnFirst = false;
-        // Last node drawn
-        MapNode lastDrawn = null;
-        // Turn them the right way and then display the edges
-        // Node where the path starts
-        MapNode startNode = path.getNodes().get(0);
-        System.out.println("START NODE: " + startNode.getShortDescription());
-        // Node where the first part of the path ends
-        MapNode lastEnd = null;
-        // Start from the second edge and turn all of the connectors the right way around and then draw them
-        for (int i = 0; i < path.getConnectors().size(); i++) {
-            MapEdge curEdge = path.getConnectors().get(i);
-            if (lastEnd == null) {
-                lastEnd = curEdge.getEnd();
-                // The first one always gets swapped, so make it initially backward
-                if (!lastEnd.getId().equals(startNode.getId())) {
-                    // Flip so the start node is first
-                    lastEnd = path.getConnectors().get(0).getStart();
-                }
-            }
-            if (curEdge.getStartID().compareTo(lastEnd.getId()) == 0) {
-                // Doesn't need to be swapped
-                //System.out.println(curEdge.getStartID()+" "+curEdge.getEndID()+" NO SWAP");
-                lastEnd = curEdge.getEnd();
-            } else {
-                // Needs to be swapped
-                curEdge = new MapEdgeData(curEdge.getId(), curEdge.getEnd(), curEdge.getStart());
-                //System.out.println(curEdge.getStartID()+" "+curEdge.getEndID()+" SWAP");
-                lastEnd = curEdge.getEnd();
-            }
-            if (curEdge.getStart().getCoordinate().getLevel().equals(getCurrentFloor()) && curEdge.getEnd().getCoordinate().getLevel().equals(getCurrentFloor())) {
-                new DrawEdgeInstantly(curEdge).displayOnScreen(map);
-                if (!drawnFirst) {
-                    MapDrawingSubsystem.getInstance().drawNode(curEdge.getStart(), 9, Color.RED);
-                    drawnFirst = true;
-                }
-                lastDrawn = lastEnd;
-            }
-
-            // See if the floor changes on this, if it does then draw an annotation on the node on the currently displayed floor
-            // With the name of the next floor to go to
-            Floor endFloor = curEdge.getEnd().getCoordinate().getLevel();
-            Floor startFloor = curEdge.getStart().getCoordinate().getLevel();
-            String annoText = "";
-            if (!startFloor.equals(endFloor) && (startFloor.equals(getCurrentFloor()) || endFloor.equals(getCurrentFloor()))) {
-                MapNode chFloorNode = curEdge.getStart();
-                // We now know that the floor is being changed, but we need to follow the path until we arrive at the correct floor
-                // Iterate through the the nodes in the path until we arrive on the next floor or the path ends.
-                if (startFloor.equals(getCurrentFloor())) {
-                    // For start floor -> different floor
-                    for (int j = i + 1; j < path.getConnectors().size(); j++) {
-                        // Check if the start and end nodes are on the same floor
-                        // If they are then this is the destination floor
-                        MapEdge checkEdge = path.getConnectors().get(j);
-                        if (checkEdge.getStart().getCoordinate().getLevel().equals(checkEdge.getEnd().getCoordinate().getLevel())) {
-                            annoText = "To " + checkEdge.getStart().getCoordinate().getLevel().toString();
-                            break;
-                        }
-                    }
-                } else {
-                    // For other floor -> start floor
-                    // For loop must be reversed
-                    for (int j = i; j < path.getConnectors().size(); j--) {
-                        MapEdge checkEdge = path.getConnectors().get(j);
-                        if (checkEdge.getStart().getCoordinate().getLevel().equals(checkEdge.getEnd().getCoordinate().getLevel())) {
-                            annoText = "From " + checkEdge.getStart().getCoordinate().getLevel().toString();
-                            break;
-                        }
-                    }
-                }
-                //System.out.println("DRAW "+annoText+" AS AN ANNOTATION WITH ID "+chFloorNode.getId());
-                map.drawText(chFloorNode.getId(), annoText, chFloorNode.getCoordinate(), Font.font("Courier", FontWeight.BOLD, 16), false);
-            }
-
-        }
-        // Draw the end special
-        if (lastDrawn != null) {
-            MapDrawingSubsystem.getInstance().drawNode(lastDrawn, 9, Color.RED);
-        }
+    public String drawPath(Path path) {
+        map.drawPath(path.getStartNode().getId()+path.getEndNode().getId(), path);
+        return path.getStartNode().getId()+path.getEndNode().getId();
     }
 
     public void drawPath(Path path, ArrayList<PathAnimation> animation) {
@@ -345,9 +264,9 @@ public class MapDrawingSubsystem {
         map.deleteLine(edge.getId());
     }
 
-    public void unDrawPath(long pathID) {
-        detachListener(pathID);
-        Path pathToRemove = displayedPaths.get(pathID);
+    public void unDrawPath(String pathID) {
+        //detachListener(pathID);
+        /*Path pathToRemove = displayedPaths.get(pathID);
         // Delete all the edges from the screen
         for(MapEdge e : pathToRemove.getConnectors()) {
             map.deleteLine(e.getId());
@@ -360,7 +279,8 @@ public class MapDrawingSubsystem {
             // Delete all possible annotations
             //display.deleteText(n.getId());
         }
-        displayedPaths.remove(pathID);
+        displayedPaths.remove(pathID);*/
+        map.deletePath(pathID);
     }
 
     public void unDrawText(String id) {
@@ -405,9 +325,9 @@ public class MapDrawingSubsystem {
             drawNode(n, 0, null);
         }
         // Redraw the path
-        Path curPath = ProgramSettings.getInstance().getCurrentDisplayedPathProp().getValue();
+        /*Path curPath = ProgramSettings.getInstance().getCurrentDisplayedPathProp().getValue();
         if(curPath != null) {
             drawPathOnScreen(curPath);
-        }
+        }*/
     }
 }

@@ -1,6 +1,7 @@
 package com.teama.controllers_refactor;
 import com.jfoenix.controls.*;
 import com.teama.controllers.InterpReqController;
+import com.teama.controllers.MaintenanceReqController;
 import com.teama.controllers.ViewStaffController;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
@@ -11,25 +12,26 @@ import com.teama.mapsubsystem.data.NodeType;
 import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
 import com.teama.messages.SMSMessage;
-import com.teama.requestsubsystem.GenericRequest;
-import com.teama.requestsubsystem.Request;
-import com.teama.requestsubsystem.RequestStatus;
-import com.teama.requestsubsystem.RequestType;
+import com.teama.requestsubsystem.*;
+import com.teama.requestsubsystem.elevatorfeature.ElevatorRequest;
+import com.teama.requestsubsystem.elevatorfeature.MaintenanceType;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.Language;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -91,6 +93,8 @@ public class RequestPopOut extends PopOutController {
     @FXML
     private JFXButton completeButton;
 
+    Image check = new Image("/check.png");
+
     private String buildingName;
     private Floor floorName;
     private MapNode mapNodeName;
@@ -102,13 +106,15 @@ public class RequestPopOut extends PopOutController {
     private int SCALING = 450;
 
     private InterpReqController controller;
+    private MaintenanceReqController controller2;
+
 
     final BooleanProperty nodeSelected = new SimpleBooleanProperty();
 
 
     private AnchorPane curReqPane;
     private ArrayList<InterpreterRequest> requests;
-    private InterpreterRequest curRequest = null;
+    private Request curRequest = null;
     //private FXMLLoader loader = new FXMLLoader();
 
     public void initialize() {
@@ -200,6 +206,8 @@ public class RequestPopOut extends PopOutController {
 
         //for Security Request
 
+
+
         if(staffToFulfill == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error!");
@@ -208,6 +216,17 @@ public class RequestPopOut extends PopOutController {
             alert.showAndWait();
         }
 
+        class MyThread implements Runnable {
+
+            public void run() {
+                SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
+                if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
+                    EmailMessage message2 = new EmailMessage();
+                    message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
+                }
+            }
+        }
+        Thread t = new Thread(new MyThread());
 
         buildingName = building.getSelectionModel().getSelectedItem();
         floorName = floor.getSelectionModel().getSelectedItem();
@@ -230,45 +249,74 @@ public class RequestPopOut extends PopOutController {
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
 
-                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || additionalInfoMessage.equals("") || lang == null || familySize.equals("")){
+                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  lang == null || familySize.equals("")){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error2!");
+                    alert.setTitle("Error!");
                     alert.setHeaderText("Error with Submitting Your Request.");
                     alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
                     alert.showAndWait();
+                    break;
                 }
+                viewStaffButton.setText("View Staff");
                 curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), lang);
-                InterpreterSubsystem.getInstance().addRequest(curRequest);
+                InterpreterSubsystem.getInstance().addRequest((InterpreterRequest) curRequest);
 
+                System.out.println(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest));
 
                 System.out.println("It was successful");
-                //TODO fix this
-                // if(!InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest)){
+
                 System.out.println("I o[i2jej]qoi[2 you so much");
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText("Success!");
-                alert.setContentText("Your interpreter request has been sent! ");
-                alert.showAndWait();
-                //}
+                /*
+                Notifications notifications = Notifications.create()
+                        .title("Success!")
+                        .text("Your interpreter request has been added.")
+                        .graphic(new ImageView(check))
+                        .hideAfter(Duration.seconds(4))
+                        .position(Pos.CENTER)
+                        .onAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                System.out.println("Hi Kent");
+                            }
+                        });
 
-                class MyThread implements Runnable {
-
-                    public void run(){
-                        SMSMessage message1 = new SMSMessage(staffToFulfill.getProvider(), staffToFulfill.getPhoneNumber());
-                        if (!message1.sendMessage(staffToFulfill.getContactInfo(), createTextMessage())) {
-                            EmailMessage message2 = new EmailMessage();
-                            message2.sendMessage(staffToFulfill.getContactInfo(), createEmailMessage());
-                        }
-                    }
-                }
-                Thread t = new Thread(new MyThread());
-                System.out.println("Message has been sent!");
                 t.start();
-
                 break;
+                */
             case MAIN:
+                PriorityLevel p = controller2.getPriority();
+                MaintenanceType m = controller2.getMaintenanceType();
+
+                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  p == null || m == null){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!");
+                    alert.setHeaderText("Error with Submitting Your Request.");
+                    alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
+                    alert.showAndWait();
+                    break;
+                }
+
+                viewStaffButton.setText("View Staff");
+
+
+                curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p,m, "");
+                //add request to the database here
+/*
+                Notifications notification = Notifications.create()
+                        .title("Success!")
+                        .text("Your elevator maintenance request has been added.")
+                        .graphic(new ImageView(check))
+                        .hideAfter(Duration.seconds(4))
+                        .position(Pos.CENTER)
+                        .onAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                System.out.println("Hi Kent");
+                            }
+                        });
+                t.start();
                 break;
+                */
             case SEC:
                 break;
             case TRANS:
@@ -297,9 +345,9 @@ public class RequestPopOut extends PopOutController {
             System.out.println("Firing");
             if (typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.INTR)) {
                 System.out.println("Firing");
-                System.out.println(getClass().getResource("/InterpreterReq.fxml"));
+                System.out.println(getClass().getResource("/requestdropdowns/InterpreterReqDropDown.fxml"));
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/InterpreterReq.fxml"));
+                loader.setLocation(getClass().getResource("/requestdropdowns/InterpreterReqDropDown.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
                     System.out.println("Hello Jake");
@@ -313,7 +361,7 @@ public class RequestPopOut extends PopOutController {
             else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.TRANS)){
                 System.out.println("this is working");
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/Transportation.fxml"));
+                loader.setLocation(getClass().getResource("/requestdropdowns/TransportationDropDown.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
                     System.out.println("Hello Jake");
@@ -328,7 +376,7 @@ public class RequestPopOut extends PopOutController {
             else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.FOOD)){
                 System.out.println("this is working");
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/FoodDropDown.fxml"));
+                loader.setLocation(getClass().getResource("/requestdropdowns/FoodDropDown.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
                     System.out.println("Hello Jake");
@@ -342,22 +390,22 @@ public class RequestPopOut extends PopOutController {
             else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.MAIN)){
                 System.out.println("this is working");
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/MaintenanceDropDown.fxml"));
+                loader.setLocation(getClass().getResource("/requestdropdowns/MaintenanceDropDown.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
                     System.out.println("Hello Jake");
                     addToThis.getChildren().remove(curReqPane);
                     addToThis.getChildren().add(interpParent);
                     curReqPane = interpParent;
-                    InterpReqController temp = loader.getController();
-                    controller = temp;
+                    MaintenanceReqController temp = loader.getController();
+                    controller2 = temp;
                 }
             }
 
             else if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.SEC)){
                 System.out.println("this is working");
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/SecurityDropDown.fxml"));
+                loader.setLocation(getClass().getResource("/requestdropdowns/SecurityDropDown.fxml"));
                 AnchorPane interpParent = loader.load();
                 if (curReqPane != interpParent) {
                     System.out.println("Hello Jake");
@@ -368,7 +416,7 @@ public class RequestPopOut extends PopOutController {
                     controller = temp;
                 }
             }
-        } catch (IOException e1) {
+            } catch (IOException e1) {
             e1.printStackTrace();
         }
     }
@@ -402,9 +450,40 @@ public class RequestPopOut extends PopOutController {
             if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.INTR)){
                 if( controller.getLanguage()== null){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error4!");
+                    alert.setTitle("Error!");
                     alert.setHeaderText("No language selected.");
                     alert.setContentText("Please choose a language.");
+                    alert.showAndWait();
+                }
+                    staffPopUp.setTitle("View B&W Staff");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
+
+                    Scene staffPopUpScene = new Scene(loader.load());
+                    ViewStaffController viewStaffController = loader.getController();
+                    viewStaffController.setLanguage(controller.getLanguage());
+                    System.out.println("controller " + controller);
+                    //viewStaffController.setRequestViewList(controller.getLanguage());
+                    viewStaffController.setIsComplete(false);
+                    viewStaffController.getIsComplete().addListener((obs, before, isComplete) -> {
+                        staffToFulfill=viewStaffController.getStaffToFulfill();
+                        System.out.println(staffToFulfill);
+                        if (isComplete&&staffToFulfill!=null){
+                            System.out.println(staffToFulfill);
+                            viewStaffButton.setText(staffToFulfill.getFirstName() + " " + staffToFulfill.getLastName());
+                            staffPopUp.close();
+                            System.out.println("done");
+                        }
+                    });
+                    staffPopUp.setScene(staffPopUpScene);
+                    staffPopUp.show();
+            }
+
+            if(typeOfRequest.getSelectionModel().getSelectedItem().equals(RequestType.MAIN)){
+                if(controller2.getMaintenanceType()== null){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!");
+                    alert.setHeaderText("No type of maintenance selected.");
+                    alert.setContentText("Please choose a type of maintenance.");
                     alert.showAndWait();
                 }
                 staffPopUp.setTitle("View B&W Staff");
@@ -412,7 +491,7 @@ public class RequestPopOut extends PopOutController {
 
                 Scene staffPopUpScene = new Scene(loader.load());
                 ViewStaffController viewStaffController = loader.getController();
-                viewStaffController.setLanguage(controller.getLanguage());
+                //viewStaffController.setMaintenanceType(controller2.getMaintenanceType());
                 System.out.println("controller " + controller);
                 //viewStaffController.setRequestViewList(controller.getLanguage());
                 viewStaffController.setIsComplete(false);
@@ -429,12 +508,14 @@ public class RequestPopOut extends PopOutController {
                 staffPopUp.setScene(staffPopUpScene);
                 staffPopUp.show();
             }
+
+
             System.out.println(staffToFulfill.getFirstName()+staffToFulfill.getLastName());
             String toWrite=staffToFulfill.getFirstName()+staffToFulfill.getLastName();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // viewStaffButton.setText("work");
+       // viewStaffButton.setText("work");
     }
 
     @FXML
