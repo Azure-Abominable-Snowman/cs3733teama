@@ -264,6 +264,7 @@ public class MainMapScreen implements Initializable {
     @FXML public void onOpenerClick(MouseEvent e){
         //TODO fix double click breaking this guy
         try {
+            System.out.println("opening");
             disableSearchPane();
             drawer.setVisible(true);
             FXMLLoader openerLoader = new FXMLLoader();
@@ -323,6 +324,14 @@ public class MainMapScreen implements Initializable {
                         });
                 notifications.owner(areaPane.getScene().getWindow());
                 notifications.show();
+                if(drawer.isShown()){
+                    if(curController!=null) {
+                        curController.onClose();
+                    }
+                    drawer.close();
+                    drawer.setVisible(false);
+                    enableSearchPane();
+                }
             }
 
         }
