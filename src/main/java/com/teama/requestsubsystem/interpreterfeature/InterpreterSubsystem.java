@@ -125,4 +125,8 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
 
+
+    public ArrayList<InterpreterRequest> getInterpreterRequestsByStaff(int staffID) {
+        return requestDB.getInterpreterRequestsByStaff(staffID, RequestStatus.ASSIGNED);
+    }
 }

@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -147,29 +148,41 @@ public class ElevatorStaffDBTest {
 
     }
 
-    @Test
-    public void getStaffByType() throws Exception {
 
-    }
-
-    @Test
-    public void getAllStaff() throws Exception {
-
-    }
 
 
 
     @Test
     public void findQualified() throws Exception {
+        Set<ContactInfoTypes> avail = new HashSet<>();
+        avail.add(ContactInfoTypes.EMAIL);
+        avail.add(ContactInfoTypes.TEXT);
+        avail.add(ContactInfoTypes.PHONE);
+        ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
+        GenericStaff g = new GenericStaff("William", "Wong", c);
+        Set<MaintenanceType> specializations = new HashSet<>();
+        specializations.add(MaintenanceType.CODECHECK);
+        specializations.add(MaintenanceType.PERSONTRAPPED);
+        ElevatorStaff wilson = new ElevatorStaff(g, specializations);
+
+        Set<MaintenanceType> otherSpecs = new HashSet<>();
+        otherSpecs.add(MaintenanceType.CODECHECK);
+        otherSpecs.add(MaintenanceType.SAFETYCHECKS);
+        otherSpecs.add(MaintenanceType.REPAIRPARTS);
+
+        ElevatorStaff superWilson = new ElevatorStaff(g, otherSpecs);
+        db.addStaff(wilson);
+        db.addStaff(superWilson);
+        ArrayList<ElevatorStaff> codeCheckers = db.findQualified(MaintenanceType.CODECHECK);
+        assertEquals(2, codeCheckers.size(), 0.1);
+        ArrayList<ElevatorStaff> personTrapped = db.findQualified(MaintenanceType.PERSONTRAPPED);
+        assertEquals(1, personTrapped.size(), 0.1);
+        ElevatorStaff qual = personTrapped.get(0);
+        assertEquals(1, qual.getStaffID());
+        assertTrue(db.findQualified(MaintenanceType.TESTS).isEmpty());
 
     }
-
-
-
-    @Test
-    public void getAllElevatorStaff() throws Exception {
-
-    }
+    
 
 
 }
