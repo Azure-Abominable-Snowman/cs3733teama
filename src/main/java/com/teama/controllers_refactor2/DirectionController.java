@@ -25,13 +25,15 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseEvent;
 
 
-public class DirectionController {
+public class DirectionController extends HamburgerController{
 
     Boolean accessibilityMode = false;
     private MapDrawingSubsystem mapDrawing = MapDrawingSubsystem.getInstance();
@@ -84,6 +86,9 @@ public class DirectionController {
     @FXML
     private TableColumn<String, ImageView> directionCol;
 
+    @FXML
+    private AnchorPane mainPane;
+
 
     @FXML
     void onAccessibilityBtnClicked(MouseEvent event) {
@@ -98,6 +103,16 @@ public class DirectionController {
 
         System.out.println();
     }
+    @Override public Pane getParentPane(){
+        //TODO return the anchorpane that everything is stored in
+        return mainPane;
+    }
+    //TODO make this return the fxml path
+    @Override public String getFXMLPath(){
+        return "/Direction.fxml";
+    }
+    @Override public void onOpen(){}
+    @Override public void onClose(){}
 
     @FXML
     void onDestinationBarClicked(ActionEvent event) {
@@ -107,6 +122,8 @@ public class DirectionController {
     // Dealing with the closeBtn
     @FXML
     void onClosedBtnClicked(MouseEvent event) {
+        //sets the listener for closing to true so that the app closes
+        this.closing.set(true);
     }
 
     @FXML
@@ -149,6 +166,18 @@ public class DirectionController {
 //    directionCol.setText("direction");
 
     public void initialize(){
+
+        stepCol.setCellValueFactory(
+                new PropertyValueFactory<>("stepNum"));
+        descriptionCol.setCellValueFactory(
+                new PropertyValueFactory<>("description"));
+        distanceCol.setCellValueFactory(
+                new PropertyValueFactory<>("distance"));
+        directionCol.setCellValueFactory(
+                new PropertyValueFactory<>("direction"));
+
+        //requestList.prefHeightProperty().bind(mainPane.heightProperty());
+
 
 
 

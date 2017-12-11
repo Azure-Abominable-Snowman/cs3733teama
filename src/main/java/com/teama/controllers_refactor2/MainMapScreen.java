@@ -42,6 +42,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -258,7 +259,30 @@ public class MainMapScreen implements Initializable {
             //do nothing
         }
         else{
-            System.out.println("We need to implement this");
+            try {
+                disableSearchPane();
+                drawer.setVisible(true);
+                FXMLLoader openerLoader = new FXMLLoader();
+                curController = new DirectionController();
+                openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
+                openerLoader.setController(curController);
+                openerLoader.load();
+                //curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
+                curController.onOpen();
+                drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
+                drawer.setSidePane(curController.getParentPane());
+                drawer.open();
+
+            }catch (IOException e1) {
+                e1.printStackTrace();
+            } {
+
+
+            }
+
+
+
+
         }
     }
     @FXML public void onOpenerClick(MouseEvent e){
@@ -293,6 +317,10 @@ public class MainMapScreen implements Initializable {
             error.printStackTrace();
         }
     }
+
+
+
+
     @FXML private void onLoginClick(MouseEvent e){
         try {
             if(!ProgramSettings.getInstance().getIsLoggedInProp().get()) {
