@@ -8,7 +8,7 @@ import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import java.awt.event.MouseEvent;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -21,6 +21,7 @@ import com.teama.requestsubsystem.requestCard;
 import com.teama.login.LoginSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
@@ -53,43 +54,6 @@ public class AdminPaneController extends HamburgerController{
     private AnchorPane mainPane;
     @FXML private AnchorPane apnToLoad;
     @FXML
-    void onMapClick(ActionEvent event) {
-        try {
-            apnToLoad.getChildren().clear();
-            MapEditorController editorController = new MapEditorController();
-            FXMLLoader mapLoader = new FXMLLoader(getClass().getResource(editorController.getFXMLPath()));
-            mapLoader.setController(editorController);
-            mapLoader.load();
-            apnToLoad.getChildren().add(editorController.getParentPane());
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void onRequestClick(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onSettingsClick(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onStaffClick(ActionEvent event) {
-
-    }
-
-    @FXML
-    void mouseclick(ActionEvent event) {
-
-    }
-    @FXML private void onBackClick(ActionEvent e){
-        this.closing.set(true);
-    }
-    @FXML
     private JFXListView<String> requestList;
 
     private int staffID;
@@ -109,6 +73,49 @@ public class AdminPaneController extends HamburgerController{
         }
         interpreterRequestList.clear();
         requestList.prefHeightProperty().bind(mainPane.heightProperty());
+        loadPane(new RequestsController());
+    }
+
+    @FXML
+    void onMapClick(ActionEvent event) {
+        loadPane(new MapEditorController());
+    }
+
+    @FXML
+    void onRequestClick(ActionEvent event) {
+       loadPane(new RequestsController());
+    }
+
+    @FXML
+    void onSettingsClick(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onStaffClick(ActionEvent event) {
+
+    }
+
+    @FXML
+    void mouseclick(ActionEvent event) {
+
+    }
+
+    private void loadPane(StaffToolController controller) {
+        try {
+            apnToLoad.getChildren().clear();
+            FXMLLoader mapLoader = new FXMLLoader(getClass().getResource(controller.getFXMLPath()));
+            mapLoader.setController(controller);
+            mapLoader.load();
+            apnToLoad.getChildren().add(controller.getParentPane());
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML private void onBackClick(ActionEvent e){
+        this.closing.set(true);
     }
 
     public void updateStaffRequestList(){
