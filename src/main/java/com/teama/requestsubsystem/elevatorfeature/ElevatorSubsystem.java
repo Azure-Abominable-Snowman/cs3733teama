@@ -1,7 +1,6 @@
-package com.teama.requestsubsystem.interpreterfeature;
+package com.teama.requestsubsystem.elevatorfeature;
 
 import com.teama.Configuration;
-import com.teama.requestsubsystem.ReportSubject;
 import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestDatabaseObserver;
 import com.teama.requestsubsystem.RequestStatus;
@@ -9,37 +8,34 @@ import com.teama.requestsubsystem.RequestStatus;
 import java.util.ArrayList;
 
 /**
- * Created by aliss on 11/21/2017.
+ * Created by jakepardue on 12/8/17.
  */
-
-
-// MASTER CLASS FOR INTERFACING WITH THE INTERPRETER REQUEST SUBSYSTEM; FACADE
-public class InterpreterSubsystem implements ReportSubject {
-    private InterpreterRequestDB requestDB;
-    private InterpreterStaffDB staffDB;
+public class ElevatorSubsystem {
+    private ElevatorRequestDB requestDB;
+    private ElevatorStaffDB staffDB;
     private ArrayList<RequestDatabaseObserver> observers; //different report tables
-    private InterpreterRequest fulfilledRequest; // the "state"
+    private ElevatorRequest fulfilledRequest; // the "state"
 
-    private InterpreterSubsystem() {
-        requestDB = new InterpreterRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.interpReqTable);
-        staffDB = new InterpreterStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.interpStaffTable);
+    private ElevatorSubsystem() {
+        requestDB = new ElevatorRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.interpReqTable);
+        staffDB = new ElevatorStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.interpStaffTable);
     }
-    private static class InterpreterHelper {
-        private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
+    private static class ElevatorHelper {
+        private static final ElevatorSubsystem _instance = new ElevatorSubsystem();
     }
 
-    public static synchronized InterpreterSubsystem getInstance() {
-        return InterpreterHelper._instance;
+    public static synchronized ElevatorSubsystem getInstance() {
+        return ElevatorHelper._instance;
     }
 
     //adds an ArrayList
     // adds a given staff member to the database; done by admin
-    public boolean addStaff(InterpreterStaff s) {
+    public boolean addStaff(ElevatorStaff s) {
         return staffDB.addStaff(s);
     }
 
     // updates the information of a given staff member
-    public boolean updateStaff(InterpreterStaff s) {
+    public boolean updateStaff(ElevatorStaff s) {
         return staffDB.updateStaff(s);
     }
     // deletes staff member by input ID
@@ -48,17 +44,17 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
     // finds all qualified staff members based on the specified language
-    public ArrayList<InterpreterStaff> findQualified(Language language) {
-        return staffDB.findQualified(language);
+    public ArrayList<ElevatorStaff> findQualified(MaintenanceType requiredTask) {
+        return staffDB.findQualified(requiredTask);
     }
 
     // returns a list of all Interpreters in the system
-    public ArrayList<InterpreterStaff> getAllStaff() {
-        return staffDB.getAllInterpreterStaff();
+    public ArrayList<ElevatorStaff> getAllStaff() {
+        return staffDB.getAllElevatorStaff();
     }
 
     // adds an Interpreter request to the database
-    public InterpreterRequest addRequest(InterpreterRequest r) {
+    public ElevatorRequest addRequest(ElevatorRequest r) {
         return requestDB.addRequest(r);
     }
 
@@ -68,7 +64,7 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
     // updates a request that has been assigned but not closed yet. cannot update closed requests
-    public boolean updateRequest(InterpreterRequest r) {
+    public boolean updateRequest(ElevatorRequest r) {
         if (r.getStatus() != RequestStatus.CLOSED) {
             return requestDB.updateRequest(r);
         }
@@ -79,12 +75,12 @@ public class InterpreterSubsystem implements ReportSubject {
         return requestDB.getRequest(id);
     }
 
-    public InterpreterRequest getInterpreterRequest(int id) {
-        return requestDB.getInterpreterRequest(id);
+    public ElevatorRequest getInterpreterRequest(int id) {
+        return requestDB.getElevatorRequest(id);
     }
 
     // when admin marks a request as fulfilled and fills in the generated form, the InterpRequest table and generic tables will be updated
-    public boolean fulfillRequest(InterpreterRequest r) {
+    public boolean fulfillRequest(ElevatorRequest r) {
         Boolean fulfilled = requestDB.fulfillRequest(r);
         if (fulfilled) { // for report generation
             this.fulfilledRequest = r;
@@ -95,8 +91,8 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
     // returns all requests filtered by Request Status (ASSGINED or CLOSED). See Enum
-    public ArrayList<InterpreterRequest> getAllRequests(RequestStatus s) {
-        return requestDB.getAllInterpreterRequests(s);
+    public ArrayList<ElevatorRequest> getAllRequests(RequestStatus s) {
+        return requestDB.getAllElevatorRequests(s);
     }
     // returns all generic requests
     public ArrayList<Request> getAllGenericRequests(RequestStatus s) {
@@ -104,10 +100,10 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
     // Gets a specific staff member
-    public InterpreterStaff getIntepreterStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
+    public ElevatorStaff getIntepreterStaff(int staffID) { return staffDB.getElevatorStaff(staffID); }
 
-    public InterpreterStaff getStaff(int staffID){
-        return staffDB.getInterpreterStaff(staffID);
+    public ElevatorStaff getStaff(int staffID){
+        return staffDB.getElevatorStaff(staffID);
     }
 
     public void notifyObservers() {
@@ -120,13 +116,7 @@ public class InterpreterSubsystem implements ReportSubject {
         observers.add(obs);
     }
 
-    public InterpreterRequest getReport() {
+    public ElevatorRequest getReport() {
         return this.fulfilledRequest;
-    }
-
-
-
-    public ArrayList<InterpreterRequest> getInterpreterRequestsByStaff(int staffID) {
-        return requestDB.getInterpreterRequestsByStaff(staffID, RequestStatus.ASSIGNED);
     }
 }
