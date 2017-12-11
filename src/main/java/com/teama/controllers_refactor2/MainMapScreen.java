@@ -377,12 +377,12 @@ public class MainMapScreen implements Initializable {
 
     }
     private void enableSearchPane(){
-       hmbDrawerOpener.setDisable(false);
+      // hmbDrawerOpener.setDisable(false);
         searchPane.getStyleClass().clear();
         searchPane.getStyleClass().add("searchPane");
     }
     private void disableSearchPane() {
-        hmbDrawerOpener.setDisable(true);
+       // hmbDrawerOpener.setDisable(true);
         searchPane.getStyleClass().clear();
         searchPane.getStyleClass().add("searchPane-disabled");
     }
