@@ -5,9 +5,9 @@ import com.teama.ProgramSettings;
 import com.teama.controllers.NodeInfoPopUpController;
 import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
-import com.teama.controllers_refactor.PopOutController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
+import com.teama.login.LoginSubsystem;
 import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
@@ -17,7 +17,6 @@ import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.translator.Translator;
 import javafx.beans.Observable;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -26,7 +25,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -38,10 +37,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
 import java.net.URL;
@@ -113,7 +112,9 @@ public class MainMapScreen implements Initializable {
     // Useful for when we need to open something on the sidebar based on another event
     //get rid of this
     private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap = new HashMap<>();
-
+    private final ImageView imgLogIn = new ImageView(new Image(getClass().getResourceAsStream("/icons_i4/user-3-1.png")));
+    private final ImageView imgLogOut = new ImageView(new Image(getClass().getResourceAsStream("/icons_i4/LogOut.png")));
+    final int NOTIFICATION_SIZE=40;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -217,11 +218,42 @@ public class MainMapScreen implements Initializable {
             //inserting animation here
             Image logOut = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogOut.png"));
             loginButton.setImage(logOut);
+            System.out.println(imgLogIn);
+            imgLogIn.setFitHeight(NOTIFICATION_SIZE);
+            imgLogIn.setFitWidth(NOTIFICATION_SIZE);
+            Notifications notifications = Notifications.create()
+                    .title("Log In Complete")
+                    .text("Welcome!")
+                    .graphic(imgLogIn)
+                    .hideAfter(Duration.seconds(2))
+                    .position(Pos.BOTTOM_CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications.owner(areaPane.getScene().getWindow());
+            notifications.show();
+            System.out.println(notifications);
         } else {
             System.out.println("I guess not");
             // mapEditorButton.setY(startPoint);
             Image logIn = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogIn.png"));
             loginButton.setImage(logIn);
+            /*Notifications notifications = Notifications.create()
+                    .title("Log Out Complete")
+                    .text("Goodbye")
+                    .graphic(null)
+                    .hideAfter(Duration.seconds(2))
+                    .position(Pos.BOTTOM_CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications.showConfirm();*/
         }
     }
 
@@ -246,10 +278,12 @@ public class MainMapScreen implements Initializable {
             disableSearchPane();
             drawer.setVisible(true);
             FXMLLoader openerLoader = new FXMLLoader();
-            curController = new hamburgerDrawerController();
+            curController = new AdminPaneController();
+            System.out.println(getClass().getResource(curController.getFXMLPath()));
             openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
             openerLoader.setController(curController);
             openerLoader.load();
+            curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
             curController.onOpen();
             System.out.println("in the main "+curController);
             System.out.println(curController.getParentPane().getPrefWidth());
@@ -268,6 +302,45 @@ public class MainMapScreen implements Initializable {
         catch(IOException error){
             error.printStackTrace();
         }
+    }
+    @FXML private void onLoginClick(MouseEvent e){
+        try {
+            if(!ProgramSettings.getInstance().getIsLoggedInProp().get()) {
+                Stage logInStage = new Stage();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setResources(Translator.getInstance().getNewBundle());
+                loader.setLocation(getClass().getResource("/PopUps/Login.fxml"));
+                logInStage.setScene(new Scene(loader.load()));
+                logInStage.resizableProperty().set(false);
+                logInStage.resizableProperty().set(false);
+                logInStage.initModality(Modality.APPLICATION_MODAL);
+                logInStage.showAndWait();
+            }
+            else{
+                ProgramSettings.getInstance().getIsLoggedInProp().set(false);
+                imgLogOut.setFitHeight(NOTIFICATION_SIZE);
+                imgLogOut.setFitWidth(NOTIFICATION_SIZE);
+                Notifications notifications = Notifications.create()
+                        .title("Log Out Complete")
+                        .text("Good Bye!")
+                        .graphic(imgLogOut)
+                        .hideAfter(Duration.seconds(2))
+                        .position(Pos.BOTTOM_CENTER)
+                        .onAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                System.out.println("Hi Kent");
+                            }
+                        });
+                notifications.owner(areaPane.getScene().getWindow());
+                notifications.show();
+            }
+
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+        }
+
     }
     private void enableSearchPane(){
        hmbDrawerOpener.setDisable(false);

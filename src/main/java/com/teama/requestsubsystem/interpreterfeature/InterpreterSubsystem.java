@@ -1,9 +1,7 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.Configuration;
-import com.teama.requestsubsystem.ReportSubject;
 import com.teama.requestsubsystem.Request;
-import com.teama.requestsubsystem.RequestDatabaseObserver;
 import com.teama.requestsubsystem.RequestStatus;
 
 import java.util.ArrayList;
@@ -14,12 +12,9 @@ import java.util.ArrayList;
 
 
 // MASTER CLASS FOR INTERFACING WITH THE INTERPRETER REQUEST SUBSYSTEM; FACADE
-public class InterpreterSubsystem implements ReportSubject {
+public class InterpreterSubsystem {
     private InterpreterRequestDB requestDB;
     private InterpreterStaffDB staffDB;
-    private ArrayList<RequestDatabaseObserver> observers; //different report tables
-    private InterpreterRequest fulfilledRequest; // the "state"
-
     private InterpreterSubsystem() {
         requestDB = new InterpreterRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.interpReqTable);
         staffDB = new InterpreterStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.interpStaffTable);
@@ -85,13 +80,7 @@ public class InterpreterSubsystem implements ReportSubject {
 
     // when admin marks a request as fulfilled and fills in the generated form, the InterpRequest table and generic tables will be updated
     public boolean fulfillRequest(InterpreterRequest r) {
-        Boolean fulfilled = requestDB.fulfillRequest(r);
-        if (fulfilled) { // for report generation
-            this.fulfilledRequest = r;
-            notifyObservers();
-        }
-        return fulfilled;
-
+        return requestDB.fulfillRequest(r);
     }
 
     // returns all requests filtered by Request Status (ASSGINED or CLOSED). See Enum
@@ -103,6 +92,11 @@ public class InterpreterSubsystem implements ReportSubject {
         return requestDB.getAllRequests(s);
     }
 
+    //TODO
+    /*public ArrayList<Request> getRequestByStaff(int staffID){
+
+    }*/
+
     // Gets a specific staff member
     public InterpreterStaff getIntepreterStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
 
@@ -110,19 +104,7 @@ public class InterpreterSubsystem implements ReportSubject {
         return staffDB.getInterpreterStaff(staffID);
     }
 
-    public void notifyObservers() {
-        for (RequestDatabaseObserver o: observers){
-            o.update();
-        }
+    public ArrayList<InterpreterRequest> getInterpreterRequestsByStaff(int staffID) {
+        return requestDB.getInterpreterRequestsByStaff(staffID, RequestStatus.ASSIGNED);
     }
-
-    public void attachObserver(RequestDatabaseObserver obs) {
-        observers.add(obs);
-    }
-
-    public InterpreterRequest getReport() {
-        return this.fulfilledRequest;
-    }
-
-
 }
