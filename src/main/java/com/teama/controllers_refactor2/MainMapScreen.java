@@ -218,6 +218,7 @@ public class MainMapScreen implements Initializable {
             //inserting animation here
             Image logOut = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogOut.png"));
             loginButton.setImage(logOut);
+            hmbDrawerOpener.setVisible(true);
             System.out.println(imgLogIn);
             imgLogIn.setFitHeight(NOTIFICATION_SIZE);
             imgLogIn.setFitWidth(NOTIFICATION_SIZE);
@@ -241,19 +242,7 @@ public class MainMapScreen implements Initializable {
             // mapEditorButton.setY(startPoint);
             Image logIn = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogIn.png"));
             loginButton.setImage(logIn);
-            /*Notifications notifications = Notifications.create()
-                    .title("Log Out Complete")
-                    .text("Goodbye")
-                    .graphic(null)
-                    .hideAfter(Duration.seconds(2))
-                    .position(Pos.BOTTOM_CENTER)
-                    .onAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Hi Kent");
-                        }
-                    });
-            notifications.showConfirm();*/
+           hmbDrawerOpener.setVisible(false);
         }
     }
 
@@ -275,6 +264,7 @@ public class MainMapScreen implements Initializable {
     @FXML public void onOpenerClick(MouseEvent e){
         //TODO fix double click breaking this guy
         try {
+            System.out.println("opening");
             disableSearchPane();
             drawer.setVisible(true);
             FXMLLoader openerLoader = new FXMLLoader();
@@ -334,6 +324,14 @@ public class MainMapScreen implements Initializable {
                         });
                 notifications.owner(areaPane.getScene().getWindow());
                 notifications.show();
+                if(drawer.isShown()){
+                    if(curController!=null) {
+                        curController.onClose();
+                    }
+                    drawer.close();
+                    drawer.setVisible(false);
+                    enableSearchPane();
+                }
             }
 
         }
