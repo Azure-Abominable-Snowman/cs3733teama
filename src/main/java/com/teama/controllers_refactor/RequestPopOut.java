@@ -140,7 +140,6 @@ public class RequestPopOut extends PopOutController {
         nodeSelected.set(false);
         longName.valueProperty().addListener((observable, oldValue, newValue) -> {
             System.out.println(mapNodeName);
-            System.out.println(mapNodeName);
             mapNodeName=newValue;
             if(newValue != null){
                 System.out.println("This is freaking working!");
@@ -152,6 +151,7 @@ public class RequestPopOut extends PopOutController {
 
             }
         });
+        /*
         nodeSelected.addListener((obs, before, mapNode) ->{
             System.out.println(mapNode);
             System.out.println(mapNodeName);
@@ -159,7 +159,7 @@ public class RequestPopOut extends PopOutController {
                 System.out.println("This is freaking working!");
                 MapDrawingSubsystem.getInstance().setViewportCenter(mapNodeName.getCoordinate());
             }
-        });
+        });*/
     }
 
     @Override
@@ -191,6 +191,10 @@ public class RequestPopOut extends PopOutController {
         longName.getSelectionModel().clearSelection();
         typeOfRequest.getSelectionModel().clearSelection();
         additionalInfo.clear();
+        addToThis.getChildren().remove(curReqPane);
+        MapDrawingSubsystem.getInstance().drawNode(mapNodeName, 0, null);
+        viewStaffButton.setText("View Staff");
+
         //nodeSelected.set(null);
     }
 
@@ -252,7 +256,7 @@ public class RequestPopOut extends PopOutController {
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
 
-                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  lang == null || familySize.equals("")){
+                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  lang == null ){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error!");
                     alert.setHeaderText("Error with Submitting Your Request.");
@@ -267,8 +271,6 @@ public class RequestPopOut extends PopOutController {
                 System.out.println(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest));
 
                 System.out.println("It was successful");
-
-                System.out.println("I o[i2jej]qoi[2 you so much");
                 Notifications notifications = Notifications.create()
                         .title("Success!")
                         .text("Your interpreter request has been added.")
@@ -281,6 +283,7 @@ public class RequestPopOut extends PopOutController {
                                 System.out.println("Hi Kent");
                             }
                         });
+                notifications.show();
 
                 t.start();
                 break;
@@ -430,7 +433,11 @@ public class RequestPopOut extends PopOutController {
     }
 
     public Message createEmailMessage(){
-        return message = new Message(requestType.toString()+" Help", additionalInfoMessage);
+        message = new Message(requestType.toString()+" Help", "Where: "+ buildingName +", "+ floorName.toString()+", "+mapNodeName.getLongDescription()+ "\n"
+                + "Language: " + controller.getLanguage().toString()+"\n"+
+                "Size of Family:" + controller.getFamilySize().toString()+"\n"+
+                "Additional Info: "+additionalInfoMessage);
+        return message;
     }
 
     @FXML
@@ -509,8 +516,8 @@ public class RequestPopOut extends PopOutController {
             }
 
 
-            System.out.println(staffToFulfill.getFirstName()+staffToFulfill.getLastName());
-            String toWrite=staffToFulfill.getFirstName()+staffToFulfill.getLastName();
+            //System.out.println(staffToFulfill.getFirstName()+staffToFulfill.getLastName());
+            //String toWrite=staffToFulfill.getFirstName()+staffToFulfill.getLastName();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -568,6 +575,9 @@ public class RequestPopOut extends PopOutController {
             exception.printStackTrace();
             System.out.println("check file name");
         }
+    }
+    public void clearController(){
+        addToThis.getChildren().clear();
 
     }
 }
