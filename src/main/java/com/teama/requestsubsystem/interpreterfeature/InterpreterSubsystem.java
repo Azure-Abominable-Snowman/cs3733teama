@@ -92,10 +92,19 @@ public class InterpreterSubsystem {
         return requestDB.getAllRequests(s);
     }
 
+    //TODO
+    /*public ArrayList<Request> getRequestByStaff(int staffID){
+
+    }*/
+
     // Gets a specific staff member
     public InterpreterStaff getIntepreterStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
 
     public InterpreterStaff getStaff(int staffID){
         return staffDB.getInterpreterStaff(staffID);
+    }
+
+    public ArrayList<InterpreterRequest> getInterpreterRequestsByStaff(int staffID) {
+        return requestDB.getInterpreterRequestsByStaff(staffID, RequestStatus.ASSIGNED);
     }
 }
