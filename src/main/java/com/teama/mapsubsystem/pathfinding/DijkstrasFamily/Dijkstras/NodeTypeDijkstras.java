@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class NodeTypeDijkstras extends Dijkstras {
-    NodeType endtype;
 
 
     /**
@@ -20,7 +19,6 @@ public class NodeTypeDijkstras extends Dijkstras {
      */
     public Path generatePath(MapNode start, NodeType endNodeType) {
         this.start=start;
-        endtype = endNodeType;
         checkedPoints= new HashMap<>();
         queue=new PriorityQueue<>();
         if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
@@ -29,7 +27,7 @@ public class NodeTypeDijkstras extends Dijkstras {
 
         //Generate Path
         for(checking = new KnownPointD(start,null,0);
-            !checking.getNode().getNodeType().toString().equals(endtype.toString());   // reached the proper node type TODO, this could be a lambda.
+            !checking.getNode().getNodeType().toString().equals(endNodeType.toString());   // reached the proper node type TODO, this could be a lambda.
             checking=queue.poll() // move forward one step
                 )
         {
@@ -43,7 +41,7 @@ public class NodeTypeDijkstras extends Dijkstras {
         // make it into the format of outputting.
         return formatOutput(collectPath(checking));
     }
-
+    
 
     public Path generatePath(MapNode start, NodeType endNodeType, ArrayList<MapNode> disableNodes){
         this.disableNodes=grabDisableNodes(disableNodes);
