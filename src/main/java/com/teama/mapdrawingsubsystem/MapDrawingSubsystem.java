@@ -11,6 +11,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -23,7 +24,7 @@ import java.util.Map;
 public class MapDrawingSubsystem {
 
     private MapDisplay map;
-    private Pane floorButtonBox;
+    private GridPane floorButtonBox;
 
     private long listenerIDCounter = 0; // keeps track of the listeners added
     private Map<Long, ChangeListener<? super Boolean>> floorBoxListenerMap;
@@ -31,7 +32,7 @@ public class MapDrawingSubsystem {
     private Map<ClickedListener, ArrayList<Long>> listenerLists = new HashMap<>();
 
     private MapSubsystem mapDB =  MapSubsystem.getInstance();
-    private Text floorNumberDisplay;
+   // private Text floorNumberDisplay;
 
     private AnchorPane areaPane;
     private static class MapDrawingSubsystemGetter {
@@ -74,7 +75,7 @@ public class MapDrawingSubsystem {
      * @param mapCanvas
      * @param mapScroll
      */
-    public void initialize(Canvas mapCanvas, ScrollPane mapScroll, Text floorNumberDisplay, Pane floorButtonBox, AnchorPane areaPane) {
+    public void initialize(Canvas mapCanvas, ScrollPane mapScroll, GridPane floorButtonBox, AnchorPane areaPane) {
         clickedListenerMap = new HashMap<>();
         floorBoxListenerMap = new HashMap<>();
         Map<Floor, HospitalMap> imgs = new HashMap<>();
@@ -88,18 +89,25 @@ public class MapDrawingSubsystem {
 
         mapCanvas.onMouseClickedProperty().set(masterMouseClickedEvent);
 
-        this.floorNumberDisplay = floorNumberDisplay;
+      //  this.floorNumberDisplay = floorNumberDisplay;
         this.floorButtonBox = floorButtonBox;
         this.areaPane = areaPane;
-
         this.mapScroll = mapScroll;
-
+        //have this attach listeners to all of the buttons where the
+        //loops goes through all of the buttons and makes it transparent
+        //then set the one that was clicked to be filled in
         // Attach a listener that changes the current floor when a button is pressed
-        floorNumberDisplay.setText(getCurrentFloor().toString());
+      //  floorNumberDisplay.setText(getCurrentFloor().toString());
+        System.out.println(floorButtonBox);
         for(Node button : floorButtonBox.getChildren()) {
             button.pressedProperty().addListener((a, b, c) -> {
+                for(Node node: floorButtonBox.getChildren()){
+                    node.getStyleClass().clear();
+                    node.getStyleClass().add("floorButton");
+                }
+                button.getStyleClass().clear();
+                button.getStyleClass().add("floorButtonSelected");
                 map.setCurrentFloor(Floor.getFloor(button.getId()));
-                floorNumberDisplay.setText(getCurrentFloor().toString());
             });
         }
     }
@@ -145,6 +153,7 @@ public class MapDrawingSubsystem {
             return -1;
         }
         for(int i = 0; i < Floor.values().length; i++) {
+           // floorButtonBox.getChildren().get(i).pressedProperty().addListener((a, b, c) -> {});
             floorButtonBox.getChildren().get(i).pressedProperty().addListener(event);
         }
         listenerIDCounter++;
