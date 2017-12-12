@@ -1,7 +1,6 @@
 package com.teama.controllers_refactor2;
 
 import com.jfoenix.controls.*;
-import com.teama.controllers.EdgeEditorController;
 import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
@@ -13,14 +12,15 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -50,7 +50,7 @@ public class MapEditorController  {
     @FXML
     private JFXComboBox<String> alignmentOptions;
     @FXML
-    private JFXButton confirmBtn, cancelBtn, alignBtn, editNode, addNode, deleteNode, clearBtn;
+    private JFXButton alignBtn, addNode, deleteNode, addEdge, deleteEdge;
     @FXML
     private VBox editorInfo, masterBox;
     @FXML
@@ -64,8 +64,8 @@ public class MapEditorController  {
 
     private Map<Long, EventHandler<MouseEvent>> mouseEvents = new HashMap<>();
     private Map<Long, ChangeListener<Boolean>> floorEvents = new HashMap<>();
-    private Set<MapNode> alignmentNodes = new HashSet<>();
-    private Set<MapNode> selectedNodes = new HashSet<>();
+    private HashMap<Tab, MapNode> selectedNodes = new HashMap<>();
+    private HashMap<Tab, String> selectedLocations = new HashMap<>();
 
     BooleanProperty edgeEditor = new SimpleBooleanProperty(false);
     BooleanProperty nodeEditor = new SimpleBooleanProperty(false);
@@ -78,9 +78,11 @@ public class MapEditorController  {
 
     private ObjectProperty<Location> selectedLocation = new SimpleObjectProperty<Location>();
     private ObjectProperty<MapNode> selectedNode = new SimpleObjectProperty<MapNode>();
-    private ObjectProperty<MapNode> alignmentNode = new SimpleObjectProperty<MapNode>();
-    //
 
+    private long onLocClickID;
+    private long onNodeClickID;
+
+    //
 
 
 
@@ -94,49 +96,27 @@ public class MapEditorController  {
         //alignPane(xProperty, xOffset, yProperty, yOffset);
         masterMap = MapDrawingSubsystem.getInstance();
         mapData = MapSubsystem.getInstance();
-        nodeType.getItems().clear();
-        nodeType.getItems().addAll(NodeType.values());
-
-        //alignmentOptions.getItems().clear();
-        //alignmentOptions.getItems().addAll("X", "Y");
 
 
-/*
-        alignmentOptions.getSelectionModel().selectedItemProperty()
-                .addListener(new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if (!(alignmentOptions.disabledProperty().getValue()) && alignmentOptions.getSelectionModel().getSelectedItem() != null) {
-                            isAligning.setValue(true);
-                            updateFields.setValue(false);
-                            System.out.println("User would like to align nodes.");
-                            //cancelBtn.disableProperty().setValue(true);
-                            //confirmBtn.disableProperty().setValue(true);
-                            //alignBtn.setDisable(true);
-                        } else {
-                            //cancelBtn.disableProperty().setValue(false);
-                            //confirmBtn.disableProperty().setValue(false);
-
-                            alignNode.setValue(false);
-                        }
-                    }
-                });
-*/
+        addEdge = new JFXButton();
+        deleteEdge = new JFXButton();
+        addEdge.setText("Add Edge");
+        deleteEdge.setText("Delete Edge");
+        actionButtons.setVisible(false);
 
         //scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         floorEvents.put(masterMap.attachFloorChangeListener(onFloorChange), onFloorChange);
 
-        long id = masterMap.attachClickedListener(onEdgeClicked, ClickedListener.EDGECLICKED);
-        mouseEvents.put(id, onEdgeClicked);
+        masterTabNodes.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 
         editorGroup = new ToggleGroup();
         editNodes.setToggleGroup(editorGroup);
         editEdges.setToggleGroup(editorGroup);
-        addNode.disableProperty().bind(knownLoc);
-        editNode.disableProperty().bind(unknownLoc);
-        deleteNode.disableProperty().bind(unknownLoc);
+       // addNode.disableProperty().bind(knownLoc);
+        //editNode.disableProperty().bind(unknownLoc);
+        //deleteNode.disableProperty().bind(unknownLoc);
 //        alignmentOptions.disableProperty().bind(unknownLoc);
-        alignBtn.disableProperty().bind(unknownLoc);
+       // alignBtn.disableProperty().bind(unknownLoc);
 
         viewNodes.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -167,102 +147,59 @@ public class MapEditorController  {
         editorGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (mouseEvents != null) {
+                    for (long id : mouseEvents.keySet()) {
+                        masterMap.detachListener(id);
+                    }
+                    mouseEvents = null;
+                }
                 if (newValue != null) {
+                    if (mouseEvents == null) {
+                        mouseEvents = new HashMap<Long, EventHandler<MouseEvent>>();
+                    }
+                    actionButtons.getChildren().clear();
+                    actionButtons.setVisible(true);
                     if (editNodes.isSelected()) {
+
                         nodeEditor.setValue(true);
                         edgeEditor.setValue(false);
-                        masterBox.getChildren().clear();
-                        masterBox.getChildren().addAll(mapTools, toolToggles, editorInfo);
-                        //alignmentOptions.disableProperty().setValue(false);
-                        //alignBtn.disableProperty().setValue(false);
-                        //nodeEditorListenerID = masterMap.attachClickedListener(onClickNodeEditor, ClickedListener.LOCCLICKED);
-                        //mouseEvents.put(nodeEditorListenerID, onClickNodeEditor);
-                        System.out.println("Selecting nodes for ediitng and such.");
+                        masterTabNodes.getTabs().clear();
+                        onLocClickID = masterMap.attachClickedListener(onRandomLocClick, ClickedListener.LOCCLICKED);
+                        mouseEvents.put(onLocClickID, onRandomLocClick);
+                        onNodeClickID = masterMap.attachClickedListener(onNodeClick, ClickedListener.NODECLICKED);
+                        mouseEvents.put(onNodeClickID, onNodeClick);
+
+                        setUpButtonsForNodes();
+                        System.out.println("Selecting nodes for editing and such.");
 
                     } else if (editEdges.isSelected()) {
+
                         nodeEditor.setValue(false);
                         edgeEditor.setValue(true);
-                        masterBox.getChildren().clear();
-                        masterBox.getChildren().addAll(mapTools, toolToggles);
+                        masterTabNodes.getTabs().clear();
+                        long id = masterMap.attachClickedListener(onEdgeClicked, ClickedListener.EDGECLICKED);
+                        mouseEvents.put(id, onEdgeClicked);
+                        onLocClickID = masterMap.attachClickedListener(onRandomLocClick, ClickedListener.LOCCLICKED);
+                        mouseEvents.put(onLocClickID, onRandomLocClick);
+                        onNodeClickID = masterMap.attachClickedListener(onNodeClick, ClickedListener.NODECLICKED);
+                        mouseEvents.put(onNodeClickID, onNodeClick);
+                        setUpButtonsForEdges();
 
-                        FXMLLoader loader = new FXMLLoader();
-                        loader.setLocation(getClass().getResource("/EdgeMapEditorNew.fxml"));
-                        EdgeEditorController e = new EdgeEditorController();
-                        loader.setController(e);
-
-                        try {
-                            VBox edgeContent = loader.load();
-                            masterBox.getChildren().addAll(edgeContent);
-
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-
-
-                        //alignmentOptions.disableProperty().setValue(true);
-                        //alignBtn.disableProperty().setValue(true);
-                        //mapDraw.detachListener(nodeEditorListenerID);
-                        //mouseEvents.remove(nodeEditorListenerID);
-                        System.out.println("No longer selecting nodes.");
+                        System.out.println("Editing edges.");
                     }
 
                 }
                 else {
-
-                    //updateFields.set(false);
+                    System.out.println("Not editing anything.");
+                    nodeEditor.setValue(false);
+                    edgeEditor.setValue(false);
+                    actionButtons.setVisible(false);
                 }
             }
-        });
-        editNode.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                editNode.visibleProperty().setValue(false);
-                deleteNode.visibleProperty().setValue(false);
-            }
-        });
-        addNode.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                editNode.visibleProperty().setValue(false);
-                deleteNode.visibleProperty().set(false);
-            }
-        });
-        mouseEvents.put(masterMap.attachClickedListener(onClickNodeEditor, ClickedListener.LOCCLICKED), onClickNodeEditor);
-        /*
-        confirmBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                editNode.visibleProperty().setValue(true);
-                deleteNode.visibleProperty().set(true);
+        });}
 
-            }
-        });
-        cancelBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                editNode.visibleProperty().setValue(true);
-                deleteNode.visibleProperty().set(true);
-            }
-        });
-        /*
-        editEdges.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
 
-                }
-            }
-        });
-        editNodes.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
 
-            }
-        };
-        */
-    }
-    //  }//
 
 /*
     @Override
@@ -278,8 +215,45 @@ public class MapEditorController  {
 
 
     }
-    */
+    /*
+    assume actionButtons gridpane is already cleared
+     */
+    private void setUpButtonsForNodes() {
+        //actionButtons.getChildren().remove(addEdge);
+        //actionButtons.getChildren().remove(deleteEdge);
+        actionButtons.add(addNode, 0, 0);
+        actionButtons.add(alignBtn, 1, 0);
+        actionButtons.add(deleteNode, 2, 0);
+        actionButtons.setHalignment(addNode, HPos.CENTER);
+        actionButtons.setHalignment(alignBtn, HPos.CENTER);
+        actionButtons.setHalignment(deleteNode, HPos.CENTER);
+        addNode.setAlignment(Pos.CENTER);
+        alignBtn.setAlignment(Pos.CENTER);
+        deleteNode.setAlignment(Pos.CENTER);
+        addNode.setDisable(true);
+        alignBtn.setDisable(true);
+        deleteNode.setDisable(true);
 
+    }
+
+    private void setUpButtonsForEdges() {
+        //actionButtons.getChildren().remove(addNode);
+        //actionButtons.getChildren().remove(deleteNode);
+        //actionButtons.getChildren().remove(alignBtn);
+        actionButtons.add(deleteEdge, 0, 0);
+        actionButtons.add(addEdge, 2, 0);
+        System.out.println(actionButtons.getRowConstraints().size());
+        //actionButtons.getChildren().add(2, addEdge);
+        actionButtons.setHalignment(deleteEdge, HPos.CENTER);
+        actionButtons.setHalignment(addEdge, HPos.CENTER);
+        deleteEdge.setAlignment(Pos.CENTER);
+        addEdge.setAlignment(Pos.CENTER);
+        deleteEdge.setDisable(true);
+        addEdge.setDisable(true);
+
+
+
+    }
     ChangeListener<Boolean> onFloorChange = new ChangeListener<Boolean>() {
         @Override
         public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -312,18 +286,6 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
         //nodeType.setDisable(false);
         nodeType.getSelectionModel().clearSelection();
         nodeType.setDisable(true);
-        //confirmBtn.setDisable(true);
-        //cancelBtn.setDisable(true);
-        //addNode.setVisible(true);
-        //editNode.setVisible(true);
-        //deleteNode.setVisible(true);
-        //updateCurrentNode.setValue(true);
-        //selectedLocation = null;
-        //selectedNode = null;
-        //alignBtn.setDisable(true);
-        //alignmentOptions.setDisable(true);
-        //alignNode.setValue(false);
-        //alignmentNode = null;
     }
 
     private Location mouseClickToLocation(MouseEvent e) {
@@ -333,94 +295,110 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
         return selected;
     }
 
-
-    EventHandler<MouseEvent> onClickNodeEditor = new EventHandler<MouseEvent>() {
+    private Tab generateTab(NodesController node) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/MainScreenDrawers/nodeTab.fxml"));
+        Tab nodeTab = new Tab();
+        nodeTab.onClosedProperty().set(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                if (selectedNodes != null) {
+                    MapNode unselected = selectedNodes.get(nodeTab);
+                    mapDraw.unDrawNode(selectedNodes.get(nodeTab));
+                    mapDraw.drawNode(unselected, 5, Color.DARKBLUE);
+                    System.out.println(selectedNodes.size());
+                    selectedNodes.remove(nodeTab);
+                    System.out.println(selectedNodes.size());
+                }
+                if (selectedLocations != null) {
+                    String id = selectedLocations.get(nodeTab);
+                    masterMap.unDrawNewLocation(id);
+                    selectedLocations.remove(nodeTab);
+                }
+            }
+        });
+        loader.setController(node);
+        try {
+            AnchorPane tabContents = loader.load();
+            nodeTab.setContent(tabContents);
+            masterTabNodes.getTabs().add(nodeTab);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return nodeTab;
+    }
+    private String generateDrawnIDForNode() {
+        int length = selectedLocations.size();
+        String id = "Selected" + length;
+        System.out.println(id);
+        return id;
+    }
+    EventHandler<MouseEvent> onRandomLocClick = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            //double xCanv = event.getX();
-            //double yCanv = event.getY();
+            // TODO
+            Location previouslySelected = selectedLocation.getValue();
             Location selected = mouseClickToLocation(event);
-            MapNode clickedNode = masterMap.nodeAt(selected);
-            selectedLocation.set(selected);
 
-            if (clickedNode != null) {
-                System.out.println(clickedNode.getId());
-                if (selectedNodes == null) {
-                    selectedNodes = new HashSet<>();
-                }
-                selectedNodes.add(clickedNode);
-                masterMap.unDrawNode(clickedNode);
-                masterMap.drawNode(clickedNode, 5, Color.GREEN);
-            }
+            if (previouslySelected == null ||
+                    (previouslySelected.getxCoord() != selected.getxCoord() && previouslySelected.getyCoord() != selected.getyCoord()))
+            {
+                NodesController node = new NodesController(masterTabNodes, nodeEditor, edgeEditor, selectedLocations, selectedNodes);
+                Tab newTab = generateTab(node);
+                node.setParentTab(newTab);
 
-            if (updateFields.getValue()) {
-                if (clickedNode == null) {
+                selectedLocation.set(selected);
+                newTab.setText("New Node");
+                node.setLocation(selected);
+                node.setOriginalLocClick(onRandomLocClick, onLocClickID);
+                node.setOriginalNodeClick(onNodeClick, onNodeClickID);
 
-                    unknownLoc.set(true);
-                    knownLoc.set(false);
-                    clearTextFieldsNodes();
-                    nodeCoord.setText("(" + selected.getxCoord() + ", " +selected.getyCoord() + ")");
 
-                } else {
-                    System.out.println("Update the selected node and node fields.");
-                    unknownLoc.set(false);
-                    knownLoc.set(true);
-                    selectedNode.setValue(clickedNode);
-                    if (updateFields.get()) {
-                        nodeID.setText(clickedNode.getId());
-                        nodeCoord.setText("(" + clickedNode.getCoordinate().getxCoord() + ", " + clickedNode.getCoordinate().getyCoord() + ")");
-                        longName.setText(clickedNode.getLongDescription());
-                        shortName.setText(clickedNode.getShortDescription());
-                        nodeType.setValue(clickedNode.getNodeType());
-                    }
-                    //selectedLocation.set(selected);
-                }
-            }
-            else if (isAligning.getValue()) {
-                if (clickedNode != null) {
-                    System.out.println("The selected Node is: " + selectedNode.getValue().getId());
-
-                    System.out.println("Got an alignment node.");
-                    alignmentNode.setValue(clickedNode);
-                    System.out.println("The alignment node is: " + alignmentNode.getValue().getId());
-
-                }
             }
             /*
-            if (updateCurrentNode.getValue()) {
-                clearTextFieldsNodes();
-                if (clickedNode != null) {
-                    selectedLocation = clickedNode.getCoordinate();
-                    nodeID.setText(clickedNode.getId());
-                    nodeCoord.setText("(" + clickedNode.getCoordinate().getxCoord() + ", " + clickedNode.getCoordinate().getyCoord() + ")");
-                    longName.setText(clickedNode.getLongDescription());
-                    shortName.setText(clickedNode.getShortDescription());
-                    nodeType.setValue(clickedNode.getNodeType());
-                    nodeType.setDisable(true);
-                    addNode.setDisable(true);
-                    editNode.setDisable(false);
-                    deleteNode.setDisable(false);
-                    selectedNode = clickedNode;
-                } else {
-                    Location converted = masterMap.convertEventToImg(event, masterMap.getCurrentFloor());
-                    selectedLocation = converted;
-                    selectedNode = null;
-                    addNode.setDisable(false);
-                    editNode.setDisable(true);
-                    deleteNode.setDisable(true);
-                    clearTextFieldsNodes();
-                    nodeCoord.setText("(" + Integer.toString(converted.getxCoord()) + ", " + Integer.toString(converted.getyCoord()) + ")");
-                }
-            } else if (alignNode.getValue()) {
-                System.out.println("Align the node.");
-                if (clickedNode != null) {
-                    System.out.println("Found a node to align by.");
-                    alignmentNode = clickedNode;
-                    alignBtn.disableProperty().setValue(false);
-
-                }
+            String drawnID = generateDrawnIDForNode();
+            if (selectedLocations == null) {
+                selectedLocations = new HashMap<Tab, String>();
             }
+            selectedLocations.put(newTab, drawnID);
             */
+            //masterMap.drawNewLocation(selected, 5, Color.GREEN, drawnID);
+        }
+    };
+
+    EventHandler<MouseEvent> onNodeClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            Location selected = mouseClickToLocation(event);
+            MapNode clickedNode = masterMap.nodeAt(selected);
+            MapNode previouslyClicked = selectedNode.getValue();
+            if (previouslyClicked == null ||
+                    (!previouslyClicked.getId().equals(clickedNode.getId()))) {
+                NodesController node = new NodesController(masterTabNodes, nodeEditor, edgeEditor, selectedLocations, selectedNodes);
+                Tab newTab = generateTab(node);
+                node.setParentTab(newTab);
+
+
+                selectedNode.set(clickedNode);
+                newTab.setText(clickedNode.getId());
+                node.setNodeInfo(clickedNode);
+                node.setOriginalLocClick(onRandomLocClick, onLocClickID);
+                node.setOriginalNodeClick(onNodeClick, onNodeClickID);
+
+            }
+
+
+            /*
+            if (selectedNodes == null) {
+                selectedNodes = new HashMap<Tab, MapNode>();
+            }
+            selectedNodes.put(newTab, clickedNode);
+            masterMap.unDrawNode(clickedNode);
+            masterMap.drawNode(clickedNode, 5, Color.GREEN);
+            */
+        }
+    };
+
 
 
             /*
@@ -440,112 +418,112 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
             }
             //node.setInfo(event);
             */
-        }
-    };
-    EventHandler<MouseEvent> onNodeClickAndDrag = new EventHandler<MouseEvent>() {
-        @Override
-
-        public void handle(MouseEvent event) {
-
-        }
-    };
-
-    private EventHandler<MouseEvent> onEdgeClicked = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            System.out.println("Found an edge!");
-            Location mouseLoc = new Location(event, masterMap.getCurrentFloor());
-            MapEdge foundEdge = masterMap.edgeAt(mouseLoc);
-            // masterMap.drawLine(foundEdge.getId(), l.getStart(), l.getEnd(), l.getWeight(), Color.RED, false);
 
 
-        }
-    };
 
 
-    /*
-        //public void clearSelect
-        private EventHandler<MouseEvent> onNodeClickEdges = new EventHandler<MouseEvent>() {
+        EventHandler<MouseEvent> onNodeClickAndDrag = new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                MapNode selected = mapDraw.nodeAt(new Location(event, mapDraw.getCurrentFloor()));
-                if(startNodeEdge == null) {
-                    // Start node selected
-                    startNodeEdge = selected;
-                    displayNodeOnEdgeEditor(startNodeEdge, true);
-                } else {
-                    // End node selected
-                    endNodeEdge = selected;
-                    displayNodeOnEdgeEditor(selected, false);
-                    // Display the edge on the screen, and delete the previous one
-                    mapDraw.drawEdge(new MapEdgeData("DRAWN_EDGE", startNodeEdge, endNodeEdge), 5, Color.LIGHTBLUE, false);
 
-                }
+            public void handle(MouseEvent event) {
+//TODO, MAYBE, IF TIME
             }
         };
 
-        private void displayNodeOnEdgeEditor(MapNode n , boolean start) {
-            Location coord = n.getCoordinate();
-            String coordString = "("+coord.getxCoord()+", "+coord.getyCoord()+")";
-            if(start) {
-                nodeID1.setText(n.getId());
-                nodeCoord1.setText(coordString);
-                longName1.setText(n.getLongDescription());
-            } else {
-                nodeID2.setText(n.getId());
-                nodeCoord2.setText(coordString);
-                longName2.setText(n.getLongDescription());
+        private EventHandler<MouseEvent> onEdgeClicked = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("Found an edge!");
+                Location mouseLoc = new Location(event, masterMap.getCurrentFloor());
+                MapEdge foundEdge = masterMap.edgeAt(mouseLoc);
+                masterMap.drawEdge(foundEdge, 5, Color.RED, false);
+
+            }
+        };
+
+
+        /*
+            //public void clearSelect
+            private EventHandler<MouseEvent> onNodeClickEdges = new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    MapNode selected = mapDraw.nodeAt(new Location(event, mapDraw.getCurrentFloor()));
+                    if(startNodeEdge == null) {
+                        // Start node selected
+                        startNodeEdge = selected;
+                        displayNodeOnEdgeEditor(startNodeEdge, true);
+                    } else {
+                        // End node selected
+                        endNodeEdge = selected;
+                        displayNodeOnEdgeEditor(selected, false);
+                        // Display the edge on the screen, and delete the previous one
+                        mapDraw.drawEdge(new MapEdgeData("DRAWN_EDGE", startNodeEdge, endNodeEdge), 5, Color.LIGHTBLUE, false);
+
+                    }
+                }
+            };
+
+            private void displayNodeOnEdgeEditor(MapNode n , boolean start) {
+                Location coord = n.getCoordinate();
+                String coordString = "("+coord.getxCoord()+", "+coord.getyCoord()+")";
+                if(start) {
+                    nodeID1.setText(n.getId());
+                    nodeCoord1.setText(coordString);
+                    longName1.setText(n.getLongDescription());
+                } else {
+                    nodeID2.setText(n.getId());
+                    nodeCoord2.setText(coordString);
+                    longName2.setText(n.getLongDescription());
+                }
+            }
+
+        */
+        private void drawNodes() {
+            for (MapNode m : mapData.getVisibleFloorNodes(masterMap.getCurrentFloor()).values()) {
+                masterMap.drawNode(m, 5, Color.DARKBLUE);
+            }
+            for (MapNode m : mapData.getInvisibleFloorNodes(masterMap.getCurrentFloor()).values()) {
+                masterMap.drawNode(m, 5, Color.DARKBLUE);
             }
         }
 
-    */
-    private void drawNodes() {
-        for (MapNode m : mapData.getVisibleFloorNodes(masterMap.getCurrentFloor()).values()) {
-            masterMap.drawNode(m, 5, Color.DARKBLUE);
-        }
-        for (MapNode m : mapData.getInvisibleFloorNodes(masterMap.getCurrentFloor()).values()) {
-            masterMap.drawNode(m, 5, Color.DARKBLUE);
-        }
-    }
-
-    private void hideFloorNodes() {
-        for (MapNode m : mapData.getInvisibleFloorNodes(masterMap.getCurrentFloor()).values()) {
-            masterMap.unDrawNode(m);
-        }
-    }
-
-    private void drawEdges() {
-        for (MapNode m : mapData.getFloorNodes(masterMap.getCurrentFloor()).values()) {
-            for (MapEdge e : m.getEdges()) {
-                masterMap.drawEdge(e, 5, Color.LIGHTBLUE, false);
-
+        private void hideFloorNodes() {
+            for (MapNode m : mapData.getInvisibleFloorNodes(masterMap.getCurrentFloor()).values()) {
+                masterMap.unDrawNode(m);
             }
         }
-    }
 
-    private void hideEdges() {
-        for (MapNode m : mapData.getFloorNodes(masterMap.getCurrentFloor()).values()) {
-            for (MapEdge e : m.getEdges()) {
-                masterMap.unDrawEdge(e);
+        private void drawEdges() {
+            for (MapNode m : mapData.getFloorNodes(masterMap.getCurrentFloor()).values()) {
+                for (MapEdge e : m.getEdges()) {
+                    masterMap.drawEdge(e, 5, Color.LIGHTBLUE, false);
 
+                }
             }
         }
-    }
 
+        private void hideEdges() {
+            for (MapNode m : mapData.getFloorNodes(masterMap.getCurrentFloor()).values()) {
+                for (MapEdge e : m.getEdges()) {
+                    masterMap.unDrawEdge(e);
 
-
-    public void onClose() {
-        //this.isOpenProperty.setValue(false);
-        for (long id : floorEvents.keySet()) {
-            masterMap.detachListener(id);
+                }
+            }
         }
-        for (long id : mouseEvents.keySet()) {
-            masterMap.detachListener(id);
-        }
-    }
 
-    @FXML
-    void onAlignNode(ActionEvent e) {
+
+        public void onClose() {
+            //this.isOpenProperty.setValue(false);
+            for (long id : floorEvents.keySet()) {
+                masterMap.detachListener(id);
+            }
+            for (long id : mouseEvents.keySet()) {
+                masterMap.detachListener(id);
+            }
+        }
+
+        @FXML
+        void onAlignNode(ActionEvent e) {
         /*
         MapNode selected = selectedNode.getValue();
         System.out.println("The selected Node is: " + selectedNode.getValue().getId());
@@ -595,150 +573,89 @@ if (nodeTypeSelector.getSelectionModel().getSelectedItem() != null) {
         alignmentOptions.getSelectionModel().clearSelection();
         //updateCurrentNode.setValue(true);
         */
-    }
+        }
 
 
-    @FXML
-    void onConfirm(ActionEvent e) {
-        updateFields.setValue(true);
-        clearTextFieldsNodes();
+        @FXML
+        void onConfirm(ActionEvent e) {
+            updateFields.setValue(true);
+            clearTextFieldsNodes();
 
-    }
+        }
 
-    @FXML
-    void onCancel(ActionEvent e) {
-        updateFields.setValue(true);
-        clearTextFieldsNodes();
+        @FXML
+        void onCancel(ActionEvent e) {
+            updateFields.setValue(true);
+            clearTextFieldsNodes();
 
-    }
+        }
 
-    @FXML
-    void onAddNode(ActionEvent e) {
-        updateFields.setValue(false);
-        System.out.println("user wants to add a node.");
-        //addNode.setVisible(false);
-        //editNode.setVisible(false);
-        //deleteNode.setVisible(false);
-        //nodeType.setDisable(false);
-        //confirmBtn.setDisable(false);
-        //cancelBtn.setDisable(false);
-        confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (selectedLocation.getValue() != null) {
-                        /*
-                        MapNode toAdd = new MapNodeData(nodeID.getText(), new Location(selectedLocation.getxCoord(), selectedLocation.getyCoord(), masterMap.getCurrentFloor(), ""),
-                                nodeType.getSelectionModel().getSelectedItem(), longName.getText(), shortName.getText(), "A");
-                                */
-                    MapNode toAdd = nodeFieldsToNode();
-                    if (toAdd != null) {
-                        mapData.addNode(toAdd);
-                        System.out.println("Adding a node");
-                        clearTextFieldsNodes();
-                        mapDraw.drawNode(toAdd, 5, Color.DARKBLUE);
-
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Invalid Addition");
-                        alert.setHeaderText("Failed to Add Node");
-                        alert.setContentText("Make sure all fields are filled in.");
-                        alert.showAndWait();
-                    }
-                }
-            }
-        });
-
-    }
-
-    private MapNode nodeFieldsToNode() {
-        MapNode created = null;
-        Location chosen = selectedLocation.get();
-        if (chosen != null)
-            if (!(nodeID.getText().equals("") && longName.getText().equals("") && nodeType.getSelectionModel().getSelectedItem()== null && shortName.getText().equals(""))) {
-                created = new MapNodeData(nodeID.getText(), new Location(chosen.getxCoord(), chosen.getyCoord(), masterMap.getCurrentFloor(), ""),
-                        nodeType.getSelectionModel().getSelectedItem(), longName.getText(), shortName.getText(), "A");
-                if (created != null) {
-                    System.out.println("jawieor");
-                }}
-        return created;
-    }
-
-    @FXML
-    void onEditNode(ActionEvent e) {
-        updateFields.setValue(false);
-        if (selectedNode.getValue() != null) {
+        @FXML
+        void onAddNode(ActionEvent e) {
+            updateFields.setValue(false);
+            System.out.println("user wants to add a node.");
             //addNode.setVisible(false);
             //editNode.setVisible(false);
             //deleteNode.setVisible(false);
-            nodeType.setDisable(false);
-            confirmBtn.setDisable(false);
-            cancelBtn.setDisable(false);
-            confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
+            //nodeType.setDisable(false);
+            //confirmBtn.setDisable(false);
+            //cancelBtn.setDisable(false);
+            // TODO
 
-                    MapNode update = nodeFieldsToNode();
-                    if (update != null) {
-                        MapSubsystem.getInstance().addNode(update);
-                        clearTextFieldsNodes();
-                        updateFields.setValue(true);
+        }
+
+        ;
+
+
+
+
+        @FXML
+        void onEditNode(ActionEvent e) {
+            updateFields.setValue(false);
+            if (selectedNode.getValue() != null) {
+                //addNode.setVisible(false);
+                //editNode.setVisible(false);
+                //deleteNode.setVisible(false);
+                nodeType.setDisable(false);
+                //confirmBtn.setDisable(false);
+                //cancelBtn.setDisable(false);
+            }
+
+        }
+
+        @FXML
+        void onDeleteNode(ActionEvent e) {
+            //updateFields.setValue(false);
+            //todo: make the alert more visually appealing
+            Alert confirmDelete = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDelete.setTitle("Delete Selected Nodes");
+            confirmDelete.setHeaderText("Are you sure you would like to delete these nodes?");
+            confirmDelete.setContentText("Press Confirm to continue");
+
+            ButtonType confirm = new ButtonType("Confirm");
+            ButtonType cancel = new ButtonType("Cancel");
+            confirmDelete.getButtonTypes().setAll(confirm, cancel);
+            Optional<ButtonType> selectedChoice = confirmDelete.showAndWait();
+            if (selectedChoice.get() == confirm) {
+                for (Tab t : selectedNodes.keySet()) {
+                    MapNode m = selectedNodes.get(t);
+                    for (MapEdge edge : m.getEdges()) { // clean up edges
+                        mapData.deleteEdge(edge.getId());
+                        mapDraw.unDrawEdge(edge);
                     }
-                    else {
-                        clearTextFieldsNodes();
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Invalid Edit");
-                        alert.setHeaderText("Failed to Edit Node");
-                        alert.setContentText("Select an existing node to edit.");
-                        alert.showAndWait();
-                    }
+                    mapData.deleteNode(m.getId());
+                    mapDraw.unDrawNode(m);
 
                 }
-            });
+            }
+            selectedNodes = null;
+
+            clearTextFieldsNodes();
+
         }
 
-    }
 
-    @FXML
-    void onDeleteNode(ActionEvent e) {
-        //updateFields.setValue(false);
-        //todo: make the alert more visually appealing
-        Alert confirmDelete = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDelete.setTitle("Delete Selected Nodes");
-        confirmDelete.setHeaderText("Are you sure you would like to delete these nodes?");
-        confirmDelete.setContentText("Press Confirm to continue");
-        
-        ButtonType confirm = new ButtonType("Confirm");
-        ButtonType cancel = new ButtonType("Cancel");
-        confirmDelete.getButtonTypes().setAll(confirm, cancel);
-        Optional<ButtonType> selectedChoice = confirmDelete.showAndWait();
-        if (selectedChoice.get() == confirm) {
-            for (MapNode m: selectedNodes) {
-                for (MapEdge edge: m.getEdges()) { // clean up edges
-                    mapData.deleteEdge(edge.getId());
-                    mapDraw.unDrawEdge(edge);
-                }
-                mapData.deleteNode(m.getId());
-                mapDraw.unDrawNode(m);
-
-            }
+        public String getFXMLPath() {
+            return "/MainScreenDrawers/MapEditorNoTab.fxml";
         }
-        else {
-            if (selectedNodes.isEmpty()) {
-                System.out.println("No selected nodes.");
-            }
-            for (MapNode m: selectedNodes) {
-                mapDraw.unDrawNode(m);
-                mapDraw.drawNode(m, 6, Color.DARKBLUE);
-            }
-        }
-        selectedNodes = null;
-
-        clearTextFieldsNodes();
-
     }
-
-
-    public String getFXMLPath(){
-        return "/MainScreenDrawers/MapEditorFinal.fxml";
-    }
-}

@@ -1,7 +1,10 @@
 package com.teama.mapdrawingsubsystem;
 
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.*;
+import com.teama.mapsubsystem.data.Floor;
+import com.teama.mapsubsystem.data.Location;
+import com.teama.mapsubsystem.data.MapEdge;
+import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.Path;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
@@ -12,10 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +61,7 @@ public class MapDrawingSubsystem {
             }
         }
 
-        if(listenerLists.containsKey(ClickedListener.LOCCLICKED)) {
+        if(listenerLists.containsKey(ClickedListener.LOCCLICKED) && map.pointAt(mouseLoc) == null) {
             for (Long id : listenerLists.get(ClickedListener.LOCCLICKED)) {
                 clickedListenerMap.get(id).handle(event);
             }
@@ -202,11 +203,19 @@ public class MapDrawingSubsystem {
             size = 5;
         }
         if(color == null) {
-            color = Color.BLACK;
+            color = Color.DARKBLUE;
         }
         map.drawPoint(node.getId(), node.getCoordinate(),size, color,true, false);
     }
-
+    public void drawNewLocation(Location loc, int size, Color color, String id) {
+        if (size == 0) {
+            size = 5;
+        }
+        if (color == null) {
+            color = Color.DARKBLUE;
+        }
+        map.drawPoint(id, loc, size, color, true, true);
+    }
     public void drawNode(MapNode node, int size, Color color, ArrayList<PointAnimation> animation) {
         // TODO: implement animations
     }
@@ -264,6 +273,10 @@ public class MapDrawingSubsystem {
         map.deleteLine(edge.getId());
     }
 
+    public void unDrawNewLocation(String id) {
+        map.deletePoint(id);
+    }
+
     public void unDrawPath(String pathID) {
         //detachListener(pathID);
         /*Path pathToRemove = displayedPaths.get(pathID);
@@ -314,6 +327,9 @@ public class MapDrawingSubsystem {
         /*attachClickedListener((MouseEvent a) -> {
             System.out.println("X: "+mapScroll.getHvalue()+" Y: "+mapScroll.getVvalue());
         }, ClickedListener.LOCCLICKED);*/
+    }
+    public Location convertLocationToImgCoords(Location loc) {
+        return map.convToImageCoords(loc);
     }
 
     public void clearMap() {

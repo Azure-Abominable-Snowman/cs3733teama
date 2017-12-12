@@ -253,6 +253,7 @@ public class HospitalMapDisplay implements MapDisplay {
 
         // Points
         for(Point p : pointMap.values()) {
+            System.out.println(p.getId());
             p.draw(gc);
         }
 
@@ -394,6 +395,7 @@ public class HospitalMapDisplay implements MapDisplay {
         pointMap.remove(id);
         render();
     }
+
 
     @Override
     public void deleteLine(String id) {
