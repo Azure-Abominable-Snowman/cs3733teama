@@ -10,11 +10,7 @@ import com.teama.requestsubsystem.interpreterfeature.Language;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
-
-
-import javax.security.auth.callback.LanguageCallback;
-
-public class InterpReqController{
+public class InterpReqController {
 
         @FXML
         private AnchorPane parentPane;
