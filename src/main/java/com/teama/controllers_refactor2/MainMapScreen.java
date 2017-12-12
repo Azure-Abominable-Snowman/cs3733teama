@@ -326,6 +326,9 @@ public class MainMapScreen implements Initializable {
                 logInStage.resizableProperty().set(false);
                 logInStage.initModality(Modality.APPLICATION_MODAL);
                 logInStage.showAndWait();
+                if(ProgramSettings.getInstance().getIsLoggedInProp().get()) // launch it right after login, leave no chance for double click
+                   onOpenerClick(null); // TODO stupid fix, decide on if this work.
+
             }
             else{
                 ProgramSettings.getInstance().getIsLoggedInProp().set(false);
