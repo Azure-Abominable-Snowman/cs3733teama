@@ -393,11 +393,13 @@ public class MainMapScreen implements Initializable {
         }
 
     }//add methods for login click and translate click
-
+    @FXML private void onEmergencyClick(MouseEvent e){
+        //TODO add code for pathfinding to nearest exit
+    }
     //CREATES THE ABOUT PAGE POP UP
     //TODO attach this method to the about button
     @FXML
-    private void onAboutClick(ActionEvent e) {
+    private void onAboutClick(MouseEvent e) {
         Stage aboutPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AboutPage.fxml"));
@@ -418,7 +420,7 @@ public class MainMapScreen implements Initializable {
 
     //create the help page pop up
     @FXML
-    private void onHelpClick(ActionEvent e) {
+    private void onHelpClick(MouseEvent e) {
         Stage helpPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/HelpPage.fxml"));
