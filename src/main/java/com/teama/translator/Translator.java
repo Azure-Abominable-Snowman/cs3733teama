@@ -5,9 +5,6 @@ import com.teama.controllers_refactor2.UTF8Control;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/**
- * Created by jakepardue on 12/2/17.
- */
 public class Translator {
 
     private Locale langLocale;
