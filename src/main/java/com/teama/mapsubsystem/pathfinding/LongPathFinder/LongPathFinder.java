@@ -14,8 +14,10 @@ import static java.lang.Math.sqrt;
 public class LongPathFinder implements PathAlgorithm{
     protected MapNode start, end;
     private HashMap<String, MapNode> disableNodes ;
+
     private HashMap<String,MapNode> nonuseableNodes ;
     private long mapsizeCounter =0;
+
 
     @Override
     public Path generatePath(MapNode start, MapNode end) {
@@ -25,9 +27,11 @@ public class LongPathFinder implements PathAlgorithm{
 
         nonuseableNodes = new HashMap<>(disableNodes);
         //return formOutput((longRouteFromThisLessMemory(start)));
+
         return formOutput(longestRouteFromThis(start,new HashMap<>(disableNodes)));
 
     }
+
 
     // by removing itself from the hashMap, it only need one global copy of the nodes that have already been through or can't
     private LongRoute longRouteFromThisLessMemory(MapNode start)
@@ -79,7 +83,9 @@ public class LongPathFinder implements PathAlgorithm{
             if(thisRoute == null){
                 continue;
             }
+
             thisRoute.addNodeToBack(start,edge.getWeight());
+
             if(thisRoute.getDistance() > longest.getDistance()) {
                 longest = thisRoute;
             }

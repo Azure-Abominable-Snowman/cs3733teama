@@ -21,6 +21,7 @@ public class Dijkstras extends DijkstrasTemplate {
     protected HashMap<String, MapNode> disableNodes  ;
 
 
+
     /**
      * This is the a star itself.
      * @param start the start MapNode
