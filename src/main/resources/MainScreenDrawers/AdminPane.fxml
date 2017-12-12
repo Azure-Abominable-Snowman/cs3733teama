@@ -31,7 +31,7 @@
                               <Image url="@../icons_i4/directions.png" />
                            </image>
                         </ImageView>
-                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" minHeight="-Infinity" minWidth="-Infinity" onAction="#onRequestClick" onMouseClicked="#mouseclick" prefHeight="110.0" prefWidth="180.0" text="Requests">
+                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" minHeight="-Infinity" minWidth="-Infinity" onAction="#onRequestClick" prefHeight="110.0" prefWidth="180.0" text="Requests">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

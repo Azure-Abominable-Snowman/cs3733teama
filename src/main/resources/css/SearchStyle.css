@@ -35,10 +35,17 @@
 .floorButtonSelected{
     -fx-background-color: #3e75cb;
 }
+.jfx-slider .track,
+.jfx-slider:vertical .track {
+    -fx-control-inner-background: red;
+    -fx-background-color: #212467;
+}
+
 .zoomSlider{
     -fx-color: #3e75cb;
     -fx-control-inner-background: #00abd2;
 }
+
 .jfx-combo-box{
     -fx-prompt-text-fill: rgba(142, 142, 142, 0.75);
     -fx-font: 14px "Open-Sans";

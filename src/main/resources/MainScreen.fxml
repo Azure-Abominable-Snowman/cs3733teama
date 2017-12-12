@@ -42,7 +42,7 @@
          </children>
       </Pane>
       <JFXDrawer fx:id="drawer" layoutY="-1.0" prefHeight="562.0" prefWidth="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <ImageView fx:id="loginButton" fitHeight="43.0" fitWidth="43.0" layoutX="943.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+      <ImageView fx:id="loginButton" fitHeight="43.0" fitWidth="43.0" layoutX="943.0" layoutY="14.0" onMouseClicked="#onLoginClick" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
          <image>
             <Image url="@icons_i4/user-3-1.png" />
          </image>
