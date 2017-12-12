@@ -69,6 +69,7 @@ public class NodesController {
 
     private HashMap<Tab, String> selectedLocations = new HashMap<>();
     private HashMap<Tab, MapNode> selectedNodes = new HashMap<>();
+    private HashMap<Tab, NodesController> controllers;
 
 
     // FOR EDGE EDITOR:
@@ -118,9 +119,9 @@ public class NodesController {
 
     }
 
-    public void setParentTab(Tab parentTab) {
+    public void setParentTab(Tab parentTab, HashMap<Tab, NodesController> controllers) {
         this.parentTab = parentTab;
-
+        this.controllers = controllers;
     }
     public void setNodeInfo(MapNode clickedNode) {
         nodeID.setText(clickedNode.getId());
@@ -166,12 +167,21 @@ public class NodesController {
         return id;
     }
 
-    public MapNode getSelectedNode() {
-        return selectedNode.get();
-    }
 
-    public MapNode getNewNode() {
-        return newNode.getValue();
+    public MapNode getNodetoAdd() {
+        if (selectedNode.getValue() != null) {
+            return selectedNode.getValue();
+        }
+        MapNode toAdd = newNode.getValue();
+        if (toAdd == null) {
+            toAdd = createNode();
+            if (toAdd == null) {
+                //TODO
+                //generate alert
+                System.out.println("Could not create a new node from the input info.");
+            }
+        }
+        return toAdd;
     }
 
     private MapNode createNode() {
@@ -234,7 +244,7 @@ public class NodesController {
                 toUpdate.getCoordinate().setxCoord(newX);
                 toUpdate.getCoordinate().setyCoord(newY);
                 selectedNodes.put(parentTab, toUpdate);
-                mapDraw.drawNode(toUpdate, 5, Color.GREENYELLOW);
+                mapDraw.drawNode(toUpdate, 5, Color.GREEN);
             }
             if (selectedLocation.getValue() != null) {
                 System.out.println("Editing the location of a new node");
@@ -315,6 +325,7 @@ public class NodesController {
             MapNode selected = selectedNode.getValue();
             nodeID.setText(selected.getId());
             longName.setText(selected.getLongDescription());
+            nodeCoord.setText("(" + selected.getCoordinate().getxCoord() + ", " + selected.getCoordinate().getyCoord() + ")");
             shortName.setText(selected.getShortDescription());
             nodeType.setValue(selected.getNodeType());
         }
@@ -331,8 +342,55 @@ public class NodesController {
         editNode.setDisable(false);
         setUnEditable();
         reset();
+    }
 
+    @FXML
+    public void onCloseTab(ActionEvent e) {
+        if (selectedLocation.getValue() != null) {
+            System.out.println("Was adding a new node, but decided otherwise.");
+            System.out.println(parentTab);
+            String id = selectedLocations.get(parentTab);
+            mapDraw.unDrawNewLocation(id);
+            selectedLocations.remove(parentTab);
+        }
+        else if (selectedNode.getValue() != null) {
+            System.out.println("Was editing existing node, but decided otherwise.");
+            System.out.println(parentTab);
+            MapNode m = selectedNodes.get(parentTab);
+            mapDraw.unDrawNode(m);
+            MapNode original = mapData.getNode(m.getId());
+            mapDraw.drawNode(original, 5, Color.DARKBLUE);
+            selectedNodes.remove(parentTab);
+        }
+        controllers.remove(parentTab);
+        parent.getTabs().remove(parentTab);
+    }
 
+    public void onComplete() {
+        MapNode toReturn = null;
+        if (selectedLocation.getValue()!= null) {
+            toReturn = createNode();
+            String id = selectedLocations.get(parentTab);
+            mapDraw.unDrawNewLocation(id);
+            if (toReturn != null) {
+                mapDraw.drawNode(toReturn, 5, Color.DARKBLUE);
+            }
+        }
+        else if (selectedNode.getValue() != null) {
+            toReturn = updateExistingNode();
+            if (toReturn != null) {
+                mapDraw.unDrawNode(toReturn);
+                mapDraw.drawNode(toReturn, 5, Color.DARKBLUE);
+            }
+
+        }
+        if (toReturn != null) {
+            mapData.addNode(toReturn);
+        }
+        else {
+            System.out.println("Could not add the specified node to the database.");
+        }
+        parent.getTabs().remove(parentTab);
     }
 
 

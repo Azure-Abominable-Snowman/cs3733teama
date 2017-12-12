@@ -67,7 +67,7 @@
             </JFXTextField>
          </children>
       </GridPane>
-      <JFXButton fx:id="closeTab" layoutX="14.0" layoutY="5.0" text="x">
+      <JFXButton fx:id="closeTab" layoutX="14.0" layoutY="5.0" onAction="#onCloseTab" text="x">
          <font>
             <Font size="15.0" />
          </font>
