@@ -36,12 +36,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -85,6 +87,8 @@ public class MainMapScreen implements Initializable {
 
     @FXML
     private ImageView directionsButton;
+    @FXML
+    HBox hbxDrawerBox;
 
 
 
@@ -115,6 +119,7 @@ public class MainMapScreen implements Initializable {
     private final ImageView imgLogIn = new ImageView(new Image(getClass().getResourceAsStream("/icons_i4/user-3-1.png")));
     private final ImageView imgLogOut = new ImageView(new Image(getClass().getResourceAsStream("/icons_i4/LogOut.png")));
     final int NOTIFICATION_SIZE=40;
+    final int hmbDRAWEROPENER_WIDTH=30;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -218,7 +223,7 @@ public class MainMapScreen implements Initializable {
             //inserting animation here
             Image logOut = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogOut.png"));
             loginButton.setImage(logOut);
-            hmbDrawerOpener.setVisible(true);
+            adjustSearchPane(false);
             System.out.println(imgLogIn);
             imgLogIn.setFitHeight(NOTIFICATION_SIZE);
             imgLogIn.setFitWidth(NOTIFICATION_SIZE);
@@ -242,10 +247,22 @@ public class MainMapScreen implements Initializable {
             // mapEditorButton.setY(startPoint);
             Image logIn = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogIn.png"));
             loginButton.setImage(logIn);
-           hmbDrawerOpener.setVisible(false);
+            adjustSearchPane(true);
         }
     }
 
+    private void adjustSearchPane(boolean removeHmb){
+        if(removeHmb){
+            hmbDrawerOpener.setVisible(false);
+            searchBar.setLayoutX(searchBar.getLayoutX()-hmbDRAWEROPENER_WIDTH);
+            searchBar.setPrefWidth(searchBar.getPrefWidth()+hmbDRAWEROPENER_WIDTH);
+        }
+        else{
+            hmbDrawerOpener.setVisible(true);
+            searchBar.setLayoutX(searchBar.getLayoutX()+hmbDRAWEROPENER_WIDTH);
+            searchBar.setPrefWidth(searchBar.getPrefWidth()-hmbDRAWEROPENER_WIDTH);
+        }
+    }
 
     private Parent nodeInfo;
     //TODO update this stuff to create and contain the search info
@@ -258,7 +275,38 @@ public class MainMapScreen implements Initializable {
             //do nothing
         }
         else{
-            System.out.println("We need to implement this");
+            try {
+                disableSearchPane();
+                drawer.setVisible(true);
+                FXMLLoader openerLoader = new FXMLLoader();
+                curController = new DirectionController();
+                openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
+                openerLoader.setController(curController);
+                openerLoader.load();
+                curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
+                curController.onOpen();
+                drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
+                drawer.setSidePane(curController.getParentPane());
+                drawer.open();
+                curController.getClosing().addListener((a, oldVal, newVal) -> {
+                    if (newVal) {
+                        curController.onClose();
+                        drawer.close();
+                        drawer.setVisible(false);
+                        enableSearchPane();
+                    }
+                });
+
+            }catch (IOException e1) {
+                e1.printStackTrace();
+            } {
+
+
+            }
+
+
+
+
         }
     }
     @FXML public void onOpenerClick(MouseEvent e){
@@ -273,6 +321,7 @@ public class MainMapScreen implements Initializable {
             openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
             openerLoader.setController(curController);
             openerLoader.load();
+            //this ties the size of the parentPane of the controller to the size of the drawer
             curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
             curController.onOpen();
             System.out.println("in the main "+curController);
@@ -293,6 +342,10 @@ public class MainMapScreen implements Initializable {
             error.printStackTrace();
         }
     }
+
+
+
+
     @FXML private void onLoginClick(MouseEvent e){
         try {
             if(!ProgramSettings.getInstance().getIsLoggedInProp().get()) {
@@ -342,11 +395,18 @@ public class MainMapScreen implements Initializable {
     }
     private void enableSearchPane(){
       // hmbDrawerOpener.setDisable(false);
+        hbxDrawerBox.getChildren().clear();
+        hbxDrawerBox.getChildren().addAll(areaPane);
+        searchPane.setVisible(true);
         searchPane.getStyleClass().clear();
         searchPane.getStyleClass().add("searchPane");
     }
     private void disableSearchPane() {
        // hmbDrawerOpener.setDisable(true);
+        //this checks to see if the drawer is already there
+        hbxDrawerBox.getChildren().clear();
+        hbxDrawerBox.getChildren().addAll(drawer, areaPane);
+        searchPane.setVisible(false);
         searchPane.getStyleClass().clear();
         searchPane.getStyleClass().add("searchPane-disabled");
     }
@@ -360,6 +420,9 @@ public class MainMapScreen implements Initializable {
         removeCurrentPopUp(); // only pop up allowed at a time
         System.out.println("CLICK ON NODE BUTTON");
         // Get the node clicked on (if any)
+        if(curController!=null) {
+            System.out.println(curController.getParentPane().getPrefWidth());
+        }
         MapNode nodeAt = mapDrawing.nodeAt(new Location(event, mapDrawing.getCurrentFloor()));
 
         if (nodeAt != null) {
