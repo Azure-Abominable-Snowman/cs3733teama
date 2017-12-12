@@ -7,6 +7,7 @@ import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
+import com.teama.controllers_refactor.SettingsPopOut;
 import com.teama.login.LoginSubsystem;
 import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDisplay;
@@ -15,6 +16,9 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.NodeTypeDijkstras;
+import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.translator.Translator;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -420,9 +424,13 @@ public class MainMapScreen implements Initializable {
         }
 
     }//add methods for login click and translate click
+
+
     @FXML private void onEmergencyClick(MouseEvent e){
-        //TODO add code for pathfinding to nearest exit
+        pathfinding.genExitPath();
+            //TODO double check this.
     }
+
     //CREATES THE ABOUT PAGE POP UP
     //TODO attach this method to the about button
     @FXML
