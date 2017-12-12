@@ -133,11 +133,12 @@ public class PathfindingController {
         ProgramSettings.getInstance().setPathEndNodeProp(path.getEndNode());
         listen = true;
 
+        // additional new line, center the middle node of path when drawn.
+
+        drawingSubsystem.setViewportCenter(path.getNodes().get((path.getNodes().size()-1)/2).getCoordinate());
+
         // Open the directions pop out
         mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
-
-
-
 
     }
 }

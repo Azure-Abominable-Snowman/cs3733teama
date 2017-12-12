@@ -428,6 +428,7 @@ public class MainMapScreen implements Initializable {
 
     @FXML private void onEmergencyClick(MouseEvent e){
         pathfinding.genExitPath();
+
             //TODO double check this.
     }
 
