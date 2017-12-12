@@ -101,6 +101,7 @@ public class AdminPaneController extends HamburgerController{
     @FXML
     void mouseclick(ActionEvent event) {
 
+
     }
 
     private void loadPane(StaffToolController controller) {
