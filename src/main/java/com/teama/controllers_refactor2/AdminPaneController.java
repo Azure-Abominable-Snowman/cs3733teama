@@ -72,7 +72,6 @@ public class AdminPaneController extends HamburgerController{
             requestList.getItems().add(IR.toString());
         }
         interpreterRequestList.clear();
-        requestList.prefHeightProperty().bind(mainPane.heightProperty());
         loadPane(new RequestsController());
     }
 
