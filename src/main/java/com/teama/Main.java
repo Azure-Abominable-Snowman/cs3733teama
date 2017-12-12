@@ -1,14 +1,10 @@
 package com.teama;
 
-<<<<<<< HEAD
-import com.teama.translator.Translator;
-=======
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.messages.Message;
->>>>>>> 487e4bd6a821ea92c823b99c2418373539de0780
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 public class Main extends Application{
 
@@ -34,7 +29,6 @@ public class Main extends Application{
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/MainScreen.fxml"));
-            loader.setResources(Translator.getInstance().getNewBundle());
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setTitle("Brigham and Women's Hospital Kiosk");
