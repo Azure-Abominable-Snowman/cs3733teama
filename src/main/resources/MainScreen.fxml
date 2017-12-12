@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="areaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor2.MainMapScreen">
    <children>
@@ -50,6 +51,11 @@
       <ImageView fitHeight="43.0" fitWidth="43.0" layoutX="894.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="72.0">
          <image>
             <Image url="@icons_i4/translate.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="43.0" fitWidth="43.0" onMouseClicked="#onEmergencyClick" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="64.0">
+         <image>
+            <Image url="@icons_i4/emergency.png" />
          </image>
       </ImageView>
       <GridPane fx:id="floorButtonBox" layoutX="668.0" layoutY="251.0" prefHeight="226.0" prefWidth="37.0" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="7.0">
@@ -97,11 +103,22 @@
             </JFXButton>
          </children>
       </GridPane>
-      <ImageView fitHeight="106.0" fitWidth="238.0" layoutX="778.0" layoutY="488.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="72.0">
+      <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="778.0" layoutY="488.0" pickOnBounds="true" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="1.0">
          <image>
             <Image url="@icons_i4/BW-logo.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="43.0" fitWidth="43.0" onMouseClicked="#onHelpClick" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="2.0">
+         <image>
+            <Image url="@icons_i4/help.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="43.0" fitWidth="43.0" onMouseClicked="#onAboutClick" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="55.0">
+         <image>
+            <Image url="@icons_i4/info.png" />
+         </image>
+      </ImageView>
       <JFXSlider fx:id="zoomSlider" layoutX="921.0" layoutY="288.0" orientation="VERTICAL" prefHeight="226.0" prefWidth="14.0" styleClass="zoomSlider" stylesheets="@css/SearchStyle.css" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="65.0" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="© Brigham &amp; Women’s Hospital 2017" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="34.0" />
    </children>
 </AnchorPane>
