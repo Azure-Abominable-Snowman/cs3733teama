@@ -1,26 +1,29 @@
 package com.teama.requestsubsystem.securityfeature;
 
+import com.teama.requestsubsystem.PriorityLevel;
+
 import java.util.Set;
 
 public class SecurityInfo {
 
     private int id = 0;
     private Set<SecurityType> type;
-    private Set<SecurityLevel> urgency;
+    private PriorityLevel pLevel;
 
-    public SecurityInfo(Set<SecurityType> types, Set<SecurityLevel> urgency){
+    public SecurityInfo(Set<SecurityType> types, PriorityLevel urgency){
         type = types;
-        this.urgency = urgency;
+        this.pLevel = urgency;
     }
-    public SecurityInfo(int id, Set<SecurityType> types, Set<SecurityLevel> urgency){
+    public SecurityInfo(int id, Set<SecurityType> types, PriorityLevel urgency){
         this.id = id;
         type = types;
-        this.urgency = urgency;
+        this.pLevel = urgency;
     }
 
     public int getStaffID() {return id;}
     public Set<SecurityType> getSecType(){return type;}
     public void setSecType(Set<SecurityType> types){ this.type = types;}
 
-    public Set<SecurityLevel> getUrgency(){return urgency;}
+    public PriorityLevel getUrgency(){return pLevel;}
+
 }
