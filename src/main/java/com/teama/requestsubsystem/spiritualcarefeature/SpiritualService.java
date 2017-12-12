@@ -13,6 +13,8 @@ public enum SpiritualService {
         this.type = s;
     }
 
+    public String toString(){ return type;}
+
     public static SpiritualService getSpiritualService(String str) throws IllegalAccessException {
         for(SpiritualService s: SpiritualService.values()){
             if(s.toString().equals(str)){

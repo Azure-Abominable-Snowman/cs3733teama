@@ -29,6 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -100,6 +101,8 @@ public class RequestPopOut extends PopOutController {
     private JFXButton completeButton;
 
     Image check = new Image("/check.png");
+
+
 
     private String buildingName;
     private Floor floorName;
@@ -203,6 +206,7 @@ public class RequestPopOut extends PopOutController {
 
     @FXML
     public void submitRequest(ActionEvent e) {
+        /*
 
         //for Food Request
         String foodDesired = "";
@@ -309,7 +313,7 @@ public class RequestPopOut extends PopOutController {
 
                 curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p,m, "");
                 //add request to the database here
-/*
+
                 Notifications notification = Notifications.create()
                         .title("Success!")
                         .text("Your elevator maintenance request has been added.")
@@ -324,7 +328,7 @@ public class RequestPopOut extends PopOutController {
                         });
                 t.start();
                 break;
-                */
+
             case SEC:
                 break;
             case TRANS:
@@ -344,7 +348,7 @@ public class RequestPopOut extends PopOutController {
         System.out.println(additionalInfoMessage);
         System.out.println(familySize);
         System.out.println(lang);
-
+*/
     }
 
     @FXML
@@ -448,6 +452,7 @@ public class RequestPopOut extends PopOutController {
 
     @FXML
     public void showStaffPopUp(ActionEvent event) {
+        /*
 
         Stage staffPopUp = new Stage();
         try {
@@ -528,6 +533,7 @@ public class RequestPopOut extends PopOutController {
             e.printStackTrace();
         }
        // viewStaffButton.setText("work");
+       */
     }
 
     @FXML
@@ -559,6 +565,7 @@ public class RequestPopOut extends PopOutController {
 
     @FXML
     public void fulfillRequest(ActionEvent e){
+
         Stage fulfillStage = new Stage();
         //TODO change name of that plz
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FulfillIntReq.fxml"));
@@ -584,6 +591,6 @@ public class RequestPopOut extends PopOutController {
     }
     public void clearController(){
         addToThis.getChildren().clear();
-
     }
+
 }
