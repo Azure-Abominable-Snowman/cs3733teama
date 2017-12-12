@@ -2,8 +2,11 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,34 +20,25 @@
                <children>
                   <VBox fillWidth="false" layoutX="47.0" layoutY="64.0" maxWidth="-Infinity" prefHeight="798.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <JFXButton alignment="BASELINE_LEFT" onAction="#onBackClick" prefHeight="31.0" prefWidth="180.0" text="Back" VBox.vgrow="SOMETIMES">
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="48.0" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons_i4/back.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <ImageView fitHeight="176.0" fitWidth="216.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
+                        <ImageView fitHeight="188.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../icons_i4/directions.png" />
+                              <Image url="@../adminPaneicons/ic_account_circle_black_24dp/web/ic_account_circle_black_24dp_2x.png" />
                            </image>
                         </ImageView>
-                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" minHeight="-Infinity" minWidth="-Infinity" onAction="#onRequestClick" onMouseClicked="#mouseclick" prefHeight="110.0" prefWidth="180.0" text="Requests">
+                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" onAction="#onRequestClick" onMouseClicked="#mouseclick" prefHeight="53.0" prefWidth="180.0" text="Requests">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" minHeight="-Infinity" onAction="#onStaffClick" prefHeight="110.0" prefWidth="241.0" text="View Staff">
+                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" onAction="#onStaffClick" prefHeight="62.0" prefWidth="241.0" text="Staff Database">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -52,30 +46,55 @@
                               <Insets />
                            </VBox.margin>
                         </JFXButton>
-                        <JFXButton fx:id="tool" alignment="BASELINE_LEFT" minHeight="-Infinity" onAction="#onMapClick" prefHeight="110.0" prefWidth="196.0" text="Map tools">
+                        <JFXButton fx:id="tool" alignment="BASELINE_LEFT" onAction="#onMapClick" prefHeight="62.0" prefWidth="196.0" text="Map tools">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="setting" alignment="BASELINE_LEFT" minHeight="-Infinity" onAction="#onSettingsClick" prefHeight="110.0" prefWidth="200.0" text="Setting">
+                        <JFXButton fx:id="setting" alignment="BASELINE_LEFT" onAction="#onSettingsClick" prefHeight="62.0" prefWidth="200.0" text="Setting">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXListView fx:id="requestList" maxHeight="-Infinity" />
+                        <JFXListView fx:id="requestList" />
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane fx:id="apnToLoad" minHeight="0.0" minWidth="0.0" prefHeight="682.0" prefWidth="412.0" SplitPane.resizableWithParent="false" />
+          <AnchorPane fx:id="apnToLoad" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="500.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <JFXTabPane fx:id="tabepane" layoutX="139.0" layoutY="174.0" prefHeight="798.0" prefWidth="415.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <tabs>
+                        <Tab text="Interpreter">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="400.0" />
+                          </content>
+                        </Tab>
+                        <Tab text="Transport">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          </content>
+                        </Tab>
+                        <Tab text="ETC">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          </content>
+                        </Tab>
+                     </tabs>
+                     <effect>
+                        <ColorAdjust brightness="0.22" contrast="-0.02" hue="-1.0" saturation="0.02" />
+                     </effect>
+                  </JFXTabPane>
+               </children>
+            </AnchorPane>
         </items>
       </SplitPane>
    </children>
