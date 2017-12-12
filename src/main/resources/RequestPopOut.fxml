@@ -19,132 +19,114 @@
 <?import javafx.scene.text.Font?>
 
 <Pane fx:id="mainPane" minHeight="432.0" minWidth="305.0" prefHeight="523.0" prefWidth="653.0" styleClass="popOutPaneStyle" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <HBox layoutX="-2.0" layoutY="-1.0" prefHeight="517.0" prefWidth="653.0">
-         <children>
-            <VBox prefHeight="517.0" prefWidth="320.0">
-               <children>
-                  <JFXTextField fx:id="createRequestLabel1" alignment="CENTER" editable="false" prefHeight="41.0" prefWidth="315.0" text="Open Requests" unFocusColor="BLACK">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </JFXTextField>
-                  <JFXComboBox fx:id="typeOfRequest1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="28.0" prefWidth="277.0" promptText="Filter" />
-                  <JFXListView fx:id="requestView" prefHeight="378.0" prefWidth="325.0" VBox.vgrow="ALWAYS">
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </JFXListView>
-                  <GridPane prefHeight="66.0" prefWidth="315.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="159.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="156.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteRequest" prefHeight="70.0" prefWidth="159.0" styleClass="resetButton" text="Delete" textFill="#eee4e4">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </GridPane.margin></JFXButton>
-                        <JFXButton fx:id="completeButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#fulfillRequest" prefHeight="71.0" prefWidth="156.0" styleClass="confirmButton" text="Complete" textFill="WHITE" GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </GridPane.margin></JFXButton>
-                     </children>
-                  </GridPane>
-               </children>
-               <padding>
-                  <Insets left="5.0" />
-               </padding>
-               <HBox.margin>
-                  <Insets right="5.0" />
-               </HBox.margin>
-            </VBox>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="275.0">
-               <children>
-                  <VBox prefHeight="517.0" prefWidth="318.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-43.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox fx:id="addToThis">
-                           <children>
-                              <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" prefHeight="41.0" prefWidth="318.0" text="Create Request">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </JFXTextField>
-                              <JFXTextField fx:id="locationLabel" alignment="CENTER" editable="false" prefHeight="16.0" prefWidth="274.0" text="Location">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </JFXTextField>
-                              <HBox prefHeight="33.0" prefWidth="379.0">
-                                 <children>
-                                    <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="87.0" promptText="Building" styleClass="jfx-combo-box" />
-                                    <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="73.0" promptText="Floor" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
-                                    <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="29.0" prefWidth="164.0" promptText="Long Name" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
-                                 </children>
-                              </HBox>
-                              <JFXTextField fx:id="typeLabel" alignment="CENTER" editable="false" text="Type">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </JFXTextField>
-                              <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="120.0" promptText="Select Type:" />
-                              <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="Note">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </JFXTextField>
-                              <JFXTextArea fx:id="additionalInfo" maxHeight="-Infinity" prefHeight="127.0" prefWidth="303.0" style="-fx-background-color: #dddddd; -fx-border-color: TRANSPARENT TRANSPARENT TRANSPARENT TRANSPARENT;" />
-                           </children>
+    <children>
+        <HBox layoutX="-2.0" layoutY="-1.0" prefHeight="517.0" prefWidth="653.0">
+            <children>
+                <VBox prefHeight="517.0" prefWidth="320.0">
+                    <children>
+                        <JFXTextField fx:id="createRequestLabel1" alignment="CENTER" editable="false" text="%openrq" unFocusColor="BLACK">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </JFXTextField>
+                        <JFXComboBox fx:id="typeOfRequest1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="28.0" prefWidth="277.0" promptText="%filter" stylesheets="@css/DefaultStyle.css" />
+                        <JFXListView fx:id="requestView" prefHeight="378.0" prefWidth="325.0" stylesheets="@css/DefaultStyle.css" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets bottom="5.0" />
+                            </VBox.margin>
+                        </JFXListView>
+                        <GridPane prefHeight="66.0" prefWidth="315.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="159.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="156.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteRequest" prefHeight="70.0" prefWidth="159.0" style="-fx-background-color: #4d4dff;" text="%deleteBtn" />
+                                <JFXButton fx:id="completeButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#fulfillRequest" prefHeight="71.0" prefWidth="156.0" style="-fx-background-color: #000000;" text="%complete" GridPane.columnIndex="1" />
+                            </children>
+                        </GridPane>
+                    </children>
+                    <padding>
+                        <Insets left="5.0" />
+                    </padding>
+                </VBox>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="275.0">
+                    <children>
+                        <VBox prefHeight="517.0" prefWidth="318.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-43.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <VBox fx:id="addToThis">
+                                    <children>
+                                        <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" text="%createreq">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </JFXTextField>
+                                        <JFXTextField fx:id="locationLabel" alignment="CENTER" editable="false" prefHeight="16.0" prefWidth="274.0" text="%reqlocation">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </JFXTextField>
+                                        <HBox prefHeight="33.0" prefWidth="379.0">
+                                            <children>
+                                                <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="87.0" promptText="%reqbuilding" styleClass="jfx-combo-box" />
+                                                <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="73.0" promptText="%floorlvl" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
+                                                <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="29.0" prefWidth="164.0" promptText="%reqlongname" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
+                                            </children>
+                                        </HBox>
+                                        <JFXTextField fx:id="typeLabel" alignment="CENTER" editable="false" text="%reqtypel">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </JFXTextField>
+                                        <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" onAction="#onRequestSelected" prefHeight="27.0" prefWidth="120.0" promptText="%typeSel" styleClass="jfx-combo-box" stylesheets="@css/DefaultStyle.css" />
+                                        <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="%reqnotes">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </JFXTextField>
+                                        <JFXTextArea fx:id="additionalInfo" maxHeight="-Infinity" prefHeight="127.0" prefWidth="303.0" style="-fx-background-color: #dddddd; -fx-border-color: TRANSPARENT TRANSPARENT TRANSPARENT TRANSPARENT;" />
+                                    </children>
+                                </VBox>
+                                <HBox />
+                                <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="36.0" prefWidth="327.0" text="%staffview">
+                                    <padding>
+                                        <Insets top="10.0" />
+                                    </padding>
+                                </JFXButton>
+                                <HBox prefHeight="25.0" prefWidth="303.0">
+                                    <children>
+                                        <JFXButton fx:id="cancelButton" onAction="#clearRequest" prefHeight="31.0" prefWidth="379.0" styleClass="jfx-cancel-button" text="%cancelBtn" textFill="WHITE">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </JFXButton>
+                                        <JFXButton fx:id="submitButton" maxHeight="1.7976931348623157E308" onAction="#submitRequest" prefHeight="85.0" prefWidth="374.0" styleClass="jfx-accept-button" text="%reqsubmit" textFill="WHITE">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </JFXButton>
+                                    </children>
+                                </HBox>
+                            </children>
                         </VBox>
-                        <HBox />
-                        <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="36.0" prefWidth="327.0" styleClass="viewStaffButton" text="View Staff" textFill="WHITE">
-                           <padding>
-                              <Insets top="10.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                        <HBox prefHeight="25.0" prefWidth="303.0">
-                           <children>
-                              <JFXButton fx:id="cancelButton" onAction="#clearRequest" prefHeight="31.0" prefWidth="379.0" styleClass="cancelButton" text="Cancel" textFill="WHITE">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                              <JFXButton fx:id="submitButton" maxHeight="1.7976931348623157E308" onAction="#submitRequest" prefHeight="85.0" prefWidth="374.0" styleClass="confirmButton" text="Submit" textFill="WHITE">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </HBox>
-      <ImageView fx:id="arrow" fitHeight="45.0" fitWidth="51.0" layoutX="651.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@triangle.png" />
-         </image>
-      </ImageView>
-   </children>
-   <stylesheets>
-      <URL value="@css/MainScreenStyle.css" />
-      <URL value="@css/DefaultStyle2.css" />
-   </stylesheets>
+                    </children>
+                </AnchorPane>
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </HBox>
+        <ImageView fx:id="arrow" fitHeight="45.0" fitWidth="51.0" layoutX="651.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@triangle.png" />
+            </image>
+        </ImageView>
+    </children>
+    <stylesheets>
+        <URL value="@css/MainScreenStyle.css" />
+        <URL value="@css/DefaultStyle.css" />
+    </stylesheets>
 </Pane>

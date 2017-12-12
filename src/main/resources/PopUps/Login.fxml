@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="mainPane" prefHeight="401.0" prefWidth="580.0" stylesheets="@../css/SearchStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor2.loginController">
+   <children>
+      <VBox layoutY="-5.0" prefHeight="410.0" prefWidth="580.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2196f3;" />
+            <Pane prefHeight="351.0" prefWidth="800.0" style="-fx-background-color: #EDE7F6;" />
+         </children>
+      </VBox>
+      <AnchorPane layoutX="59.0" layoutY="30.0" prefHeight="342.0" prefWidth="469.0" style="-fx-background-color: WHITE; -fx-background-radius: 4;">
+         <children>
+            <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="196.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../materialicons/User.png" />
+               </image>
+            </ImageView>
+            <JFXTextField fx:id="uname" labelFloat="true" layoutX="75.0" layoutY="147.0" maxWidth="316.0" minWidth="233.0" prefHeight="31.0" prefWidth="316.0" promptText="%usernamelog" styleClass="input-line" stylesheets="@../css/SearchStyle.css">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </JFXTextField>
+            <JFXPasswordField fx:id="pword" labelFloat="true" layoutX="75.0" layoutY="195.0" maxWidth="316.0" minWidth="235.0" onKeyPressed="#onEnterPressed" prefHeight="31.0" prefWidth="316.0" promptText="%staffpassword" styleClass="input-line">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </JFXPasswordField>
+            <JFXButton fx:id="loginButton" layoutX="185.0" layoutY="286.0" onAction="#onLoginClick" onKeyPressed="#onLoginClick" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: #2196f3;" text="%serlogin" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Bold" size="14.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="resetBtn" layoutX="358.0" layoutY="149.0" onAction="#onResetBtnClick" prefHeight="22.0" prefWidth="26.0" text="X" />
+            <JFXRadioButton fx:id="admin" layoutX="98.0" layoutY="241.0" text="%adminlog">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXRadioButton>
+            <JFXRadioButton fx:id="staff" layoutX="300.0" layoutY="242.0" text="%stafflog">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXRadioButton>
+            <Label fx:id="errorMsg" layoutX="123.0" layoutY="108.0" prefHeight="23.0" prefWidth="268.0" text="*ErrorMessage" textFill="#d80808">
+               <font>
+                  <Font name="Calibri Italic" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>
