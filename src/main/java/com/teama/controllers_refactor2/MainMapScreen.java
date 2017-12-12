@@ -206,6 +206,7 @@ public class MainMapScreen implements Initializable {
 
         // When the search button is pressed then generate a new path with that as the destination
         searchButton.pressedProperty().addListener((Observable a) -> {
+            mapDrawing.setViewportCenter(mainSearch.getSelectedNode().getCoordinate());
             pathfinding.genPath(mainSearch.getSelectedNode());
         });
 
