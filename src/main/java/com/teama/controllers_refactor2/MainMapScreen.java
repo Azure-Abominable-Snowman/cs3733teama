@@ -69,6 +69,11 @@ public class MainMapScreen implements Initializable {
     @FXML private Pane searchPane;
 
     @FXML
+    private ImageView lanBtn;
+
+
+
+    @FXML
     private JFXComboBox<String> searchBar;
 
     @FXML
@@ -89,6 +94,7 @@ public class MainMapScreen implements Initializable {
 
     @FXML
     private ImageView directionsButton;
+
     @FXML
     HBox hbxDrawerBox;
 
@@ -282,7 +288,7 @@ public class MainMapScreen implements Initializable {
                 drawer.setVisible(true);
                 FXMLLoader openerLoader = new FXMLLoader();
                 curController = new DirectionController();
-                //openerLoader.setResources(Translator.getInstance().getNewBundle());
+                openerLoader.setResources(Translator.getInstance().getNewBundle());
                 openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
                 openerLoader.setController(curController);
                 openerLoader.load();
@@ -480,6 +486,7 @@ public class MainMapScreen implements Initializable {
         Stage aboutPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AboutPage.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         try {
             Parent root = (Parent) loader.load();
             Scene aboutScene = new Scene(root);
@@ -501,6 +508,8 @@ public class MainMapScreen implements Initializable {
         Stage helpPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/HelpPage.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
+
         try {
             Parent root = (Parent) loader.load();
             Scene helpScene = new Scene(root);
@@ -508,6 +517,26 @@ public class MainMapScreen implements Initializable {
             helpPopUp.resizableProperty().set(false);
             helpPopUp.initModality(Modality.WINDOW_MODAL);
             helpPopUp.showAndWait();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void onLanBtnClicked(MouseEvent event) {
+        Stage languages = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/LanguagesPopOut.fxml"));
+        Translator.getInstance().setLang("all");
+        loader.setResources(Translator.getInstance().getNewBundle());
+        try {
+            Parent root = (Parent) loader.load();
+            Scene helpScene = new Scene(root);
+            languages.setScene(helpScene);
+            languages.resizableProperty().set(false);
+            languages.initModality(Modality.WINDOW_MODAL);
+            languages.showAndWait();
         } catch (IOException exception) {
             exception.printStackTrace();
         }

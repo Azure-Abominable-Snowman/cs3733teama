@@ -20,6 +20,7 @@ import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.Direction;
 import com.teama.mapsubsystem.pathfinding.TextDirections;
 import com.teama.mapsubsystem.pathfinding.TextualDirections;
+import com.teama.translator.Translator;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
@@ -195,10 +196,10 @@ public class DirectionController extends HamburgerController{
 
 
 
-        stepCol.setText("Step");
-        descriptionCol.setText("Description");
-        distanceCol.setText("Distance");
-        directionCol.setText("Direction");
+        stepCol.setText(Translator.getInstance().getText("step"));
+        descriptionCol.setText(Translator.getInstance().getText("description"));
+        distanceCol.setText(Translator.getInstance().getText("distance"));
+        directionCol.setText(Translator.getInstance().getText("direction"));
 
 
 

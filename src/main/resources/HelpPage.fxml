@@ -1,96 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="719.0" prefWidth="667.0" style="-fx-background-color-fx-background-color: #CFDDE7 #CFDDE7;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane prefHeight="43.0" prefWidth="600.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <Pane prefHeight="49.0" prefWidth="669.0" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4;" styleClass="tab-header-background">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <stylesheets>
+            <URL value="@../../../out/production/resources/css/DefaultStyle2.css" />
+            <URL value="@../../../out/production/resources/css/MainScreenStyle.css" />
+         </stylesheets>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%help" wrappingWidth="131.8187255859375" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <Text fill="#e6e8e8" layoutX="303.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Help">
                <font>
-                  <Font name="Helvetica Bold" size="27.0" />
+                  <Font size="28.0" />
                </font>
             </Text>
          </children>
-      </GridPane>
-      <ScrollPane layoutY="44.0" prefHeight="457.0" prefWidth="600.0">
-         <content>
-            <GridPane prefHeight="562.0" prefWidth="571.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="78.4000244140625" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="102.5999755859375" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="408.0" minWidth="10.0" prefWidth="408.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="161.0" minHeight="0.0" prefHeight="71.60000610351562" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="425.0" minHeight="0.0" prefHeight="69.39999389648438" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="362.39996337890625" minHeight="10.0" prefHeight="74.80001831054688" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="362.39996337890625" minHeight="10.0" prefHeight="72.5999755859375" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="362.39996337890625" minHeight="10.0" prefHeight="72.20001220703125" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="362.39996337890625" minHeight="10.0" prefHeight="64.79998779296875" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="256.20001220703125" minHeight="10.0" prefHeight="134.20001220703125" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <ImageView fitHeight="63.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@materialicons/mainscreenicons/user-3-1%20(1).png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="65.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@materialicons/mainscreenicons/group-1%20(1).png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="94.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@materialicons/mainscreenicons/pencil-1%20(1).png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
-                     <image>
-                        <Image url="@materialicons/mainscreenicons/notification-1%20(1).png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
-                     <image>
-                        <Image url="@materialicons/mainscreenicons/placeholder-1%20(1).png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
-                     <image>
-                        <Image url="@materialicons/mainscreenicons/settings.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="6" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Login" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Editor" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Editor" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Request" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Textral Direction" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="This icon is used for admin/staffs to login. " GridPane.columnIndex="2" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="This icon is for admin to add and remove staff from the database." GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="This icon is for admin to edit the maps nodes and edges." GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="This icon is for admin/staffs to request different services throughout the hospital and view open requests." GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="This icon is used to get listed textual directions from one location to another." GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="This icon is used to open up settings." GridPane.columnIndex="2" GridPane.rowIndex="5" />
-               </children>
-            </GridPane>
-         </content>
-      </ScrollPane>
+      </Pane>
+      <TextArea layoutY="49.0" prefHeight="64.0" prefWidth="669.0" text="Welcome to Brigham and Women's Faulkner Hospital Kiosk. These kiosks are in place throughout the hospital to help patients and visitors find their way to various locations throughout the hospital. Below you can find help with various functions within the application." wrapText="true" />
+      <TextArea layoutY="479.0" prefHeight="288.0" prefWidth="667.0" text="1. Search bar and Magnifying Glass: This search bar along with the magnifying glass allows you to search for and find directions to any location within the hospital from the kiosk location.&#10;&#10;2. Route Arrow: The Route Arrow will pop up a path finding pane that gives you. &#10;&#10;3. Language Button: This button allows you to change the applications language.&#10;&#10;4. Login: Clicking on this icon allows Admin/Staff to type in their credential to login.&#10;&#10;5. Emergency Exit Locator: Clicking on this icon will display a path to the nearest emergency exit&#10;&#10;6. Floor Display: These buttons allow you to change which floor is being displayed on the screen. The currently displayed floor is solid while the rest of the floors are tranparent.&#10;&#10;7. Zoom Scroll: This scroll bar allows you to zoom in and out on the screen. Dragging upwards will zoom in while dragging down will zoom out.  " wrapText="true" />
+      <ImageView fitHeight="366.0" fitWidth="687.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@./Main_Screen.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="searchBtn" layoutX="97.0" layoutY="154.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="0.0" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4;" text="1" textFill="WHITE" />
+      <Button fx:id="routeBtn" layoutX="192.0" layoutY="154.0" mnemonicParsing="false" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4;" text="2" textFill="WHITE" />
+      <Button fx:id="languageBtn" layoutX="550.0" layoutY="120.0" mnemonicParsing="false" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8;" text="3" textFill="WHITE" />
+      <Button fx:id="loginBtn" layoutX="577.0" layoutY="154.0" mnemonicParsing="false" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4;" text="4" textFill="WHITE" />
+      <Button fx:id="emergencyBtn" layoutX="617.0" layoutY="181.0" mnemonicParsing="false" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4;" text="5" textFill="WHITE" />
+      <Button fx:id="floorBtn" layoutX="577.0" layoutY="333.0" mnemonicParsing="false" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4;" text="6" textFill="WHITE" />
+      <Button fx:id="zoomBtn" layoutX="578.0" layoutY="392.0" mnemonicParsing="false" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4;" text="7" textFill="WHITE" />
    </children>
 </AnchorPane>
