@@ -33,5 +33,9 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
 }
 
+.hbox_floorBtn {
+    -fx-background-color: #4e85ec;
+
+}
 
 
