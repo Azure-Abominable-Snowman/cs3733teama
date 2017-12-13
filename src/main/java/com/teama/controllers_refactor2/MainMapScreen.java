@@ -470,8 +470,7 @@ public class MainMapScreen implements Initializable {
 
 
     @FXML private void onEmergencyClick(MouseEvent e){
-        //pathfinding.genExitPath();
-        run_Food();
+        pathfinding.genExitPath();
 
             //TODO double check this.
     }
@@ -515,16 +514,6 @@ public class MainMapScreen implements Initializable {
             exception.printStackTrace();
         }
 
-    }
-
-    private void run_Food(){
-        FoodRequest foodRequest = new FoodRequest();
-        try{
-            foodRequest.run(0,0,1900,1000,null,null,null);
-        }catch (Exception e){
-            System.out.println("Failed to run API");
-            e.printStackTrace();
-        }
     }
 
 }
