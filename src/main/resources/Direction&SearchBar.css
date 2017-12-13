@@ -1,0 +1,34 @@
+.root                             { -fx-font: 13px "Arial";    }
+
+
+.hbox_google {
+    -fx-background-color: #4e85ec;
+}
+
+.text-field {
+    -fx-prompt-text-fill: white;
+}
+
+.hbox_sendToPhone {
+    -fx-border-color:#e6e6e6 ;
+}
+
+.hbox_floorBtn_hbox {
+    -fx-border-color: #e6e6e6 ;
+}
+
+.hbox_floorBtn {
+    -fx-border-color: #BDBDBD ;
+}
+
+.table-view .column-header
+{
+    -fx-font: 13px "Roboto";
+    -fx-background-color: #BDBDBD;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 2, 0.5, 1, 1);
+}
+
+
+
