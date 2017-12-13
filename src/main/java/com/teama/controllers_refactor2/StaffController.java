@@ -1,13 +1,10 @@
 package com.teama.controllers_refactor2;
 
+import com.teama.translator.Translator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Tab;
 import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -32,7 +29,7 @@ public class StaffController extends StaffToolController{
 
     public void initialize(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MaintananceStaffPopOut.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainScreenDrawers/staffPanes/MaintenanceEditor.fxml"));
             loader.load();
             MatStaffController myController = loader.getController();
             if(eleVBox.getChildren()!=null) {
@@ -42,6 +39,14 @@ public class StaffController extends StaffToolController{
             System.out.println(myController.getVbxParentPane().getChildren().size());
             System.out.println(eleVBox);
 
+            FXMLLoader interLoader = new FXMLLoader((getClass().getResource("/MainScreenDrawers/staffPanes/interpreterPane.fxml")));
+            interLoader.setResources(Translator.getInstance().getNewBundle());
+            interLoader.load();
+            InterStaffController interController = interLoader.getController();
+            if(intVBox.getChildren()!=null) {
+                intVBox.getChildren().clear();
+            }
+            intVBox.getChildren().add(interController.getParentVbox());
         }
         catch(IOException error){
             error.printStackTrace();

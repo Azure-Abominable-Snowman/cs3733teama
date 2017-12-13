@@ -23,12 +23,12 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="FirstName" prefHeight="25.0" prefWidth="413.0" promptText="First Name" styleClass="text-field" stylesheets="@css/ApiStyle.css">
+            <JFXTextField fx:id="FirstName" prefHeight="25.0" prefWidth="413.0" promptText="First Name" styleClass="text-field" stylesheets="@../../css/ApiStyle.css">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXTextField fx:id="LastName" promptText="Last Name" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.columnIndex="1">
+            <JFXTextField fx:id="LastName" promptText="Last Name" styleClass="text-field" stylesheets="@../../css/ApiStyle.css" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" />
                </GridPane.margin>
@@ -47,7 +47,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXTextField fx:id="PhoneNo" promptText="Phone No." styleClass="text-field" stylesheets="@css/ApiStyle.css">
+            <JFXTextField fx:id="PhoneNo" promptText="Phone No." styleClass="text-field" stylesheets="@../../css/ApiStyle.css">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
@@ -62,7 +62,7 @@
             <Insets bottom="5.0" />
          </padding>
       </GridPane>
-      <JFXTextField fx:id="Email" promptText="Email" styleClass="text-field" stylesheets="@css/ApiStyle.css">
+      <JFXTextField fx:id="Email" promptText="Email" styleClass="text-field" stylesheets="@../../css/ApiStyle.css">
          <VBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </VBox.margin>
@@ -101,17 +101,17 @@
             <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#cancelStaff" prefHeight="54.0" prefWidth="127.0" styleClass="cancel" stylesheets="@css/ApiStyle.css" text="Cancel">
+            <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#cancelStaff" prefHeight="54.0" prefWidth="127.0" styleClass="cancel" stylesheets="@../../css/ApiStyle.css" text="Cancel">
                <GridPane.margin>
                   <Insets right="5.0" top="5.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#submitStaff" prefHeight="57.0" prefWidth="134.0" styleClass="submit" stylesheets="@css/ApiStyle.css" text="Add" GridPane.columnIndex="1">
+            <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#submitStaff" prefHeight="57.0" prefWidth="134.0" styleClass="submit" stylesheets="@../../css/ApiStyle.css" text="Add" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" top="5.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#deleteStaff" prefHeight="55.0" prefWidth="126.0" styleClass="delete" stylesheets="@css/ApiStyle.css" text="Delete" GridPane.columnIndex="2">
+            <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#deleteStaff" prefHeight="55.0" prefWidth="126.0" styleClass="delete" stylesheets="@../../css/ApiStyle.css" text="Delete" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets right="5.0" top="5.0" />
                </GridPane.margin>
