@@ -286,6 +286,8 @@ public class MainMapScreen implements Initializable {
                 openerLoader.load();
                 curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
                 curController.onOpen();
+                ((DirectionController) curController).setFinder(pathfinding);
+
                 drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
                 drawer.setSidePane(curController.getParentPane());
                 drawer.open();
