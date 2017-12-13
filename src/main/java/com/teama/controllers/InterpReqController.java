@@ -26,10 +26,7 @@ public class InterpReqController {
         public void initialize(){
                 //set up Language ComboBox
                 cmbLang.getItems().clear();
-                cmbLang.getItems().addAll(
-                        Language.English, Language.Spanish, Language.French, Language.German, Language.Russian, Language.Cantonese, Language.Luxembourgish,
-                        Language.Moldovan, Language.Ukranian, Language.ASL, Language.JAVA
-                );
+                cmbLang.getItems().addAll(Language.values());
         }
 
         public Language getLanguage(){

@@ -5,6 +5,7 @@ import com.teama.ProgramSettings;
 import com.teama.controllers.SearchBarController;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.DirectionAdapter;
@@ -30,6 +31,7 @@ import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 public class DirectionsPopOut extends PopOutController {
     private int xOffset, yOffset;
@@ -142,6 +144,7 @@ public class DirectionsPopOut extends PopOutController {
     private MapSubsystem mapSubsystem = MapSubsystem.getInstance();
 
     private ArrayList<Long> filterFloorListeners = new ArrayList<>();
+
     private void updateFilter() {
         mapDrawing.refreshMapNodes();
         Collection<MapNode> floorNodes = mapSubsystem.getVisibleFloorNodes(mapDrawing.getCurrentFloor()).values();
@@ -187,6 +190,7 @@ public class DirectionsPopOut extends PopOutController {
 
     @Override
     public void onClose() {
+        //TODO rdraw nodes that are filtered
 
     }
 
