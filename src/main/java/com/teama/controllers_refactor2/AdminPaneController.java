@@ -2,12 +2,15 @@ package com.teama.controllers_refactor2;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTabPane;
-import com.teama.controllers_refactor2.HamburgerController;
+import com.teama.login.LoginSubsystem;
 import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,17 +19,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
-
-import com.teama.requestsubsystem.requestCard;
-import com.teama.login.LoginSubsystem;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-
-import javax.swing.*;
-import javax.swing.text.html.ImageView;
 
 public class AdminPaneController extends HamburgerController{
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
@@ -61,7 +53,7 @@ public class AdminPaneController extends HamburgerController{
     private Statement stmt = null;
     ArrayList<InterpreterRequest> interpreterRequestList;
     ArrayList<GenericRequest> genericRequestList;
-
+    StaffToolController curController;
     public void initialize(){
         int staffID = LoginSubsystem.getInstance().getSystemUser().getStaffID();
 
@@ -104,6 +96,10 @@ public class AdminPaneController extends HamburgerController{
 
     private void loadPane(StaffToolController controller) {
         try {
+            if(curController!=null){
+                curController.onClose();
+                curController=controller;
+            }
             apnToLoad.getChildren().clear();
             FXMLLoader mapLoader = new FXMLLoader(getClass().getResource(controller.getFXMLPath()));
             mapLoader.setController(controller);

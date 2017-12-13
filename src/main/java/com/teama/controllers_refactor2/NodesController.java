@@ -56,6 +56,7 @@ public class NodesController {
     private EventHandler<MouseEvent> originalLocClick, originalNodeClick;
     private long originalLocClickID, originalNodeClickID;
     private long newLocClickID = -1;
+    private long nodeClickID = -1;
 
 
 
@@ -453,10 +454,11 @@ public class NodesController {
                 MapNode m = selectedNodes.get(parentTab);
                 mapDraw.unDrawNode(m);
                 //MapNode original = mapData.getNode(m.getId());
-                mapDraw.drawNode(m, 5, Color.DARKBLUE);
+                mapDraw.drawNode(m, 5, Color.BLACK);
                 //selectedNodes.remove(parentTab);
             }
             detachListener();
+
 
             //controllers.remove(parentTab);
             selectedNode.setValue(null);
@@ -498,15 +500,13 @@ public class NodesController {
 
     }
     private void detachListener() {
-        if (newLocClickID>=0) {
-            mapDraw.detachListener(newLocClickID);
-            newLocClickID = -1;
-            //originalLocClickID = mapDraw.attachClickedListener(originalLocClick, ClickedListener.LOCCLICKED);
-           // originalNodeClickID = mapDraw.attachClickedListener(originalNodeClick, ClickedListener.NODECLICKED);
+        mapDraw.detachListener(newLocClickID);
+            originalLocClickID = mapDraw.attachClickedListener(originalLocClick, ClickedListener.LOCCLICKED);
+            originalNodeClickID = mapDraw.attachClickedListener(originalNodeClick, ClickedListener.NODECLICKED);
             detachParentListeners.setValue(false);
             System.out.println("Detached the " + parentTab + " listeners");
         }
-    }
+
 
     private BooleanProperty waitToAdd;
 

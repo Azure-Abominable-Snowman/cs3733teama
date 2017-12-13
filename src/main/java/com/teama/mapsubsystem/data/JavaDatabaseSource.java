@@ -11,7 +11,7 @@ public class JavaDatabaseSource implements MapDataSource {
 
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
-    private String nodeTable, edgeTable;
+    private String nodeTable, edgeTable, disabledNodeDB;
     private Connection conn = null;
     private Statement stmt = null;
     private PreparedStatement addEdgeStmt, addNodeStmt, selectNodeStmt, selectNodeEdgesStmt,
@@ -76,6 +76,23 @@ public class JavaDatabaseSource implements MapDataSource {
             endNode VARCHAR(10) NOT NULL
         )
          */
+        try
+        {
+            stmt = conn.createStatement();
+            stmt.execute(
+                    " CREATE TABLE "+edgeTable+" (" +
+                            "edgeID VARCHAR(21) PRIMARY KEY NOT NULL," +
+                            "startNode VARCHAR(10) NOT NULL," +
+                            "endNode VARCHAR(10) NOT NULL" +
+                            ")"
+            );
+            stmt.close();
+        }
+        catch (SQLException sqlExcept)
+        {
+            log.info("Does the edge database table already exist?");
+        }
+
         try
         {
             stmt = conn.createStatement();

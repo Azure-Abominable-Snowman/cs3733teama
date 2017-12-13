@@ -51,6 +51,7 @@ public class MapDrawingSubsystem {
         if(listenerLists.containsKey(ClickedListener.NODECLICKED) && map.pointAt(mouseLoc) != null) {
             for(Long id : listenerLists.get(ClickedListener.NODECLICKED)) {
                 System.out.println("Clicked on a node");
+                System.out.println(clickedListenerMap.get(id));
                 clickedListenerMap.get(id).handle(event);
             }
         }
@@ -176,6 +177,7 @@ public class MapDrawingSubsystem {
         listenerIDCounter++;
         clickedListenerMap.put(listenerIDCounter, event);
         if(!listenerLists.containsKey(listener)) {
+            System.out.println("Adding clicked listener");
             listenerLists.put(listener, new ArrayList<>());
         }
         listenerLists.get(listener).add(listenerIDCounter);
@@ -191,6 +193,7 @@ public class MapDrawingSubsystem {
         }
         for(ArrayList<Long> l : listenerLists.values()) {
             l.remove(id);
+            System.out.println("Removed listener with id " + id);
         }
     }
 
@@ -206,7 +209,7 @@ public class MapDrawingSubsystem {
             size = 5;
         }
         if(color == null) {
-            color = Color.DARKBLUE;
+            color = Color.BLACK;
         }
         map.drawPoint(node.getId(), node.getCoordinate(),size, color,true, false);
     }
@@ -214,10 +217,10 @@ public class MapDrawingSubsystem {
         if (size == 0) {
             size = 5;
         }
-        size = 7;
+        size = 5;
 
         if (color == null) {
-            color = Color.DARKBLUE;
+            color = Color.BLACK;
         }
         map.drawPoint(id, loc, size, color, true, false);
         System.out.println(id);
