@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class MapEditorController  {
+public class MapEditorController extends StaffToolController  {
     @FXML Pane parentPane;
     public Pane getParentPane(){
         return parentPane;
