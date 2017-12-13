@@ -1,6 +1,7 @@
 package com.teama.requestsubsystem.interpreterfeature;
 
 import com.teama.Configuration;
+import com.teama.requestsubsystem.ReportSubject;
 import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestDatabaseObserver;
 import com.teama.requestsubsystem.RequestStatus;
@@ -110,8 +111,10 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
     public void notifyObservers() {
-        for (RequestDatabaseObserver o: observers){
-            o.update();
+        if(observers!=null) {
+            for (RequestDatabaseObserver o : observers) {
+                o.update();
+            }
         }
     }
 

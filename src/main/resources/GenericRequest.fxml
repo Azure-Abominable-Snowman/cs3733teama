@@ -15,14 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<ScrollPane fx:id="intReq" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor2.GenericRequestController">
+<ScrollPane fx:id="intReq" prefHeight="678.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor2.GenericRequestController">
    <content>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="410.0">
          <children>
             <VBox prefHeight="629.0" prefWidth="418.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <VBox prefHeight="288.0" prefWidth="417.0">
+                  <VBox prefHeight="353.0" prefWidth="410.0">
                      <children>
                         <JFXTextField fx:id="openRequestlabel" alignment="CENTER" editable="false" focusColor="#262b3800" prefHeight="41.0" prefWidth="315.0" text="Open Requests" unFocusColor="TRANSPARENT">
                            <font>
@@ -60,13 +59,13 @@
                         <Insets left="5.0" />
                      </padding>
                   </VBox>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="254.0" prefWidth="418.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="339.0" prefWidth="410.0">
                      <children>
                         <VBox layoutY="31.0" prefHeight="311.0" prefWidth="418.0" AnchorPane.bottomAnchor="-71.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
                            <children>
-                              <VBox fx:id="addToThis" prefHeight="223.0" prefWidth="393.0">
+                              <VBox fx:id="addToThis" prefHeight="319.0" prefWidth="410.0">
                                  <children>
-                                    <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" prefHeight="41.0" prefWidth="318.0" text="Create a New Request">
+                                    <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" prefHeight="26.0" prefWidth="410.0" text="Create a New Request">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -76,11 +75,11 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </JFXTextField>
-                                    <HBox prefHeight="27.0" prefWidth="406.0">
+                                    <HBox prefHeight="33.0" prefWidth="410.0">
                                        <children>
-                                          <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="172.0" promptText="Building" styleClass="jfx-combo-box" />
-                                          <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="163.0" promptText="Floor" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
-                                          <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="28.0" prefWidth="239.0" promptText="Long Name" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
+                                          <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="41.0" prefWidth="156.0" promptText="Building" styleClass="jfx-combo-box" />
+                                          <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="41.0" prefWidth="108.0" promptText="Floor" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
+                                          <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="41.0" prefWidth="179.0" promptText="Long Name" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
                                     <JFXTextField fx:id="typeLabel" alignment="CENTER" editable="false" text="Type">
@@ -88,43 +87,16 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </JFXTextField>
-                                    <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="120.0" promptText="Select Type:" />
+                                    <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="410.0" promptText="Select Type:" />
                                     <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="Note">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </JFXTextField>
-                                    <JFXTextArea fx:id="additionalInfo" maxHeight="-Infinity" prefHeight="55.0" prefWidth="408.0" style="-fx-background-color: #dddddd; -fx-border-color: TRANSPARENT TRANSPARENT TRANSPARENT TRANSPARENT;" />
+                                    <JFXTextArea fx:id="additionalInfo" maxHeight="-Infinity" prefHeight="77.0" prefWidth="410.0" style="-fx-background-color: #dddddd; -fx-border-color: TRANSPARENT TRANSPARENT TRANSPARENT TRANSPARENT;" />
                                  </children>
                               </VBox>
-                              <JFXButton fx:id="viewStaffButton" alignment="TOP_CENTER" contentDisplay="CENTER" onAction="#showStaffPopUp" prefHeight="54.0" prefWidth="443.0" styleClass="viewStaffButton" text="View Staff" textFill="WHITE">
-                                 <padding>
-                                    <Insets top="10.0" />
-                                 </padding>
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <HBox prefHeight="25.0" prefWidth="303.0">
-                                 <children>
-                                    <JFXButton fx:id="cancelButton" onAction="#clearRequest" prefHeight="31.0" prefWidth="379.0" styleClass="cancelButton" text="Cancel" textFill="WHITE">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </HBox.margin>
-                                    </JFXButton>
-                                    <JFXButton fx:id="submitButton" maxHeight="1.7976931348623157E308" onAction="#submitRequest" prefHeight="85.0" prefWidth="374.0" styleClass="confirmButton" text="Submit" textFill="WHITE">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </HBox.margin>
-                                    </JFXButton>
-                                 </children>
-                              </HBox>
+                              <HBox prefHeight="25.0" prefWidth="303.0" />
                            </children>
                         </VBox>
                      </children>
