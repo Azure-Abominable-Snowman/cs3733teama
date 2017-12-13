@@ -51,6 +51,7 @@ public class AdminPaneController extends HamburgerController{
     @FXML
     private JFXButton setting;
 
+
     @FXML
     private AnchorPane mainPane;
     @FXML private AnchorPane apnToLoad;

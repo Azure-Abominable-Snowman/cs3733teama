@@ -60,7 +60,7 @@
             <Image url="@icons_i4/user-3-1.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="43.0" fitWidth="43.0" layoutX="904.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="9.0">
+      <ImageView fx:id="lanBtn" fitHeight="43.0" fitWidth="43.0" layoutX="904.0" layoutY="24.0" onMouseClicked="#onLanBtnClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="9.0">
          <image>
             <Image url="@icons_i4/translate.png" />
          </image>
