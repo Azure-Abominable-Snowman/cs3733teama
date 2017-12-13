@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="227.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.SpiritualCareController">
+   <children>
+      <VBox prefHeight="101.0" prefWidth="227.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXComboBox fx:id="cmbRel" prefHeight="27.0" prefWidth="231.0" promptText="Religion" />
+            <JFXComboBox fx:id="cmbService" prefHeight="27.0" prefWidth="242.0" promptText="Type of Service" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

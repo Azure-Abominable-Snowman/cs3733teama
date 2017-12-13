@@ -1,11 +1,11 @@
 package com.teama.requestsubsystem.spiritualcarefeature;
 
 import com.teama.requestsubsystem.*;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
-import com.teama.requestsubsystem.interpreterfeature.Language;
-import com.teama.requestsubsystem.interpreterfeature.TranslationType;
+
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -24,6 +24,10 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
     private PreparedStatement addRequest, getRequest, getStaffRequest, deleteRequest, fulfillRequest, getRequestStaffIDStatus, getRequestByStatus, updateRequest;
     //selectRequestByStatus, updateRequest, markClosed, getRequestID; //for request table
     private PreparedStatement addReport, updateReport, deleteReport, getReport;
+
+
+    private String expectedDate = "MM/dd/yyyy hh:mm";
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(expectedDate);
 
     public SpiritualRequestDB(String dbURL, String genericReqTableName, String reqTableName) {
 
@@ -56,39 +60,20 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
                             "REQUESTID INTEGER NOT NULL PRIMARY KEY, " +
                             "STAFFID INTEGER NOT NULL, " +
                             "STATUS VARCHAR(50) NOT NULL, " +
-                            "LANG VARCHAR(30) NOT NULL, " +
-                            "FAMSIZE INTEGER, " +
-                            "SERVICETIME DOUBLE, " +
-                            "TRANSTYPE VARCHAR(40), " +
+                            "RELIGION VARCHAR(100) NOT NULL, " +
+                            "SERVICETYPE VARCHAR(100) NOT NULL, " +
+                            "DATE VARCHAR(100) NOT NULL, " +
                             "FOREIGN KEY(REQUESTID) REFERENCES " + genericReqTableName + " (REQUESTID))");
             //" FOREIGN KEY(STAFFID) REFERENCES INTERPRETER_STAFF(STAFFID)" +
             //" PRIMARY KEY(REQUESTID) " +
 
             System.out.println(requestTableName);
             stmt.close();
-            log.info("Created the Interpreter Request table.");
+            log.info("Created the Spiritual Request table.");
         } catch (SQLException e) {
-            log.info("Does the Interpreter Request table already exist?");
+            log.info("Does the Spiritual Request table already exist?");
             //e.printStackTrace();
         }
-/*
-        // Create the report table linked to request table by foreign key
-        try {
-            stmt = conn.createStatement();
-            stmt.execute(" CREATE TABLE " + this.reportTableName + " (" +
-                    "REQUESTID INTEGER PRIMARY KEY NOT NULL, " +
-                    "SERVICETIME DOUBLE NOT NULL, " +
-                    "TRANSTYPE VARCHAR(40) NOT NULL, " +
-                    "FOREIGN KEY (REQUESTID) " +
-                    "REFERENCES " + requestTableName + "(REQUESTID)" +
-                    ")"
-            );
-            stmt.close();
-        } catch (SQLException e) {
-            log.info("Does the report table already exist?");
-            //e.printStackTrace();
-        }
-        */
         /*
         DatabaseMetaData meta = null;
         try {
@@ -111,13 +96,13 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
 
         try {
             //getRequestID = conn.prepareStatement("")
-            addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " (REQUESTID, STAFFID, STATUS, LANG, FAMSIZE, SERVICETIME, TRANSTYPE) " +
-                    " VALUES (?, ?, ?, ?, ?, ?, ?)");
-            updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET LANG = ?, STAFFID = ? WHERE REQUESTID = ?");
+            addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " (REQUESTID, STAFFID, STATUS, RELIGION, SERVICETYPE, DATE) " +
+                    " VALUES (?, ?, ?, ?, ?, ?)");
+            updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STAFFID = ?, RELIGION = ?, SERVICETYPE = ?, DATE = ? WHERE REQUESTID = ?");
             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
             //getStaffRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STAFFID = ?");
             deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
-            fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
+            fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ? " +
                     "  WHERE REQUESTID = ? AND STAFFID = ?");
             getRequestStaffIDStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STAFFID = ? AND STATUS = ?");
             getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
@@ -134,11 +119,12 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
     }
 
     /**
-     * For adding a new InterpreterRequest to the InterpreterRequestDB
+     * addRequest = conn.prepareStatement("INSERT INTO " + requestTableName + " (REQUESTID, STAFFID, STATUS, RELIGION, SERVICETYPE, DATE) " +
+     " VALUES (?, ?, ?, ?, ?, ?)");
      * @param request
      * @return
      */
-    public InterpreterRequest addRequest(InterpreterRequest request) {
+    public SpiritualCareRequest addRequest(SpiritualCareRequest request) {
         int reqID = request.getRequestID();
         int staffID = request.getStaffID();
         Request req = null;
@@ -155,14 +141,13 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
             addRequest.setInt(1, reqID);
             addRequest.setInt(2, staffID);
             addRequest.setString(3, status.toString());
-            addRequest.setString(4, request.getRequiredLanguage().toString()); // a request only added to db if assigned to staff member
-            addRequest.setNull(5, Types.DOUBLE); // not filled in yet
-            addRequest.setNull(6, Types.VARCHAR);
-            addRequest.setNull(7, Types.VARCHAR);
+            addRequest.setString(4, request.getReligion().toString()); // a request only added to db if assigned to staff member
+            addRequest.setString(5, request.getSpiritualService().toString()); // not filled in yet
+            addRequest.setString(6, request.getDate().format(dateFormatter));
 
             addRequest.executeUpdate();
-            log.info("Interpreter request added to Database.");
-            return new InterpreterRequest(req, request.getRequiredLanguage());
+            log.info("Spiritual Care request added to Database.");
+            return new SpiritualCareRequest(req, request.getReligion(), request.getSpiritualService(), request.getDate());
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
@@ -236,16 +221,16 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
      * @return
      */
     public boolean deleteRequest(int requestID) {
-        boolean deletedInterp = false;
+        boolean deletedSpiritual = false;
         try {
             deleteRequest.setInt(1, requestID);
             deleteRequest.execute();
-            deletedInterp = true;
+            deletedSpiritual = true;
         } catch(SQLException e) {
             e.printStackTrace();
         }
         boolean deletedGeneral = generalInfo.deleteRequest(requestID);
-        return deletedInterp && deletedGeneral;
+        return deletedSpiritual && deletedGeneral;
     }
 
 
@@ -267,35 +252,60 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
             return null;
         }
     }
+
 */
     /**
      * returns a specific InterpreterRequest that was asked for
+     * "REQUESTID INTEGER NOT NULL PRIMARY KEY, " +
+     "STAFFID INTEGER NOT NULL, " +
+     "STATUS VARCHAR(50) NOT NULL, " +
+     "RELIGION VARCHAR(100) NOT NULL, " +
+     "SERVICETYPE VARCHAR(100) NOT NULL, " +
+     "DATE VARCHAR(100) NOT NULL, " +
+     "FOREIGN KEY(REQUESTID) REFERENCES " + genericReqTableName + " (REQUESTID))");
      * @param requestID
      * @return
      */
-    public InterpreterRequest getInterpreterRequest(int requestID) {
-        InterpreterRequest r = null;
+    public SpiritualCareRequest getSpiritualRequest(int requestID) {
+        SpiritualCareRequest r = null;
         try {
             getRequest.setInt(1, requestID);
             ResultSet set = getRequest.executeQuery();
             if (set.next()) {
+
                 // Get info from table and return object based off of it
                 System.out.println(set.getInt("REQUESTID"));
 
                 //log.info("Found a request with ID " + r.getRequestID());
                 Request info = generalInfo.getRequest(requestID);
                 if (info != null) {
-                    if (info.getStatus() == RequestStatus.ASSIGNED) {
-                        r = new InterpreterRequest(info, Language.getLanguage(set.getString("LANG")));
-                    }
-                    else if (info.getStatus() == RequestStatus.CLOSED){
-                        r = new InterpreterRequest(info, Language.getLanguage(set.getString("LANG")), set.getInt("FAMSIZE"), set.getDouble("SERVICETIME"),
-                                TranslationType.getTranslationType(set.getString("TRANSTYPE")));
+                    //LocalDate date = LocalDate.parse(set.getString("DATE"), dateFormatter);
+                    //System.out.println(set.getString("DATE"));
+                    //System.out.println(date);
+                    r = reqFromResultSet(set, info);
+                    if (r!= null) {
+                        log.info("Successfully retrieved spiritual care request.");
                     }
                 }
             }
             set.close();
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return r;
+    }
+    private SpiritualCareRequest reqFromResultSet(ResultSet set, Request info) {
+        SpiritualCareRequest r = null;
+        LocalDate date = null;
+        try {
+            date = LocalDate.parse(set.getString("DATE"), dateFormatter);
+            System.out.println(set.getString("DATE"));
+            System.out.println(date);
+            r = new SpiritualCareRequest(info, Religion.getReligion(set.getString("RELIGION")), SpiritualService.getSpiritualService(set.getString("SERVICETYPE")),
+                    date);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
         return r;
@@ -308,8 +318,9 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
      * @param status
      * @return
      */
-    public ArrayList<InterpreterRequest> getInterpreterRequestsByStaff(int staffID, RequestStatus status) {
-        ArrayList<InterpreterRequest> interpreters = new ArrayList<>();
+    public ArrayList<SpiritualCareRequest> getSpiritualRequestsByStaff(int staffID, RequestStatus status) {
+        // TODO
+        ArrayList<SpiritualCareRequest> spiritualCare = new ArrayList<>();
         try {
             getRequestStaffIDStatus.setInt(1, staffID);
             getRequestStaffIDStatus.setString(2, status.toString());
@@ -318,15 +329,8 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
                 int reqId = reqs.getInt("STAFFID");
                 if (reqId != 0) {
                     Request generalInfo = this.generalInfo.getRequest(reqId);
-                    InterpreterRequest found = null;
-                    if (status == RequestStatus.ASSIGNED) {
-                        found = new InterpreterRequest(generalInfo, Language.getLanguage(reqs.getString("LANG")));
-                    }
-                    else if (status == RequestStatus.CLOSED) {
-                        found = new InterpreterRequest(generalInfo, Language.getLanguage(reqs.getString("LANG")), reqs.getInt("FAMSIZE"), reqs.getDouble("SERVICETIME"),
-                                TranslationType.getTranslationType(reqs.getString("TRANSTYPE")));
-                    }
-                    interpreters.add(found);
+                    SpiritualCareRequest found = reqFromResultSet(reqs, generalInfo);
+                    spiritualCare.add(found);
 
                 }
 
@@ -334,7 +338,7 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return interpreters;
+        return spiritualCare;
     }
     /**
      *     getRequestByStatus = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STATUS = ?");
@@ -342,39 +346,38 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
      * @param status
      * @return
      */
-    public ArrayList<InterpreterRequest> getAllInterpreterRequests(RequestStatus status) {
-        ArrayList<InterpreterRequest> requestList = new ArrayList<>();
+    public ArrayList<SpiritualCareRequest> getAllSpiritualRequests(RequestStatus status) {
+        // todo
+        ArrayList<SpiritualCareRequest> requestList = new ArrayList<>();
         try {
             getRequestByStatus.setString(1, status.toString());
             ResultSet rs = getRequestByStatus.executeQuery();
             while (rs.next()) {
                 Request generalInfo = this.generalInfo.getRequest(rs.getInt("REQUESTID"));
-                InterpreterRequest f = null;
-                if (status == RequestStatus.ASSIGNED) {
-                    f = new InterpreterRequest(generalInfo, Language.getLanguage(rs.getString("LANG")));
+                SpiritualCareRequest f = null;
+                f = reqFromResultSet(rs, generalInfo);
+                if (f != null) {
+                    requestList.add(f);
                 }
-                else if (status == RequestStatus.CLOSED) {
-                    f = new InterpreterRequest(generalInfo, Language.getLanguage(rs.getString("LANG")), rs.getInt("FAMSIZE"), rs.getDouble("SERVICETIME"),
-                            TranslationType.getTranslationType(rs.getString("TRANSTYPE")));
+                else {
+                    System.out.println("Failed to create a request of the given status when retrieving all SpiritualRequests by status");
                 }
-                requestList.add(f);
             }
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return requestList;
     }
 
     /**
      * Ensures that the GenericRequestTable is updated (status set to CLOSED) and fills in all tracking fields
-     * ffulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
+     * fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ? " +
      "  WHERE REQUESTID = ? AND STAFFID = ?");
      * @param r
      * @return
      */
-    public boolean fulfillRequest(InterpreterRequest r) {
+    public boolean fulfillRequest(SpiritualCareRequest r) {
         if (fulfillRequest(r.getRequestID())) {
             if (r.getRequestID() == 0) {
                 log.info("Tried to fulfill a request that was not created.");
@@ -386,14 +389,10 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
             generalInfo.fulfillRequest(r.getRequestID());
             try { //mark the request as closed in the Interpreter table
                 fulfillRequest.setString(1, RequestStatus.CLOSED.toString());
-                fulfillRequest.setString(2, r.getRequiredLanguage().toString());
-                fulfillRequest.setInt(3, r.getFamilySize());
-                fulfillRequest.setDouble(4, r.getServiceTime());
-                fulfillRequest.setString(5, r.getTranslType().toString());
-                fulfillRequest.setInt(6, r.getRequestID());
-                fulfillRequest.setInt(7, r.getStaffID());
+                fulfillRequest.setInt(2, r.getRequestID());
+                fulfillRequest.setInt(3, r.getStaffID());
                 fulfillRequest.executeUpdate();
-                log.info("Filled in all the tracking fields for Interpreter request.");
+                log.info("Fulfilled care request.");
                 return true;
 
             } catch (SQLException e) {
@@ -425,19 +424,21 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
      * @return
      */
     /*
-    ONLY updates the request. if a request is closed, the report is done and cannot be changed.
-                updateRequest = conn.prepareStatement("UPDATE " + requestTableName + "SET LANG = ? STAFFID = ? WHERE REQUESTID = ?");
+     updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STAFFID = ?, RELIGION = ?, SERVICETYPE = ?, DATE = ? WHERE REQUESTID = ?");
+
 
      */
 
-    public boolean updateInterpreterRequest(InterpreterRequest r) {
+    public boolean updateSpiritualRequest(SpiritualCareRequest r) {
         if (generalInfo.updateRequest(r)) {
             try {
-                updateRequest.setString(1, r.getRequiredLanguage().toString());
-                updateRequest.setInt(2, r.getStaffID());
-                updateRequest.setInt(3, r.getRequestID());
+                updateRequest.setInt(1, r.getStaffID());
+                updateRequest.setString(2, r.getReligion().toString());
+                updateRequest.setString(3, r.getSpiritualService().toString());
+                updateRequest.setString(4, r.getDate().format(dateFormatter));
 
                 updateRequest.executeUpdate();
+                log.info("Updated the Spiritual Care Request " + r.getRequestID());
                 return true;
             } catch (SQLException e) {
                 log.info("Failed to update Request " + r.getRequestID());

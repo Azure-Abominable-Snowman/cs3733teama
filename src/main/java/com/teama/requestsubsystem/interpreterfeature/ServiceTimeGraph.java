@@ -6,8 +6,9 @@ import com.teama.requestsubsystem.RequestDatabaseObserver;
 
 /**
  * Created by aliss on 12/8/2017.
- */
+ *//*
 public class ServiceTimeGraph extends RequestDatabaseObserver{
+
     private ReportSubject s;
 
     int numRequestsFilled = 0;
@@ -24,4 +25,6 @@ public class ServiceTimeGraph extends RequestDatabaseObserver{
         InterpreterRequest fulfilled = InterpreterSubsystem.getInstance().getReport();
         serviceLineChart.addData(numRequestsFilled, fulfilled.getServiceTime());
     }
+
 }
+*/

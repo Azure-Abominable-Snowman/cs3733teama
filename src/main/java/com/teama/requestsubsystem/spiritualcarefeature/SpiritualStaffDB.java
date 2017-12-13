@@ -28,7 +28,7 @@ public class SpiritualStaffDB implements StaffDataSource {
     private PreparedStatement addStaff, removeStaff, updateStaffTable, getStaff, getQualifiedStaff, getAllStaff;
     //PreparedStatement addStaffLangTable, updateStaffLangTable, getQualifiedStaffLangs, removeStaffLangTable;
 
-    public InterpreterStaffDB(String dbURL, String generalStaffTableName, String staffTableName) {
+    public SpiritualStaffDB(String dbURL, String generalStaffTableName, String staffTableName) {
         this.dbURL = dbURL;
         this.interpStaffTable = staffTableName;
         generalStaffDB = new GeneralStaffDB(dbURL, generalStaffTableName);

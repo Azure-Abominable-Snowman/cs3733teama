@@ -1,45 +1,42 @@
-package com.teama.requestsubsystem.interpreterfeature;
+package com.teama.requestsubsystem.spiritualcarefeature;
 
 import com.teama.Configuration;
-import com.teama.requestsubsystem.ReportSubject;
 import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestDatabaseObserver;
 import com.teama.requestsubsystem.RequestStatus;
+import com.teama.requestsubsystem.interpreterfeature.*;
 
 import java.util.ArrayList;
 
 /**
- * Created by aliss on 11/21/2017.
+ * Created by aliss on 12/12/2017.
  */
+public class SpiritualCareSubsystem {
+    private SpiritualRequestDB requestDB;
+    private SpiritualStaffDB staffDB;
+    //private ArrayList<RequestDatabaseObserver> observers; //different report tables
+    //private SpiritualCareRequest fulfilledRequest; // the "state"
 
-
-// MASTER CLASS FOR INTERFACING WITH THE INTERPRETER REQUEST SUBSYSTEM; FACADE
-public class InterpreterSubsystem implements ReportSubject {
-    private InterpreterRequestDB requestDB;
-    private InterpreterStaffDB staffDB;
-    private ArrayList<RequestDatabaseObserver> observers; //different report tables
-    private InterpreterRequest fulfilledRequest; // the "state"
-
-    private InterpreterSubsystem() {
-        requestDB = new InterpreterRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.interpReqTable);
-        staffDB = new InterpreterStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.interpStaffTable);
+    private SpiritualCareSubsystem() {
+        requestDB = new SpiritualRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.spiritualReqTable);
+        staffDB = new SpiritualStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.spiritualStaffTable);
     }
-    private static class InterpreterHelper {
-        private static final InterpreterSubsystem _instance = new InterpreterSubsystem();
+    private static class SpiritualCareHelper {
+        private static final SpiritualCareSubsystem _instance = new SpiritualCareSubsystem();
     }
 
-    public static synchronized InterpreterSubsystem getInstance() {
-        return InterpreterHelper._instance;
+    public static synchronized SpiritualCareSubsystem getInstance() {
+        return SpiritualCareSubsystem.SpiritualCareHelper._instance;
     }
 
     //adds an ArrayList
     // adds a given staff member to the database; done by admin
-    public boolean addStaff(InterpreterStaff s) {
+    public boolean addStaff(SpiritualCareStaff s) {
         return staffDB.addStaff(s);
     }
 
     // updates the information of a given staff member
-    public boolean updateStaff(InterpreterStaff s) {
+    public boolean updateStaff(SpiritualCareStaff s) {
         return staffDB.updateStaff(s);
     }
     // deletes staff member by input ID
@@ -48,17 +45,17 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
     // finds all qualified staff members based on the specified language
-    public ArrayList<InterpreterStaff> findQualified(Language language) {
-        return staffDB.findQualified(language);
+    public ArrayList<SpiritualCareStaff> findQualified(Religion religion) {
+        return staffDB.findQualified(religion);
     }
 
     // returns a list of all Interpreters in the system
-    public ArrayList<InterpreterStaff> getAllStaff() {
-        return staffDB.getAllInterpreterStaff();
+    public ArrayList<SpiritualCareStaff> getAllStaff() {
+        return staffDB.getAllSpiritualStaff();
     }
 
     // adds an Interpreter request to the database
-    public InterpreterRequest addRequest(InterpreterRequest r) {
+    public SpiritualCareRequest addRequest(SpiritualCareRequest r) {
         return requestDB.addRequest(r);
     }
 
@@ -68,7 +65,7 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
     // updates a request that has been assigned but not closed yet. cannot update closed requests
-    public boolean updateRequest(InterpreterRequest r) {
+    public boolean updateRequest(SpiritualCareRequest r) {
         if (r.getStatus() != RequestStatus.CLOSED) {
             return requestDB.updateRequest(r);
         }
@@ -79,24 +76,26 @@ public class InterpreterSubsystem implements ReportSubject {
         return requestDB.getRequest(id);
     }
 
-    public InterpreterRequest getInterpreterRequest(int id) {
-        return requestDB.getInterpreterRequest(id);
+    public SpiritualCareRequest getSpiritualRequest(int id) {
+        return requestDB.getSpiritualRequest(id);
     }
 
     // when admin marks a request as fulfilled and fills in the generated form, the InterpRequest table and generic tables will be updated
-    public boolean fulfillRequest(InterpreterRequest r) {
+    public boolean fulfillRequest(SpiritualCareRequest r) {
         Boolean fulfilled = requestDB.fulfillRequest(r);
+        /*
         if (fulfilled) { // for report generation
             this.fulfilledRequest = r;
             notifyObservers();
         }
+        */
         return fulfilled;
 
     }
 
     // returns all requests filtered by Request Status (ASSGINED or CLOSED). See Enum
-    public ArrayList<InterpreterRequest> getAllRequests(RequestStatus s) {
-        return requestDB.getAllInterpreterRequests(s);
+    public ArrayList<SpiritualCareRequest> getAllRequests(RequestStatus s) {
+        return requestDB.getAllSpiritualRequests(s);
     }
     // returns all generic requests
     public ArrayList<Request> getAllGenericRequests(RequestStatus s) {
@@ -104,12 +103,12 @@ public class InterpreterSubsystem implements ReportSubject {
     }
 
     // Gets a specific staff member
-    public InterpreterStaff getIntepreterStaff(int staffID) { return staffDB.getInterpreterStaff(staffID); }
+    public SpiritualCareStaff getSpiritualCareStaff(int staffID) { return staffDB.getSpiritualStaff(staffID); }
 
-    public InterpreterStaff getStaff(int staffID){
-        return staffDB.getInterpreterStaff(staffID);
+    public SpiritualCareStaff getStaff(int staffID){
+        return staffDB.getSpiritualCareStaff(staffID);
     }
-
+/*
     public void notifyObservers() {
         if(observers!=null) {
             for (RequestDatabaseObserver o : observers) {
@@ -126,9 +125,9 @@ public class InterpreterSubsystem implements ReportSubject {
         return this.fulfilledRequest;
     }
 
+*/
 
-
-    public ArrayList<InterpreterRequest> getInterpreterRequestsByStaff(int staffID) {
-        return requestDB.getInterpreterRequestsByStaff(staffID, RequestStatus.ASSIGNED);
+    public ArrayList<SpiritualCareRequest> getSpiritualCareRequestsByStaff(int staffID) {
+        return requestDB.getSpiritualRequestsByStaff(staffID, RequestStatus.ASSIGNED);
     }
 }
