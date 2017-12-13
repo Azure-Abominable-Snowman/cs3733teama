@@ -320,8 +320,4 @@ public class DirectionController extends HamburgerController{
     {
         this.pathfindingController=finder;
     }
-
-
-
-
 }
