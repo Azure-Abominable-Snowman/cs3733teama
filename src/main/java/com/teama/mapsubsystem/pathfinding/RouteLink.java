@@ -193,6 +193,8 @@ public class RouteLink {
         return next;
     }
 
+    public void setNext(MapNode next) { this.next = next; }
+
     public boolean isEndFlag() {
         return endFlag;
     }
