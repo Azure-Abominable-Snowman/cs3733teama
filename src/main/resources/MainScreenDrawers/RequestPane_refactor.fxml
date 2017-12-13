@@ -44,7 +44,10 @@
                   </Tab>
                   <Tab fx:id="foodTab" text="Food">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton layoutX="122.0" layoutY="259.0" prefHeight="139.0" prefWidth="148.0" style="-fx-background-color: #D3D3D3;" text="Create Food Request" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                </tabs>
