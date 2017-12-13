@@ -93,8 +93,6 @@ public class MainMapScreen implements Initializable {
     @FXML
     HBox hbxDrawerBox;
 
-
-
     private MapDisplay map;
     private HamburgerController curController;
     private boolean drawerExtended = false;
