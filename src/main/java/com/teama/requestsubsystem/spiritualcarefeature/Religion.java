@@ -20,7 +20,7 @@ public enum Religion {
                 return r;
             }
         }
-        throw new IllegalAccessException("Sorry your religion isn't available here" + str);
+        throw new IllegalAccessException("Type not found " + str);
     }
 
 }
