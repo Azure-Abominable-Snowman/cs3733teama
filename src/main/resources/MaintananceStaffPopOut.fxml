@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="555.0" prefWidth="788.0" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox prefHeight="480.0" prefWidth="419.0" HBox.hgrow="NEVER">
+               <children>
+                  <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="403.0" VBox.vgrow="NEVER">
+                     <children>
+                        <GridPane maxHeight="-Infinity" prefHeight="503.0" prefWidth="403.0" HBox.hgrow="ALWAYS">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="45.0" minHeight="0.0" prefHeight="33.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
+                           </rowConstraints>
+                           <children>
+                              <JFXTextField fx:id="FirstName" promptText="First Name" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                              <JFXTextField fx:id="LastName" promptText="Last Name" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </JFXTextField>
+                              <JFXTextField fx:id="PhoneNo" promptText="Phone No." styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.rowIndex="3" />
+                              <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="Phone Provider" GridPane.rowIndex="4" />
+                              <JFXTextField fx:id="Email" promptText="Email" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.rowIndex="5" />
+                              <JFXComboBox fx:id="Location" maxWidth="1.7976931348623157E308" promptText="Elevator Location" styleClass="text-field" stylesheets="@css/ApiStyle.css" GridPane.rowIndex="6" />
+                              <JFXTextField editable="false" text="Additional Information">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </JFXTextField>
+                           </children>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </GridPane>
+                     </children>
+                  </HBox>
+                  <GridPane prefHeight="60.0" prefWidth="403.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
+                     </rowConstraints>
+                     <children>
+                        <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="48.0" prefWidth="80.0" styleClass="cancel" stylesheets="@css/ApiStyle.css" text="Cancel" />
+                        <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="57.0" prefWidth="134.0" styleClass="submit" stylesheets="@css/ApiStyle.css" text="Add" GridPane.columnIndex="1" />
+                        <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="69.0" prefWidth="107.0" styleClass="delete" stylesheets="@css/ApiStyle.css" text="Delete" GridPane.columnIndex="2" />
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+            <TableView fx:id="InterpInfoTable" prefWidth="373.0" HBox.hgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="firstCol" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="First Name" />
+                  <TableColumn fx:id="lastCol" maxWidth="1.7976931348623157E308" prefWidth="72.0" text="Last Name" />
+                  <TableColumn fx:id="certCol" maxWidth="1.7976931348623157E308" prefWidth="79.0" text="Location" />
+                  <TableColumn fx:id="phoneCol" maxWidth="1.7976931348623157E308" prefWidth="88.0" text="Phone #" />
+                  <TableColumn fx:id="emailCol" editable="false" prefWidth="118.0" text="Email" />
+               </columns>
+            </TableView>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>
