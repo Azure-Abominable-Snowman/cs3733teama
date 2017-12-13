@@ -505,7 +505,7 @@ public class RequestsController extends StaffToolController {
 
                 staffPopUp.setTitle("View B&W Staff");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
-
+                loader.setResources(Translator.getInstance().getNewBundle());
                 Scene staffPopUpScene = new Scene(loader.load());
                 ViewStaffController viewStaffController = loader.getController();
                 //TODO set this up
