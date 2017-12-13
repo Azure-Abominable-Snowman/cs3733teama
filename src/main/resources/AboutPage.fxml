@@ -28,21 +28,21 @@
                <children>
                   <Text fill="#140909" strokeType="OUTSIDE" strokeWidth="0.0" text="About Page" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                      <font>
-                        <Font name="Helvetica Bold" size="24.0" />
+                        <Font name="Hiragino Sans W9" size="25.0" />
                      </font>
                   </Text>
                </children>
             </GridPane>
             <ScrollPane prefHeight="392.0" prefWidth="454.0">
                <content>
-                  <TextArea editable="false" pickOnBounds="false" prefHeight="572.0" prefWidth="517.0" text="Team members:&#10;Lead Software Engineer:                    Raymond Schade &#10;Assistant Lead Software Engineer:    Alissa Ostapenko, Yizhen Wang&#10;Product Owner:                                   Kent Libby &#10;Test Engineer:                                     Alex Krasa&#10;Algorithm:              &#9;&#9;&#9;             Qingyuan Chen&#10;UI, Database: &#9;&#9;&#9;                     Yuanda Song, Jerry Assan&#10;Scrum Master: &#9;&#9;&#9;             Meghan Broughton&#10;Documentation Analyst: &#9;    &#9;     Jacob Pardue, Ruyue Wang&#10;&#10;&#10;This hospitality kiosk is engineered for users to enhance their experience in Brigham and Women's Faulkner Hospital by providing way finding, service requests, e-mail/ SMS messages and other functions. &#10;&#10;WPI Computer Science Department&#10;&#10;CS3733 Software Engineering&#10;&#10;Professor:  Wilson Wong       &#10;&#10;Team Coach: Rolando Wong&#10;&#10;Thank Brigham and Women’s Faulkner Hospital and the representative, Andrew Shinn, for their time and input. " wrapText="true" />
+                  <TextArea editable="false" prefHeight="572.0" prefWidth="517.0" text="Team members:&#10;Lead Software Engineer:                    Raymond Schade &#10;Assistant Lead Software Engineer:    Alissa Ostapenko, Yizhen Wang&#10;Product Owner:                                   Kent Libby &#10;Test Engineer:                                     Alex Krasa&#10;Algorithm:              &#9;&#9;&#9;             Qingyuan Chen&#10;UI, Database: &#9;&#9;&#9;                     Yuanda Song, Jerry Assan&#10;Scrum Master: &#9;&#9;&#9;             Meghan Broughton&#10;Documentation Analyst: &#9;    &#9;     Jacob Pardue, Ruyue Wang&#10;&#10;&#10;This hospitality kiosk is engineered for users to enhance their experience in Brigham and Women's Faulkner Hospital by providing way finding, service requests, e-mail/ SMS messages and other functions. &#10;&#10;WPI Computer Science Department&#10;&#10;CS3733 Software Engineering&#10;&#10;Professor:  Wilson Wong       &#10;&#10;Team Coach: Rolando Wong&#10;&#10;Thank Brigham and Women’s Faulkner Hospital and the representative, Andrew Shinn, for their time and input. " wrapText="true" />
                </content>
             </ScrollPane>
          </children>
       </VBox>
-      <ImageView fitHeight="370.0" fitWidth="523.0" layoutY="45.0" opacity="0.14">
+      <ImageView fitHeight="370.0" fitWidth="517.0" layoutY="45.0" opacity="0.14">
          <image>
-            <Image url="@../../../../../../Desktop/azure_snowman.jpg" />
+            <Image url="@materialicons/snowmanPic.png" />
          </image>
       </ImageView>
    </children>

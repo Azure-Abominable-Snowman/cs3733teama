@@ -1,16 +1,16 @@
-package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar;
+package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.reverseAStar;
 
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.KnownPoint;
 
-public class KnownPointA extends KnownPoint {
+public class KnownPointR extends KnownPoint {
 
 
-    private KnownPointA lastNode;
+    private KnownPointR lastNode;
     private int completeCost;
 
     //constructor
-    public KnownPointA(MapNode node, KnownPointA lastNode, int pastCost, int completeCost) {
+    public KnownPointR(MapNode node, KnownPointR lastNode, int pastCost, int completeCost) {
         this.node = node;
         this.lastNode = lastNode;
         this.pastCost = pastCost;
@@ -24,19 +24,19 @@ public class KnownPointA extends KnownPoint {
      */
     @Override
     public int compareTo(Object o) {
-        KnownPointA node = (KnownPointA) o;
-        if (this.completeCost > node.completeCost) return 1;
+        KnownPointR node = (KnownPointR) o;
+        if (this.completeCost > node.completeCost) return -1;
         else if (this.completeCost == node.completeCost) return 0;
-        else if (this.completeCost < node.completeCost) return -1;
+        else if (this.completeCost < node.completeCost) return 1;
         return 0;
     }
 
     //////////// getter and setter
-    public KnownPointA getLastNode() {
+    public KnownPointR getLastNode() {
         return lastNode;
     }
 
-    public void setLastNode(KnownPointA lastNode) {
+    public void setLastNode(KnownPointR lastNode) {
         this.lastNode = lastNode;
     }
 

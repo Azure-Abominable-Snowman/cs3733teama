@@ -17,6 +17,7 @@ public class  GenerateMap  {
         {
             case 1: return GenerateV1();    // a 20*20 map
             case 2 : return GenerateV2();   // a 100*100 map
+            case 3: return GenerateV3(); // a 100*100 map with weight of 1.
             default: return GenerateVdefult(); // a 30*30 map
         }
     }
@@ -37,13 +38,13 @@ public class  GenerateMap  {
         linkNodes(map[0][0], map[0][1],1);
         linkNodes(map[0][1], map[0][2],2);
         linkNodes(map[0][4], map[0][5],3);
-        linkNodes(map[0][0],map[1][0],2);
-        linkNodes(map[1][0],map[1][1],1);
-        linkNodes(map[1][1],map[2][1],15);
-        linkNodes(map[2][1],map[3][1],14);
-        linkNodes(map[0][5],map[1][5],8);
-        linkNodes(map[1][5],map[2][5],8);
-        linkNodes(map[3][1],map[3][2],12);
+        linkNodes(map[0][0], map[1][0],2);
+        linkNodes(map[1][0], map[1][1],1);
+        linkNodes(map[1][1], map[2][1],15);
+        linkNodes(map[2][1], map[3][1],14);
+        linkNodes(map[0][5], map[1][5],8);
+        linkNodes(map[1][5], map[2][5],8);
+        linkNodes(map[3][1], map[3][2],12);
 
         for(int i=4 ,col=4;i<sizeX;++i) // create the map for part 5th col
             linkNodes(map[col][i-1],map[col][i],3+(i%10));
@@ -86,6 +87,31 @@ public class  GenerateMap  {
             for(int i=1;i<sizeX;++i)
                 linkNodes(map[i-1][row],map[i][row],1+(i*4%3)+row%4);
 
+        return map;
+    }
+
+
+    /**
+     * This function is to generate version3 map(100*100), with all weight be 1
+     * @return 100*100 MapNode array
+     */
+    public MapNode[][] GenerateV3()
+    {
+        int sizeX=100, sizeY=100;
+        if(sizeX < 5 ) sizeX=5;
+        if(sizeY< 5 ) sizeY =5; // make sure no sizes are smaller then 5;
+
+        MapNodeData[][] map = new MapNodeData[sizeX][sizeY]; // allocate new map
+        fillMap (map,sizeX,sizeY);
+
+
+        for(int col = 0 ;col<sizeX;col++)
+            for(int i=1;i<sizeY;++i)
+                linkNodes(map[col][i-1],map[col][i],0);
+
+        for(int row = 0; row<sizeY; row++)
+            for(int i=1;i<sizeX;++i)
+                linkNodes(map[i-1][row],map[i][row],0);
         return map;
     }
 
