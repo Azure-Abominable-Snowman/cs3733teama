@@ -1,9 +1,10 @@
-package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar;
-import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.data.MapEdge;
-import com.teama.mapsubsystem.pathfinding.Path;
-import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
+package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.reverseAStar;
 
+import com.teama.mapsubsystem.data.MapEdge;
+import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.KnownPointA;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
+import com.teama.mapsubsystem.pathfinding.Path;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,11 +13,11 @@ import java.util.PriorityQueue;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 
-public class AStar extends Dijkstras {
+public class ReverseAstar extends Dijkstras {
 
 
-    protected HashMap<String,KnownPointA> checkedPoints;
-    private PriorityQueue<KnownPointA> queue;
+    protected HashMap<String,KnownPointR> checkedPoints;
+    private PriorityQueue<KnownPointR> queue;
     protected MapNode start, end;
     private HashMap<String, MapNode> disableNodes ;
 
@@ -35,10 +36,10 @@ public class AStar extends Dijkstras {
         queue=new PriorityQueue<>();
         if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
 
-        KnownPointA checking ; // create a temp variable to keep track of which node are we on.
+        KnownPointR checking ; // create a temp variable to keep track of which node are we on.
 
         //Generate Path
-        for(checking = new KnownPointA(start,null,0,calDistance(start,end));
+        for(checking = new KnownPointR(start,null,0,calDistance(start,end));
             !checking.getNode().getId().equals(end.getId());   // reached end
             checking=queue.poll() // move forward one step
                 )
@@ -84,7 +85,7 @@ public class AStar extends Dijkstras {
      * This helper function is to put all the nodes that are linked to checking into the queue.
      * @param checking is the node currently under examining.
      */
-    protected void putNodesIntoQueue (KnownPointA checking)
+    protected void putNodesIntoQueue (KnownPointR checking)
     {
         for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
@@ -94,7 +95,7 @@ public class AStar extends Dijkstras {
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
-                KnownPointA nextPoint = new KnownPointA(nextNode, checking, newPastCost,
+                KnownPointR nextPoint = new KnownPointR(nextNode, checking, newPastCost,
                         newPastCost + calDistance(nextNode, end)); // Generate a new Point from checking point to add into queue.
                 queue.add(nextPoint); // add into queue
             }
@@ -107,7 +108,7 @@ public class AStar extends Dijkstras {
      * @param lastPoint the end point the Path
      * @return  the reversed Path
      */
-    protected ArrayList<MapNode> collectPath(KnownPointA lastPoint)
+    protected ArrayList<MapNode> collectPath(KnownPointR lastPoint)
     {
         ArrayList<MapNode> finalPath = new ArrayList<>();
         for (;lastPoint.getLastNode()!=null;)
@@ -118,4 +119,6 @@ public class AStar extends Dijkstras {
         finalPath.add(lastPoint.getNode());
         return finalPath;
     }
+
+
 }

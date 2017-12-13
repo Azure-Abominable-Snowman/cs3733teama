@@ -6,12 +6,14 @@ import com.teama.mapsubsystem.pathfinding.Path;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class BeamSearch extends AStar {
 
     private HashMap<String,KnownPointA> checkedPoints;
     private LimitedPriorityQueue limitedQueue;
     private MapNode start, end;
+    private  HashMap<String, MapNode> disableNodes ;
 
     public BeamSearch(int queueSize)
     {
@@ -28,6 +30,7 @@ public class BeamSearch extends AStar {
         this.start=start;
         this.end=end;
         checkedPoints= new HashMap<>();
+        if (disableNodes==null) this.disableNodes= new HashMap<String, MapNode>();
 
 
         KnownPointA checking ; // create a temp variable to keep track of which node are we on.
@@ -49,6 +52,12 @@ public class BeamSearch extends AStar {
         return formatOutput(collectPath(checking));
     }
 
+    //TODO fill this function
+    public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        this.disableNodes=grabDisableNodes(disableNodes);
+        return generatePath(start, end);
+    }
+
     /**
      * Put all the nodes that are linked to checking into the queue while keep the queue within the max size.
      * @param checking is the node currently under examining.
@@ -59,7 +68,7 @@ public class BeamSearch extends AStar {
         for(MapEdge e : checking.getEdge()) // putting the adjacentNodes into queue
         {
             MapNode nextNode= adjacentNode(e,checking.getNode());  // get the node to be calculated.
-
+            if(disableNodes.containsKey(nextNode.getId())) continue; //skip this node if it is in the disabled list
             if( !checkedPoints.containsKey(nextNode.getId())) {  // prevent from going to points already been at.
                 int newPastCost = checking.getPastCost() + (int) e.getWeight();
 
