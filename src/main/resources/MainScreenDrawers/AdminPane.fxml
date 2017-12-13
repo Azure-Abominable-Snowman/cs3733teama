@@ -2,14 +2,14 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
@@ -20,31 +20,12 @@
                <children>
                   <VBox fillWidth="false" layoutX="47.0" layoutY="64.0" maxWidth="-Infinity" prefHeight="798.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <JFXButton alignment="BASELINE_LEFT" onAction="#onBackClick" prefHeight="64.0" prefWidth="180.0" text="Back" VBox.vgrow="ALWAYS">
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="48.0" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons_i4/back.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <GridPane prefHeight="68.0" prefWidth="180.0" VBox.vgrow="NEVER">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                           </rowConstraints>
-                           <children>
-                              <ImageView fitHeight="76.0" fitWidth="76.0" pickOnBounds="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                 <image>
-                                    <Image url="@../icons_i4/directions.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </GridPane>
-                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRequestClick" prefHeight="110.0" prefWidth="180.0" text="Requests" VBox.vgrow="ALWAYS">
+                        <ImageView fitHeight="188.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../adminPaneicons/ic_account_circle_black_24dp/web/ic_account_circle_black_24dp_2x.png" />
+                           </image>
+                        </ImageView>
+                        <JFXButton fx:id="request" alignment="BASELINE_LEFT" onAction="#onRequestClick" onMouseClicked="#mouseclick" prefHeight="53.0" prefWidth="180.0" text="Requests">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -53,7 +34,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onStaffClick" prefHeight="110.0" prefWidth="180.0" text="View Staff" VBox.vgrow="ALWAYS">
+                        <JFXButton fx:id="staff" alignment="BASELINE_LEFT" onAction="#onStaffClick" prefHeight="62.0" prefWidth="241.0" text="Staff Database">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -65,7 +46,7 @@
                               <Insets />
                            </VBox.margin>
                         </JFXButton>
-                        <JFXButton fx:id="tool" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onMapClick" prefHeight="110.0" prefWidth="196.0" text="Map tools" VBox.vgrow="ALWAYS">
+                        <JFXButton fx:id="tool" alignment="BASELINE_LEFT" onAction="#onMapClick" prefHeight="62.0" prefWidth="196.0" text="Map tools">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -74,7 +55,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="setting" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onSettingsClick" prefHeight="110.0" prefWidth="200.0" text="Setting" VBox.vgrow="ALWAYS">
+                        <JFXButton fx:id="setting" alignment="BASELINE_LEFT" onAction="#onSettingsClick" prefHeight="62.0" prefWidth="200.0" text="Setting">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -83,7 +64,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <JFXListView fx:id="requestList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="348.0" prefWidth="180.0" VBox.vgrow="ALWAYS" />
+                        <JFXListView fx:id="requestList" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>

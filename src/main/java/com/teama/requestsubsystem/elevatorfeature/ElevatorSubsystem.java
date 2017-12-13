@@ -17,8 +17,8 @@ public class ElevatorSubsystem {
     private ElevatorRequest fulfilledRequest; // the "state"
 
     private ElevatorSubsystem() {
-        requestDB = new ElevatorRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.interpReqTable);
-        staffDB = new ElevatorStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.interpStaffTable);
+        requestDB = new ElevatorRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.elevatorReqTable);
+        staffDB = new ElevatorStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.elevatorStaffTable);
     }
     private static class ElevatorHelper {
         private static final ElevatorSubsystem _instance = new ElevatorSubsystem();
@@ -75,7 +75,7 @@ public class ElevatorSubsystem {
         return requestDB.getRequest(id);
     }
 
-    public ElevatorRequest getInterpreterRequest(int id) {
+    public ElevatorRequest getElevatorRequest(int id) {
         return requestDB.getElevatorRequest(id);
     }
 
@@ -100,7 +100,7 @@ public class ElevatorSubsystem {
     }
 
     // Gets a specific staff member
-    public ElevatorStaff getIntepreterStaff(int staffID) { return staffDB.getElevatorStaff(staffID); }
+    public ElevatorStaff getElevatorStaff(int staffID) { return staffDB.getElevatorStaff(staffID); }
 
     public ElevatorStaff getStaff(int staffID){
         return staffDB.getElevatorStaff(staffID);
