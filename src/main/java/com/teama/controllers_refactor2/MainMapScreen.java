@@ -525,6 +525,7 @@ public class MainMapScreen implements Initializable {
         Stage languages = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/LanguagesPopOut.fxml"));
+        Translator.getInstance().setLang("all");
         loader.setResources(Translator.getInstance().getNewBundle());
         try {
             Parent root = (Parent) loader.load();
