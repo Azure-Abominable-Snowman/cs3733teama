@@ -92,10 +92,10 @@
             </StackPane>
             <TableView fx:id="textDirections" prefHeight="651.0" prefWidth="380.0">
               <columns>
-                <TableColumn fx:id="stepCol" editable="false" prefWidth="77.38467973470688" text="C1" />
+                <TableColumn fx:id="stepCol" editable="false" prefWidth="60.0" text="C1" />
                 <TableColumn fx:id="directionCol" editable="false" minWidth="0.0" prefWidth="104.47702026367188" text="C2" />
                   <TableColumn fx:id="descriptionCol" editable="false" minWidth="0.0" prefWidth="142.52297973632812" text="C2" />
-                  <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="76.0" text="C2" />
+                  <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="91.0" text="C2" />
               </columns>
                <VBox.margin>
                   <Insets />

@@ -202,18 +202,15 @@ public class DirectionController extends HamburgerController{
 
 
     public void initialize(){
-        //MapNode newOrigin  = mapSubsystem.getNodeByDescription(yourLocationBar.getEditor().getText(),true);
-        //MapNode newEnd = mapSubsystem.getNodeByDescription(destinationBar.getEditor().getText(),true);
+        MapNode newOrigin  = mapSubsystem.getNodeByDescription(yourLocationBar.getEditor().getText(),true);
+        MapNode newEnd = mapSubsystem.getNodeByDescription(destinationBar.getEditor().getText(),true);
 
-
-//        ProgramSettings.getInstance().setPathOriginNodeProp(tempMapNodeStart);
-//        ProgramSettings.getInstance().setPathEndNodeProp(tempMapNodeEnd);
-//        ProgramSettings.getInstance().setCurrentDisplayedPathProp(tempPath);
 
         stepCol.setText("Step");
         descriptionCol.setText("Description");
         distanceCol.setText("Distance");
         directionCol.setText("Direction");
+        //stepCol.setPrefWidth(2);
 
 
 
@@ -245,35 +242,16 @@ public class DirectionController extends HamburgerController{
         SearchBarController searchbar1 = new SearchBarController(yourLocationBar, false);
         SearchBarController searchbar2 = new SearchBarController(destinationBar, false);
         //ProgramSettings.getInstance().setPathOriginNodeProp(newOrigin);
-        //ProgramSettings.getInstance().setPathEndNodeProp(newEnd);
+        ProgramSettings.getInstance().setPathEndNodeProp(newEnd);
 
 //
         ProgramSettings.getInstance().getPathOriginNodeProp().addListener((a) -> {
-            yourLocationBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
+            yourLocationBar.getEditor().setText(ProgramSettings.getInstance().getPathOriginNodeProp().getValue().getLongDescription());
         });
 
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             destinationBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
-
-//        yourLocationBar.getSelectionModel().selectedItemProperty().addListener((Observable a) -> {
-//            System.out.println("CHANGED SELECTION "+yourLocationBar.getSelectionModel().getSelectedItem());
-//            MapNode selectedNode = MapSubsystem.getInstance().getNodeByDescription(yourLocationBar.getSelectionModel().getSelectedItem(), true);
-//            if(selectedNode != null) {
-//                // Tell path controller to make a new path
-//                ProgramSettings.getInstance().setPathOriginNodeProp(selectedNode);
-//            }
-//        });
-//
-//        destinationBar.getSelectionModel().selectedItemProperty().addListener((Observable a) -> {
-//            System.out.println("CHANGED SELECTION "+destinationBar.getSelectionModel().getSelectedItem());
-//            MapNode selectedNode = MapSubsystem.getInstance().getNodeByDescription(destinationBar.getSelectionModel().getSelectedItem(), true);
-//            if(selectedNode != null) {
-//                // Tell path controller to make a new path
-//                ProgramSettings.getInstance().setPathOriginNodeProp(selectedNode);
-//            }
-//        });
-        //SearchBarController searchBarController = new SearchBarController(originNodeCombo, true);
 
 
 
