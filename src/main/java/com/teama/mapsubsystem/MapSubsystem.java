@@ -92,7 +92,7 @@ public class MapSubsystem {
         pathGenerator = new PathGenerator(new AStar());
 
         // Initially populate the tables with the data from CSV (Not needed every time)
-        javaDBSource.addAll(csvSource);
+        //javaDBSource.addAll(csvSource);
 
         // Populate the kiosknode with a default value
         resetKioskNode();
