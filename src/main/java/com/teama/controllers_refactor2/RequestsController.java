@@ -100,7 +100,7 @@ public class RequestsController extends StaffToolController {
     private MapNode mapNodeName;
     private RequestType requestType;
     private String additionalInfoMessage;
-    private InterpreterStaff staffToFulfill;
+    private ServiceStaff staffToFulfill;
     private Message message;
 
     private int SCALING = 450;
@@ -136,6 +136,7 @@ public class RequestsController extends StaffToolController {
 
         loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/GenericRequest.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         ScrollPane intPane = loader.load();
         intGenController = loader.getController();
         intGenController.getAddToThis().getChildren().add(intSpecific);
@@ -149,11 +150,13 @@ public class RequestsController extends StaffToolController {
         //for spiritual care request stuff
         loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/requestdropdowns/SpiritualServiceDropDown.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         AnchorPane spSpecific = loader.load();
         spiritualCareController = loader.getController();
 
         loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/GenericRequest.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         ScrollPane spvPane = loader.load();
         spGenController = loader.getController();
         spGenController.getAddToThis().getChildren().add(spSpecific);
@@ -169,11 +172,13 @@ public class RequestsController extends StaffToolController {
         //for elevator stuff
         loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/requestdropdowns/MaintenanceDropDown.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         AnchorPane eleSpecific = loader.load();
         maintenanceReqController = loader.getController();
 
         loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/GenericRequest.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         ScrollPane elevBox = loader.load();
         eleGenController = loader.getController();
         eleGenController.getAddToThis().getChildren().add(eleSpecific);
@@ -236,13 +241,12 @@ public class RequestsController extends StaffToolController {
         }
         Thread t = new Thread(new MyThread());
 
-        buildingName = intGenController.getBuildingName();
-        floorName = intGenController.getFloorName();
-        mapNodeName = intGenController.getMapNodeName();
-        requestType = intGenController.getRequestType();
-        additionalInfoMessage = intGenController.getAdditionalInfoMessage();
-
         if(interpreterTab.isSelected()) {
+            buildingName = intGenController.getBuildingName();
+            floorName = intGenController.getFloorName();
+            mapNodeName = intGenController.getMapNodeName();
+            requestType = intGenController.getRequestType();
+            additionalInfoMessage = intGenController.getAdditionalInfoMessage();
             lang = interpReqController.getLanguage();
 
             if (buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || lang == null) {
@@ -251,7 +255,7 @@ public class RequestsController extends StaffToolController {
                 alert.setHeaderText("Error with Submitting Your Request.");
                 alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
                 alert.showAndWait();
-                throw new NullPointerException("Please check ur fields bitch");
+                throw new NullPointerException("Please check ur fields");
             }
             viewStaffButton.setText("Assign Staff");
             curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), lang);
@@ -280,6 +284,11 @@ public class RequestsController extends StaffToolController {
         }
 
         else if(elevatorTab.isSelected()) {
+            buildingName = eleGenController.getBuildingName();
+            floorName = eleGenController.getFloorName();
+            mapNodeName = eleGenController.getMapNodeName();
+            requestType = eleGenController.getRequestType();
+            additionalInfoMessage = eleGenController.getAdditionalInfoMessage();
             PriorityLevel p = maintenanceReqController.getPriority();
             MaintenanceType m = maintenanceReqController.getMaintenanceType();
 
@@ -292,7 +301,7 @@ public class RequestsController extends StaffToolController {
                 throw new NullPointerException("Check ur fields bitch");
             }
             viewStaffButton.setText("Assign Staff");
-            curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p, m, "");
+            curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p, m, mapNodeName.getId());
             ElevatorSubsystem.getInstance().addRequest((ElevatorRequest) curRequest);
 
             Notifications notifications1 = Notifications.create()
@@ -313,7 +322,11 @@ public class RequestsController extends StaffToolController {
             eleGenController.getListView().getItems().addAll(ElevatorSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
         }
         else if(spiritualTab.isSelected()) {
-
+            buildingName = spGenController.getBuildingName();
+            floorName = spGenController.getFloorName();
+            mapNodeName = spGenController.getMapNodeName();
+            requestType = spGenController.getRequestType();
+            additionalInfoMessage = spGenController.getAdditionalInfoMessage();
             rel = spiritualCareController.getReligion();
             service = spiritualCareController.getSpiritualService();
             d = spiritualCareController.getDate();
@@ -445,12 +458,11 @@ public class RequestsController extends StaffToolController {
                 }
                 staffPopUp.setTitle("View B&W Staff");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
-
+                loader.setResources(Translator.getInstance().getNewBundle());
                 Scene staffPopUpScene = new Scene(loader.load());
                 ViewStaffController viewStaffController = loader.getController();
                 viewStaffController.setLanguage(interpReqController.getLanguage());
                 //System.out.println("controller " + controller);
-                //viewStaffController.setRequestViewList(controller.getLanguage());
                 viewStaffController.setIsComplete(false);
                 viewStaffController.getIsComplete().addListener((obs, before, isComplete) -> {
                     staffToFulfill=viewStaffController.getStaffToFulfill();
@@ -470,19 +482,20 @@ public class RequestsController extends StaffToolController {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error!");
                     alert.setHeaderText("No type of maintenance selected.");
-                    alert.setContentText("Please choose a type of maintenance.");
+                    alert.setContentText("Please choose a type of elevator maintenance.");
                     alert.showAndWait();
+                    throw new NullPointerException("Please choose a type of elevator service");
                 }
 
                 staffPopUp.setTitle("View B&W Staff");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
+                loader.setResources(Translator.getInstance().getNewBundle());
 
                 Scene staffPopUpScene = new Scene(loader.load());
                 ViewStaffController viewStaffController = loader.getController();
                 //TODO set this up
-                //viewStaffController.setMaintenanceType(controller2.getMaintenanceType());
-                //System.out.println("controller " + controller);
-                //viewStaffController.setRequestViewList(controller.getLanguage());
+                viewStaffController.setMaintenanceType(maintenanceReqController.getMaintenanceType());
+
                 viewStaffController.setIsComplete(false);
                 viewStaffController.getIsComplete().addListener((obs, before, isComplete) -> {
                     staffToFulfill=viewStaffController.getStaffToFulfill();
@@ -497,6 +510,39 @@ public class RequestsController extends StaffToolController {
                 staffPopUp.setScene(staffPopUpScene);
                 staffPopUp.show();
 
+            }
+            else if(spiritualTab.isSelected()){
+                if(spiritualCareController.getReligion() == null){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!");
+                    alert.setHeaderText("No religion was selected.");
+                    alert.setContentText("Please choose a type of religion.");
+                    alert.showAndWait();
+                    throw new NullPointerException("Please choose a religion");
+                }
+
+                staffPopUp.setTitle("View B&W Staff");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
+                loader.setResources(Translator.getInstance().getNewBundle());
+
+                Scene staffPopUpScene = new Scene(loader.load());
+                ViewStaffController viewStaffController = loader.getController();
+                //TODO set this up
+
+                viewStaffController.setIsComplete(false);
+                viewStaffController.getIsComplete().addListener((obs, before, isComplete) -> {
+                    staffToFulfill=viewStaffController.getStaffToFulfill();
+                    System.out.println(staffToFulfill);
+                    if (isComplete&&staffToFulfill!=null){
+                        System.out.println(staffToFulfill);
+                        viewStaffButton.setText(staffToFulfill.getFirstName() + " " + staffToFulfill.getLastName());
+                        staffPopUp.close();
+                        System.out.println("done");
+                    }
+                });
+                staffPopUp.setScene(staffPopUpScene);
+                staffPopUp.show();
+                System.out.println(staffToFulfill);
             }
             //System.out.println(staffToFulfill.getFirstName()+staffToFulfill.getLastName());
             //String toWrite=staffToFulfill.getFirstName()+staffToFulfill.getLastName();

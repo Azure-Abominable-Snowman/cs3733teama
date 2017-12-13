@@ -16,6 +16,8 @@ import com.teama.requestsubsystem.elevatorfeature.ElevatorRequest;
 import com.teama.requestsubsystem.elevatorfeature.ElevatorSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import com.teama.requestsubsystem.spiritualcarefeature.SpiritualCareRequest;
+import com.teama.requestsubsystem.spiritualcarefeature.SpiritualCareSubsystem;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -30,6 +32,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -151,10 +154,24 @@ public class GenericRequestController {
 
     @FXML
     public void deleteRequest(ActionEvent event) {
-        InterpreterSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
-        requestView.getItems().clear();
-        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
-        System.out.println("It was deleted");
+        if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.INTR){
+            InterpreterSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
+            requestView.getItems().clear();
+            requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+            System.out.println("It was deleted");
+        }
+        else if(typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.MAIN){
+            ElevatorSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
+            requestView.getItems().clear();
+            requestView.getItems().addAll(ElevatorSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+
+        }
+        else if(typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.SPIRITUAL){
+            SpiritualCareSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
+            requestView.getItems().clear();
+            requestView.getItems().addAll(SpiritualCareSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+        }
+
     }
 
     public void fulfillRequest(ActionEvent e){
@@ -183,13 +200,14 @@ public class GenericRequestController {
                 }
             } else if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.MAIN) {
                 Stage fulfillStage = new Stage();
-                //TODO change name of that plz
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/MaintenanceFufilForm.fxml"));
+                loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/MaintenanceFufilForm.fxml"));
                 Scene fulfillScene;
                 try {
-                    fulfillScene = new Scene(loader.load());
+                    Pane parent = loader.load();
+                    fulfillScene = new Scene(parent);
                     FulfillElevatorMaintController controller = loader.getController();
-                    controller.setReqToFulfill((ElevatorRequest) requestView.getSelectionModel().getSelectedItem());
+                    controller.setReqToFulfill((ElevatorRequest)requestView.getSelectionModel().getSelectedItem());
                     controller.getSubmitted().addListener(((observable, oldValue, submitted) -> {
                         if (submitted) {
                             requestView.getItems().clear();
@@ -205,7 +223,27 @@ public class GenericRequestController {
                 }
             }
             else if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.SPIRITUAL) {
+                Stage fulfillStage = new Stage();
+                //TODO change name of that plz
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/SpiritualFulfilRequest.fxml"));
+                Scene fulfillScene;
+                try {
+                    fulfillScene = new Scene(loader.load());
+                    FulfilSpiritualReqController controller = loader.getController();
+                    controller.setReqToFulfill((SpiritualCareRequest) requestView.getSelectionModel().getSelectedItem());
+                    controller.getSubmitted().addListener(((observable, oldValue, submitted) -> {
+                        if (submitted) {
+                            requestView.getItems().clear();
+                            requestView.getItems().addAll(SpiritualCareSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+                        }
+                    }));
 
+                    fulfillStage.setScene(fulfillScene);
+                    fulfillStage.show();
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                    System.out.println("check file name");
+                }
             }
         }catch (Exception exception){
             exception.printStackTrace();
@@ -222,14 +260,16 @@ public class GenericRequestController {
         System.out.println(nodes.keySet());
         if(typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.MAIN){
             for(MapNode n: nodes.values()){
-                if(n.getNodeType().equals(NodeType.ELEV)){
+                if(n.getNodeType().equals(NodeType.ELEV) && n.getCoordinate().getBuilding().equals(buildingName)){
                     longName.getItems().add(n);
                 }
             }
         }
         else{
             for (MapNode n : nodes.values()) {
-                longName.getItems().add(n);
+                if(n.getCoordinate().getBuilding().equals( buildingName)){
+                    longName.getItems().add(n);
+                }
             }
         }
         mapNodeName = longName.getSelectionModel().getSelectedItem();

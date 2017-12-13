@@ -16,12 +16,35 @@ public class SpiritualCareRequest implements Request {
     private Religion religion;
     private SpiritualService service;
     private LocalDate date;
+    private double serviceTime;
 
     public SpiritualCareRequest( Request r, Religion rel, SpiritualService s, LocalDate date){
         this.request = r;
         this.religion = rel;
         this.service = s;
         this.date = date;
+    }
+
+    public SpiritualCareRequest( Request r, Religion rel, SpiritualService s, LocalDate date, double service){
+        this.request = r;
+        this.religion = rel;
+        this.service = s;
+        this.date = date;
+        this.serviceTime = service;
+    }
+
+
+
+    public Request getGenRequest(){
+        return this.request;
+    }
+
+    public double getServiceTime() {
+        return serviceTime;
+    }
+
+    public void setServiceTime(double serviceTime) {
+        this.serviceTime = serviceTime;
     }
 
     @Override

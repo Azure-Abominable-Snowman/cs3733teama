@@ -17,8 +17,8 @@ public class ElevatorSubsystem {
     private ElevatorRequest fulfilledRequest; // the "state"
 
     private ElevatorSubsystem() {
-        requestDB = new ElevatorRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.interpReqTable);
-        staffDB = new ElevatorStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.interpStaffTable);
+        requestDB = new ElevatorRequestDB(Configuration.dbURL, Configuration.generalReqTable, Configuration.elevatorReqTable);
+        staffDB = new ElevatorStaffDB(Configuration.dbURL, Configuration.generalStaffTable, Configuration.elevatorStaffTable);
     }
     private static class ElevatorHelper {
         private static final ElevatorSubsystem _instance = new ElevatorSubsystem();

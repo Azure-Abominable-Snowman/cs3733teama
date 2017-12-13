@@ -13,10 +13,8 @@ import java.util.Set;
  */
 public class ElevatorStaff implements ServiceStaff{
     private ServiceStaff genInfo;
-
-
-
     private Set<MaintenanceType> specialization;
+
 
     public ElevatorStaff(ServiceStaff i, Set<MaintenanceType> specializations ) {
         genInfo = i;

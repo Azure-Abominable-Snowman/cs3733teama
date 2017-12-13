@@ -25,8 +25,6 @@ import org.controlsfx.control.Notifications;
  * Created by jakepardue on 12/5/17.
  */
 public class FInterpreterRequestController {
-
-
     @FXML
     private JFXTextField staffName;
 
@@ -41,6 +39,9 @@ public class FInterpreterRequestController {
 
     @FXML
     private JFXTextField txtTimeToFulfill;
+
+    @FXML
+    private JFXTextField groupSize;
 
     @FXML
     private JFXButton btnSubmit;
@@ -78,13 +79,13 @@ public class FInterpreterRequestController {
     @FXML
     void onSubmitClick(ActionEvent e) {
         try {
-            if (txtTimeToFulfill.getText().equals("") || txtDescription.getText().equals("") || txtTimeToFulfill.getText().equals("") || cmbxTransType.getValue() == null) {
+            if (groupSize.getText().equals("") || txtDescription.getText().equals("") || txtTimeToFulfill.getText().equals("") || cmbxTransType.getValue() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error!");
                 alert.setHeaderText("Error with Submitting Your Request.");
                 alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
                 alert.showAndWait();
-                throw new NullPointerException("Please check ur fields bitch");
+                throw new NullPointerException("Please check ur fields.");
 
             }
             String timeToFulfillVal = txtTimeToFulfill.getText();

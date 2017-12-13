@@ -25,8 +25,7 @@ import org.controlsfx.control.Notifications;
 
 public class FulfillElevatorMaintController {
 
-    @FXML
-    private GridPane location;
+
 
     @FXML
     private JFXTextField staffName;
@@ -61,8 +60,11 @@ public class FulfillElevatorMaintController {
     public void initialize(){
         submitted.set(false);
     }
+
     public void setReqToFulfill(ElevatorRequest request){
         this.reqToFulfill=request;
+        System.out.println(request);
+        System.out.println(reqToFulfill);
         staffName.setText(ElevatorSubsystem.getInstance().getStaff(reqToFulfill.getStaffID()).getFirstName() + " "+ ElevatorSubsystem.getInstance().getStaff(reqToFulfill.getStaffID()).getLastName());
         MaintType.setText(String.valueOf(reqToFulfill.getMaintenanceType()));
         staffID.setText(Integer.toString(reqToFulfill.getStaffID()));
