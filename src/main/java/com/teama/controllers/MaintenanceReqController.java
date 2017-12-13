@@ -31,6 +31,11 @@ public class MaintenanceReqController {
         return priorityBox.getSelectionModel().getSelectedItem();
     }
 
+    public void clearRequest(){
+        maintenanceTypeBox.getSelectionModel().clearSelection();
+        priorityBox.getSelectionModel().clearSelection();
+    }
+
 
 
 

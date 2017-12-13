@@ -107,8 +107,10 @@ public class ElevatorSubsystem {
     }
 
     public void notifyObservers() {
-        for (RequestDatabaseObserver o: observers){
-            o.update();
+        if(observers!=null) {
+            for (RequestDatabaseObserver o : observers) {
+                o.update();
+            }
         }
     }
 
