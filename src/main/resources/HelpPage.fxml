@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="719.0" prefWidth="667.0" style="-fx-background-color-fx-background-color: #CFDDE7 #CFDDE7;" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="719.0" prefWidth="667.0" style="-fx-background-color-fx-background-color: #CFDDE7 #CFDDE7;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="49.0" prefWidth="669.0" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4;" styleClass="tab-header-background">
          <opaqueInsets>
@@ -33,7 +33,7 @@
       <TextArea layoutY="479.0" prefHeight="288.0" prefWidth="667.0" text="1. Search bar and Magnifying Glass: This search bar along with the magnifying glass allows you to search for and find directions to any location within the hospital from the kiosk location.&#10;&#10;2. Route Arrow: The Route Arrow will pop up a path finding pane that gives you. &#10;&#10;3. Language Button: This button allows you to change the applications language.&#10;&#10;4. Login: Clicking on this icon allows Admin/Staff to type in their credential to login.&#10;&#10;5. Emergency Exit Locator: Clicking on this icon will display a path to the nearest emergency exit&#10;&#10;6. Floor Display: These buttons allow you to change which floor is being displayed on the screen. The currently displayed floor is solid while the rest of the floors are tranparent.&#10;&#10;7. Zoom Scroll: This scroll bar allows you to zoom in and out on the screen. Dragging upwards will zoom in while dragging down will zoom out.  " wrapText="true" />
       <ImageView fitHeight="366.0" fitWidth="687.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Desktop/Main_Screen.png" />
+            <Image url="@./Main_Screen.png" />
          </image>
       </ImageView>
       <Button fx:id="searchBtn" layoutX="97.0" layoutY="154.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="0.0" style="-fx-background-color: #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4 #2366b8#2366b4;" text="1" textFill="WHITE" />
