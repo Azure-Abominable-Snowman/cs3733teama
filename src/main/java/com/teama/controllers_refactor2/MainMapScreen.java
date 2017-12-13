@@ -7,6 +7,7 @@ import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
+import com.teama.controllers_refactor.SettingsPopOut;
 import com.teama.login.LoginSubsystem;
 import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDisplay;
@@ -15,6 +16,9 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.NodeTypeDijkstras;
+import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.translator.Translator;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -43,6 +47,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -201,6 +206,7 @@ public class MainMapScreen implements Initializable {
 
         // When the search button is pressed then generate a new path with that as the destination
         searchButton.pressedProperty().addListener((Observable a) -> {
+            mapDrawing.setViewportCenter(mainSearch.getSelectedNode().getCoordinate());
             pathfinding.genPath(mainSearch.getSelectedNode());
         });
 
@@ -274,7 +280,38 @@ public class MainMapScreen implements Initializable {
             //do nothing
         }
         else{
-            System.out.println("We need to implement this");
+            try {
+                disableSearchPane();
+                drawer.setVisible(true);
+                FXMLLoader openerLoader = new FXMLLoader();
+                curController = new DirectionController();
+                openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
+                openerLoader.setController(curController);
+                openerLoader.load();
+                curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
+                curController.onOpen();
+                drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
+                drawer.setSidePane(curController.getParentPane());
+                drawer.open();
+                curController.getClosing().addListener((a, oldVal, newVal) -> {
+                    if (newVal) {
+                        curController.onClose();
+                        drawer.close();
+                        drawer.setVisible(false);
+                        enableSearchPane();
+                    }
+                });
+
+            }catch (IOException e1) {
+                e1.printStackTrace();
+            } {
+
+
+            }
+
+
+
+
         }
     }
     @FXML public void onOpenerClick(MouseEvent e){
@@ -310,6 +347,10 @@ public class MainMapScreen implements Initializable {
             error.printStackTrace();
         }
     }
+
+
+
+
     @FXML private void onLoginClick(MouseEvent e){
         try {
             if(!ProgramSettings.getInstance().getIsLoggedInProp().get()) {
@@ -322,6 +363,9 @@ public class MainMapScreen implements Initializable {
                 logInStage.resizableProperty().set(false);
                 logInStage.initModality(Modality.APPLICATION_MODAL);
                 logInStage.showAndWait();
+                if(ProgramSettings.getInstance().getIsLoggedInProp().get()) // launch it right after login, leave no chance for double click
+                   onOpenerClick(null); // TODO stupid fix, decide on if this work.
+
             }
             else{
                 ProgramSettings.getInstance().getIsLoggedInProp().set(false);
@@ -387,6 +431,7 @@ public class MainMapScreen implements Initializable {
         if(curController!=null) {
             System.out.println(curController.getParentPane().getPrefWidth());
         }
+        //TODO ajdust where the node gets drawn based on the current controller
         MapNode nodeAt = mapDrawing.nodeAt(new Location(event, mapDrawing.getCurrentFloor()));
 
         if (nodeAt != null) {
@@ -420,9 +465,14 @@ public class MainMapScreen implements Initializable {
         }
 
     }//add methods for login click and translate click
+
+
     @FXML private void onEmergencyClick(MouseEvent e){
-        //TODO add code for pathfinding to nearest exit
+        pathfinding.genExitPath();
+
+            //TODO double check this.
     }
+
     //CREATES THE ABOUT PAGE POP UP
     //TODO attach this method to the about button
     @FXML
