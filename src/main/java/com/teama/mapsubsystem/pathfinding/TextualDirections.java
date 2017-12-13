@@ -7,14 +7,18 @@ import com.teama.translator.Translator;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
+
 public class TextualDirections implements DirectionsGenerator {
-    private ArrayList<MapNode> nodeList;
+    private ArrayList<MapNode> pathNodeList;
     private ArrayList<RouteLink> routeLinks ;
     private ArrayList<Direction> dirList;
+    private final double hightLightLength = 50; // overall length for both side of turn.
 
     public TextualDirections()
     {
-        nodeList = new ArrayList<>();
+        pathNodeList = new ArrayList<>();
     }
 
     @Override
@@ -22,24 +26,24 @@ public class TextualDirections implements DirectionsGenerator {
 
 
 
-        nodeList = path.getNodes();
-        routeLinks = new ArrayList<>(nodeList.size()-1);
+        pathNodeList = path.getNodes();
+        routeLinks = new ArrayList<>(pathNodeList.size()-1);
 
         // group list of nodes into two point link structure and let RouteLink do the basic calculation.
-        RouteLink lastLink  = new RouteLink(nodeList.get(0),nodeList.get(1),null);
+        RouteLink lastLink  = new RouteLink(pathNodeList.get(0), pathNodeList.get(1),null);
         routeLinks.add(lastLink);
         RouteLink thisLink ;
 
-        for(int i=2;i<nodeList.size();++i)
+        for(int i = 2; i< pathNodeList.size(); ++i)
         {
-            thisLink = new RouteLink(nodeList.get(i-1),nodeList.get(i),lastLink);
+            thisLink = new RouteLink(pathNodeList.get(i-1), pathNodeList.get(i),lastLink);
             lastLink=thisLink;
             routeLinks.add(lastLink);
         }
 
 
          dirList = new ArrayList<>();
-        // put RouteLinks into Direction formate and refactor the same RouteLinks.
+        // put RouteLinks into Direction format and refactor the same RouteLinks.
         // make the start Direction and push it into list.
         RouteLink thisTurn = routeLinks.get(0);
         String temp = String.format( "%s %s",
@@ -137,11 +141,13 @@ public class TextualDirections implements DirectionsGenerator {
             //routeLink.getNext().getLongDescription());
         }
 
+
         // create and return the new formed Direction object.
         return new Direction(routeLink.getDistance(),
                 routeLink.getStart().getCoordinate(),
                 routeLink.getNext().getCoordinate(),
-                discription,routeLink.getTurn());
+                discription,routeLink.getTurn(),
+                grabHighLightList(routeLink));
     }
 
     private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)
@@ -190,5 +196,56 @@ public class TextualDirections implements DirectionsGenerator {
         }
     }
 
+    /**
+     * The is the help generate the list of nodes for highlighting, by checking before and after the link.
+     * the field hightLightLength is used to determent how much nodes to grab for each side, the combined length will
+     * be longer then the this fields. if reached the start or end of path, then just exit.
+     * @param turnLink the point for checking in both sides.
+     * @return return the ArrayList of mapNodes that need to be highlighted.
+     */
+    private ArrayList<MapNode> grabHighLightList (RouteLink turnLink)
+    {
+        int turnIndex = pathNodeList.indexOf(turnLink.getStart()); // TODO possible point of error.
+        ArrayList<MapNode> prevNodes = new ArrayList<>();
+        ArrayList<MapNode> postNodes = new ArrayList<>();
+        ArrayList<MapNode> outputNodes = new ArrayList<>();
+        double prevLength=0, postLength=0;
+
+        // grab nodes that are before the turn point. added to the list in the backward order.
+        for (int i = turnIndex;i>0 && prevLength<hightLightLength ;i--)
+        {
+            MapNode prevNode = pathNodeList.get(i-1);
+            prevNodes.add(prevNode);
+            prevLength+=calDistance(prevNode,pathNodeList.get(i));
+        }
+        // grab nodes that are after the turn point. added to the list in the forward order
+        for (int i = turnIndex;i<pathNodeList.size()-1 && postLength<hightLightLength ;++i)
+        {
+            MapNode postNode = pathNodeList.get(i+1);
+            postNodes.add(postNode);
+            postLength+=calDistance(postNode,pathNodeList.get(i));
+        }
+
+        // merge two list into one.
+        // the prev nodes list first, and merge backwards, since size is one bigger then biggest node, need -1
+        for(int i = prevNodes.size()-1;i>-1;--i)
+        {
+            outputNodes.add(prevNodes.get(i));
+        }
+        outputNodes.add(turnLink.getStart());     // put in the middle node as well.
+        // then the post nodes list.
+        for(int i=0;i<postNodes.size();++i)
+        {
+            outputNodes.add(postNodes.get(i));
+        }
+        return outputNodes;
+    }
+
+    protected int calDistance(MapNode n1, MapNode n2)
+    {
+        double x = (double) abs(n1.getCoordinate().getxCoord() - n2.getCoordinate().getxCoord());
+        double y = (double) abs(n1.getCoordinate().getyCoord() - n2.getCoordinate().getxCoord());
+        return (int) sqrt ( x*x+y*y ) ;
+    }
 
 }

@@ -4,10 +4,15 @@ import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.AStar;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.reverseAStar.ReverseAstar;
+import com.teama.mapsubsystem.pathfinding.LongPathFinder.LongPathFinder;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -15,6 +20,7 @@ public class PathAlgorithmTest {
     MapNode[][] map1 = new MapNode[20][20];
     MapNode[][] mapd = new MapNode[30][30];
     MapNode[][] map2 = new MapNode[100][100];
+    MapNode[][] map3 = new MapNode[100][100];
     PathAlgorithm finder;
 
     @Before
@@ -23,6 +29,7 @@ public class PathAlgorithmTest {
         map1=g.GenerateNewMap(1);
         mapd=g.GenerateNewMap('d');
         map2=g.GenerateNewMap(2);
+        map3=g.GenerateNewMap(3);
         g.printMap(map1,20,20);
         System.out.println();
         System.out.println();
@@ -32,6 +39,7 @@ public class PathAlgorithmTest {
         System.out.println();
         System.out.println();
         g.printMap(map2,100,100);
+        g.printMap(map3,100,100);
     }
 
     @Test
@@ -123,4 +131,72 @@ public class PathAlgorithmTest {
         assertTrue(thrown);
     }
 
+    @Test
+    public void disableNodeTest() throws Exception{
+        ArrayList<Integer> disIndex = new ArrayList<Integer>();
+        disIndex.add(2);
+        disIndex.add(3);
+        //test Astar
+        finder = new AStar();
+        System.out.println("Testing AStart disable node.");
+        disableNodeTestHelper(finder,map1[0][0],map1[4][4],disIndex);
+        //test for Dijkstars
+        finder = new Dijkstras();
+        System.out.println("Testing Dinkstars disable node.");
+        disableNodeTestHelper(finder, map1[0][0],map1[4][4],disIndex);
+        //test for Beam Search
+        int queueSize = 7;
+        finder = new BeamSearch(queueSize);
+        System.out.println("Testing Beam Search disable node.");
+        disableNodeTestHelper(finder, map1[0][0],map1[4][4],disIndex);
+        //test for BreathFirstSearch
+        finder = new BreathFirst();
+        System.out.println("Testing Breath First Search disable node.");
+        disableNodeTestHelper(finder, map1[0][0],map1[4][4],disIndex);
+    }
+
+    private void disableNodeTestHelper (PathAlgorithm finder, MapNode start, MapNode end, ArrayList<Integer> disIndex)
+    {
+        // generate the result from normal mode
+        ArrayList<MapNode> normalResult = finder.generatePath(start,end).getNodes();
+        // grab a few nodes that are gonna be disabled.
+        ArrayList<MapNode> disableNodes = new ArrayList<>();
+        for (Integer index : disIndex) {
+            disableNodes.add(normalResult.get(normalResult.size()-index));
+        }
+
+        ArrayList<MapNode> disableResult = finder.generatePath(start,end,disableNodes).getNodes();
+
+        for (Integer index : disIndex) {
+            System.out.printf("Testing new Path at it's Node %s  \n",normalResult.get(index).getId());
+            assertNotEquals(disableResult.get(index).getId(), normalResult.get(index).getId());
+        }
+    }
+
+    @Test
+    public void reverseAStarTest()
+    {
+        finder = new ReverseAstar();
+        ArrayList<MapNode> resultList = finder.generatePath(map3[0][0],map3[99][99]).getNodes();
+        for (MapNode mapNode : resultList) {
+            System.out.println(mapNode.getLongDescription());
+        }
+        System.out.println(resultList.size());
+
+    }
+
+    //@Test  // don't worry about this test as we won't use longest Path. 
+    public void LongPathFinderTest()
+    {
+        ArrayList<MapNode> result;
+        finder = new LongPathFinder();
+         result = finder.generatePath(map1[0][0],map1[12][1]).getNodes();
+        assertEquals(result.get(result.size()-1).getId(),map1[12][1].getId());
+        System.out.printf("The LongestPath result is %d in length\n",result.size());
+        // the mempry hogger.
+   //     result = finder.generatePath(map2[0][0],map2[22][20]).getNodes();
+      //  assertEquals(result.get(result.size()-1).getId(),map2[22][20].getId());
+      //  System.out.printf("The LongestPath result is %d in length\n",result.size());
+
+    }
 }

@@ -9,7 +9,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
 public class InterpreterAPI extends Application{
+
     public void run(int xcoord, int ycoord, int windowWidth, int windowLength, String cssPath,
              String destNodeID, String originNodeID) throws ServiceException {
         // First, make the window and put it on the screen at the specified x and y coordinates
@@ -41,14 +43,15 @@ public class InterpreterAPI extends Application{
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        InterpreterAPI api = new InterpreterAPI();
         try {
+            InterpreterAPI api = new InterpreterAPI();
             api.run(100, 150, 500, 500,
                     "/css/DefaultStyle.css", "AINFO0010G", "");
         } catch (ServiceException e) {

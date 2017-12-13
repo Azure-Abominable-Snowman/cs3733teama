@@ -1,7 +1,7 @@
 package com.teama.requestsubsystem;
 
 public enum StaffType {
-    INTERPRETER("Interpreter"), TRANSPORT("Transport"), SECURITY("Security"), MAINTENANCE("Maintenance"), JANITOR("Janitor");
+    INTERPRETER("Interpreter"), TRANSPORT("Transport"), SECURITY("Security"), ELEVATOR("Maintenance"), JANITOR("Janitor");
     public final String title;
 
     private StaffType(String s) {

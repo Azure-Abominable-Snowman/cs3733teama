@@ -17,7 +17,8 @@ public class GenericStaff implements ServiceStaff { // staff info shared among a
     public GenericStaff(int id, String firstName, String lastName, String username, ContactInfo c) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = firstName.substring(0).toLowerCase() + lastName.toLowerCase();
+        this.t = t;
+        this.username = username;
         this.c = c;
         this.staffID = id;
     }
