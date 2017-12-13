@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="451.0" prefWidth="640.0" stylesheets="@css/DefaultStyle2.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor.FulfillRequestController">
+   <children>
+      <VBox prefHeight="411.0" prefWidth="640.0">
+         <children>
+            <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="453.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <AnchorPane layoutX="29.0" layoutY="54.0" minHeight="0.0" minWidth="0.0" prefHeight="362.0" prefWidth="207.0">
+                     <children>
+                        <GridPane fx:id="location" layoutX="37.0" layoutY="63.0" prefHeight="362.0" prefWidth="156.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="0.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <JFXTextField fx:id="staffName" editable="false" promptText="Name of Staff" GridPane.halignment="CENTER" />
+                              <JFXTextField fx:id="Religion" editable="false" promptText="Language Used" text="Religion" GridPane.rowIndex="2" />
+                              <JFXTextField fx:id="txtLocation" editable="false" promptText="Location" GridPane.rowIndex="3" />
+                              <JFXTextField fx:id="staffID" editable="false" prefHeight="28.0" prefWidth="186.0" promptText="Staff ID" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="228.0" layoutY="74.0" minHeight="0.0" minWidth="0.0" prefHeight="377.0" prefWidth="412.0">
+                     <children>
+                        <GridPane layoutX="45.0" prefHeight="278.0" prefWidth="314.0" AnchorPane.bottomAnchor="99.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="53.0" AnchorPane.topAnchor="0.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="145.0" minHeight="145.0" prefHeight="150.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <JFXTextField fx:id="txtTimeToFulfill" promptText="How long did it take you to complete the request?" />
+                              <JFXTextArea fx:id="txtDescription" prefHeight="118.0" prefWidth="314.0" promptText="Please describe the encounter below:" GridPane.rowIndex="4" />
+                              <JFXTextField fx:id="groupSize" promptText="How many people did you help?" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+                  <HBox alignment="TOP_CENTER" layoutY="382.0" prefHeight="69.0" prefWidth="640.0">
+                     <children>
+                        <JFXButton fx:id="cancelButton" contentDisplay="CENTER" prefHeight="30.0" prefWidth="222.0" styleClass="cancelButton" text="Cancel">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="12.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="submitButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onSubmitClick" prefHeight="30.0" prefWidth="222.0" styleClass="confirmButton" text="Submit">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="12.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <AnchorPane layoutY="-3.0" prefHeight="57.0" prefWidth="640.0">
+                     <children>
+                        <Text layoutX="208.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="field" text="Spiritual Guide Request Fulfillment Form" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</Pane>
