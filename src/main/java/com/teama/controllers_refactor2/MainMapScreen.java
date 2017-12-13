@@ -387,6 +387,7 @@ public class MainMapScreen implements Initializable {
         if(curController!=null) {
             System.out.println(curController.getParentPane().getPrefWidth());
         }
+        //TODO ajdust where the node gets drawn based on the current controller
         MapNode nodeAt = mapDrawing.nodeAt(new Location(event, mapDrawing.getCurrentFloor()));
 
         if (nodeAt != null) {
