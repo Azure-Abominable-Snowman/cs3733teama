@@ -2,7 +2,8 @@ package com.teama.requestsubsystem;
 
 // for use by controller to generate appropriate form
 public enum RequestType {
-    FOOD("Food"), SEC("Security"), TRANS("Transportation"), INTR("Interpreter"), MAIN("Elevator Maintenance");
+    FOOD("Food"), SEC("Security"), TRANS("Transportation"), INTR("Interpreter"), MAIN("Elevator Maintenance"),
+    SPIRITUAL("Spiritual Service");
 
     private final String value;
 

@@ -34,7 +34,7 @@
 }
 
 .hbox_floorBtn_start {
-    -fx-background-color: RGB(148,231,198);
+    -fx-background-color: rgb(148,231,198);
 }
 
 .hbox_floorBtn {
@@ -43,7 +43,7 @@
 
 
 .hbox_floorBtn_end {
-    -fx-background-color: RGB(235,143,185)
+    -fx-background-color: rgb(235,143,185)
 }
 
 

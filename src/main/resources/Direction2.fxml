@@ -109,7 +109,7 @@
                   <Insets />
                </VBox.margin>
                <content>
-                  <HBox fx:id="hbxFloorButtons" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="398.0" prefHeight="70.0" prefWidth="398.0" styleClass="hbox_floorBtn_hbox" />
+                  <HBox fx:id="hbxFloorButtons" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="398.0" prefHeight="70.0" styleClass="hbox_floorBtn_hbox" />
                </content>
             </ScrollPane>
          </children>
