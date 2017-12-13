@@ -1,14 +1,16 @@
 package com.teama.controllers_refactor2;
 
-import com.jfoenix.controls.*;
+
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXSlider;
 import com.teama.ProgramSettings;
 import com.teama.controllers.NodeInfoPopUpController;
 import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
-import com.teama.controllers_refactor.SettingsPopOut;
-import com.teama.login.LoginSubsystem;
 import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
@@ -16,10 +18,8 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.data.NodeType;
-import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.NodeTypeDijkstras;
-import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.translator.Translator;
+import foodRequest.FoodRequest;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -47,7 +47,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -285,11 +284,14 @@ public class MainMapScreen implements Initializable {
                 drawer.setVisible(true);
                 FXMLLoader openerLoader = new FXMLLoader();
                 curController = new DirectionController();
+                //openerLoader.setResources(Translator.getInstance().getNewBundle());
                 openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
                 openerLoader.setController(curController);
                 openerLoader.load();
                 curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
                 curController.onOpen();
+                ((DirectionController) curController).setFinder(pathfinding);
+
                 drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
                 drawer.setSidePane(curController.getParentPane());
                 drawer.open();
@@ -513,5 +515,6 @@ public class MainMapScreen implements Initializable {
         }
 
     }
+
 }
 

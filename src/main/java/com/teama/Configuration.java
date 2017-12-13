@@ -14,4 +14,7 @@ public final class Configuration {
 
     public static String elevatorStaffTable = "ELEVATOR_STAFF";
     public static String elevatorReqTable = "ELEVATOR_REQUESTS";
+
+    public static String spiritualStaffTable = "SPIRIT_STAFF";
+    public static String spiritualReqTable = "SPIRIT_REQUESTS";
 }
