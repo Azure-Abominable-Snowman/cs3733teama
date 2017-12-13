@@ -23,10 +23,13 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -35,6 +38,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+
+import javafx.scene.image.*;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import static com.teama.requestsubsystem.RequestType.*;
 import static javafx.scene.paint.Color.color;
@@ -95,6 +102,8 @@ public class RequestPopOut extends PopOutController {
 
     Image check = new Image("/check.png");
 
+
+
     private String buildingName;
     private Floor floorName;
     private MapNode mapNodeName;
@@ -137,7 +146,6 @@ public class RequestPopOut extends PopOutController {
         nodeSelected.set(false);
         longName.valueProperty().addListener((observable, oldValue, newValue) -> {
             System.out.println(mapNodeName);
-            System.out.println(mapNodeName);
             mapNodeName=newValue;
             if(newValue != null){
                 System.out.println("This is freaking working!");
@@ -149,6 +157,7 @@ public class RequestPopOut extends PopOutController {
 
             }
         });
+        /*
         nodeSelected.addListener((obs, before, mapNode) ->{
             System.out.println(mapNode);
             System.out.println(mapNodeName);
@@ -156,7 +165,7 @@ public class RequestPopOut extends PopOutController {
                 System.out.println("This is freaking working!");
                 MapDrawingSubsystem.getInstance().setViewportCenter(mapNodeName.getCoordinate());
             }
-        });
+        });*/
     }
 
     @Override
@@ -188,11 +197,16 @@ public class RequestPopOut extends PopOutController {
         longName.getSelectionModel().clearSelection();
         typeOfRequest.getSelectionModel().clearSelection();
         additionalInfo.clear();
+        addToThis.getChildren().remove(curReqPane);
+        MapDrawingSubsystem.getInstance().drawNode(mapNodeName, 0, null);
+        viewStaffButton.setText("View Staff");
+
         //nodeSelected.set(null);
     }
 
     @FXML
     public void submitRequest(ActionEvent e) {
+        /*
 
         //for Food Request
         String foodDesired = "";
@@ -249,7 +263,7 @@ public class RequestPopOut extends PopOutController {
                 lang = controller.getLanguage();
                 familySize = controller.getFamilySize();
 
-                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  lang == null || familySize.equals("")){
+                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  lang == null ){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error!");
                     alert.setHeaderText("Error with Submitting Your Request.");
@@ -264,9 +278,6 @@ public class RequestPopOut extends PopOutController {
                 System.out.println(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest));
 
                 System.out.println("It was successful");
-
-                System.out.println("I o[i2jej]qoi[2 you so much");
-                /*
                 Notifications notifications = Notifications.create()
                         .title("Success!")
                         .text("Your interpreter request has been added.")
@@ -279,10 +290,11 @@ public class RequestPopOut extends PopOutController {
                                 System.out.println("Hi Kent");
                             }
                         });
+                notifications.show();
 
                 t.start();
                 break;
-                */
+
             case MAIN:
                 PriorityLevel p = controller2.getPriority();
                 MaintenanceType m = controller2.getMaintenanceType();
@@ -301,7 +313,7 @@ public class RequestPopOut extends PopOutController {
 
                 curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p,m, "");
                 //add request to the database here
-/*
+
                 Notifications notification = Notifications.create()
                         .title("Success!")
                         .text("Your elevator maintenance request has been added.")
@@ -316,7 +328,7 @@ public class RequestPopOut extends PopOutController {
                         });
                 t.start();
                 break;
-                */
+
             case SEC:
                 break;
             case TRANS:
@@ -336,7 +348,7 @@ public class RequestPopOut extends PopOutController {
         System.out.println(additionalInfoMessage);
         System.out.println(familySize);
         System.out.println(lang);
-
+*/
     }
 
     @FXML
@@ -431,11 +443,16 @@ public class RequestPopOut extends PopOutController {
     }
 
     public Message createEmailMessage(){
-        return message = new Message(requestType.toString()+" Help", additionalInfoMessage);
+        message = new Message(requestType.toString()+" Help", "Where: "+ buildingName +", "+ floorName.toString()+", "+mapNodeName.getLongDescription()+ "\n"
+                + "Language: " + controller.getLanguage().toString()+"\n"+
+                "Size of Family:" + controller.getFamilySize().toString()+"\n"+
+                "Additional Info: "+additionalInfoMessage);
+        return message;
     }
 
     @FXML
     public void showStaffPopUp(ActionEvent event) {
+        /*
 
         Stage staffPopUp = new Stage();
         try {
@@ -510,12 +527,13 @@ public class RequestPopOut extends PopOutController {
             }
 
 
-            System.out.println(staffToFulfill.getFirstName()+staffToFulfill.getLastName());
-            String toWrite=staffToFulfill.getFirstName()+staffToFulfill.getLastName();
+            //System.out.println(staffToFulfill.getFirstName()+staffToFulfill.getLastName());
+            //String toWrite=staffToFulfill.getFirstName()+staffToFulfill.getLastName();
         } catch (IOException e) {
             e.printStackTrace();
         }
        // viewStaffButton.setText("work");
+       */
     }
 
     @FXML
@@ -547,6 +565,7 @@ public class RequestPopOut extends PopOutController {
 
     @FXML
     public void fulfillRequest(ActionEvent e){
+
         Stage fulfillStage = new Stage();
         //TODO change name of that plz
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FulfillIntReq.fxml"));
@@ -569,6 +588,9 @@ public class RequestPopOut extends PopOutController {
             exception.printStackTrace();
             System.out.println("check file name");
         }
-
     }
+    public void clearController(){
+        addToThis.getChildren().clear();
+    }
+
 }
