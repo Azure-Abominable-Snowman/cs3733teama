@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="119.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.MaintenanceReqController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="97.0" prefWidth="244.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.MaintenanceReqController">
    <children>
-      <VBox prefHeight="119.0" prefWidth="200.0">
+      <VBox prefHeight="119.0" prefWidth="235.0">
          <children>
             <JFXComboBox fx:id="maintenanceTypeBox" prefHeight="29.0" prefWidth="203.0" promptText="Accident Types...">
                <VBox.margin>

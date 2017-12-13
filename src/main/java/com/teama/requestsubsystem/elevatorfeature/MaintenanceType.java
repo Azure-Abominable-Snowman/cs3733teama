@@ -13,6 +13,8 @@ public enum MaintenanceType {
         this.type = string;
     }
 
+    public String toString(){ return type;}
+
     public static MaintenanceType getMaintenanceType(String s) {
         for (MaintenanceType c: MaintenanceType.values()) {
             if (c.toString().equals(s)) {
