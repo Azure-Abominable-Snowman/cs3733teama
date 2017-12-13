@@ -4,14 +4,9 @@ import com.teama.requestsubsystem.GeneralStaffDB;
 import com.teama.requestsubsystem.ServiceStaff;
 import com.teama.requestsubsystem.StaffDataSource;
 import com.teama.requestsubsystem.StaffType;
-import com.teama.requestsubsystem.interpreterfeature.CertificationType;
-import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
-import com.teama.requestsubsystem.interpreterfeature.Language;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -22,7 +17,7 @@ public class SpiritualStaffDB implements StaffDataSource {
     private StaffDataSource generalStaffDB;
     private final Logger log = Logger.getLogger(this.getClass().getPackage().getName());
     private String dbURL;
-    private String interpStaffTable;
+    private String staffTable;
     private Connection conn = null;
     private Statement stmt = null;
     private PreparedStatement addStaff, removeStaff, updateStaffTable, getStaff, getQualifiedStaff, getAllStaff;
@@ -30,7 +25,7 @@ public class SpiritualStaffDB implements StaffDataSource {
 
     public SpiritualStaffDB(String dbURL, String generalStaffTableName, String staffTableName) {
         this.dbURL = dbURL;
-        this.interpStaffTable = staffTableName;
+        this. staffTable = staffTableName;
         generalStaffDB = new GeneralStaffDB(dbURL, generalStaffTableName);
         //this.generalStaffTable = generalStaffTable;
         try {
@@ -46,17 +41,16 @@ public class SpiritualStaffDB implements StaffDataSource {
         // This table is always named <staffTable>_LANGUAGE
         try {
             stmt = conn.createStatement();
-            System.out.println(interpStaffTable + " about to be created.");
+            System.out.println( staffTable + " about to be created.");
             stmt.execute(
-                    " CREATE TABLE " + interpStaffTable + " (" +
+                    " CREATE TABLE " +  staffTable + " (" +
                             "STAFFID INTEGER NOT NULL, " +
-                            "LANGUAGE VARCHAR(50) NOT NULL, " +
-                            "CERTIFICATION VARCHAR(100) NOT NULL, " +
+                            "RELIGION VARCHAR(100) NOT NULL, " +
                             "FOREIGN KEY (STAFFID) REFERENCES " + generalStaffTableName + " (STAFFID), " +
-                            "PRIMARY KEY (STAFFID,LANGUAGE)" +
+                            "PRIMARY KEY (STAFFID)" +
                             ")"
             );
-            log.info("InterpreterStaff table created.");
+            log.info("Spiritual Staff table created.");
             stmt.close();
 
         } catch (SQLException e) {
@@ -83,12 +77,12 @@ public class SpiritualStaffDB implements StaffDataSource {
 */
 
         try {
-            addStaff = conn.prepareStatement("INSERT INTO " + interpStaffTable + "  (STAFFID, LANGUAGE, CERTIFICATION) VALUES(?, ?, ?)");
-            getStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE STAFFID = ?");
-            getAllStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE STAFFID = ?");
-            getQualifiedStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE LANGUAGE = ?");
-            removeStaff = conn.prepareStatement("DELETE FROM " + interpStaffTable + " WHERE STAFFID = ?");
-            updateStaffTable = conn.prepareStatement("UPDATE " + interpStaffTable + " SET LANGUAGE = ?, CERTIFICATION = ? WHERE STAFFID = ?");
+            addStaff = conn.prepareStatement("INSERT INTO " +  staffTable + "  (STAFFID, RELIGION VALUES(?, ?)");
+            getStaff = conn.prepareStatement("SELECT * FROM " +  staffTable + " WHERE STAFFID = ?");
+            getAllStaff = conn.prepareStatement("SELECT * FROM " +  staffTable + " WHERE STAFFID = ?");
+            getQualifiedStaff = conn.prepareStatement("SELECT * FROM " +  staffTable + " WHERE RELIGION = ?");
+            removeStaff = conn.prepareStatement("DELETE FROM " +  staffTable + " WHERE STAFFID = ?");
+            updateStaffTable = conn.prepareStatement("UPDATE " +  staffTable + " SET RELIGION = ? WHERE STAFFID = ?");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -117,10 +111,10 @@ public class SpiritualStaffDB implements StaffDataSource {
         try {
             removeStaff.setInt(1, id);
             removeStaff.executeUpdate();
-            log.info("Removed all interpreter information related to InterpreterStaff " + id);
+            log.info("Removed all information related to SpiritualStaff " + id);
         } catch (SQLException e) {
             e.printStackTrace();
-            log.info("Failed to remove specific staff member.");
+            log.info("Failed to remove specific Spiritual Staff  member.");
             return false;
         }
         if (generalStaffDB.deleteStaff(id)) {
@@ -147,60 +141,55 @@ public class SpiritualStaffDB implements StaffDataSource {
      * @param staffID
      * @return
      */
-    public InterpreterStaff getInterpreterStaff(int staffID) {
+    public SpiritualCareStaff getSpiritualCareStaff(int staffID) {
         ServiceStaff general = generalStaffDB.getStaff(staffID);
-        InterpreterStaff gotten = null;
+        SpiritualCareStaff gotten = null;
         if (general != null) {
             try {
                 getStaff.setInt(1, staffID);
                 ResultSet found = getStaff.executeQuery();
-                Set<Language> langs = new HashSet<>();
-                CertificationType cert = null;
-                while (found.next()) {
-                    Language spoken = Language.getLanguage(found.getString("LANGUAGE"));
-                    langs.add(spoken);
-                    if (cert == null) {
-                        cert = CertificationType.getCertificationType(found.getString("CERTIFICATION"));
-                    }
-                }
-                InterpreterStaff interp = new InterpreterStaff(general, langs, cert);
-                if (interp != null && interp.getStaffID() != 0 && !langs.isEmpty()) {
-                    gotten = interp;
-                    log.info("Successfully found interpreter with ID " + staffID);
+                SpiritualCareStaff staff = new SpiritualCareStaff(general, Religion.getReligion(found.getString("RELIGION")));
+                if (staff != null && staff.getStaffID() != 0) {
+                    gotten = staff;
+                    log.info("Successfully found Spiritual Careperson with ID " + staffID);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                log.info("Problem getting Interpreter staff with ID " + staffID);
+                log.info("Problem getting SpiritualCare staff with ID " + staffID);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
         return gotten;
     }
 
-    /**
-     * Returns a list of InterpreterStaff based on input Language
-     * getQualifiedStaff = conn.prepareStatement("SELECT * FROM " + interpStaffTable + " WHERE LANGUAGE = ?");
 
-     * @param lang
+
+    /**
+     * Returns a list of SpiritualCareStaff based on input Language
+     getQualifiedStaff = conn.prepareStatement("SELECT * FROM " +  staffTable + " WHERE RELIGION = ?");
+
+     * @param r
      * @return
      */
     // filter based on language for now
-    public ArrayList<InterpreterStaff> findQualified(Language lang) {
-        ArrayList<InterpreterStaff> foundStaff = new ArrayList<InterpreterStaff>();
+    public ArrayList<SpiritualCareStaff> findQualified(Religion r) {
+        ArrayList<SpiritualCareStaff> foundStaff = new ArrayList<SpiritualCareStaff>();
         // Use all of the attributes to build a query for the database
         try {
-            System.out.println(lang);
-            getQualifiedStaff.setString(1, lang.toString());
+            System.out.println(r.toString());
+            getQualifiedStaff.setString(1, r.toString());
             ResultSet rs = getQualifiedStaff.executeQuery();
             while (rs.next()) {
-                InterpreterStaff found = null;
+                SpiritualCareStaff found = null;
                 int staffID = rs.getInt("STAFFID");
-                InterpreterStaff allInfo = getInterpreterStaff(staffID);
+                SpiritualCareStaff allInfo = getSpiritualCareStaff(staffID);
                 if (allInfo != null) {
                     foundStaff.add(allInfo);
-                    log.info("Found qualified Interpreter that speaks " + lang.toString());
+                    log.info("Found qualified SpiritualCareperson that practices " + r.toString());
                 }
                 else {
-                    log.info("Problem finding qualified Interpreter. Exiting.");
+                    log.info("Problem finding qualified Spiritual Careperson. Exiting.");
                     return null;
                 }
             }
@@ -212,34 +201,32 @@ public class SpiritualStaffDB implements StaffDataSource {
 
 
     /** Adds an interpreter staff to the InterpreterStaff DB
-     * addStaff = conn.prepareStatement("INSERT INTO " + interpStaffTable + "  (STAFFID, LANGUAGE, CERTIFICATION) VALUES(?, ?, ?)");
+     *  addStaff = conn.prepareStatement("INSERT INTO " +  staffTable + "  (STAFFID, RELIGION VALUES(?, ?)");
+
 
      * @param s
      * @return
      */
-    public boolean addStaff(InterpreterStaff s) {
+    public boolean addStaff(SpiritualCareStaff s) {
         ServiceStaff genInfo = generalStaffDB.addStaff(s); // add general info first
         if (genInfo != null) {
             try {
                 addStaff.setInt(1, genInfo.getStaffID());
                 //addStaff.setString(2, );
-                addStaff.setString(3, s.getCertification().toString());
-                for (Language l: s.getLanguages()) {
-                    addStaff.setString(2, l.toString());
-                    addStaff.executeUpdate();
-                }
-                log.info("All languages spoken by staff member added to the Interpreter Table successfully.");
-                log.info("Staff member added successfully to Interpreter Table.");
+                addStaff.setString(2, s.getReligion().toString());
+                addStaff.executeUpdate();
 
-                //addStaff.setString(7, s.); //TODO: CHANGE THIS IF WE ACTUALLY IMPLEMENT WORK HOURS, OR DELETE
+                log.info("Staff member added to the SpiritualStaff Table successfully.");
+
+                //addStaff.setString(7, s.);
                 return true;
             } catch (SQLException e) {
-                log.info("Failed to add Staff Member to Interpreter Table.");
+                log.info("Failed to add Staff Member to Spiritual Table.");
                 e.printStackTrace();
                 return false;
             }
         }
-        log.info("Problem with adding the InterpreterStaff to the General Staff DB. General Staff Info is NULL.");
+        log.info("Problem with adding the SpiritualStaff to the General Staff DB. General Staff Info is NULL.");
         return false;
     }
 
@@ -247,45 +234,39 @@ public class SpiritualStaffDB implements StaffDataSource {
      * returns all the Interpreters in the table
      * @return
      */
-    public ArrayList<InterpreterStaff> getAllInterpreterStaff() {
-        ArrayList<ServiceStaff> allStaff = generalStaffDB.getStaffByType(StaffType.INTERPRETER);
-        ArrayList<InterpreterStaff> allInterps = new ArrayList<>();
+    public ArrayList<SpiritualCareStaff> getAllSpiritualStaff() {
+        // TODO
+        ArrayList<ServiceStaff> allStaff = generalStaffDB.getStaffByType(StaffType.SPIRITUAL);
+        ArrayList<SpiritualCareStaff> allSpirituals = new ArrayList<>();
         for (ServiceStaff s: allStaff) {
             if (s != null) {
-                InterpreterStaff found = getInterpreterStaff(s.getStaffID());
+                SpiritualCareStaff found = getSpiritualCareStaff(s.getStaffID());
                 if (found != null) {
-                    allInterps.add(found);
+                    allSpirituals.add(found);
                 }
             }
         }
-        return allInterps;
+        return allSpirituals;
     }
 
     /**
-     * updateStaffTable = conn.prepareStatement("UPDATE " + interpStaffTable + " SET LANGUAGE = ?, CERTIFICATION = ? WHERE STAFFID = ?");
-     removeStaff = conn.prepareStatement("DELETE FROM " + interpStaffTable + " WHERE STAFFID = ?");
+     * updateStaffTable = conn.prepareStatement("UPDATE " +  staffTable + " SET RELIGION = ? WHERE STAFFID = ?");
 
      * @param s
      * @return
      */
-    public boolean updateStaff(InterpreterStaff s) {
+    public boolean updateStaff(SpiritualCareStaff s) {
         if (generalStaffDB.updateStaff(s)) {
             try {
-                // FIRST REMOVE THE CURRENT ENTRIES
-                removeStaff.setInt(1, s.getStaffID());
-                removeStaff.executeUpdate();
-                log.info("Deleted all current Language entries for udpate.");
-                addStaff.setString(3, s.getCertification().toString());
-                addStaff.setInt(1, s.getStaffID());
-                for (Language l : s.getLanguages()) {
-                    addStaff.setString(2, l.toString());
-                    addStaff.executeUpdate();
-                }
+                updateStaffTable.setString(1, s.getReligion().toString());
+                updateStaffTable.setInt(2, s.getStaffID());
 
-                log.info("Interpreter with ID " + s.getStaffID() + " successfully updated.");
+                updateStaffTable.executeUpdate();
+
+                log.info("Spiritual Careperson with ID " + s.getStaffID() + " successfully updated.");
                 return true;
             } catch (SQLException e) {
-                log.info("Failed to update Interpreter Staff with id " + s.getStaffID());
+                log.info("Failed to update Spiritual Staff with id " + s.getStaffID());
                 e.printStackTrace();
             }
         }

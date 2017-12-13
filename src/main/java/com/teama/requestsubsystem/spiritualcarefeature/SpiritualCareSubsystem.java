@@ -2,9 +2,7 @@ package com.teama.requestsubsystem.spiritualcarefeature;
 
 import com.teama.Configuration;
 import com.teama.requestsubsystem.Request;
-import com.teama.requestsubsystem.RequestDatabaseObserver;
 import com.teama.requestsubsystem.RequestStatus;
-import com.teama.requestsubsystem.interpreterfeature.*;
 
 import java.util.ArrayList;
 
@@ -103,7 +101,7 @@ public class SpiritualCareSubsystem {
     }
 
     // Gets a specific staff member
-    public SpiritualCareStaff getSpiritualCareStaff(int staffID) { return staffDB.getSpiritualStaff(staffID); }
+    public SpiritualCareStaff getSpiritualCareStaff(int staffID) { return staffDB.getSpiritualCareStaff(staffID); }
 
     public SpiritualCareStaff getStaff(int staffID){
         return staffDB.getSpiritualCareStaff(staffID);
