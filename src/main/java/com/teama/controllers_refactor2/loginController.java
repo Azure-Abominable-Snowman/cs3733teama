@@ -10,6 +10,7 @@ import com.teama.login.AccessType;
 import com.teama.login.LoginInfo;
 import com.teama.login.LoginSubsystem;
 import com.teama.login.SystemUser;
+import com.teama.translator.Translator;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -145,15 +146,15 @@ public class loginController{
     private boolean setErrorMessage(String username, String password) {
         boolean error = false;
         if (username.equals("") && password.equals("")) {
-            errorMsg.setText("Please enter your Login information.");
+            errorMsg.setText(Translator.getInstance().getText("loginInfo"));
             errorMsg.setVisible(true);
             error = true;
         } else if (username.equals("")) {
-            errorMsg.setText("Please enter a valid username.");
+            errorMsg.setText(Translator.getInstance().getText("validUser"));
             errorMsg.setVisible(true);
             error = true;
         } else if (password.equals("")) {
-            errorMsg.setText("Please enter a valid password.");
+            errorMsg.setText(Translator.getInstance().getText("validPass"));
             errorMsg.setVisible(true);
             error = true;
         }
@@ -189,7 +190,7 @@ public class loginController{
                     });
             notifications.showConfirm();*/
             setLoggedIn(true);
-            errorMsg.setText("Login Successful");
+            errorMsg.setText(Translator.getInstance().getText("successfulLog"));
             errorMsg.setVisible(true);
             Stage stage = (Stage) uname.getScene().getWindow();
             stage.close();
@@ -197,7 +198,7 @@ public class loginController{
         }
         else {
             setLoggedIn(false);
-            errorMsg.setText("Incorrect username or password.");
+            errorMsg.setText(Translator.getInstance().getText("error"));
             errorMsg.setVisible(true);
         }
     }
