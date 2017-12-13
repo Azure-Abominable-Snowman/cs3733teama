@@ -92,7 +92,9 @@ public class AdminPaneController extends HamburgerController{
 
     @FXML
     void onStaffClick(ActionEvent event) {
-        loadPane(new RequestsController());
+        RequestsController rc = new RequestsController();
+        loadPane(rc);
+        rc.bind(apnToLoad.prefHeightProperty());
     }
 
     @FXML
