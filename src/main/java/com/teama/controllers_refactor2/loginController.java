@@ -5,19 +5,24 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.teama.ProgramSettings;
-import com.teama.controllers_refactor.PopOutController;
 import com.teama.login.AccessType;
 import com.teama.login.LoginInfo;
 import com.teama.login.LoginSubsystem;
 import com.teama.login.SystemUser;
+import com.teama.messages.ContactInfo;
+import com.teama.messages.ContactInfoTypes;
+import com.teama.messages.Provider;
+import com.teama.requestsubsystem.GenericStaff;
+import com.teama.requestsubsystem.StaffType;
+import com.teama.requestsubsystem.interpreterfeature.CertificationType;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
+import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
+import com.teama.requestsubsystem.interpreterfeature.Language;
 import com.teama.translator.Translator;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -28,8 +33,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class loginController{
 
@@ -89,7 +95,24 @@ public class loginController{
         admin.setVisible(false);
         staff.setVisible(false);
         System.out.println(LoginSubsystem.getInstance());
-        SystemUser s = new SystemUser(new LoginInfo("admin", "adminPW"), AccessType.ADMIN);
+        SystemUser s = new SystemUser(new LoginInfo("admin", "admin"), AccessType.ADMIN);
+        Set<ContactInfoTypes> avail = new HashSet<>();
+        avail.add(ContactInfoTypes.EMAIL);
+        avail.add(ContactInfoTypes.TEXT);
+        avail.add(ContactInfoTypes.PHONE);
+        Set<Language> langs = new HashSet<>();
+        langs.add(Language.ASL);
+        langs.add(Language.French);
+        langs.add(Language.Moldovan);
+        langs.add(Language.Luxembourgish);
+        ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
+        int addedStaffID = InterpreterSubsystem.getInstance().addStaffGetLogin(new InterpreterStaff(new GenericStaff("Abominable", "Snowman", "staff", c),
+                langs, CertificationType.CCHI));
+        if (addedStaffID != 0) {
+            System.out.println("Added a new staff member for login.");
+            SystemUser staff = new SystemUser(new LoginInfo("staff", "staff"), AccessType.STAFF, addedStaffID, StaffType.INTERPRETER);
+            LoginSubsystem.getInstance().addUser(staff);
+        }
         System.out.println(s);
         LoginSubsystem.getInstance().addUser(s);
         errorMsg.setVisible(false);

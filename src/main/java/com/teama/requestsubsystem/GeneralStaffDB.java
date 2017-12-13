@@ -160,9 +160,11 @@ public class GeneralStaffDB implements StaffDataSource{
                 return null;
             }
             ServiceStaff complete = getStaff(id.getInt(1));
+            /*
             if (!addNewStaffLogin(complete)) {
                 log.severe("Failed to create login info.");
             }
+            */
             return complete;
 
 

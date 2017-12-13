@@ -62,6 +62,10 @@ public class InterpreterSubsystem implements ReportSubject {
         return requestDB.addRequest(r);
     }
 
+    public int addStaffGetLogin(InterpreterStaff s) {
+        return staffDB.addStaffForLogin(s);
+    }
+
     // deletes the selected request
     public boolean deleteRequest(int requestID) {
         return requestDB.deleteRequest(requestID);

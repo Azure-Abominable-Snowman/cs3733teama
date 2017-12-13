@@ -19,7 +19,6 @@ import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.translator.Translator;
-import foodRequest.FoodRequest;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -152,7 +151,6 @@ public class MainMapScreen implements Initializable {
         // Make a pop up on the user's mouse cursor every time a node is clicked
         popUpID = mapDrawing.attachClickedListener(event -> generateNodePopUp(event), ClickedListener.LOCCLICKED);
         //will need to change this to create the child in the drawer and adjust the drawer
-
         // Pop up goes away on a floor switch
         mapDrawing.attachFloorChangeListener((a, b, c) -> removeCurrentPopUp());
 
@@ -217,6 +215,8 @@ public class MainMapScreen implements Initializable {
             setLoginVisibility();
         });
         setLoginVisibility();
+        System.out.println("Initializing");
+
     }
 
     private void setLoginVisibility() {
