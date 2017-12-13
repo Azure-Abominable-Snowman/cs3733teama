@@ -13,6 +13,7 @@ import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class PathfindingController {
@@ -94,6 +95,57 @@ public class PathfindingController {
         }
     }
 
+    public void genPath(MapNode dest, ArrayList<MapNode> disableNode) {
+        MapNode newOrigin = ProgramSettings.getInstance().getPathOriginNodeProp().getValue();
+        if(newOrigin != null) {
+            genPath(newOrigin, dest,disableNode);
+        } else {
+            genPath(mapSubsystem.getKioskNode(), dest,disableNode);
+        }
+    }
+
+    public void genPath(MapNode origin, MapNode dest, ArrayList<MapNode> disableNode) {
+        if(listen) {
+            if(origin == null || dest == null) {
+                return;
+            }
+            // Generate the path and put it on the screen
+            MapNode newOrigin = mapSubsystem.getNode(origin.getId());
+            MapNode newEnd = mapSubsystem.getNode(dest.getId());
+            Path path;
+            if (newOrigin != null && newEnd != null) {
+                if (newOrigin.getId().equals(newEnd.getId())) {
+                    System.out.println("Path start and end are the same");
+                    // Remove the current path if there is one
+                    drawingSubsystem.unDrawPath(curPathID);
+                    curPathID = null;
+                    return;
+                }
+                //path = new ReverseAstar().generatePath(newOrigin, newEnd); // TODO hijack this line to test
+                // path = new NodeTypeDijkstras().generatePath(newOrigin, NodeType.EXIT); // TODO the line to test NodeTypeDijkstras.
+                path = mapSubsystem.getPathGenerator().generatePath(newOrigin, newEnd, disableNode); // TODO hijack this line to test
+            } else {
+                System.out.println("Path cannot be generated");
+                return;
+            }
+
+            if (curPathID != null) {
+                drawingSubsystem.unDrawPath(curPathID);
+            }
+
+            curPathID = drawingSubsystem.drawPath(path);
+
+            // Update the origin, end node and path without regenerating the path that was just created
+            listen = false;
+            ProgramSettings.getInstance().setCurrentDisplayedPathProp(path);
+            ProgramSettings.getInstance().setPathOriginNodeProp(origin);
+            ProgramSettings.getInstance().setPathEndNodeProp(dest);
+            listen = true;
+
+            // Open the directions pop out
+            mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
+        }
+    }
 
     /**
      * a copy of genPath from above. this is only used when emergency button is clicked.

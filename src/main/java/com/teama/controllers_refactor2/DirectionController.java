@@ -11,9 +11,7 @@ import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
-import com.teama.mapsubsystem.data.Location;
-import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.data.MapNodeData;
+import com.teama.mapsubsystem.data.*;
 import com.teama.mapsubsystem.pathfinding.DirectionAdapter;
 import com.teama.mapsubsystem.pathfinding.DirectionsGenerator;
 import com.teama.mapsubsystem.pathfinding.Path;
@@ -98,7 +96,14 @@ public class DirectionController extends HamburgerController{
         MapNode newEnd = mapSubsystem.getNodeByDescription(destinationBar.getEditor().getText(),true);
 
 
+        if (accessibilityMode){
+            ArrayList<MapNode> stairs = new ArrayList<>();
+            for (Floor floor : Floor.values()) {
+                stairs.addAll(mapSubsystem.getNodesByType(floor,NodeType.STAI));
 
+            }
+            pathfindingController.genPath(newOrigin,newEnd,stairs);
+        }
         pathfindingController.genPath(newOrigin,newEnd);
         ProgramSettings.getInstance().setPathOriginNodeProp(newOrigin);
         ProgramSettings.getInstance().setPathEndNodeProp(newEnd);
@@ -257,6 +262,7 @@ public class DirectionController extends HamburgerController{
     }
     private ArrayList<Long> filterFloorListeners = new ArrayList<>();
     private DirectionsGenerator directionsGenerator = new TextualDirections();
+
     private void putDirectionsOnScreen(Path path) {
         TextDirections directions = directionsGenerator.generateDirections(path);
         ObservableList<DirectionAdapter> directionVals = FXCollections.observableArrayList();
