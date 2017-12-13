@@ -21,7 +21,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Staff" textAlignment="CENTER" wrappingWidth="371.58642578125" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%stafflog" textAlignment="CENTER" wrappingWidth="371.58642578125" />
                </children>
             </GridPane>
             <JFXListView fx:id="staffViewList" onMouseClicked="#onSelect" prefHeight="492.0" prefWidth="360.0" style="-fx-background-color: #D3D3D3;">
