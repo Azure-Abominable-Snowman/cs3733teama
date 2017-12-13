@@ -4,22 +4,34 @@ package com.teama.refresh;
 import java.awt.event.InputEvent;
 import java.util.List;
 import java.util.ArrayList;
-import javafx.scene.Scene;
+
+import com.teama.controllers.MainScreenController;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.Stage;
 
 
 public class RefreshToMain {
     private List<MementoDesign.Memento> savedStates = new ArrayList<>();
-    private Scene primaryScene;
-    private Scene currScene;
+    public void addMemento(MementoDesign.Memento m){
+        savedStates.add(m);
+    }
+    private Stage primaryStage;
+    private Stage currStage;
+
+    public Stage setPrimary(){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/MainScreen.fxml"));
+        return null;
+    }
 
 
-    public Scene Refresh(InputEvent interaction) {
-        this.primaryScene = primaryScene;
+    public MementoDesign.Memento Refresh(InputEvent interaction) {
+        this.primaryStage = setPrimary();
 
         MementoDesign mementoDesign = new MementoDesign();
-        mementoDesign.setState(primaryScene);
+        mementoDesign.setState(primaryStage);
         savedStates.add(mementoDesign.saveState());
-        mementoDesign.setState(currScene);
+        mementoDesign.setState(currStage);
         savedStates.add(mementoDesign.saveState());
 
         while (interaction == null) {
@@ -29,7 +41,8 @@ public class RefreshToMain {
                 ie.printStackTrace();
             }
         }
-        return primaryScene;
+        return null;
+       // return MementoDesign.restore();
     }
 }
 
