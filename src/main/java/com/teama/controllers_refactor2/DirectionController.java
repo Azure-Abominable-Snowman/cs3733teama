@@ -45,6 +45,7 @@ public class DirectionController extends HamburgerController{
     private PathfindingController pathfindingController;
 
 
+
 //    private MapDrawingSubsystem mapDrawing = MapDrawingSubsystem.getInstance();
 //    private MapSubsystem mapSubsystem = MapSubsystem.getInstance();
 //    private MapNode tempMapNodeStart = MapSubsystem.getInstance().getNode("AHALL00901");
@@ -101,11 +102,11 @@ public class DirectionController extends HamburgerController{
 
     @FXML
     void onGoBtnClicked(MouseEvent event) {
-
-
-
         MapNode newOrigin  = mapSubsystem.getNodeByDescription(yourLocationBar.getEditor().getText(),true);
         MapNode newEnd = mapSubsystem.getNodeByDescription(destinationBar.getEditor().getText(),true);
+
+
+
         pathfindingController.genPath(newOrigin,newEnd);
 
         System.out.println("Start location is:" + yourLocationBar.getEditor().getText());
@@ -200,7 +201,8 @@ public class DirectionController extends HamburgerController{
 
 
 
-
+        MapNode newOrigin  = mapSubsystem.getNodeByDescription(yourLocationBar.getEditor().getText(),true);
+        MapNode newEnd = mapSubsystem.getNodeByDescription(destinationBar.getEditor().getText(),true);
 
 
 //        ProgramSettings.getInstance().setPathOriginNodeProp(tempMapNodeStart);
@@ -241,6 +243,8 @@ public class DirectionController extends HamburgerController{
 
         SearchBarController searchbar1 = new SearchBarController(yourLocationBar, false);
         SearchBarController searchbar2 = new SearchBarController(destinationBar, false);
+        ProgramSettings.getInstance().setPathOriginNodeProp(newOrigin);
+        ProgramSettings.getInstance().setPathEndNodeProp(newEnd);
 
 
         ProgramSettings.getInstance().getPathOriginNodeProp().addListener((a) -> {
