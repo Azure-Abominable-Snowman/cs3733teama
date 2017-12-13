@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="400.0" stylesheets="@Direction&amp;SearchBar.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="400.0" stylesheets="@css/DirectionPane.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox layoutX="28.0" layoutY="29.0" prefHeight="900.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -21,7 +21,7 @@
                <children>
                   <VBox prefHeight="180.0" prefWidth="545.0" styleClass="hbox_google">
                      <children>
-                        <JFXComboBox fx:id="yourLocationBar" editable="true" focusColor="WHITE" onAction="#onYourLocationBarClicked" prefHeight="25.0" prefWidth="321.0" promptText="Your Location" unFocusColor="WHITE" VBox.vgrow="ALWAYS">
+                        <JFXComboBox fx:id="yourLocationBar" editable="true" focusColor="WHITE" onAction="#onYourLocationBarClicked" prefHeight="32.0" prefWidth="300.0" promptText="Your Location" unFocusColor="WHITE" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="20.0" left="39.0" right="39.0" top="50.0" />
                            </VBox.margin>
@@ -44,15 +44,7 @@
                               </ImageView>
                               <StackPane prefHeight="32.0" prefWidth="334.0">
                                  <children>
-                                    <ImageView fx:id="goBtn" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#onGoBtnClicked" StackPane.alignment="CENTER_RIGHT">
-                                       <image>
-                                          <Image url="@ic_directions_white_48pt_3x.png" />
-                                       </image>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </ImageView>
-                                    <JFXComboBox fx:id="destinationBar" editable="true" focusColor="WHITE" onAction="#onDestinationBarClicked" prefHeight="32.0" prefWidth="293.0" promptText="Destination" unFocusColor="WHITE" StackPane.alignment="CENTER_LEFT">
+                                    <JFXComboBox fx:id="destinationBar" editable="true" focusColor="WHITE" onAction="#onDestinationBarClicked" prefHeight="32.0" prefWidth="300.0" promptText="Destination" unFocusColor="WHITE" StackPane.alignment="CENTER_LEFT">
                                        <StackPane.margin>
                                           <Insets />
                                        </StackPane.margin>
@@ -74,7 +66,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <StackPane.margin>
-                        <Insets right="10.0" />
+                        <Insets right="10.0" top="5.0" />
                      </StackPane.margin>
                   </ImageView>
                   <ImageView fx:id="closeBtn" blendMode="SOFT_LIGHT" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#onClosedBtnClicked" onMouseEntered="#onClosedBtnHovered" onMouseExited="#onClosedBtnExited" StackPane.alignment="TOP_RIGHT">
@@ -88,14 +80,25 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
+                  <ImageView fx:id="goBtn" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#onGoBtnClicked" StackPane.alignment="BOTTOM_RIGHT">
+                     <image>
+                        <Image url="@ic_directions_white_48pt_3x.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <StackPane.margin>
+                        <Insets bottom="15.0" right="10.0" />
+                     </StackPane.margin>
+                  </ImageView>
                </children>
             </StackPane>
             <TableView fx:id="textDirections" prefHeight="651.0" prefWidth="380.0">
               <columns>
-                <TableColumn fx:id="stepCol" editable="false" prefWidth="77.38467973470688" text="C1" />
+                <TableColumn fx:id="stepCol" editable="false" prefWidth="60.0" text="C1" />
                 <TableColumn fx:id="directionCol" editable="false" minWidth="0.0" prefWidth="104.47702026367188" text="C2" />
                   <TableColumn fx:id="descriptionCol" editable="false" minWidth="0.0" prefWidth="142.52297973632812" text="C2" />
-                  <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="76.0" text="C2" />
+                  <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="91.0" text="C2" />
               </columns>
                <VBox.margin>
                   <Insets />

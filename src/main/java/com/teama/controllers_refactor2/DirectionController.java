@@ -46,13 +46,6 @@ public class DirectionController extends HamburgerController{
     private PathfindingController pathfindingController;
 
 
-
-//    private MapDrawingSubsystem mapDrawing = MapDrawingSubsystem.getInstance();
-//    private MapSubsystem mapSubsystem = MapSubsystem.getInstance();
-//    private MapNode tempMapNodeStart = MapSubsystem.getInstance().getNode("AHALL00901");
-//    private MapNode tempMapNodeEnd = MapSubsystem.getInstance().getNode("AHALL00401");
-//    private Path tempPath = mapSubsystem.getPath(tempMapNodeStart,tempMapNodeEnd);
-
     @FXML
     private ImageView goBtn;
 
@@ -61,9 +54,6 @@ public class DirectionController extends HamburgerController{
 
     @FXML
     private URL location;
-
-//    @FXML
-//    private JFXTextField yourLocationBar;
 
     @FXML
     private JFXComboBox<String> yourLocationBar;
@@ -143,8 +133,7 @@ public class DirectionController extends HamburgerController{
     @FXML
     void onDestinationBarClicked(ActionEvent event) {
 
-
-
+        destinationBar.setPromptText("Destination");
     }
 
     // Dealing with the closeBtn
@@ -194,21 +183,13 @@ public class DirectionController extends HamburgerController{
     void onYourLocationBarClicked(ActionEvent event) {
 
     }
-//    stepCol.setText("stepNum");
-//    descriptionCol.setText("description");
-//    distanceCol.setText("distance");
-//    directionCol.setText("direction");
+
 
 
 
     public void initialize(){
-        //MapNode newOrigin  = mapSubsystem.getNodeByDescription(yourLocationBar.getEditor().getText(),true);
-        //MapNode newEnd = mapSubsystem.getNodeByDescription(destinationBar.getEditor().getText(),true);
 
 
-//        ProgramSettings.getInstance().setPathOriginNodeProp(tempMapNodeStart);
-//        ProgramSettings.getInstance().setPathEndNodeProp(tempMapNodeEnd);
-//        ProgramSettings.getInstance().setCurrentDisplayedPathProp(tempPath);
 
         stepCol.setText("Step");
         descriptionCol.setText("Description");
@@ -218,6 +199,7 @@ public class DirectionController extends HamburgerController{
 
 
         ReadOnlyObjectProperty<Path> pathObjectProperty = ProgramSettings.getInstance().getCurrentDisplayedPathProp();
+
 
         if(pathObjectProperty.getValue() != null) {
             putDirectionsOnScreen(pathObjectProperty.getValue());
@@ -244,36 +226,22 @@ public class DirectionController extends HamburgerController{
 
         SearchBarController searchbar1 = new SearchBarController(yourLocationBar, false);
         SearchBarController searchbar2 = new SearchBarController(destinationBar, false);
-        //ProgramSettings.getInstance().setPathOriginNodeProp(newOrigin);
-        //ProgramSettings.getInstance().setPathEndNodeProp(newEnd);
 
+
+        MapNode init = ProgramSettings.getInstance().getPathEndNodeProp().getValue();
+        if(init!= null) {
+
+            destinationBar.setPromptText("");
+            destinationBar.getEditor().setText(init.getLongDescription());
+        }
 //
         ProgramSettings.getInstance().getPathOriginNodeProp().addListener((a) -> {
-            yourLocationBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
+            yourLocationBar.getEditor().setText(ProgramSettings.getInstance().getPathOriginNodeProp().getValue().getLongDescription());
         });
 
         ProgramSettings.getInstance().getPathEndNodeProp().addListener((a) -> {
             destinationBar.getEditor().setText(ProgramSettings.getInstance().getPathEndNodeProp().getValue().getLongDescription());
         });
-
-//        yourLocationBar.getSelectionModel().selectedItemProperty().addListener((Observable a) -> {
-//            System.out.println("CHANGED SELECTION "+yourLocationBar.getSelectionModel().getSelectedItem());
-//            MapNode selectedNode = MapSubsystem.getInstance().getNodeByDescription(yourLocationBar.getSelectionModel().getSelectedItem(), true);
-//            if(selectedNode != null) {
-//                // Tell path controller to make a new path
-//                ProgramSettings.getInstance().setPathOriginNodeProp(selectedNode);
-//            }
-//        });
-//
-//        destinationBar.getSelectionModel().selectedItemProperty().addListener((Observable a) -> {
-//            System.out.println("CHANGED SELECTION "+destinationBar.getSelectionModel().getSelectedItem());
-//            MapNode selectedNode = MapSubsystem.getInstance().getNodeByDescription(destinationBar.getSelectionModel().getSelectedItem(), true);
-//            if(selectedNode != null) {
-//                // Tell path controller to make a new path
-//                ProgramSettings.getInstance().setPathOriginNodeProp(selectedNode);
-//            }
-//        });
-        //SearchBarController searchBarController = new SearchBarController(originNodeCombo, true);
 
 
 
