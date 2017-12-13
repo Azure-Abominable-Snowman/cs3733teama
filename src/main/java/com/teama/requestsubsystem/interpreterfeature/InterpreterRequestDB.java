@@ -14,7 +14,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
     //private String reportTableName;
     private Connection conn = null;
     private Statement stmt = null;
-    private PreparedStatement addRequest, getRequest, deleteRequest, fulfillRequest, getRequestStaffIDStatus, getRequestByStatus, updateRequest;
+    private PreparedStatement addRequest, getRequest, getStaffRequest, deleteRequest, fulfillRequest, getRequestStaffIDStatus, getRequestByStatus, updateRequest;
             //selectRequestByStatus, updateRequest, markClosed, getRequestID; //for request table
     private PreparedStatement addReport, updateReport, deleteReport, getReport;
 
@@ -108,6 +108,7 @@ public class InterpreterRequestDB implements ServiceRequestDataSource {
                     " VALUES (?, ?, ?, ?, ?, ?, ?)");
             updateRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET LANG = ?, STAFFID = ? WHERE REQUESTID = ?");
             getRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE REQUESTID = ?");
+            //getStaffRequest = conn.prepareStatement("SELECT * FROM " + requestTableName + " WHERE STAFFID = ?");
             deleteRequest = conn.prepareStatement("DELETE FROM " + requestTableName + " WHERE REQUESTID = ?");
             fulfillRequest = conn.prepareStatement("UPDATE " + requestTableName + " SET STATUS = ?, LANG = ?, FAMSIZE = ?, SERVICETIME = ?, TRANSTYPE = ? " +
                     "  WHERE REQUESTID = ? AND STAFFID = ?");

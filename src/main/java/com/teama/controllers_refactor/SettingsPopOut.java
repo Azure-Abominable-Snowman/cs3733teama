@@ -8,6 +8,7 @@ import com.teama.mapsubsystem.pathfinding.BreathFrist.BreathFirst;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.AStar;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.BeamSearch;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.Dijkstras;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.reverseAStar.ReverseAstar;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.translator.Translator;
 import javafx.beans.Observable;
@@ -66,6 +67,8 @@ public class SettingsPopOut extends PopOutController {
     @FXML
     private JFXSlider beamSearchQueue;
 
+    @FXML
+
     public void initialize() {
         alignPane(xProperty, xOffset, yProperty, yOffset);
 
@@ -75,7 +78,7 @@ public class SettingsPopOut extends PopOutController {
         dijkstra.setToggleGroup(algoToggleGroup);
         beamSearch.setToggleGroup(algoToggleGroup);
 
-        aStar.setUserData(new AStar());
+        aStar.setUserData(new ReverseAstar()); //TODO booooooooooooom u got me. this is not AStar
         breadthFirst.setUserData(new BreathFirst());
         dijkstra.setUserData(new Dijkstras());
         beamSearch.setUserData(new BeamSearch((int)beamSearchQueue.getValue()));
@@ -126,5 +129,26 @@ public class SettingsPopOut extends PopOutController {
 
     @Override
     public String getFXMLPath(){return "/SettingsPopOut.fxml";}
+
+    /*@FXML
+    public void changeToEnglish(ActionEvent event){
+        Translator.getInstance().setLang("en");
+    }
+
+    @FXML
+    public void changeToSpanish(ActionEvent event){
+        Translator.getInstance().setLang("es");
+
+    }
+
+    @FXML
+    void changToFranch(ActionEvent event) {
+        Translator.getInstance().setLang("fr");
+    }
+
+    @FXML
+    void changeToPortuguese(ActionEvent event) {
+        Translator.getInstance().setLang("pt");
+    }*/
 
 }

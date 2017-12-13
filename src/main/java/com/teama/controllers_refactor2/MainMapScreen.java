@@ -5,9 +5,10 @@ import com.teama.ProgramSettings;
 import com.teama.controllers.NodeInfoPopUpController;
 import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
-import com.teama.controllers_refactor.PopOutController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
+import com.teama.controllers_refactor.SettingsPopOut;
+import com.teama.login.LoginSubsystem;
 import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
@@ -15,9 +16,11 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
 import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.NodeTypeDijkstras;
+import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.translator.Translator;
 import javafx.beans.Observable;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -26,7 +29,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -37,12 +40,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -86,6 +91,8 @@ public class MainMapScreen implements Initializable {
 
     @FXML
     private ImageView directionsButton;
+    @FXML
+    HBox hbxDrawerBox;
 
 
 
@@ -113,7 +120,10 @@ public class MainMapScreen implements Initializable {
     // Useful for when we need to open something on the sidebar based on another event
     //get rid of this
     private Map<PopOutType, EventHandler<MouseEvent>> mainSidebarMap = new HashMap<>();
-
+    private final ImageView imgLogIn = new ImageView(new Image(getClass().getResourceAsStream("/icons_i4/user-3-1.png")));
+    private final ImageView imgLogOut = new ImageView(new Image(getClass().getResourceAsStream("/icons_i4/LogOut.png")));
+    final int NOTIFICATION_SIZE=40;
+    final int hmbDRAWEROPENER_WIDTH=30;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -196,6 +206,7 @@ public class MainMapScreen implements Initializable {
 
         // When the search button is pressed then generate a new path with that as the destination
         searchButton.pressedProperty().addListener((Observable a) -> {
+            mapDrawing.setViewportCenter(mainSearch.getSelectedNode().getCoordinate());
             pathfinding.genPath(mainSearch.getSelectedNode());
         });
 
@@ -217,14 +228,46 @@ public class MainMapScreen implements Initializable {
             //inserting animation here
             Image logOut = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogOut.png"));
             loginButton.setImage(logOut);
+            adjustSearchPane(false);
+            System.out.println(imgLogIn);
+            imgLogIn.setFitHeight(NOTIFICATION_SIZE);
+            imgLogIn.setFitWidth(NOTIFICATION_SIZE);
+            Notifications notifications = Notifications.create()
+                    .title("Log In Complete")
+                    .text("Welcome!")
+                    .graphic(imgLogIn)
+                    .hideAfter(Duration.seconds(2))
+                    .position(Pos.BOTTOM_CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications.owner(areaPane.getScene().getWindow());
+            notifications.show();
+            System.out.println(notifications);
         } else {
             System.out.println("I guess not");
             // mapEditorButton.setY(startPoint);
             Image logIn = new Image(getClass().getResourceAsStream("/materialicons/mainscreenicons/LogIn.png"));
             loginButton.setImage(logIn);
+            adjustSearchPane(true);
         }
     }
 
+    private void adjustSearchPane(boolean removeHmb){
+        if(removeHmb){
+            hmbDrawerOpener.setVisible(false);
+            searchBar.setLayoutX(searchBar.getLayoutX()-hmbDRAWEROPENER_WIDTH);
+            searchBar.setPrefWidth(searchBar.getPrefWidth()+hmbDRAWEROPENER_WIDTH);
+        }
+        else{
+            hmbDrawerOpener.setVisible(true);
+            searchBar.setLayoutX(searchBar.getLayoutX()+hmbDRAWEROPENER_WIDTH);
+            searchBar.setPrefWidth(searchBar.getPrefWidth()-hmbDRAWEROPENER_WIDTH);
+        }
+    }
 
     private Parent nodeInfo;
     //TODO update this stuff to create and contain the search info
@@ -237,19 +280,54 @@ public class MainMapScreen implements Initializable {
             //do nothing
         }
         else{
-            System.out.println("We need to implement this");
+            try {
+                disableSearchPane();
+                drawer.setVisible(true);
+                FXMLLoader openerLoader = new FXMLLoader();
+                curController = new DirectionController();
+                openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
+                openerLoader.setController(curController);
+                openerLoader.load();
+                curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
+                curController.onOpen();
+                drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
+                drawer.setSidePane(curController.getParentPane());
+                drawer.open();
+                curController.getClosing().addListener((a, oldVal, newVal) -> {
+                    if (newVal) {
+                        curController.onClose();
+                        drawer.close();
+                        drawer.setVisible(false);
+                        enableSearchPane();
+                    }
+                });
+
+            }catch (IOException e1) {
+                e1.printStackTrace();
+            } {
+
+
+            }
+
+
+
+
         }
     }
     @FXML public void onOpenerClick(MouseEvent e){
         //TODO fix double click breaking this guy
         try {
+            System.out.println("opening");
             disableSearchPane();
             drawer.setVisible(true);
             FXMLLoader openerLoader = new FXMLLoader();
-            curController = new hamburgerDrawerController();
+            curController = new AdminPaneController();
+            System.out.println(getClass().getResource(curController.getFXMLPath()));
             openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
             openerLoader.setController(curController);
             openerLoader.load();
+            //this ties the size of the parentPane of the controller to the size of the drawer
+            curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
             curController.onOpen();
             System.out.println("in the main "+curController);
             System.out.println(curController.getParentPane().getPrefWidth());
@@ -269,13 +347,74 @@ public class MainMapScreen implements Initializable {
             error.printStackTrace();
         }
     }
+
+
+
+
+    @FXML private void onLoginClick(MouseEvent e){
+        try {
+            if(!ProgramSettings.getInstance().getIsLoggedInProp().get()) {
+                Stage logInStage = new Stage();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setResources(Translator.getInstance().getNewBundle());
+                loader.setLocation(getClass().getResource("/PopUps/Login.fxml"));
+                logInStage.setScene(new Scene(loader.load()));
+                logInStage.resizableProperty().set(false);
+                logInStage.resizableProperty().set(false);
+                logInStage.initModality(Modality.APPLICATION_MODAL);
+                logInStage.showAndWait();
+                if(ProgramSettings.getInstance().getIsLoggedInProp().get()) // launch it right after login, leave no chance for double click
+                   onOpenerClick(null); // TODO stupid fix, decide on if this work.
+
+            }
+            else{
+                ProgramSettings.getInstance().getIsLoggedInProp().set(false);
+                imgLogOut.setFitHeight(NOTIFICATION_SIZE);
+                imgLogOut.setFitWidth(NOTIFICATION_SIZE);
+                Notifications notifications = Notifications.create()
+                        .title("Log Out Complete")
+                        .text("Good Bye!")
+                        .graphic(imgLogOut)
+                        .hideAfter(Duration.seconds(2))
+                        .position(Pos.BOTTOM_CENTER)
+                        .onAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                System.out.println("Hi Kent");
+                            }
+                        });
+                notifications.owner(areaPane.getScene().getWindow());
+                notifications.show();
+                if(drawer.isShown()){
+                    if(curController!=null) {
+                        curController.onClose();
+                    }
+                    drawer.close();
+                    drawer.setVisible(false);
+                    enableSearchPane();
+                }
+            }
+
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+        }
+
+    }
     private void enableSearchPane(){
-       hmbDrawerOpener.setDisable(false);
+      // hmbDrawerOpener.setDisable(false);
+        hbxDrawerBox.getChildren().clear();
+        hbxDrawerBox.getChildren().addAll(areaPane);
+        searchPane.setVisible(true);
         searchPane.getStyleClass().clear();
         searchPane.getStyleClass().add("searchPane");
     }
     private void disableSearchPane() {
-        hmbDrawerOpener.setDisable(true);
+       // hmbDrawerOpener.setDisable(true);
+        //this checks to see if the drawer is already there
+        hbxDrawerBox.getChildren().clear();
+        hbxDrawerBox.getChildren().addAll(drawer, areaPane);
+        searchPane.setVisible(false);
         searchPane.getStyleClass().clear();
         searchPane.getStyleClass().add("searchPane-disabled");
     }
@@ -289,6 +428,10 @@ public class MainMapScreen implements Initializable {
         removeCurrentPopUp(); // only pop up allowed at a time
         System.out.println("CLICK ON NODE BUTTON");
         // Get the node clicked on (if any)
+        if(curController!=null) {
+            System.out.println(curController.getParentPane().getPrefWidth());
+        }
+        //TODO ajdust where the node gets drawn based on the current controller
         MapNode nodeAt = mapDrawing.nodeAt(new Location(event, mapDrawing.getCurrentFloor()));
 
         if (nodeAt != null) {
@@ -323,10 +466,17 @@ public class MainMapScreen implements Initializable {
 
     }//add methods for login click and translate click
 
+
+    @FXML private void onEmergencyClick(MouseEvent e){
+        pathfinding.genExitPath();
+
+            //TODO double check this.
+    }
+
     //CREATES THE ABOUT PAGE POP UP
     //TODO attach this method to the about button
     @FXML
-    private void onAboutClick(ActionEvent e) {
+    private void onAboutClick(MouseEvent e) {
         Stage aboutPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AboutPage.fxml"));
@@ -347,7 +497,7 @@ public class MainMapScreen implements Initializable {
 
     //create the help page pop up
     @FXML
-    private void onHelpClick(ActionEvent e) {
+    private void onHelpClick(MouseEvent e) {
         Stage helpPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/HelpPage.fxml"));

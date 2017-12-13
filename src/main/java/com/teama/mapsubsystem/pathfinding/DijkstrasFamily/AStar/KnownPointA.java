@@ -1,10 +1,7 @@
 package com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar;
 
 import com.teama.mapsubsystem.data.MapNode;
-import com.teama.mapsubsystem.data.MapEdge;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.KnownPoint;
-
-import java.util.ArrayList;
 
 public class KnownPointA extends KnownPoint {
 

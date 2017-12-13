@@ -21,6 +21,11 @@ public class InterpreterStaff  implements ServiceStaff {
         genInfo.setStaffType(StaffType.INTERPRETER);
     }
 
+    /**
+     * COPY-CONSTRUCTOR: IMPORTANT -- ONLY CREATE IF ABSOLUTELY NECESSARY.
+     * @param id
+     * @param s
+     */
     public InterpreterStaff(int id, InterpreterStaff s) {
         GenericStaff genInfo = new GenericStaff(id, s.getFirstName(), s.getLastName(), s.getUsername(), s.getContactInfo());
         this.genInfo = genInfo;
@@ -51,9 +56,7 @@ public class InterpreterStaff  implements ServiceStaff {
     public String getFirstName() {
         return genInfo.getFirstName();
     }
-    public String getLastName() {
-        return genInfo.getLastName();
-    }
+    public String getLastName() { return genInfo.getLastName(); }
     /*public int getStaffID() {
         return interpSpecs.getStaffID();
     }
