@@ -31,29 +31,29 @@
                   <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="51.0" vgrow="NEVER" />
                </rowConstraints>
                <children>
-                  <JFXTextField fx:id="FirstName" promptText="%firstName" GridPane.rowIndex="1">
+                  <JFXTextField fx:id="FirstName" promptText="%firstName" styleClass="text-field" stylesheets="@../../css/ApiStyle.css" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets right="5.0" />
                      </GridPane.margin>
                   </JFXTextField>
-                  <JFXTextField fx:id="LastName" promptText="%lastName" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                  <JFXTextField fx:id="LastName" promptText="%lastName" styleClass="text-field" stylesheets="@../../css/ApiStyle.css" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </JFXTextField>
-                  <JFXTextField fx:id="PhoneNo" promptText="%phone" GridPane.rowIndex="2">
+                  <JFXTextField fx:id="PhoneNo" promptText="%phone" styleClass="text-field" stylesheets="@../../css/ApiStyle.css" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="5.0" />
                      </GridPane.margin>
                   </JFXTextField>
-                  <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="%phoneProvider" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="%phoneProvider" styleClass="text-field" stylesheets="@../../css/ApiStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </JFXComboBox>
-                  <JFXTextField fx:id="Email" promptText="%email" GridPane.rowIndex="3" />
-                  <JFXComboBox fx:id="Certifications" maxWidth="1.7976931348623157E308" promptText="%certificate" GridPane.rowIndex="4" />
-                  <JFXTextField alignment="CENTER" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="378.0" text="%additionalInfo" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <JFXTextField fx:id="Email" promptText="%email" styleClass="text-field" stylesheets="@../../css/ApiStyle.css" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                  <JFXComboBox fx:id="Certifications" maxWidth="1.7976931348623157E308" promptText="%certificate" styleClass="text-field" stylesheets="@../../css/ApiStyle.css" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                  <JFXTextField alignment="CENTER" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="378.0" styleClass="text-field" text="%additionalInfo" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -117,17 +117,17 @@
                   <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
                </rowConstraints>
                <children>
-                  <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelStaff" prefHeight="48.0" prefWidth="114.0" styleClass="cancelButton" text="%cancelBtn">
+                  <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelStaff" prefHeight="48.0" prefWidth="114.0" styleClass="delete" stylesheets="@../../css/ApiStyle.css" text="%cancelBtn" textFill="#fff7f7">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </JFXButton>
-                  <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitStaff" prefHeight="75.0" prefWidth="90.0" styleClass="confirmButton" text="%addBtn" GridPane.columnIndex="1">
+                  <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitStaff" prefHeight="75.0" prefWidth="90.0" styleClass="submit" stylesheets="@../../css/ApiStyle.css" text="%addBtn" textFill="WHITE" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </JFXButton>
-                  <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#deleteStaff" prefHeight="69.0" prefWidth="107.0" styleClass="resetButton" text="%deleteBtn" GridPane.columnIndex="2">
+                  <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#deleteStaff" prefHeight="69.0" prefWidth="107.0" styleClass="cancel" stylesheets="@../../css/ApiStyle.css" text="%deleteBtn" textFill="#fcf5f5" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>

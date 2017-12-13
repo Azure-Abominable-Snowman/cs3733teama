@@ -2,11 +2,8 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -29,7 +26,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -38,7 +35,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -50,7 +47,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -59,7 +56,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
