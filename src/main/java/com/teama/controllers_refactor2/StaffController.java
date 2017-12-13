@@ -2,10 +2,10 @@ package com.teama.controllers_refactor2;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -18,30 +18,36 @@ public class StaffController extends StaffToolController{
     private Pane parentPane;
 
     @FXML
-    private AnchorPane interpPane;
+    private VBox intVBox;
 
     @FXML
-    private AnchorPane SpritPane;
+    private VBox spirVBox;
 
     @FXML
-    private AnchorPane ElevatorPane;
+    private VBox eleVBox;
 
     @FXML
     void interchange(ActionEvent event) {
-        loadPane(new InterpreterModController());
-
     }
 
-    private void loadPane(InterpreterModController controller) {
+    public void initialize(){
         try {
-            interpPane.getChildren().clear();
-            FXMLLoader mapLoader = new FXMLLoader(getClass().getResource(controller.getFXMLPath()));
-            mapLoader.setController(controller);
-            mapLoader.load();
-            interpPane.getChildren().add(controller.getParentPane());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MaintananceStaffPopOut.fxml"));
+            loader.load();
+            IntStaffController myController = loader.getController();
+            intVBox.getChildren().clear();
+            intVBox.getChildren().add(myController.getVbxTest());
+            System.out.println(myController.getVbxTest().getChildren().size());
+            System.out.println(intVBox);
+            FXMLLoader loader2 =new FXMLLoader(getClass().getResource("/MainScreenDrawers/testVbox.fxml"));
+            loader2.load();
+            IntStaffController myController2 = loader2.getController();
+            spirVBox.getChildren().clear();
+            spirVBox.getChildren().addAll(myController2.getVbxTest());
+
         }
-        catch (IOException e){
-            e.printStackTrace();
+        catch(IOException error){
+            error.printStackTrace();
         }
     }
 
