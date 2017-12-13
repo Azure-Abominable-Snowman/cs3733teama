@@ -5,7 +5,10 @@ import com.teama.controllers_refactor.PopOutType;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
+import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.NodeTypeDijkstras;
 import com.teama.mapsubsystem.pathfinding.Path;
+import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -64,7 +67,8 @@ public class PathfindingController {
                     curPathID = null;
                     return;
                 }
-                path = mapSubsystem.getPathGenerator().generatePath(newOrigin, newEnd);
+                 // path = new NodeTypeDijkstras().generatePath(newOrigin, NodeType.EXIT); // TODO the line to test NodeTypeDijkstras.
+                path = mapSubsystem.getPathGenerator().generatePath(newOrigin, newEnd); // TODO hijack this line to test
             } else {
                 System.out.println("Path cannot be generated");
                 return;
@@ -86,5 +90,55 @@ public class PathfindingController {
             // Open the directions pop out
             mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
         }
+    }
+
+
+    /**
+     * a copy of genPath from above. this is only used when emergency button is clicked.
+     */
+    public void genExitPath(){
+        for(;!listen;); // wait until listen is back to true.
+
+        NodeTypeDijkstras finder = new NodeTypeDijkstras();
+
+        // these are copied from genPath in PathfindingController
+        MapNode origin = ProgramSettings.getInstance().getPathOriginNodeProp().getValue();
+        if(origin == null) origin = mapSubsystem.getKioskNode();
+        else origin=mapSubsystem.getNode(origin.getId());
+        // start is already at the exit.
+        if(origin == null) {
+            System.out.println("In EmergencyClick, Can't find Origin");
+        }
+
+        if(origin.getNodeType().toString().equals(NodeType.EXIT.toString()))
+        {
+            System.out.printf("Start node is already set as an exit at %s",origin.getId());
+            drawingSubsystem.unDrawPath(curPathID);
+            curPathID = null;
+            return;
+        }
+        Path path = finder.generatePath(origin,NodeType.EXIT);
+
+        // these are copy from the function above.
+        if (curPathID != null) {
+            drawingSubsystem.unDrawPath(curPathID);
+        }
+
+        curPathID = drawingSubsystem.drawPath(path);
+
+        // Update the origin, end node and path without regenerating the path that was just created
+        listen = false;
+        ProgramSettings.getInstance().setCurrentDisplayedPathProp(path);
+        ProgramSettings.getInstance().setPathOriginNodeProp(origin);
+        ProgramSettings.getInstance().setPathEndNodeProp(path.getEndNode());
+        listen = true;
+
+        // additional new line, center the middle node of path when drawn.
+
+        drawingSubsystem.setViewportCenter(path.getNodes().get((path.getNodes().size()-1)/2).getCoordinate());
+
+        // Open the directions pop out
+        mainSidebarMap.get(PopOutType.DIRECTIONS).handle(null);
+
     }
 }

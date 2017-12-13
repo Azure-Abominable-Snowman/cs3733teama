@@ -10,12 +10,15 @@ import java.util.*;
 public class BreathFirst implements PathAlgorithm {
     private Queue<KnownPoint> open ;
     private HashMap<String,KnownPoint> visited;
+    private HashMap<String, MapNode> disableNodes ;
 
     @Override
     public Path generatePath(MapNode start, MapNode end) {
 
         open = new LinkedList<>();
         visited = new HashMap<>();
+        if(disableNodes==null) disableNodes= new HashMap<String, MapNode>();
+
 
         KnownPoint checking;
         for( checking = new KnownPoint(start, 0);
@@ -31,6 +34,27 @@ public class BreathFirst implements PathAlgorithm {
         return formatOutput(collectPath(checking));
     }
 
+    //TODO Fill this function
+    @Override
+    public Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes){
+        this.disableNodes=grabDisableNodes(disableNodes);
+        return generatePath(start, end);
+    }
+
+
+    /**
+     * This helper function is to convert the disabled MapNode ArrayList to HashMap with ID as key
+     * @param nodes is the ArrayList needed to convert
+     */
+    protected HashMap<String,MapNode> grabDisableNodes(ArrayList<MapNode> nodes){
+        HashMap<String,MapNode> temp = new HashMap<>();
+        for(int i = 0; i < nodes.size(); i++){
+            temp.put(nodes.get(i).getId(), nodes.get(i));
+        }
+        return temp;
+    }
+
+
     /**
      * put all the unvisited nodes into open list (no duplicates in open list)
      * @param checking is the current node
@@ -40,11 +64,13 @@ public class BreathFirst implements PathAlgorithm {
     {
         KnownPoint nextPoint;
         for (MapNode node: checking.getAdjacentNodes()) {
+            if(disableNodes.containsKey(node.getId())) continue; //skip this node if it is in the disabled list
             nextPoint = new KnownPoint(node,layer);
             if(  (! visited.containsKey(node.getId())) && (! open.contains(nextPoint))  )
                 open.add(nextPoint);
         }
     }
+
 
     private Stack<MapNode> collectPath(KnownPoint lastPoint)
     {
@@ -64,6 +90,7 @@ public class BreathFirst implements PathAlgorithm {
 
         return output;
     }
+
 
     private Path formatOutput(Stack<MapNode> finalPath)
     {
