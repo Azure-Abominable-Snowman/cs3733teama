@@ -289,8 +289,11 @@ public class NodesController {
                 System.out.println(selectedNode.getValue().getCoordinate().getxCoord() + " " + selectedNode.getValue().getCoordinate().getyCoord());
 
                 MapNode toUpdate = selectedNodes.get(parentTab);
-                System.out.println(toUpdate.getId());
-                mapDraw.unDrawNode(toUpdate);
+                if (toUpdate != null) {
+                    System.out.println(toUpdate.getId());
+                    mapDraw.unDrawNode(toUpdate);
+                }
+
                 //selectedNodes.put(parentTab, toUpdate);
                 mapDraw.drawNewLocation(converted, 5, Color.GREEN, toUpdate.getId(), false);
                 System.out.println(selectedNode.getValue().getCoordinate().getxCoord() + " " + selectedNode.getValue().getCoordinate().getyCoord());

@@ -2,6 +2,7 @@ package com.teama.controllers_refactor2;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import com.teama.login.AccessType;
 import com.teama.login.LoginSubsystem;
 import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
@@ -65,6 +66,10 @@ public class AdminPaneController extends HamburgerController{
         }
         interpreterRequestList.clear();
         loadPane(new RequestsController());
+        if(!(LoginSubsystem.getInstance().getSystemUser().getAccess() == AccessType.ADMIN)){
+            staff.setDisable(true);
+            tool.setDisable(true);
+        }
     }
 
     @FXML
@@ -84,9 +89,9 @@ public class AdminPaneController extends HamburgerController{
 
     @FXML
     void onStaffClick(ActionEvent event) {
-        RequestsController rc = new RequestsController();
+        StaffController rc = new StaffController();
         loadPane(rc);
-        rc.bind(apnToLoad.prefHeightProperty());
+        //rc.bind(apnToLoad.prefHeightProperty());
     }
 
     @FXML

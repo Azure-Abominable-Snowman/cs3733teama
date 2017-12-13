@@ -239,6 +239,32 @@ public class InterpreterStaffDB implements StaffDataSource {
         return false;
     }
 
+    public int addStaffForLogin(InterpreterStaff s) {
+        ServiceStaff genInfo = generalStaffDB.addStaff(s); // add general info first
+        if (genInfo != null) {
+            try {
+                addStaff.setInt(1, genInfo.getStaffID());
+                //addStaff.setString(2, );
+                addStaff.setString(3, s.getCertification().toString());
+                for (Language l: s.getLanguages()) {
+                    addStaff.setString(2, l.toString());
+                    addStaff.executeUpdate();
+                }
+                log.info("All languages spoken by staff member added to the Interpreter Table successfully.");
+                log.info("Staff member added successfully to Interpreter Table.");
+
+                //addStaff.setString(7, s.); //TODO: CHANGE THIS IF WE ACTUALLY IMPLEMENT WORK HOURS, OR DELETE
+                return genInfo.getStaffID();
+            } catch (SQLException e) {
+                log.info("Failed to add Staff Member to Interpreter Table for login .");
+                e.printStackTrace();
+                return 0;
+            }
+        }
+        log.info("Problem with adding the InterpreterStaff to the General Staff DB. General Staff Info is NULL.");
+        return 0;
+    }
+
     /**
      * returns all the Interpreters in the table
      * @return
