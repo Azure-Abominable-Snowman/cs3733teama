@@ -185,7 +185,7 @@ public class PathAlgorithmTest {
 
     }
 
-    @Test
+    //@Test  // don't worry about this test as we won't use longest Path. 
     public void LongPathFinderTest()
     {
         ArrayList<MapNode> result;
@@ -197,10 +197,6 @@ public class PathAlgorithmTest {
    //     result = finder.generatePath(map2[0][0],map2[22][20]).getNodes();
       //  assertEquals(result.get(result.size()-1).getId(),map2[22][20].getId());
       //  System.out.printf("The LongestPath result is %d in length\n",result.size());
-
-        result = finder.generatePath(map2[0][0],map2[99][99]).getNodes();
-        assertEquals(result.get(result.size()-1).getId(),map2[99][99].getId());
-        System.out.printf("The LongestPath result is %d in length\n",result.size());
 
     }
 }
