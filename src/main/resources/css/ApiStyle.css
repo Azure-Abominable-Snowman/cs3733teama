@@ -1,4 +1,7 @@
 
+.Pane{
+    -fx-background-color: #FAFAFA;
+}
 
 .resetButton {
     -fx-background-color: #E57373
@@ -19,21 +22,7 @@
 .cancel {
 
     -fx-background-color: #78909C;
-    -fx-background-image: -webkit-linear-gradient(top, #78909C, #d15858);
-    -fx-background-image: -moz-linear-gradient(top, #78909C, #d15858);
-    -fx-background-image: -ms-linear-gradient(top, #78909C, #d15858);
-    -fx-background-image: -o-linear-gradient(top, #78909C, #d15858);
-    -fx-background-image: linear-gradient(to bottom, #78909C, #d15858);
-    -fx-webkit-border-radius: 13;
-    -moz-border-radius: 13;
-    -fx-border-radius: 13px;
-    -fx-text-shadow: 1px 1px 3px #211a21;
-    -fx-font-family: "Roboto";
-    -fx-color: #ffffff;
-    -fx-font-size: 20px;
-    -fx-padding: 10px 20px 10px 20px;
-    -fx-text-decoration: none;
-    -fx-cursor: hand;
+
 }
 
 .btn:hover {
@@ -110,30 +99,18 @@
 
 .submit {
     -fx-background-color: #2196F3;
-    -fx-background-image: -webkit-linear-gradient(top, #70baeb, #2980b9);
-    -fx-background-image: -moz-linear-gradient(top, #70baeb, #2980b9);
-    -fx-background-image: -ms-linear-gradient(top, #70baeb, #2980b9);
-    -fx-background-image: -o-linear-gradient(top, #70baeb, #2980b9);
-    -fx-background-image: linear-gradient(to bottom, #70baeb, #2980b9);
-    -fx--webkit-border-radius: 12;
-    moz-border-radius: 12;
-    -fx-border-radius: 12px;
-    -fx-font-family: "Roboto";
-    -fx-color: #ffffff;
-    -fx-font-size: 20px;
-    -fx-padding: 10px 20px 10px 20px;
-    -fx-text-decoration: none;
+
     -fx-cursor: hand;
 }
 
 .delete {
     -fx-background-color: #E57373;
-    -fx-border-radius: 12px;
-    -fx-font-family: Courier New;
-    -fx-color: #ffffff;
-    -fx-font-size: 20px;
-    -fx-padding: 10px 20px 10px 20px;
-    -fx-font-family: "Roboto";
+    -webkit-fx-text-color: #FFFFFF;
+    -moz-fx-text-color: #FFFFFF;
+    -ms-fx-text-color: #FFFFFF;
+    -o-fx-text-color: #FFFFFF;
+    -khtml-fx-text-color: #FFFFFF;
+    fx-text-color: #FFFFFF; ;
     -fx-cursor: hand;
 
 
