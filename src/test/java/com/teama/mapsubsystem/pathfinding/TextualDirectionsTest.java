@@ -1,5 +1,7 @@
 package com.teama.mapsubsystem.pathfinding;
 
+import com.teama.mapsubsystem.data.Floor;
+import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.AStar.AStar;
 import com.teama.translator.Translator;
@@ -28,12 +30,17 @@ public class TextualDirectionsTest {
 
         TextualDirections textGenerator = new TextualDirections();
         TextDirections output = textGenerator.generateDirections(testPath);
+
         ArrayList<Direction> directions = output.getDirections();
         printEverything(output.getDirections());
 
         assertTrue(directions.get(0).getDescription().contains("Start walking towards X:12 Y:87"));
         assertTrue(directions.get(directions.size()-1).getDescription().contains("you will reach your destination"));
-        printEverything(output.getDirections());
+
+        ArrayList<Location> floors = output.getFloorDirections();
+        for (Location floor : floors) {
+            System.out.println(floor.getLevel().toString());
+        }
 
     }
 

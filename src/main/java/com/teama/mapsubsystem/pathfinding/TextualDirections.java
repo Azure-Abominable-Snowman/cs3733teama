@@ -87,7 +87,7 @@ public class TextualDirections implements DirectionsGenerator {
                 continue;
             }*/
             if (nextLink.getTurn().equals(TurnType.STRAIGHT)) {
-                addDistance(thisTurn, nextLink); // combine the next one into this.
+                addLink(thisTurn, nextLink); // combine the next one into this.
                 continue;
             }
             // condenced turn and floor change case.
@@ -106,8 +106,9 @@ public class TextualDirections implements DirectionsGenerator {
 
     ///////////////////////  Helpers /////////////////////
 
-    private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
+    private static RouteLink addLink(RouteLink turnLink, RouteLink straightLink)
     {
+        turnLink.setNext(straightLink.getNext());
         turnLink.setDistance(turnLink.getDistance()+ straightLink.getDistance());
         return turnLink;
     }
@@ -153,6 +154,7 @@ public class TextualDirections implements DirectionsGenerator {
     private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)
     {
         baseLink.setNextFloor(nextLink.getNextFloor());
+        baseLink.setNext(nextLink.getNext());
         return baseLink;
     }
 
@@ -211,15 +213,26 @@ public class TextualDirections implements DirectionsGenerator {
         ArrayList<MapNode> outputNodes = new ArrayList<>();
         double prevLength=0, postLength=0;
 
+
+        pathNodeList.indexOf(turnLink.getNext());
+
         // grab nodes that are before the turn point. added to the list in the backward order.
-        for (int i = turnIndex;i>0 && prevLength<hightLightLength ;i--)
+        for (int i = turnIndex;
+             i>0 && prevLength<hightLightLength ;//&& pathNodeList.get(i).getId().equals(dirList.get(dirList.size()-1).getStart())// TODO broken ;
+             i--)
+
         {
             MapNode prevNode = pathNodeList.get(i-1);
             prevNodes.add(prevNode);
             prevLength+=calDistance(prevNode,pathNodeList.get(i));
         }
         // grab nodes that are after the turn point. added to the list in the forward order
-        for (int i = turnIndex;i<pathNodeList.size()-1 && postLength<hightLightLength ;++i)
+
+        //TODO fix this so the hightlight don't go too far into the next turn.
+        for (int i = turnIndex
+             ;(! pathNodeList.get(i).getId().equals(turnLink.getNext()) )&& postLength<hightLightLength
+             ;++i)
+
         {
             MapNode postNode = pathNodeList.get(i+1);
             postNodes.add(postNode);
