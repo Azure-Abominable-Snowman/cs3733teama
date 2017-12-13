@@ -73,6 +73,7 @@
                   <Insets bottom="40.0" />
                </VBox.margin>
             </GridPane>
+            <JFXToggleButton fx:id="addEdgeOption" text="Add New Edge" translateX="100.0" />
             <VBox fx:id="editorInfo" prefHeight="514.0" prefWidth="570.0">
                <children>
                   <JFXTabPane fx:id="masterTabNodes" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="341.0" prefWidth="339.0" translateX="20.0">
@@ -90,7 +91,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="deleteNode" onAction="#onDeleteNode" text="Delete All" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                        <JFXButton fx:id="deleteNode" onAction="#onDeleteNode" text="Delete All" GridPane.halignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -98,12 +99,12 @@
                               <Insets right="10.0" />
                            </GridPane.margin>
                         </JFXButton>
-                        <JFXButton fx:id="addNode" onAction="#onAddNode" text="Add All" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                        <JFXButton fx:id="addNode" onAction="#onAddNode" text="Add All" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="alignBtn" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="80.0" text="Align All " textAlignment="RIGHT">
+                        <JFXButton fx:id="alignBtn" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="80.0" text="Align All " textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>

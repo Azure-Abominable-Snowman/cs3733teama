@@ -50,22 +50,25 @@ public class MapDrawingSubsystem {
         Location mouseLoc = new Location(event, getCurrentFloor());
         if(listenerLists.containsKey(ClickedListener.NODECLICKED) && map.pointAt(mouseLoc) != null) {
             for(Long id : listenerLists.get(ClickedListener.NODECLICKED)) {
+                System.out.println("Clicked on a node");
+                clickedListenerMap.get(id).handle(event);
+            }
+        }
+        if(listenerLists.containsKey(ClickedListener.LOCCLICKED) && map.pointAt(mouseLoc) == null) {
+            for (Long id : listenerLists.get(ClickedListener.LOCCLICKED)) {
+                System.out.println("Clicked on a random location ");
                 clickedListenerMap.get(id).handle(event);
             }
         }
 
-        if(listenerLists.containsKey(ClickedListener.EDGECLICKED) && map.lineAt(mouseLoc) != null) {
+        if(listenerLists.containsKey(ClickedListener.EDGECLICKED) && map.lineAt(mouseLoc) != null && map.pointAt(mouseLoc) == null) {
             for(Long id : listenerLists.get(ClickedListener.EDGECLICKED)) {
                 clickedListenerMap.get(id).handle(event);
 
             }
         }
 
-        if(listenerLists.containsKey(ClickedListener.LOCCLICKED) && map.pointAt(mouseLoc) == null) {
-            for (Long id : listenerLists.get(ClickedListener.LOCCLICKED)) {
-                clickedListenerMap.get(id).handle(event);
-            }
-        }
+
 
         // TODO: do the same for images and paths
     };
@@ -207,14 +210,17 @@ public class MapDrawingSubsystem {
         }
         map.drawPoint(node.getId(), node.getCoordinate(),size, color,true, false);
     }
-    public void drawNewLocation(Location loc, int size, Color color, String id) {
+    public void drawNewLocation(Location loc, int size, Color color, String id, boolean screenCoords) {
         if (size == 0) {
             size = 5;
         }
+        size = 7;
+
         if (color == null) {
             color = Color.DARKBLUE;
         }
-        map.drawPoint(id, loc, size, color, true, true);
+        map.drawPoint(id, loc, size, color, true, false);
+        System.out.println(id);
     }
     public void drawNode(MapNode node, int size, Color color, ArrayList<PointAnimation> animation) {
         // TODO: implement animations
@@ -235,6 +241,16 @@ public class MapDrawingSubsystem {
             color = Color.CADETBLUE;
         }
         map.drawLine(edge.getId(), edge.getStart().getCoordinate(), edge.getEnd().getCoordinate(), weight, color, arrow,false);
+    }
+
+    public void drawNewEdge(String ID, MapNode start, MapNode end, int weight, Color color, boolean arrow) {
+        if (weight == 0) {
+            weight= 5;
+        }
+        if (color == null) {
+            color = Color.CADETBLUE;
+        }
+        map.drawLine(ID, start.getCoordinate(), end.getCoordinate(), weight, color, arrow, false);
     }
 
     public void drawEdge(MapEdge edge, int weight, Color color, boolean arrow, ArrayList<LineAnimation> animation) {
@@ -271,6 +287,10 @@ public class MapDrawingSubsystem {
 
     public void unDrawEdge(MapEdge edge) {
         map.deleteLine(edge.getId());
+    }
+
+    public void unDrawNewEdge(String id) {
+        map.deleteLine(id);
     }
 
     public void unDrawNewLocation(String id) {

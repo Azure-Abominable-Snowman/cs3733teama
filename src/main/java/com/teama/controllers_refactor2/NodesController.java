@@ -12,14 +12,19 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * Created by aliss on 12/11/2017.
@@ -50,20 +55,20 @@ public class NodesController {
     private Tab parentTab;
     private EventHandler<MouseEvent> originalLocClick, originalNodeClick;
     private long originalLocClickID, originalNodeClickID;
-    private long newLocClickID;
+    private long newLocClickID = -1;
 
 
 
-    public ObjectProperty<MapNode> selectedNodeProperty() {
-        return selectedNode;
-    }
+
     // for existing nodes
     private ObjectProperty<MapNode> selectedNode = new SimpleObjectProperty<MapNode>();
 
+    private ObjectProperty<Location> newLocation = new SimpleObjectProperty(null); // STORES THE CONVERTED, CHANGED LOCATION
+    private BooleanProperty detachParentListeners;
 
     // FOR NODE EDITOR:
     // for unknown locations
-    private ObjectProperty<Location> selectedLocation = new SimpleObjectProperty<Location>();
+    private ObjectProperty<Location> selectedLocation = new SimpleObjectProperty<Location>(); // STORES THE CONVERTED RANDOMLY-CLICKED LOCATION. only set for random locs.
     private ObjectProperty<MapNode> newNode = new SimpleObjectProperty<MapNode>();
 
 
@@ -74,8 +79,7 @@ public class NodesController {
 
     // FOR EDGE EDITOR:
     private HashMap<Tab, MapEdge> selectedEdges = new HashMap<>();
-    private ObjectProperty<MapNode> startNode = new SimpleObjectProperty<MapNode>();
-    private ObjectProperty<MapNode> endNode = new SimpleObjectProperty<>();
+
 
 
 
@@ -95,6 +99,7 @@ public class NodesController {
 
         editNode.visibleProperty().bind(editingNodes);
         clearBtn.visibleProperty().bind(editingNodes);
+        closeTab.visibleProperty().bind(editingNodes);
         confirmBtn.setDisable(true);
         selectedLocation.setValue(null);
         selectedNode.setValue(null);
@@ -103,6 +108,10 @@ public class NodesController {
         endNode.setValue(null);
         nodeID.setEditable(false);
         nodeCoord.editableProperty().setValue(false); // will only be updated through map clicks
+        System.out.println(confirmBtn);
+        System.out.println(editNode);
+
+
 
 
         setUnEditable();
@@ -110,18 +119,30 @@ public class NodesController {
 
     }
 
-    public NodesController(JFXTabPane parentPane, BooleanProperty nodeEditing, BooleanProperty edgeEditing, HashMap<Tab, String> selectedLocs, HashMap<Tab, MapNode> selectedNodes) {
+    public NodesController(JFXTabPane parentPane, BooleanProperty nodeEditing, BooleanProperty edgeEditing, BooleanProperty detachParentListeners, HashMap<Tab, String> selectedLocs, HashMap<Tab, MapNode> selectedNodes) {
         parent = parentPane;
         this.editingNodes = nodeEditing;
         this.editingEdges = edgeEditing;
         this.selectedLocations = selectedLocs;
         this.selectedNodes = selectedNodes;
+        this.detachParentListeners = detachParentListeners;
 
     }
 
     public void setParentTab(Tab parentTab, HashMap<Tab, NodesController> controllers) {
         this.parentTab = parentTab;
         this.controllers = controllers;
+        parentTab.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (editingNodes.getValue()) {
+                    if (!newValue && editNode.disableProperty().getValue()) {
+                        detachListener();
+                        setUnEditable();
+                    }
+                }
+            }
+        });
     }
     public void setNodeInfo(MapNode clickedNode) {
         nodeID.setText(clickedNode.getId());
@@ -135,8 +156,10 @@ public class NodesController {
             selectedNodes = new HashMap<Tab, MapNode>();
         }
         selectedNodes.put(parentTab, clickedNode);
-        mapDraw.unDrawNode(clickedNode);
-        mapDraw.drawNode(clickedNode, 5, Color.GREEN);
+        if (editingNodes.get()) {
+            mapDraw.unDrawNode(clickedNode);
+            mapDraw.drawNode(clickedNode, 5, Color.GREEN);
+        }
     }
 
     public void setOriginalLocClick(EventHandler<MouseEvent> h, long id) {
@@ -149,15 +172,20 @@ public class NodesController {
     }
 
     public void setLocation(Location selected) {
-        nodeCoord.setText("(" + selected.getxCoord() + ", " +selected.getyCoord() + ")");
-        floor.setText(mapDraw.getCurrentFloor().toString());
-        selectedLocation.setValue(selected);
-        String drawnID = generateDrawnIDForNode();
-        if (selectedLocations == null) {
-            selectedLocations = new HashMap<Tab, String>();
+        if (selected != null) {
+            Location converted = mapDraw.convertLocationToImgCoords(selected);
+            nodeCoord.setText("(" + selected.getxCoord() + ", " + selected.getyCoord() + ")");
+            floor.setText(mapDraw.getCurrentFloor().toString());
+            selectedLocation.setValue(converted); // STORES THE CONVERTED LOCATION.
+
+            String drawnID = generateDrawnIDForNode();
+            if (selectedLocations == null) {
+                selectedLocations = new HashMap<Tab, String>();
+            }
+            selectedLocations.put(parentTab, drawnID);
+            System.out.println(selectedLocations);
+            mapDraw.drawNewLocation(converted, 5, Color.GREEN, drawnID, false);
         }
-        selectedLocations.put(parentTab, drawnID);
-        mapDraw.drawNewLocation(selected, 5, Color.GREEN, drawnID);
 
     }
     private String generateDrawnIDForNode() {
@@ -186,15 +214,32 @@ public class NodesController {
 
     private MapNode createNode() {
         MapNode created = null;
-        MapNode toAdd = newNode.getValue();
-        Location loc = selectedLocation.getValue();
-        Location converted = mapDraw.convertLocationToImgCoords(loc);
-        if (toAdd == null && loc != null)
-            if (!(nodeID.getText().equals("") || longName.getText().equals("") || nodeType.getSelectionModel().getSelectedItem() == null || shortName.getText().equals(""))) {
-                created = new MapNodeData(nodeID.getText(), new Location(converted.getxCoord(), converted.getyCoord(), Floor.getFloor(floor.getText()), ""),
-                        nodeType.getSelectionModel().getSelectedItem(), longName.getText(), shortName.getText(), "A");
+        //MapNode toAdd = newNode.getValue();
+        if (selectedLocation.getValue() != null) {
+            Location loc = null;
+            if (newLocation.getValue() != null) {
+                loc = newLocation.getValue();
             }
-        newNode.setValue(created);
+            else {
+                loc = selectedLocation.getValue(); // get the converted location
+            }
+            //Location converted = mapDraw.convertLocationToImgCoords(loc);
+            if (loc != null) {
+                if (!(nodeID.getText().equals("") || longName.getText().equals("") || nodeType.getSelectionModel().getSelectedItem() == null || shortName.getText().equals(""))) {
+                    created = new MapNodeData(nodeID.getText(), new Location(loc.getxCoord(), loc.getyCoord(), Floor.getFloor(floor.getText()), ""),
+                            nodeType.getSelectionModel().getSelectedItem(), longName.getText(), shortName.getText(), "A");
+                    if (created != null) {
+                        newNode.setValue(created);
+                    } else {
+                        System.out.println("Fields valid but can't create the node.");
+                    }
+                }
+            }
+            else {
+                System.out.println("Invalid fields. Could not create node.");
+            }
+
+        }
         return created;
 
     }
@@ -207,6 +252,7 @@ public class NodesController {
         longName.setEditable(false);
         shortName.setEditable(false);
 
+        editNode.setDisable(false);
         //confirmBtn.setVisible(false);
         //clearBtn.setVisible(false);
 
@@ -233,26 +279,28 @@ public class NodesController {
         public void handle(MouseEvent event) {
             Location selected = new Location(event, mapDraw.getCurrentFloor());
             Location converted = mapDraw.convertLocationToImgCoords(selected);
+            newLocation.setValue(converted); // STORE THE CONVERTED LOCATION
             int newX = converted.getxCoord();
             int newY = converted.getyCoord();
             nodeCoord.setText("(" + newX + ", " + newY + ")");
             if (selectedNode.getValue() != null) {
                 System.out.println("Editing the location of an existing node.");
+                System.out.println(selectedNode.getValue().getCoordinate().getxCoord() + " " + selectedNode.getValue().getCoordinate().getyCoord());
+
                 MapNode toUpdate = selectedNodes.get(parentTab);
                 System.out.println(toUpdate.getId());
                 mapDraw.unDrawNode(toUpdate);
-                toUpdate.getCoordinate().setxCoord(newX);
-                toUpdate.getCoordinate().setyCoord(newY);
-                selectedNodes.put(parentTab, toUpdate);
-                mapDraw.drawNode(toUpdate, 5, Color.GREEN);
+                //selectedNodes.put(parentTab, toUpdate);
+                mapDraw.drawNewLocation(converted, 5, Color.GREEN, toUpdate.getId(), false);
+                System.out.println(selectedNode.getValue().getCoordinate().getxCoord() + " " + selectedNode.getValue().getCoordinate().getyCoord());
             }
             if (selectedLocation.getValue() != null) {
                 System.out.println("Editing the location of a new node");
-                selectedLocation.setValue(selected);
+                //selectedLocation.setValue(converted);
 
                 String locID = selectedLocations.get(parentTab);
                 mapDraw.unDrawNewLocation(locID);
-                mapDraw.drawNewLocation(selected, 5, Color.GREEN, locID);
+                mapDraw.drawNewLocation(converted, 5, Color.GREEN, locID, false);
             }
         }
     };
@@ -261,56 +309,91 @@ public class NodesController {
     public void onEditNode(ActionEvent e) {
         setEditable();
         // TODO: update changed location coord  -- user clicks on map to change the coordinate
-        mapDraw.detachListener(originalLocClickID);
-        mapDraw.detachListener(originalNodeClickID);
+        //mapDraw.detachListener(originalLocClickID);
+        //mapDraw.detachListener(originalNodeClickID);
+        detachParentListeners.set(true);
         newLocClickID = mapDraw.attachClickedListener(onLocationChange, ClickedListener.LOCCLICKED);
-
-
     }
 
     private MapNode updateExistingNode() {
-        if (selectedNodes != null && selectedNode.getValue() != null) {
+        if (selectedNode.getValue() != null) {
             MapNode updated = null;
             if (!(longName.getText().equals("") || nodeType.getSelectionModel().getSelectedItem() == null || shortName.getText().equals(""))) {
                 updated = new MapNodeData(selectedNode.getValue().getId(), selectedNode.getValue().getCoordinate(),
                         nodeType.getSelectionModel().getSelectedItem(), longName.getText(), shortName.getText(), selectedNode.getValue().getTeamAssignment());
             }
-            if (updated != null) {
-                MapNode updatedLocation = selectedNodes.get(parentTab);
-                updated.getCoordinate().setxCoord(updatedLocation.getCoordinate().getxCoord());
-                updated.getCoordinate().setyCoord(updatedLocation.getCoordinate().getyCoord());
-                selectedNode.setValue(updated);
-                }
-                return updated;
+            else {
+                System.out.println("Invalid fields. Could not update existing node.");
             }
+            if (updated != null) {
+                Location updatedLocation = newLocation.getValue();
+                if (updatedLocation != null) {
+                    //updatedLocation = mapDraw.convertLocationToImgCoords(updatedLocation);
+                    updated.getCoordinate().setxCoord(updatedLocation.getxCoord());
+                    updated.getCoordinate().setyCoord(updatedLocation.getyCoord());
+                    newLocation.setValue(null);
+                }
+            }
+
+            return updated;
+        }
         return null; // shouldn't happen..
     }
-
-    @FXML
-    public void onConfirmClick(ActionEvent e) { // for node editing only
+    private void completeUpdate(MapNode updated) {
+        System.out.println("Completed update");
+        selectedNode.setValue(updated);
+        parentTab.setText(nodeID.getText());
         setUnEditable();
         editNode.setDisable(false);
-        parentTab.setText(nodeID.getText());
+    }
+    @FXML
+    public void onConfirmClick(ActionEvent e) { // for node editing only
+        MapNode updated = null;
         if (selectedNode.getValue() != null) { // updating an existing node
-            MapNode updated = updateExistingNode(); // gets all the updated text and updates coordinate
-            if (updated == null) {
+            updated = updateExistingNode(); // gets all the updated text and updates coordinate
+        }
+        else if (selectedLocation.getValue()!= null) {
+            updated = createNode();
+        }
 
-            }
+        if (updated != null) {
+            completeUpdate(updated);
         }
         else {
-            if (selectedLocation.getValue() != null) { // updating a new node
-                MapNode newNode = createNode();
-                if (newNode == null) {
-                    System.out.println("ERROR, couldn't make a new node from the input given.");
-                }
+                // generate alert
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Update Failure");
+            error.setHeaderText("Illegal fields detected");
+            error.setContentText("Fill in all required fields before proceeding. Click Cancel to close the tab.");
 
+            ButtonType ok = new ButtonType("OK");
+            ButtonType cancel = new ButtonType("Cancel");
+            error.getButtonTypes().setAll(ok, cancel);
+            Optional<ButtonType> selectedChoice = error.showAndWait();
+            if (selectedChoice.get() == cancel) {
+                onCloseTab();
+                if (controllers.containsKey(parentTab)) {
+                    controllers.remove(parentTab);
+                }
+                if (selectedLocations.containsKey(parentTab)) {
+                    selectedLocations.remove(parentTab);
+                }
+                if (selectedNodes.containsKey(parentTab)) {
+                    selectedNodes.remove(parentTab);
+                }
+                parent.getTabs().remove(parentTab);
+                parentTab = null;
+            } else {
+                detachListener();
+                setUnEditable();
             }
+
         }
-        mapDraw.detachListener(newLocClickID);
-        originalLocClickID = mapDraw.attachClickedListener(originalLocClick, ClickedListener.LOCCLICKED);
-        originalNodeClickID = mapDraw.attachClickedListener(originalNodeClick, ClickedListener.NODECLICKED);
-        confirmBtn.setDisable(true);
-        clearBtn.setDisable(true);
+
+
+
+        //confirmBtn.setDisable(true);
+        //clearBtn.setDisable(true);
     }
 
     private void reset() {
@@ -319,6 +402,12 @@ public class NodesController {
             longName.clear();
             shortName.clear();
             nodeType.getSelectionModel().clearSelection();
+            Location selected = selectedLocation.getValue();
+            String drawnID = selectedLocations.get(parentTab);
+            mapDraw.unDrawNewLocation(drawnID);
+            mapDraw.drawNewLocation(selected, 5, Color.GREEN, drawnID, false);
+            //selected = mapDraw.convertLocationToImgCoords(selected);
+            nodeCoord.setText("(" + selected.getxCoord() + ", " + selected.getyCoord() + ")");
 
         }
         if (selectedNode.getValue() != null) {
@@ -328,13 +417,17 @@ public class NodesController {
             nodeCoord.setText("(" + selected.getCoordinate().getxCoord() + ", " + selected.getCoordinate().getyCoord() + ")");
             shortName.setText(selected.getShortDescription());
             nodeType.setValue(selected.getNodeType());
-        }
-        mapDraw.detachListener(newLocClickID);
-        originalLocClickID = mapDraw.attachClickedListener(originalLocClick, ClickedListener.LOCCLICKED);
-        originalNodeClickID = mapDraw.attachClickedListener(originalNodeClick, ClickedListener.NODECLICKED);
+            mapDraw.unDrawNode(selected);
 
-        confirmBtn.setDisable(true);
-        clearBtn.setDisable(true);
+            mapDraw.drawNode(selected, 5, Color.GREEN);
+        }
+        newLocation.setValue(null);
+        detachListener();
+
+        //originalLocClickID = mapDraw.attachClickedListener(originalLocClick, ClickedListener.LOCCLICKED);
+        //originalNodeClickID = mapDraw.attachClickedListener(originalNodeClick, ClickedListener.NODECLICKED);
+
+        setUnEditable();
     }
 
     @FXML
@@ -344,35 +437,90 @@ public class NodesController {
         reset();
     }
 
-    @FXML
-    public void onCloseTab(ActionEvent e) {
-        if (selectedLocation.getValue() != null) {
-            System.out.println("Was adding a new node, but decided otherwise.");
-            System.out.println(parentTab);
-            String id = selectedLocations.get(parentTab);
-            mapDraw.unDrawNewLocation(id);
-            selectedLocations.remove(parentTab);
+    public void onCloseTab() {
+        if (editingNodes.getValue()) {
+            if (selectedLocation.getValue() != null) {
+                System.out.println("Was adding a new node, but decided otherwise.");
+                System.out.println(parentTab);
+                String id = selectedLocations.get(parentTab);
+                System.out.println(id);
+                mapDraw.unDrawNewLocation(id);
+
+                //selectedLocations.remove(parentTab);
+            } else if (selectedNode.getValue() != null) {
+                System.out.println("Was editing existing node, but decided otherwise.");
+                System.out.println(parentTab);
+                MapNode m = selectedNodes.get(parentTab);
+                mapDraw.unDrawNode(m);
+                //MapNode original = mapData.getNode(m.getId());
+                mapDraw.drawNode(m, 5, Color.DARKBLUE);
+                //selectedNodes.remove(parentTab);
+            }
+            detachListener();
+
+            //controllers.remove(parentTab);
+            selectedNode.setValue(null);
+            selectedLocation.setValue(null);
+            newLocation = null;
         }
-        else if (selectedNode.getValue() != null) {
-            System.out.println("Was editing existing node, but decided otherwise.");
-            System.out.println(parentTab);
-            MapNode m = selectedNodes.get(parentTab);
-            mapDraw.unDrawNode(m);
-            MapNode original = mapData.getNode(m.getId());
-            mapDraw.drawNode(original, 5, Color.DARKBLUE);
-            selectedNodes.remove(parentTab);
+        else if (editingEdges.getValue()){
+            parent.getTabs().remove(parentTab);
         }
-        controllers.remove(parentTab);
-        parent.getTabs().remove(parentTab);
+
+    }
+    SimpleObjectProperty<MapNode> startNode = new SimpleObjectProperty<>(null);
+    SimpleObjectProperty<MapNode> endNode = new SimpleObjectProperty<>(null);
+
+    public void setStartNode(MapNode m) {
+        startNode.setValue(m);
+    }
+    public void setEndNode(MapNode m) {
+        endNode.setValue(m);
     }
 
-    public void onComplete() {
+    @FXML
+    public void onCloseTab(ActionEvent e) {
+        onCloseTab();
+        //parent.getTabs().remove(parentTab);
+        if (controllers.containsKey(parentTab)) {
+            controllers.remove(parentTab);
+        }
+        if (selectedLocations.containsKey(parentTab)) {
+            selectedLocations.remove(parentTab);
+        }
+        if (selectedNodes.containsKey(parentTab)) {
+            selectedNodes.remove(parentTab);
+        }
+        parent.getTabs().remove(parentTab);
+        parentTab = null;
+
+
+
+    }
+    private void detachListener() {
+        if (newLocClickID>=0) {
+            mapDraw.detachListener(newLocClickID);
+            newLocClickID = -1;
+            //originalLocClickID = mapDraw.attachClickedListener(originalLocClick, ClickedListener.LOCCLICKED);
+           // originalNodeClickID = mapDraw.attachClickedListener(originalNodeClick, ClickedListener.NODECLICKED);
+            detachParentListeners.setValue(false);
+            System.out.println("Detached the " + parentTab + " listeners");
+        }
+    }
+
+    private BooleanProperty waitToAdd;
+
+    public void setWaitToAdd(BooleanProperty wait) {
+        this.waitToAdd = wait;
+    }
+
+    public MapNode onCompleteAdd() {
         MapNode toReturn = null;
         if (selectedLocation.getValue()!= null) {
             toReturn = createNode();
             String id = selectedLocations.get(parentTab);
-            mapDraw.unDrawNewLocation(id);
             if (toReturn != null) {
+                mapDraw.unDrawNewLocation(id);
                 mapDraw.drawNode(toReturn, 5, Color.DARKBLUE);
             }
         }
@@ -383,15 +531,21 @@ public class NodesController {
                 mapDraw.drawNode(toReturn, 5, Color.DARKBLUE);
             }
 
+
         }
         if (toReturn != null) {
             mapData.addNode(toReturn);
+            return toReturn;
         }
         else {
-            System.out.println("Could not add the specified node to the database.");
+            return null;
         }
-        parent.getTabs().remove(parentTab);
+
+       //detachListener();
+        //parent.getTabs().remove(parentTab);
     }
+
+
 
 
 
