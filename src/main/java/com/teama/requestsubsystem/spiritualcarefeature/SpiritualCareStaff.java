@@ -9,7 +9,7 @@ import com.teama.requestsubsystem.StaffType;
 /**
  * Created by jakepardue on 12/10/17.
  */
-public class SpiritualCareStaff {
+public class SpiritualCareStaff implements ServiceStaff {
 
     private ServiceStaff genInfo;
     private Religion religion;
