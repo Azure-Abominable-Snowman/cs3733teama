@@ -227,7 +227,7 @@ public class TextualDirections implements DirectionsGenerator {
         // grab nodes that are after the turn point. added to the list in the forward order
         //TODO fix this so the hightlight don't go too far into the next turn.
         for (int i = turnIndex
-             ;(! pathNodeList.get(i).getId().equals(turnLink.getNext()) )&& postLength<hightLightLength
+             ;(! pathNodeList.get(i).getId().equals(turnLink.getNext()) )&& postLength<hightLightLength && i<pathNodeList.size()-1
              ;++i)
         {
             MapNode postNode = pathNodeList.get(i+1);
