@@ -29,7 +29,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
+                                    <Image url="@adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -38,7 +38,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
+                                    <Image url="@adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -50,7 +50,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
+                                    <Image url="@adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -59,7 +59,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
+                                    <Image url="@adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -69,32 +69,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane fx:id="apnToLoad" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="500.0" SplitPane.resizableWithParent="false">
-               <children>
-                  <JFXTabPane fx:id="tabepane" layoutX="139.0" layoutY="174.0" prefHeight="798.0" prefWidth="415.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <tabs>
-                        <Tab text="Interpreter">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="400.0" />
-                          </content>
-                        </Tab>
-                        <Tab text="Transport">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                          </content>
-                        </Tab>
-                        <Tab text="ETC">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                          </content>
-                        </Tab>
-                     </tabs>
-                     <effect>
-                        <ColorAdjust brightness="0.22" contrast="-0.02" hue="-1.0" saturation="0.02" />
-                     </effect>
-                  </JFXTabPane>
-               </children>
-            </AnchorPane>
+          <AnchorPane fx:id="apnToLoad" minHeight="0.0" minWidth="0.0" prefHeight="682.0" prefWidth="412.0" SplitPane.resizableWithParent="false" />
         </items>
       </SplitPane>
    </children>

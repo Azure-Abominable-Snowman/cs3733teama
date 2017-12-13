@@ -21,6 +21,7 @@ public class ElevatorAdapter {
         email = new SimpleStringProperty(elevatorStaff.getEmail());
         String certsToAdd="";
         for(MaintenanceType t : elevatorStaff.getSpecialization()){
+            System.out.println(t.toString());
             certsToAdd+=t.toString()+"\n";
         }
         certifications=new SimpleStringProperty(certsToAdd);

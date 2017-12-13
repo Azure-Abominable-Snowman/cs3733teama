@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="parentPane" prefHeight="99.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.InterpReqController">
+<?import com.jfoenix.controls.JFXTextField?>
+<AnchorPane fx:id="parentPane" prefHeight="52.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.InterpReqController">
    <children>
-      <VBox prefHeight="184.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="52.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXTextField fx:id="txtFamilySize" promptText="Family Size">
+            <JFXTextField fx:id="txtFamilySize" promptText="%family">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
             </JFXTextField>
-            <JFXComboBox fx:id="cmbLang" prefHeight="25.0" prefWidth="220.0" promptText="Language">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" top="10.0" />
-               </VBox.margin></JFXComboBox>
+            <JFXComboBox fx:id="cmbLang" prefHeight="25.0" prefWidth="220.0" promptText="%listLanguage"></JFXComboBox>
+            <JFXComboBox fx:id="cmbLang" prefHeight="25.0" prefWidth="220.0" promptText="Language"></JFXComboBox>
          </children>
       </VBox>
    </children>

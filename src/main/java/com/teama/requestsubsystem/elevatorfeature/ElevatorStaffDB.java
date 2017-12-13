@@ -151,7 +151,9 @@ public class ElevatorStaffDB implements  StaffDataSource {
                 ResultSet found = getStaff.executeQuery();
                 Set<MaintenanceType> skills = new HashSet<>();
                 while (found.next()) {
-                    MaintenanceType skill = MaintenanceType.getMaintenanceType(found.getString("SPECIALIZATION"));
+                    System.out.println(found.getString("SPECIALIZATION"));
+                    MaintenanceType skill = MaintenanceType.getMaintenanceType((found.getString("SPECIALIZATION")));
+                    System.out.println(skill);
                     skills.add(skill);
                 }
                ElevatorStaff elev = new ElevatorStaff(general, skills);
@@ -216,6 +218,7 @@ public class ElevatorStaffDB implements  StaffDataSource {
                 //addStaff.setString(2, );
                 for (MaintenanceType m: s.getSpecialization()) {
                     addStaff.setString(2, m.toString());
+                    System.out.println(m.toString());
                     addStaff.executeUpdate();
                 }
                 log.info("All elevator repair skills of staff member added to the Elevator Table successfully.");

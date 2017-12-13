@@ -3,7 +3,6 @@ package com.teama.controllers_refactor2;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTabPane;
-import com.teama.controllers_refactor.SettingsPopOut;
 import com.teama.controllers_refactor2.HamburgerController;
 import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
@@ -89,17 +88,16 @@ public class AdminPaneController extends HamburgerController{
     @FXML
     void onSettingsClick(ActionEvent event) {
 
-
     }
 
     @FXML
     void onStaffClick(ActionEvent event) {
-        loadPane(new StaffController());
+        StaffController rc = new StaffController();
+        loadPane(rc);
     }
 
     @FXML
     void mouseclick(ActionEvent event) {
-
 
     }
 

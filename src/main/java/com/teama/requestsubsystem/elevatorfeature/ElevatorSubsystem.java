@@ -75,7 +75,7 @@ public class ElevatorSubsystem {
         return requestDB.getRequest(id);
     }
 
-    public ElevatorRequest getInterpreterRequest(int id) {
+    public ElevatorRequest getElevatorRequest(int id) {
         return requestDB.getElevatorRequest(id);
     }
 
@@ -100,7 +100,7 @@ public class ElevatorSubsystem {
     }
 
     // Gets a specific staff member
-    public ElevatorStaff getIntepreterStaff(int staffID) { return staffDB.getElevatorStaff(staffID); }
+    public ElevatorStaff getElevatorStaff(int staffID) { return staffDB.getElevatorStaff(staffID); }
 
     public ElevatorStaff getStaff(int staffID){
         return staffDB.getElevatorStaff(staffID);

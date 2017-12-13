@@ -6,7 +6,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="133.0" prefWidth="269.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXTextArea fx:id="foodDesiredTextArea" layoutX="14.0" layoutY="14.0" prefHeight="133.0" prefWidth="269.0" promptText="Food desired..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <JFXTextArea fx:id="foodDesiredTextArea" layoutX="14.0" layoutY="14.0" prefHeight="133.0" prefWidth="269.0" promptText="%food" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font size="16.0" />
          </font>

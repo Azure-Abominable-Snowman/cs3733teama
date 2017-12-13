@@ -1,34 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<Pane fx:id="parentPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="parentPane" prefHeight="772.0" prefWidth="415.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXTabPane prefHeight="798.0" prefWidth="415.0">
-         <tabs>
-            <Tab text="Interpreter">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="400.0" />
-               </content>
-            </Tab>
-            <Tab text="Spritual Service">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-               </content>
-            </Tab>
-            <Tab text="Elevator Repair">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-               </content>
-            </Tab>
-         </tabs>
-         <effect>
-            <ColorAdjust brightness="0.22" contrast="-0.02" hue="-1.0" saturation="0.02" />
-         </effect>
-      </JFXTabPane>
+      <VBox fx:id="vbxWrapper" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="767.0" prefWidth="415.0">
+         <children>
+            <JFXTabPane prefHeight="770.0" prefWidth="415.0">
+               <tabs>
+                  <Tab fx:id="interpreterTab" onSelectionChanged="#changeType" text="Interpreter">
+                     <content>
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="824.0" prefWidth="415.0">
+                           <children>
+                              <VBox fx:id="intVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="717.0" prefWidth="415.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="spiritualTab" onSelectionChanged="#changeType" text="Spiritual Service">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <VBox fx:id="SPVBox" prefHeight="768.0" prefWidth="415.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="elevatorTab" onSelectionChanged="#changeType" text="Elevator Repair">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <VBox fx:id="ELEVBox" prefHeight="768.0" prefWidth="415.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="foodTab" text="Food">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton fx:id="btnFood" layoutX="122.0" layoutY="259.0" onAction="#callFoodReq" prefHeight="139.0" prefWidth="148.0" style="-fx-background-color: #D3D3D3;" text="Create Food Request" />
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+               </tabs>
+               <effect>
+                  <ColorAdjust brightness="0.22" contrast="-0.02" hue="-1.0" saturation="0.02" />
+               </effect>
+            </JFXTabPane>
+            <HBox prefHeight="164.0" prefWidth="415.0" style="-fx-background-color: #D3D3D3;">
+               <children>
+                  <JFXButton fx:id="deleteButton" onAction="#deleteRequest" prefHeight="110.0" prefWidth="140.0" text="Delete" />
+                  <JFXButton fx:id="viewStaffButton" onAction="#showStaffPopUp" prefHeight="106.0" prefWidth="135.0" text="Assign Staff" />
+                  <JFXButton fx:id="submitButton" layoutX="10.0" layoutY="10.0" onAction="#submitRequest" prefHeight="107.0" prefWidth="142.0" text="Submit" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </Pane>
