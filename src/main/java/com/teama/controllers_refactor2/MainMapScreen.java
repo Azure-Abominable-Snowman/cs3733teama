@@ -315,7 +315,7 @@ public class MainMapScreen implements Initializable {
         }
     }
     @FXML public void onOpenerClick(MouseEvent e){
-        //TODO fix double click breaking this guy
+        //TODO fix double click breaking this guy.. this dang guy though, no ree
         try {
             System.out.println("opening");
             disableSearchPane();

@@ -122,8 +122,14 @@ public class MapSubsystem {
     public MapNode addNode(MapNode m) {
         MapNode newNode = null;
         if (m!= null) {
-            String ID = DatabaseUUID.generateID(m.getNodeType(), m.getCoordinate().getLevel());
-            newNode = new MapNodeData(ID, m.getCoordinate(), m.getNodeType(), m.getLongDescription(), m.getShortDescription(), m.getTeamAssignment());
+            if (m.getId().equals("")) {
+                String ID = DatabaseUUID.generateID(m.getNodeType(), m.getCoordinate().getLevel());
+                System.out.println("NEw node ID: " + ID);
+                newNode = new MapNodeData(ID, m.getCoordinate(), m.getNodeType(), m.getLongDescription(), m.getShortDescription(), m.getTeamAssignment());
+            }
+            else {
+                newNode = m;
+            }
             javaDBSource.addNode(newNode);
         }
         return newNode;
