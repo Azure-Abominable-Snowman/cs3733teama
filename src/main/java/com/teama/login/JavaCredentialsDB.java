@@ -65,7 +65,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
                 System.out.println(md.getColumnLabel(i));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
 
@@ -94,7 +94,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
     }
 
     /**
-     *  addLogin = conn.prepareStatement("INSERT INTO " + tablename + " VALUES (?, ?, ?, ?, ?)");
+     *  addLogin = conn.prepareStatement("INSERT INTO " + tablename + " VALUES (?, ?, ?, ?)");
 
      * @param p
      * @return
@@ -119,6 +119,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
             // Update
         } catch (SQLException e) {
             log.info("Failed to add login information for user with username " + uname);
+            e.printStackTrace();
             return false;
         }
         if (p.getStaffType() != null) {
@@ -130,7 +131,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
 
                 log.info("Added login information for Staff member " + p.getStaffID());
             } catch (SQLException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -246,7 +247,7 @@ public class JavaCredentialsDB implements LoginInfoDataSource {
                 }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         if (rs != null) {
