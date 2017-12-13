@@ -21,7 +21,7 @@
                <children>
                   <VBox prefHeight="180.0" prefWidth="545.0" styleClass="hbox_google">
                      <children>
-                        <JFXComboBox fx:id="yourLocationBar" editable="true" focusColor="WHITE" onAction="#onYourLocationBarClicked" prefHeight="32.0" prefWidth="300.0" promptText="Your Location" unFocusColor="WHITE" VBox.vgrow="ALWAYS">
+                        <JFXComboBox fx:id="yourLocationBar" editable="true" focusColor="WHITE" onAction="#onYourLocationBarClicked" prefHeight="32.0" prefWidth="300.0" promptText="%yourLocation" unFocusColor="WHITE" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="20.0" left="39.0" right="39.0" top="50.0" />
                            </VBox.margin>
@@ -44,7 +44,7 @@
                               </ImageView>
                               <StackPane prefHeight="32.0" prefWidth="334.0">
                                  <children>
-                                    <JFXComboBox fx:id="destinationBar" editable="true" focusColor="WHITE" onAction="#onDestinationBarClicked" prefHeight="32.0" prefWidth="300.0" promptText="Destination" unFocusColor="WHITE" StackPane.alignment="CENTER_LEFT">
+                                    <JFXComboBox fx:id="destinationBar" editable="true" focusColor="WHITE" onAction="#onDestinationBarClicked" prefHeight="32.0" prefWidth="300.0" promptText="%destination" unFocusColor="WHITE" StackPane.alignment="CENTER_LEFT">
                                        <StackPane.margin>
                                           <Insets />
                                        </StackPane.margin>
@@ -95,10 +95,10 @@
             </StackPane>
             <TableView fx:id="textDirections" maxHeight="1.7976931348623157E308" minHeight="200.0" prefHeight="651.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="stepCol" editable="false" prefWidth="60.0" text="C1" />
-                <TableColumn fx:id="directionCol" editable="false" minWidth="0.0" prefWidth="104.47702026367188" text="C2" />
-                  <TableColumn fx:id="descriptionCol" editable="false" minWidth="0.0" prefWidth="142.52297973632812" text="C2" />
-                  <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="91.0" text="C2" />
+                <TableColumn fx:id="stepCol" editable="false" prefWidth="60.0" text="%step" />
+                <TableColumn fx:id="directionCol" editable="false" minWidth="0.0" prefWidth="104.47702026367188" text="%direction" />
+                  <TableColumn fx:id="descriptionCol" editable="false" minWidth="0.0" prefWidth="142.52297973632812" text="%description" />
+                  <TableColumn fx:id="distanceCol" editable="false" minWidth="0.0" prefWidth="91.0" text="%distance" />
               </columns>
                <VBox.margin>
                   <Insets />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,16 +19,14 @@
             </Text>
          </children>
       </Pane>
-      <TextArea layoutY="43.0" prefHeight="503.0" prefWidth="547.0" text="&#10;This application was designed to inhance the experience at Brigham and Women's   Faulkner Hospital by providing way finding for guests and service requests for staff.&#10;&#10;The application was created by:&#10;&#9;&#10;&#9;Lead Software Engineer:&#9;&#9;&#9;Raymond Schade&#10;&#9;Assisstant Lead Software Engineers:   Qingyuan Chen, Alissa Ostapenko&#10;&#9;Product Owner:&#9;&#9;&#9;&#9;&#9;Kent Libby&#10;&#9;Test Engineer:&#9;&#9;&#9;&#9; &#9;Alex Krasa&#10;&#9;UI Engineers:&#9;&#9;&#9;&#9;&#9; &#9;Jerry Assan, Yuanda Song, Yizhen Wang&#10;&#9;Scrum Master:&#9;&#9;&#9;&#9;&#9;Meghan Broughton&#10;&#9;Documentation Analysts:&#9;&#9;&#9;Jake Pardue, Ruyue Wang&#10;&#10;With the help and guidance from Professor Wilson Wong and our team coach, Rolando Wong.&#10;           &#10;            WPI Computer Science Department CS3733 Software Engineering&#10;&#10;We would like to thank Brigham and Women's Faulkner Hospital and their representative, Andrew Shinn, for their time and input. &#10;&#10;&#10;&#10;&#10;&#10;The Brigham and Women's Hospital maps and data are copyrighted and provided for the sole use of educational purposes. &#10; " wrapText="true" />
-      <ImageView fitHeight="52.0" fitWidth="200.0" layoutX="48.0" layoutY="422.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/WPILogo.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="283.0" layoutY="421.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/BWH-logo.png" />
-         </image>
-      </ImageView>
+      <ScrollPane layoutY="45.0" prefHeight="458.0" prefWidth="547.0">
+         <content>
+            <ImageView fitHeight="711.0" fitWidth="591.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@AboutPagePicture.png" />
+               </image>
+            </ImageView>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

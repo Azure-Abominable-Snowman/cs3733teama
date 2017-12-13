@@ -288,7 +288,7 @@ public class MainMapScreen implements Initializable {
                 drawer.setVisible(true);
                 FXMLLoader openerLoader = new FXMLLoader();
                 curController = new DirectionController();
-                //openerLoader.setResources(Translator.getInstance().getNewBundle());
+                openerLoader.setResources(Translator.getInstance().getNewBundle());
                 openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
                 openerLoader.setController(curController);
                 openerLoader.load();
@@ -486,6 +486,7 @@ public class MainMapScreen implements Initializable {
         Stage aboutPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AboutPage.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         try {
             Parent root = (Parent) loader.load();
             Scene aboutScene = new Scene(root);
@@ -507,6 +508,8 @@ public class MainMapScreen implements Initializable {
         Stage helpPopUp = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/HelpPage.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
+
         try {
             Parent root = (Parent) loader.load();
             Scene helpScene = new Scene(root);
