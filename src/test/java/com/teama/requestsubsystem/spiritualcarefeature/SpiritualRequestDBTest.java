@@ -90,7 +90,7 @@ public class SpiritualRequestDBTest {
         assertEquals(RequestStatus.ASSIGNED, retrieved.getStatus());
         assertEquals(Religion.CHRISTIANITY, retrieved.getReligion());
         assertEquals(SpiritualService.BAPTISMS, retrieved.getSpiritualService());
-        assertEquals(LocalDate.now(), retrieved.getDate());
+        assertEquals(LocalDate.now(), retrieved.getLocalDate());
 
     }
 

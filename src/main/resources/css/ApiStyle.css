@@ -4,19 +4,16 @@
 }
 
 .resetButton {
-    -fx-background-color: #E57373
-    -fx-
-;
+    -fx-background-color: #E57373;
+
 }
 
 .confirmButton {
-    -fx-background-color: #2196F3
-;
+    -fx-background-color: #2196F3;
 }
 
 .field {
-    -fx-background-color: #29B6F6
-;
+    -fx-background-color: #29B6F6;
 }
 
 .cancel {
@@ -25,15 +22,7 @@
 
 }
 
-.btn:hover {
-    background: #1a2830;
-    background-image: -webkit-linear-gradient(top, #1a2830, #1b2429);
-    background-image: -moz-linear-gradient(top, #1a2830, #1b2429);
-    background-image: -ms-linear-gradient(top, #1a2830, #1b2429);
-    background-image: -o-linear-gradient(top, #1a2830, #1b2429);
-    background-image: linear-gradient(to bottom, #1a2830, #1b2429);
-    text-decoration: none;
-}
+
 
 
 

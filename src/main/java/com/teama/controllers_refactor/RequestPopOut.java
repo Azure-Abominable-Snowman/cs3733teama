@@ -2,34 +2,23 @@ package com.teama.controllers_refactor;
 import com.jfoenix.controls.*;
 import com.teama.controllers.InterpReqController;
 import com.teama.controllers.MaintenanceReqController;
-import com.teama.controllers.ViewStaffController;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
-import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
-import com.teama.messages.EmailMessage;
 import com.teama.messages.Message;
-import com.teama.messages.SMSMessage;
 import com.teama.requestsubsystem.*;
-import com.teama.requestsubsystem.elevatorfeature.ElevatorRequest;
-import com.teama.requestsubsystem.elevatorfeature.MaintenanceType;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterStaff;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
-import com.teama.requestsubsystem.interpreterfeature.Language;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -38,10 +27,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-
-import javafx.scene.image.*;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
 
 import static com.teama.requestsubsystem.RequestType.*;
 import static javafx.scene.paint.Color.color;
@@ -141,6 +126,7 @@ public class RequestPopOut extends PopOutController {
                 FOOD, INTR, MAIN, SEC, TRANS);
 
         //set up requestViewList
+        /*
         requestView.getItems().clear();
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
         nodeSelected.set(false);
@@ -157,6 +143,7 @@ public class RequestPopOut extends PopOutController {
 
             }
         });
+        */
         /*
         nodeSelected.addListener((obs, before, mapNode) ->{
             System.out.println(mapNode);
@@ -434,6 +421,7 @@ public class RequestPopOut extends PopOutController {
     }
 
     public Message createTextMessage(){
+        /*
         message = new Message("Needed: "+ requestType.toString()+ "\n"+
                 "Where: "+ buildingName +", "+ floorName.toString()+", "+mapNodeName.getLongDescription()+ "\n"
                 + "Language: " + controller.getLanguage().toString()+"\n"+
@@ -447,6 +435,7 @@ public class RequestPopOut extends PopOutController {
                 + "Language: " + controller.getLanguage().toString()+"\n"+
                 "Size of Family:" + controller.getFamilySize().toString()+"\n"+
                 "Additional Info: "+additionalInfoMessage);
+                */
         return message;
     }
 
@@ -572,7 +561,7 @@ public class RequestPopOut extends PopOutController {
         Scene fulfillScene;
         try {
             fulfillScene = new Scene(loader.load());
-            FulfillRequestController fillReqController = loader.getController();
+            FInterpreterRequestController fillReqController = loader.getController();
             fillReqController.setReqToFulfill(requestView.getSelectionModel().getSelectedItem());
             fillReqController.getSubmitted().addListener(((observable, oldValue, submitted) -> {
                 if(submitted){
