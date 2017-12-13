@@ -1,11 +1,10 @@
 package com.teama.translator;
 
+import com.teama.controllers_refactor2.UTF8Control;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/**
- * Created by jakepardue on 12/2/17.
- */
 public class Translator {
 
     private Locale langLocale;
@@ -23,7 +22,7 @@ public class Translator {
     private Translator(String lang) {
         //TODO Remove langLocale form here once UI is set up
         this.langLocale = new Locale(lang);
-        this.bundle = ResourceBundle.getBundle("lang", langLocale);
+        this.bundle = ResourceBundle.getBundle("lang", langLocale, new UTF8Control());
     }
 
     public String getText(String key) {
@@ -33,12 +32,12 @@ public class Translator {
 
     public void setLang(String lang) {
         this.langLocale = new Locale(lang);
-        this.bundle = ResourceBundle.getBundle("lang", langLocale);
+        this.bundle = ResourceBundle.getBundle("lang", langLocale, new UTF8Control());
     }
 
     public ResourceBundle getNewBundle(){
 
-        return this.bundle = ResourceBundle.getBundle("lang", langLocale);
+        return this.bundle = ResourceBundle.getBundle("lang", langLocale , new UTF8Control());
 
     }
 
