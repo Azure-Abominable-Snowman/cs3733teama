@@ -1,4 +1,4 @@
-package com.teama.requestsubsystem.interpreterfeature;
+package com.teama.requestsubsystem.elevatorfeature;
 
 import com.teama.messages.ContactInfo;
 import com.teama.messages.Provider;
@@ -8,30 +8,34 @@ import com.teama.requestsubsystem.StaffType;
 
 import java.util.Set;
 
-public class InterpreterStaff  implements ServiceStaff {
+/**
+ * Created by jakepardue on 12/8/17.
+ */
+public class ElevatorStaff implements ServiceStaff{
     private ServiceStaff genInfo;
-    //private InterpreterInfo interpSpecs;
-    private Set<Language> languages;
-    private CertificationType certification;
-    //TODO: specify hours on duty perhaps
-    public InterpreterStaff(ServiceStaff i, Set<Language> langs, CertificationType certification) {
+
+
+
+    private Set<MaintenanceType> specialization;
+
+    public ElevatorStaff(ServiceStaff i, Set<MaintenanceType> specializations ) {
         genInfo = i;
-        languages = langs;
-        this.certification = certification;
-        genInfo.setStaffType(StaffType.INTERPRETER);
+        this.specialization = specializations;
+        genInfo.setStaffType(StaffType.ELEVATOR);
     }
 
+
     /**
-     * COPY-CONSTRUCTOR: IMPORTANT -- ONLY CREATE IF ABSOLUTELY NECESSARY.
+     * COPY CONSTRUCTOR. NOT TO BE USED FOR ANY OTHER PURPOSE EXCEPT COPYING EXISTING ELEVATOR STAFF.
      * @param id
      * @param s
+     *
      */
-    public InterpreterStaff(int id, InterpreterStaff s) {
+    public ElevatorStaff(int id, ElevatorStaff s) {
         GenericStaff genInfo = new GenericStaff(id, s.getFirstName(), s.getLastName(), s.getUsername(), s.getContactInfo());
         this.genInfo = genInfo;
-        this.languages = s.getLanguages();
-        this.certification = s.getCertification();
-        genInfo.setStaffType(StaffType.INTERPRETER);
+        this.specialization = s.getSpecialization();
+        genInfo.setStaffType(StaffType.ELEVATOR);
     }
 
     public void setGenInfo(ServiceStaff staff) {
@@ -44,19 +48,28 @@ public class InterpreterStaff  implements ServiceStaff {
     }
 
     public void add() {
-        InterpreterSubsystem.getInstance().addStaff(this);
+
     }
     public void update() {
-        InterpreterSubsystem.getInstance().updateStaff(this);
+
     }
     public void remove() {
-        InterpreterSubsystem.getInstance().removeStaff(this.getStaffID());
+
+    }
+    public Set<MaintenanceType> getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Set<MaintenanceType> specialization) {
+        this.specialization = specialization;
     }
 
     public String getFirstName() {
         return genInfo.getFirstName();
     }
-    public String getLastName() { return genInfo.getLastName(); }
+    public String getLastName() {
+        return genInfo.getLastName();
+    }
     /*public int getStaffID() {
         return interpSpecs.getStaffID();
     }
@@ -71,12 +84,7 @@ public class InterpreterStaff  implements ServiceStaff {
         return genInfo.getProvider();
     }
 
-    public CertificationType getCertification() {
-        return certification;
-    }
-    public String getUsername() {
-        return genInfo.getUsername();
-    }
+
 
     public void setUsername(String uname) {
         genInfo.setUsername(uname);
@@ -92,15 +100,7 @@ public class InterpreterStaff  implements ServiceStaff {
         genInfo.setStaffType(t);
     }
 
-    public Set<Language> getLanguages() {
-        return languages;
-    }
-    public void setCertification(CertificationType c) {
-        this.certification = c;
-    }
-    public void setLanguages(Set<Language> langs) {
-        this.languages = langs;
-    }
+
     public void setFirstName(String name) {
         genInfo.setFirstName(name);
     }
@@ -127,6 +127,12 @@ public class InterpreterStaff  implements ServiceStaff {
         return genInfo.getStaffID();
     }
 
+    public String getUsername() {
+        return genInfo.getUsername();
+    }
+
+
+    /*
     public String toString(){
         String lang = "";
         for(Language l: getLanguages()){
@@ -134,11 +140,6 @@ public class InterpreterStaff  implements ServiceStaff {
         }
         return getFirstName()+" "+getLastName()+"\n"+lang;
     }
-
-
-    /*
-    public boolean isOnDuty() {
-
-    }
     */
+
 }
