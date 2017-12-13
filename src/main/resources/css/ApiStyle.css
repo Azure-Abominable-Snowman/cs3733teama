@@ -4,19 +4,16 @@
 }
 
 .resetButton {
-    -fx-background-color: #E57373
-    -fx-
-;
+    -fx-background-color: #E57373;
+
 }
 
 .confirmButton {
-    -fx-background-color: #2196F3
-;
+    -fx-background-color: #2196F3;
 }
 
 .field {
-    -fx-background-color: #29B6F6
-;
+    -fx-background-color: #29B6F6;
 }
 
 .cancel {
