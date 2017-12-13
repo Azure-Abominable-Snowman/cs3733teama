@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -104,43 +104,14 @@
                   <Insets />
                </VBox.margin>
             </TableView>
-            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="hbox_floorBtn_hbox">
+            <ScrollPane hbarPolicy="ALWAYS" vbarPolicy="NEVER">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
-               <children>
-                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" cache="true" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="L1">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </JFXButton>
-                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="G">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </JFXButton>
-                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="F1">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </JFXButton>
-                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="F2">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </JFXButton>
-                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="F3">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </JFXButton>
-                  <JFXButton alignment="CENTER" blendMode="MULTIPLY" contentDisplay="CENTER" prefHeight="40.0" prefWidth="60.0" styleClass="hbox_floorBtn" text="F4">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </JFXButton>
-               </children>
-            </HBox>
+               <content>
+                  <HBox fx:id="hbxFloorButtons" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="hbox_floorBtn_hbox" />
+               </content>
+            </ScrollPane>
          </children>
       </VBox>
    </children>

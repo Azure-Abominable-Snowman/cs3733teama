@@ -1,6 +1,7 @@
 package com.teama.mapsubsystem.pathfinding;
 
 import com.teama.mapsubsystem.data.Floor;
+import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.NodeType;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  */
 public class TextDirections {
     private ArrayList<Direction> directions;
-    private ArrayList<Floor> floorList ;
+    private ArrayList<Location> floorList ;
 
     public TextDirections(ArrayList<Direction> list) {
         directions=list;
@@ -20,12 +21,12 @@ public class TextDirections {
         return directions;
     }
 
-    public ArrayList<Floor> getFloorDirections()
+    public ArrayList<Location> getFloorDirections()
     {
         if(floorList!=null) return floorList;
         // if the list is never made
         floorList = new ArrayList<>();
-        floorList.add(directions.get(0).getStart().getLevel()); // add in the starting floor.
+        floorList.add(directions.get(0).getStart()); // add in the starting floor.
         for(int i=1;i<directions.size();++i)
         {
             Direction thisdir = directions.get(i);
@@ -33,7 +34,7 @@ public class TextDirections {
             if(thisturn.equals(TurnType.ELEVATOR.toString())
                     || thisturn.equals(TurnType.STAIR.toString()))
             {
-                floorList.add(thisdir.getEnd().getLevel()); // add the floor of the end once.
+                floorList.add(thisdir.getEnd()); // add the floor of the end once.
             }
         }
         return floorList;

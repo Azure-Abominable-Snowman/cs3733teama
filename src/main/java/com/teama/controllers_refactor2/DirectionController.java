@@ -1,5 +1,6 @@
 package com.teama.controllers_refactor2;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -10,6 +11,7 @@ import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
+import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.MapNodeData;
 import com.teama.mapsubsystem.pathfinding.DirectionAdapter;
@@ -31,6 +33,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
@@ -87,7 +90,7 @@ public class DirectionController extends HamburgerController{
 
     @FXML
     private AnchorPane mainPane;
-
+    @FXML private HBox hbxFloorButtons;
     @FXML
     void onGoBtnClicked(MouseEvent event) {
         MapNode newOrigin  = mapSubsystem.getNodeByDescription(yourLocationBar.getEditor().getText(),true);
@@ -263,6 +266,18 @@ public class DirectionController extends HamburgerController{
         }
         textDirections.setItems(directionVals);
 
+        //add buttons for floor.
+        addButtonsForFloors(directions.getFloorDirections());
+
+    }
+
+    private void addButtonsForFloors(ArrayList<Location> locs) {
+        hbxFloorButtons.getChildren().clear(); // clean the box.
+        for (Location loc : locs) {
+            JFXButton tempBtn =new JFXButton();
+            tempBtn.setText(loc.getLevel().toString());
+            hbxFloorButtons.getChildren().add(tempBtn);
+        }
     }
 
     public void setFinder(PathfindingController finder)
