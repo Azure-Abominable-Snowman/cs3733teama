@@ -15,7 +15,7 @@
          <children>
             <JFXTabPane blendMode="SRC_ATOP" prefHeight="770.0" prefWidth="415.0" stylesheets="@../css/DefaultStyle2.css">
                <tabs>
-                  <Tab fx:id="interpreterTab" onSelectionChanged="#changeType" text="Interpreter">
+                  <Tab fx:id="interpreterTab" text="Interpreter">
                      <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="824.0" prefWidth="415.0">
                            <children>
@@ -24,7 +24,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab fx:id="spiritualTab" onSelectionChanged="#changeType" text="Spiritual Service">
+                  <Tab fx:id="spiritualTab" text="Spiritual Service">
                      <content>
                         <AnchorPane>
                            <children>
@@ -33,7 +33,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab fx:id="elevatorTab" onSelectionChanged="#changeType" text="Elevator Repair">
+                  <Tab fx:id="elevatorTab" text="Elevator Repair">
                      <content>
                         <AnchorPane>
                            <children>
@@ -62,7 +62,7 @@
                <children>
                   <HBox prefHeight="107.0" prefWidth="415.0" style="-fx-background-color: #D3D3D3;">
                      <children>
-                        <JFXButton fx:id="deleteButton" onAction="#deleteRequest" prefHeight="107.0" prefWidth="139.0" styleClass="cancelButton" stylesheets="@../css/DefaultStyle2.css" text="Delete" textFill="WHITE" />
+                        <JFXButton fx:id="clearButton" onAction="#clearRequest" prefHeight="107.0" prefWidth="139.0" styleClass="cancelButton" stylesheets="@../css/DefaultStyle2.css" text="Clear" textFill="WHITE" />
                         <JFXButton fx:id="viewStaffButton" onAction="#showStaffPopUp" prefHeight="106.0" prefWidth="135.0" styleClass="confirmButton" stylesheets="@../css/ApiStyle.css" text="Assign Staff" textFill="WHITE" />
                         <JFXButton fx:id="submitButton" layoutX="10.0" layoutY="10.0" onAction="#submitRequest" prefHeight="107.0" prefWidth="142.0" styleClass="delete" stylesheets="@../css/ApiStyle.css" text="Submit" textFill="WHITE" />
                      </children>

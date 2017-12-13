@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<Pane prefHeight="451.0" prefWidth="640.0" stylesheets="@css/DefaultStyle2.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor.FulfillRequestController">
+<Pane prefHeight="451.0" prefWidth="640.0" stylesheets="@css/DefaultStyle2.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor.FInterpreterRequestController">
    <children>
       <VBox prefHeight="411.0" prefWidth="640.0">
         <children>
@@ -65,7 +65,7 @@
                   </AnchorPane>
                   <HBox alignment="TOP_CENTER" layoutY="382.0" prefHeight="69.0" prefWidth="640.0">
                      <children>
-                        <JFXButton fx:id="cancelButton" contentDisplay="CENTER" prefHeight="30.0" prefWidth="222.0" styleClass="cancelButton" text="Cancel">
+                        <JFXButton fx:id="cancelButton" contentDisplay="CENTER" onAction="#closeScreen" prefHeight="30.0" prefWidth="222.0" styleClass="cancelButton" text="Cancel">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="12.0" />
                            </HBox.margin>

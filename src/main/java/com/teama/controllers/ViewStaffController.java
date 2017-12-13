@@ -8,6 +8,7 @@ import com.teama.messages.ContactInfo;
 import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
 import com.teama.requestsubsystem.GenericStaff;
+import com.teama.requestsubsystem.ServiceStaff;
 import com.teama.requestsubsystem.elevatorfeature.ElevatorStaff;
 import com.teama.requestsubsystem.elevatorfeature.ElevatorSubsystem;
 import com.teama.requestsubsystem.elevatorfeature.MaintenanceType;
@@ -27,9 +28,9 @@ import java.util.Set;
 public class ViewStaffController {
 
     @FXML
-    private JFXListView<InterpreterStaff> staffViewList;
+    private JFXListView<ServiceStaff> staffViewList;
 
-    private InterpreterStaff staffToFulfill;
+    private ServiceStaff staffToFulfill;
     private Language language;
     private MaintenanceType type;
     private BooleanProperty isComplete= new SimpleBooleanProperty();
@@ -61,7 +62,7 @@ public class ViewStaffController {
 
 
     }
-    public InterpreterStaff getStaffToFulfill(){return staffToFulfill;}
+    public ServiceStaff getStaffToFulfill(){return staffToFulfill;}
 
     public void setLanguage(Language lang){
         this.language= lang;
@@ -69,7 +70,7 @@ public class ViewStaffController {
         try {
             ArrayList<InterpreterStaff> staff = InterpreterSubsystem.getInstance().findQualified(lang);
             for (InterpreterStaff interpreter : staff) {
-                staffViewList.getItems().add(interpreter);
+                staffViewList.getItems().add((ServiceStaff) interpreter);
             }
         } catch(NullPointerException e) {
             System.out.println("somethings fudged");
@@ -77,21 +78,36 @@ public class ViewStaffController {
         }
     }
 
-    public void SetMaintenanceType(MaintenanceType type){
-        /*
+    public void setMaintenanceType(MaintenanceType type){
+
         this.type = type;
         staffViewList.getItems().clear();
-        try{
+        try {
+
             ArrayList<ElevatorStaff> staff = ElevatorSubsystem.getInstance().findQualified(type);
-            for(ElevatorStaff s: staff){
+            for (ElevatorStaff s : staff) {
                 staffViewList.getItems().add(s);
             }
+            /*
+            Set<ContactInfoTypes> avail = new HashSet<>();
+            avail.add(ContactInfoTypes.EMAIL);
+            avail.add(ContactInfoTypes.TEXT);
+            avail.add(ContactInfoTypes.PHONE);
+            ContactInfo c = new ContactInfo(avail, "4444441134", "wwong2@wpi.edu", Provider.ATT);
+            GenericStaff g = new GenericStaff("William", "Wong", c);
+            Set<MaintenanceType> specializations = new HashSet<>();
+            specializations.add(MaintenanceType.CODECHECK);
+            specializations.add(MaintenanceType.PERSONTRAPPED);
+            ElevatorStaff wilson = new ElevatorStaff(g, specializations);
+            staffViewList.getItems().add(wilson);
+            */
         }catch(Exception e){
             System.out.println("something is wrong");
             e.printStackTrace();
+
         }
-        */
     }
+
 
 
 

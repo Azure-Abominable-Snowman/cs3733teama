@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="parentPane" prefHeight="68.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.InterpReqController">
+<AnchorPane fx:id="parentPane" prefHeight="52.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers.InterpReqController">
    <children>
-      <VBox prefHeight="52.0" prefWidth="200.0" styleClass="text-field" stylesheets="@../css/ApiStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="44.0" prefWidth="200.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXComboBox fx:id="cmbLang" prefHeight="27.0" prefWidth="417.0" promptText="Language">
+            <JFXComboBox fx:id="cmbLang" prefHeight="27.0" prefWidth="447.0" promptText="%listLanguage" styleClass="text-field" stylesheets="@../css/ApiStyle.css">
                <VBox.margin>
-                  <Insets left="3.0" right="5.0" top="20.0" />
+                  <Insets bottom="10.0" left="5.0" right="5.0" top="15.0" />
                </VBox.margin></JFXComboBox>
          </children>
       </VBox>

@@ -16,10 +16,6 @@ public class InterpReqController {
         private AnchorPane parentPane;
 
         @FXML
-        private JFXTextField txtFamilySize;
-        protected String familySize;
-
-        @FXML
         private JFXComboBox<Language> cmbLang;
         protected Language language;
 
@@ -34,8 +30,10 @@ public class InterpReqController {
             return cmbLang.getSelectionModel().getSelectedItem();
         }
 
-        public String getFamilySize(){
-            return txtFamilySize.getText();
+
+        public void clearRequest(){
+                cmbLang.getSelectionModel().clearSelection();
+
         }
 
 

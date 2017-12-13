@@ -138,18 +138,18 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
             }
         }
         try {
-            System.out.println(request.getDate().format(dateFormatter));
+            System.out.println(request.getLocalDate().format(dateFormatter));
 
             addRequest.setInt(1, reqID);
             addRequest.setInt(2, staffID);
             addRequest.setString(3, status.toString());
             addRequest.setString(4, request.getReligion().toString()); // a request only added to db if assigned to staff member
             addRequest.setString(5, request.getSpiritualService().toString()); // not filled in yet
-            addRequest.setString(6, request.getDate().format(dateFormatter));
+            addRequest.setString(6, request.getLocalDate().format(dateFormatter));
 
             addRequest.executeUpdate();
             log.info("Spiritual Care request added to Database.");
-            return new SpiritualCareRequest(req, request.getReligion(), request.getSpiritualService(), request.getDate());
+            return new SpiritualCareRequest(req, request.getReligion(), request.getSpiritualService(), request.getLocalDate());
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
@@ -437,7 +437,7 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
                 updateRequest.setInt(1, r.getStaffID());
                 updateRequest.setString(2, r.getReligion().toString());
                 updateRequest.setString(3, r.getSpiritualService().toString());
-                updateRequest.setString(4, r.getDate().format(dateFormatter));
+                updateRequest.setString(4, r.getLocalDate().format(dateFormatter));
 
                 updateRequest.executeUpdate();
                 log.info("Updated the Spiritual Care Request " + r.getRequestID());
