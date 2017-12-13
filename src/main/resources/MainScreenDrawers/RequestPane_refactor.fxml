@@ -2,8 +2,8 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -13,13 +13,13 @@
    <children>
       <VBox fx:id="vbxWrapper" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="767.0" prefWidth="415.0">
          <children>
-            <JFXTabPane prefHeight="770.0" prefWidth="415.0">
+            <JFXTabPane blendMode="SRC_ATOP" prefHeight="770.0" prefWidth="415.0" stylesheets="@../css/DefaultStyle2.css">
                <tabs>
                   <Tab fx:id="interpreterTab" onSelectionChanged="#changeType" text="Interpreter">
                      <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="824.0" prefWidth="415.0">
                            <children>
-                              <VBox fx:id="intVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="717.0" prefWidth="415.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <VBox fx:id="intVBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="656.0" prefWidth="415.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -48,17 +48,24 @@
                     </content>
                   </Tab>
                </tabs>
-               <effect>
-                  <ColorAdjust brightness="0.22" contrast="-0.02" hue="-1.0" saturation="0.02" />
-               </effect>
+               <styleClass>
+                  <String fx:value="tab" />
+                  <String fx:value="tab-header-background" />
+                  <String fx:value="tab-selected-line" />
+                  <String fx:value="jfx-tab-pane" />
+               </styleClass>
             </JFXTabPane>
-            <HBox prefHeight="164.0" prefWidth="415.0" style="-fx-background-color: #D3D3D3;">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="83.0" prefWidth="415.0">
                <children>
-                  <JFXButton fx:id="deleteButton" onAction="#deleteRequest" prefHeight="110.0" prefWidth="140.0" text="Delete" />
-                  <JFXButton fx:id="viewStaffButton" onAction="#showStaffPopUp" prefHeight="106.0" prefWidth="135.0" text="Assign Staff" />
-                  <JFXButton fx:id="submitButton" layoutX="10.0" layoutY="10.0" onAction="#submitRequest" prefHeight="107.0" prefWidth="142.0" text="Submit" />
+                  <HBox prefHeight="107.0" prefWidth="415.0" style="-fx-background-color: #D3D3D3;">
+                     <children>
+                        <JFXButton fx:id="deleteButton" onAction="#deleteRequest" prefHeight="107.0" prefWidth="139.0" styleClass="cancelButton" stylesheets="@../css/DefaultStyle2.css" text="Delete" textFill="WHITE" />
+                        <JFXButton fx:id="viewStaffButton" onAction="#showStaffPopUp" prefHeight="106.0" prefWidth="135.0" styleClass="confirmButton" stylesheets="@../css/ApiStyle.css" text="Assign Staff" textFill="WHITE" />
+                        <JFXButton fx:id="submitButton" layoutX="10.0" layoutY="10.0" onAction="#submitRequest" prefHeight="107.0" prefWidth="142.0" styleClass="delete" stylesheets="@../css/ApiStyle.css" text="Submit" textFill="WHITE" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
          </children>
       </VBox>
    </children>
