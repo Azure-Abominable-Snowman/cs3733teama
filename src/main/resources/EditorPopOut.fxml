@@ -18,8 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<Pane fx:id="mainPane" prefHeight="600.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="parentPane" prefHeight="600.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="masterBox" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="350.0" style="-fx-background-color: #ededed;">
          <padding>
@@ -68,7 +67,7 @@
                   </Text>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Editor:" GridPane.columnIndex="1">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="20.0" />
                      </font>
                      <GridPane.margin>
                         <Insets left="40.0" />

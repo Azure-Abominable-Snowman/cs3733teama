@@ -25,6 +25,8 @@ import com.teama.requestsubsystem.interpreterfeature.Language;
 import com.teama.requestsubsystem.spiritualcarefeature.Religion;
 import com.teama.requestsubsystem.spiritualcarefeature.SpiritualCareRequest;
 import com.teama.requestsubsystem.spiritualcarefeature.SpiritualService;
+import com.teama.translator.Translator;
+import foodRequest.FoodRequest;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -80,6 +82,12 @@ public class RequestsController extends StaffToolController {
     private VBox ELEVBox;
 
     @FXML
+    private Tab foodTab;
+
+    @FXML
+    private JFXButton btnFood;
+
+    @FXML
     private VBox vbxWrapper;
 
     @FXML
@@ -132,6 +140,7 @@ public class RequestsController extends StaffToolController {
         //for interpreter requests
         loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/requestdropdowns/InterpreterReqDropDown.fxml"));
+        loader.setResources(Translator.getInstance().getNewBundle());
         AnchorPane intSpecific = loader.load();
         interpReqController = loader.getController();
 
@@ -191,6 +200,17 @@ public class RequestsController extends StaffToolController {
     public Pane getParentPane() {
         return parentPane;
     }
+
+
+
+    @FXML
+    public void callFoodReq(ActionEvent event) {
+        run_Food();
+    }
+
+
+
+
     @FXML
     public void submitRequest() {
 
@@ -508,4 +528,17 @@ public class RequestsController extends StaffToolController {
     public void bind(DoubleProperty doubleProperty) {
 
     }
+
+
+
+    private void run_Food(){
+        FoodRequest foodRequest = new FoodRequest();
+        try{
+            foodRequest.run(0,0,1900,1000,null,null,null);
+        }catch (Exception e){
+            System.out.println("Failed to run API");
+            e.printStackTrace();
+        }
+    }
+
 }
