@@ -26,7 +26,7 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
     private PreparedStatement addReport, updateReport, deleteReport, getReport;
 
 
-    private String expectedDate = "MM/dd/yyyy hh:mm";
+    private String expectedDate = "MM/dd/yyyy";
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(expectedDate);
 
     public SpiritualRequestDB(String dbURL, String genericReqTableName, String reqTableName) {
@@ -138,6 +138,8 @@ public class SpiritualRequestDB implements ServiceRequestDataSource {
             }
         }
         try {
+            System.out.println(request.getDate().format(dateFormatter));
+
             addRequest.setInt(1, reqID);
             addRequest.setInt(2, staffID);
             addRequest.setString(3, status.toString());
