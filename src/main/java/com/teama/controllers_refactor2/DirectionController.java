@@ -170,7 +170,6 @@ public class DirectionController extends HamburgerController{
     public void initialize(){
 
 
-        //requestList.prefHeightProperty().bind(mainPane.heightProperty());
 
 
 
@@ -179,55 +178,57 @@ public class DirectionController extends HamburgerController{
 //        ProgramSettings.getInstance().setPathEndNodeProp(tempMapNodeEnd);
 //        ProgramSettings.getInstance().setCurrentDisplayedPathProp(tempPath);
 
+        stepCol.setText("Step");
+        descriptionCol.setText("Description");
+        distanceCol.setText("Distance");
+        directionCol.setText("Direction");
 
 
 
-//        ReadOnlyObjectProperty<Path> pathObjectProperty = ProgramSettings.getInstance().getCurrentDisplayedPathProp();
-//
-//        if(pathObjectProperty.getValue() != null) {
-//            putDirectionsOnScreen(pathObjectProperty.getValue());
-//        }
-//        pathObjectProperty.addListener((a, b, currentPath) -> {
-//            putDirectionsOnScreen(currentPath);
-//        });
-//
-//        stepCol.setCellValueFactory(
-//                new PropertyValueFactory<>("stepNum"));
-//        descriptionCol.setCellValueFactory(
-//                new PropertyValueFactory<>("description"));
-//        distanceCol.setCellValueFactory(
-//                new PropertyValueFactory<>("distance"));
-//        directionCol.setCellValueFactory(
-//                new PropertyValueFactory<>("direction"));
-//        textDirections.setFixedCellSize(75); // cells need to be bigger than default
-//
-//        textDirections.setRowFactory(tv -> {
-//            TableRow<DirectionAdapter> row = new TableRow<>();
-//            row.setAlignment(Pos.CENTER);
-//            return row;
-//        });
-//
-//
-//        // Make a listener on the tableview to focus on the node relating to the direction when selected
-//        textDirections.getSelectionModel().selectedItemProperty().addListener((a) -> {
-//            mapDrawing.setViewportCenter(textDirections.getSelectionModel().getSelectedItem().getLocToFocus());
-//        });
-//
-//    }
-//    private ArrayList<Long> filterFloorListeners = new ArrayList<>();
-//    private DirectionsGenerator directionsGenerator = new TextualDirections();
-//    private void putDirectionsOnScreen(Path path) {
-//        TextDirections directions = directionsGenerator.generateDirections(path);
-//        ObservableList<DirectionAdapter> directionVals = FXCollections.observableArrayList();
-//        int num = 1;
-//        for(Direction d : directions.getDirections()) {
-//            directionVals.add(new DirectionAdapter(num, d));
-//            num++;
-//        }
-//        textDirections.setItems(directionVals);
+        ReadOnlyObjectProperty<Path> pathObjectProperty = ProgramSettings.getInstance().getCurrentDisplayedPathProp();
 
-        // make the combo box automatically change to the start of the path
-        //originNodeCombo.getEditor().setText(path.getStartNode().getLongDescription());
+        if(pathObjectProperty.getValue() != null) {
+            putDirectionsOnScreen(pathObjectProperty.getValue());
+        }
+        pathObjectProperty.addListener((a, b, currentPath) -> {
+            putDirectionsOnScreen(currentPath);
+        });
+
+        stepCol.setCellValueFactory(
+                new PropertyValueFactory<>("stepNum"));
+        descriptionCol.setCellValueFactory(
+                new PropertyValueFactory<>("description"));
+        distanceCol.setCellValueFactory(
+                new PropertyValueFactory<>("distance"));
+        directionCol.setCellValueFactory(
+                new PropertyValueFactory<>("direction"));
+        textDirections.setFixedCellSize(75); // cells need to be bigger than default
+
+        textDirections.setRowFactory(tv -> {
+            TableRow<DirectionAdapter> row = new TableRow<>();
+            row.setAlignment(Pos.CENTER);
+            return row;
+        });
+
+
+        // Make a listener on the tableview to focus on the node relating to the direction when selected
+        textDirections.getSelectionModel().selectedItemProperty().addListener((a) -> {
+            mapDrawing.setViewportCenter(textDirections.getSelectionModel().getSelectedItem().getLocToFocus());
+        });
+
+    }
+    private ArrayList<Long> filterFloorListeners = new ArrayList<>();
+    private DirectionsGenerator directionsGenerator = new TextualDirections();
+    private void putDirectionsOnScreen(Path path) {
+        TextDirections directions = directionsGenerator.generateDirections(path);
+        ObservableList<DirectionAdapter> directionVals = FXCollections.observableArrayList();
+        int num = 1;
+        for(Direction d : directions.getDirections()) {
+            directionVals.add(new DirectionAdapter(num, d));
+            num++;
+        }
+        textDirections.setItems(directionVals);
+
     }
 
 
