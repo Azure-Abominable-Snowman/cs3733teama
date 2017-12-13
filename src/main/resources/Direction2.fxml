@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.TableColumn?>
@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="400.0" stylesheets="@Direction&amp;SearchBar.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -22,14 +21,11 @@
                <children>
                   <VBox prefHeight="180.0" prefWidth="545.0" styleClass="hbox_google">
                      <children>
-                        <JFXTextField fx:id="yourLocationBar" onAction="#onYourLocationBarClicked" promptText="Your Location" unFocusColor="WHITE" VBox.vgrow="ALWAYS">
+                        <JFXComboBox fx:id="yourLocationBar" editable="true" focusColor="WHITE" onAction="#onYourLocationBarClicked" prefHeight="25.0" prefWidth="321.0" promptText="Your Location" unFocusColor="WHITE" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="20.0" left="39.0" right="39.0" top="50.0" />
                            </VBox.margin>
-                           <font>
-                              <Font name="Arial" size="17.0" />
-                           </font>
-                        </JFXTextField>
+                        </JFXComboBox>
                         <HBox prefHeight="32.0" prefWidth="0.0">
                            <VBox.margin>
                               <Insets bottom="40.0" />
@@ -48,7 +44,7 @@
                               </ImageView>
                               <StackPane prefHeight="32.0" prefWidth="334.0">
                                  <children>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" StackPane.alignment="CENTER_RIGHT">
+                                    <ImageView fx:id="goBtn" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#onGoBtnClicked" StackPane.alignment="CENTER_RIGHT">
                                        <image>
                                           <Image url="@ic_directions_white_48pt_3x.png" />
                                        </image>
@@ -56,14 +52,11 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </ImageView>
-                                    <JFXTextField fx:id="destinationBar" onAction="#onDestinationBarClicked" prefHeight="32.0" prefWidth="340.0" promptText="Destination" unFocusColor="WHITE">
-                                       <font>
-                                          <Font name="Arial" size="17.0" />
-                                       </font>
+                                    <JFXComboBox fx:id="destinationBar" editable="true" focusColor="WHITE" onAction="#onDestinationBarClicked" prefHeight="32.0" prefWidth="293.0" promptText="Your Location" unFocusColor="WHITE" StackPane.alignment="CENTER_LEFT">
                                        <StackPane.margin>
                                           <Insets />
                                        </StackPane.margin>
-                                    </JFXTextField>
+                                    </JFXComboBox>
                                  </children>
                                  <HBox.margin>
                                     <Insets right="39.0" />
