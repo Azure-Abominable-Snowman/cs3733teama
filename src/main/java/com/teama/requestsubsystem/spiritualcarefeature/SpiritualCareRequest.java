@@ -5,6 +5,7 @@ import com.teama.requestsubsystem.Request;
 import com.teama.requestsubsystem.RequestStatus;
 import com.teama.requestsubsystem.RequestType;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -14,9 +15,9 @@ public class SpiritualCareRequest implements Request {
     private Request request;
     private Religion religion;
     private SpiritualService service;
-    private Date date;
+    private LocalDate date;
 
-    public SpiritualCareRequest( Request r, Religion rel, SpiritualService s, Date date){
+    public SpiritualCareRequest( Request r, Religion rel, SpiritualService s, LocalDate date){
         this.request = r;
         this.religion = rel;
         this.service = s;
@@ -116,11 +117,11 @@ public class SpiritualCareRequest implements Request {
         this.service = s;
     }
 
-    public Date getDate(){
+    public LocalDate getLocalDate(){
         return date;
     }
 
-    public void setDate(Date d){
+    public void setLocalDate(LocalDate d){
         this.date = d;
     }
 }

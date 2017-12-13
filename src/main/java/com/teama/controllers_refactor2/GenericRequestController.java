@@ -7,7 +7,9 @@ import com.teama.controllers_refactor.FulfillRequestController;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
+import com.teama.mapsubsystem.data.Location;
 import com.teama.mapsubsystem.data.MapNode;
+import com.teama.mapsubsystem.data.NodeType;
 import com.teama.messages.Message;
 import com.teama.requestsubsystem.*;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
@@ -15,6 +17,7 @@ import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -22,15 +25,21 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
 import java.util.Map;
+
+import static javafx.scene.paint.Color.color;
 
 /**
  * Created by jakepardue on 12/11/17.
@@ -109,6 +118,8 @@ public class GenericRequestController {
 
     Image check = new Image("/check.png");
 
+    private int SCALING = 450;
+
     private FXMLLoader loader;
 
     public void initialize() throws IOException {
@@ -121,6 +132,24 @@ public class GenericRequestController {
         typeOfRequest.getItems().clear();
         typeOfRequest.getItems().addAll(RequestType.values());
 
+        nodeSelected.set(false);
+        longName.valueProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(mapNodeName);
+            mapNodeName=newValue;
+            if(newValue != null){
+                System.out.println("This is freaking working!");
+                MapDrawingSubsystem.getInstance().setZoomFactor(2);
+                Location toMove = new Location((newValue.getCoordinate().getxCoord()+SCALING), newValue.getCoordinate().getyCoord(),
+                        newValue.getCoordinate().getLevel(), newValue.getCoordinate().getBuilding());
+                MapDrawingSubsystem.getInstance().setViewportCenter(toMove);
+                //MapDrawingSubsystem.getInstance().drawNode(newValue, 20, color(1, 0, 0));
+                MapDrawingSubsystem.getInstance().drawImage("locationMarker", new Image("/ic_place_white_24dp_2x.png"),
+                        new Location(mapNodeName.getCoordinate().getxCoord() -52, mapNodeName.getCoordinate().getyCoord() -90,mapNodeName.getCoordinate().getLevel()
+                        , mapNodeName.getCoordinate().getBuilding()), false);
+
+            }
+        });
+
     }
 
     @FXML
@@ -132,28 +161,37 @@ public class GenericRequestController {
     }
 
     public void fulfillRequest(ActionEvent e){
-
-        Stage fulfillStage = new Stage();
-        //TODO change name of that plz
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FulfillIntReq.fxml"));
-        Scene fulfillScene;
         try {
-            fulfillScene = new Scene(loader.load());
-            FulfillRequestController fillReqController = loader.getController();
-            fillReqController.setReqToFulfill((InterpreterRequest) requestView.getSelectionModel().getSelectedItem());
-            fillReqController.getSubmitted().addListener(((observable, oldValue, submitted) -> {
-                if(submitted){
-                    requestView.getItems().clear();
-                    requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
-                }
-            }));
+            if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.INTR) {
+                Stage fulfillStage = new Stage();
+                //TODO change name of that plz
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FulfillIntReq.fxml"));
+                Scene fulfillScene;
+                try {
+                    fulfillScene = new Scene(loader.load());
+                    FulfillRequestController fillReqController = loader.getController();
+                    fillReqController.setReqToFulfill((InterpreterRequest) requestView.getSelectionModel().getSelectedItem());
+                    fillReqController.getSubmitted().addListener(((observable, oldValue, submitted) -> {
+                        if (submitted) {
+                            requestView.getItems().clear();
+                            requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+                        }
+                    }));
 
-            fulfillStage.setScene(fulfillScene);
-            fulfillStage.show();
-        }
-        catch(IOException exception){
+                    fulfillStage.setScene(fulfillScene);
+                    fulfillStage.show();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                    System.out.println("check file name");
+                }
+            } else if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.MAIN) {
+
+            } else if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.SPIRITUAL) {
+
+            }
+        }catch (Exception exception){
             exception.printStackTrace();
-            System.out.println("check file name");
+            System.out.println("Please choose one of the chosen requests");
         }
     }
 
@@ -164,8 +202,17 @@ public class GenericRequestController {
         longName.getItems().clear();
         Map<String, MapNode> nodes = MapSubsystem.getInstance().getVisibleFloorNodes(floorName);
         System.out.println(nodes.keySet());
-        for (MapNode n : nodes.values()) {
-            longName.getItems().add(n);
+        if(typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.MAIN){
+            for(MapNode n: nodes.values()){
+                if(n.getNodeType().equals(NodeType.ELEV)){
+                    longName.getItems().add(n);
+                }
+            }
+        }
+        else{
+            for (MapNode n : nodes.values()) {
+                longName.getItems().add(n);
+            }
         }
         mapNodeName = longName.getSelectionModel().getSelectedItem();
         nodeSelected.set(true);
@@ -178,15 +225,14 @@ public class GenericRequestController {
 
 
 
-    @FXML
-    void clearRequest(ActionEvent event) {
+
+    void clearRequest() {
         building.getSelectionModel().clearSelection();
         floor.getSelectionModel().clearSelection();
         longName.getSelectionModel().clearSelection();
         additionalInfo.clear();
         //addToThis.getChildren().remove(curReqPane);
-        MapDrawingSubsystem.getInstance().drawNode(mapNodeName, 0, null);
-        viewStaffButton.setText("View Staff");
+        //MapDrawingSubsystem.getInstance().drawNode(mapNodeName, 0, null);
     }
 
 
@@ -206,12 +252,12 @@ public class GenericRequestController {
     public void onClose() {
         System.out.println("CLOSE REQUEST");
         if(mapNodeName!=null) {
-            MapDrawingSubsystem.getInstance().drawNode(mapNodeName, 0, null);
+            MapDrawingSubsystem.getInstance().unDrawImage("locationMarker");
         }
     }
 
     public RequestType getRequestType(){
-        return requestType;
+        return typeOfRequest.getSelectionModel().getSelectedItem();
     }
 
     public String getBuildingName(){
@@ -248,6 +294,10 @@ public class GenericRequestController {
 
     public JFXComboBox<RequestType> getTypeOfRequest() {
         return typeOfRequest;
+    }
+
+    public void setButtonText(String s){
+        viewStaffButton.setText(s);
     }
 
 

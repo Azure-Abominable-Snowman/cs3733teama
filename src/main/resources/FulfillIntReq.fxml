@@ -65,7 +65,7 @@
                   </AnchorPane>
                   <HBox alignment="TOP_CENTER" layoutY="382.0" prefHeight="69.0" prefWidth="640.0">
                      <children>
-                        <JFXButton fx:id="cancelButton" contentDisplay="CENTER" prefHeight="30.0" prefWidth="222.0" styleClass="cancelButton" text="Cancel">
+                        <JFXButton fx:id="cancelButton" contentDisplay="CENTER" onAction="#closeScreen" prefHeight="30.0" prefWidth="222.0" styleClass="cancelButton" text="Cancel">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="12.0" />
                            </HBox.margin>

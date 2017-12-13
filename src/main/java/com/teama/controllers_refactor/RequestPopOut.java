@@ -141,6 +141,7 @@ public class RequestPopOut extends PopOutController {
                 FOOD, INTR, MAIN, SEC, TRANS);
 
         //set up requestViewList
+        /*
         requestView.getItems().clear();
         requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
         nodeSelected.set(false);
@@ -157,6 +158,7 @@ public class RequestPopOut extends PopOutController {
 
             }
         });
+        */
         /*
         nodeSelected.addListener((obs, before, mapNode) ->{
             System.out.println(mapNode);
@@ -434,6 +436,7 @@ public class RequestPopOut extends PopOutController {
     }
 
     public Message createTextMessage(){
+        /*
         message = new Message("Needed: "+ requestType.toString()+ "\n"+
                 "Where: "+ buildingName +", "+ floorName.toString()+", "+mapNodeName.getLongDescription()+ "\n"
                 + "Language: " + controller.getLanguage().toString()+"\n"+
@@ -447,6 +450,7 @@ public class RequestPopOut extends PopOutController {
                 + "Language: " + controller.getLanguage().toString()+"\n"+
                 "Size of Family:" + controller.getFamilySize().toString()+"\n"+
                 "Additional Info: "+additionalInfoMessage);
+                */
         return message;
     }
 

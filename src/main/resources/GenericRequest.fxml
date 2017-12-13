@@ -15,20 +15,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="intReq" prefHeight="678.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor2.GenericRequestController">
+<ScrollPane fx:id="intReq" prefHeight="717.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor2.GenericRequestController">
    <content>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="410.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="715.0" prefWidth="405.0">
          <children>
             <VBox prefHeight="629.0" prefWidth="418.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <VBox prefHeight="353.0" prefWidth="410.0">
+                  <VBox prefHeight="360.0" prefWidth="410.0">
                      <children>
                         <JFXTextField fx:id="openRequestlabel" alignment="CENTER" editable="false" focusColor="#262b3800" prefHeight="41.0" prefWidth="315.0" text="Open Requests" unFocusColor="TRANSPARENT">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXTextField>
-                        <JFXListView fx:id="requestView" prefHeight="213.0" prefWidth="355.0" VBox.vgrow="ALWAYS">
+                        <JFXListView fx:id="requestView" prefHeight="276.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="5.0" right="5.0" />
                            </VBox.margin>
@@ -59,44 +59,39 @@
                         <Insets left="5.0" />
                      </padding>
                   </VBox>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="339.0" prefWidth="410.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="356.0" prefWidth="410.0">
                      <children>
-                        <VBox layoutY="31.0" prefHeight="311.0" prefWidth="418.0" AnchorPane.bottomAnchor="-71.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
+                        <VBox fx:id="addToThis" prefHeight="356.0" prefWidth="410.0">
                            <children>
-                              <VBox fx:id="addToThis" prefHeight="319.0" prefWidth="410.0">
+                              <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" prefHeight="26.0" prefWidth="410.0" text="Create a New Request">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="locationLabel" alignment="CENTER" editable="false" prefHeight="16.0" prefWidth="274.0" text="Location">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </JFXTextField>
+                              <HBox prefHeight="33.0" prefWidth="410.0">
                                  <children>
-                                    <JFXTextField fx:id="createRequestLabel" alignment="CENTER" editable="false" prefHeight="26.0" prefWidth="410.0" text="Create a New Request">
-                                       <font>
-                                          <Font name="System Bold" size="14.0" />
-                                       </font>
-                                    </JFXTextField>
-                                    <JFXTextField fx:id="locationLabel" alignment="CENTER" editable="false" prefHeight="16.0" prefWidth="274.0" text="Location">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </JFXTextField>
-                                    <HBox prefHeight="33.0" prefWidth="410.0">
-                                       <children>
-                                          <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="41.0" prefWidth="156.0" promptText="Building" styleClass="jfx-combo-box" />
-                                          <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="41.0" prefWidth="108.0" promptText="Floor" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
-                                          <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="41.0" prefWidth="179.0" promptText="Long Name" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
-                                    <JFXTextField fx:id="typeLabel" alignment="CENTER" editable="false" text="Type">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </JFXTextField>
-                                    <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="410.0" promptText="Select Type:" />
-                                    <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="Note">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </JFXTextField>
-                                    <JFXTextArea fx:id="additionalInfo" maxHeight="-Infinity" prefHeight="77.0" prefWidth="410.0" style="-fx-background-color: #dddddd; -fx-border-color: TRANSPARENT TRANSPARENT TRANSPARENT TRANSPARENT;" />
+                                    <JFXComboBox fx:id="building" maxWidth="1.7976931348623157E308" prefHeight="41.0" prefWidth="156.0" promptText="Building" styleClass="jfx-combo-box" />
+                                    <JFXComboBox fx:id="floor" maxWidth="1.7976931348623157E308" prefHeight="41.0" prefWidth="108.0" promptText="Floor" styleClass="jfx-combo-box" HBox.hgrow="NEVER" />
+                                    <JFXComboBox fx:id="longName" onMouseClicked="#setNodeData" prefHeight="41.0" prefWidth="179.0" promptText="Long Name" styleClass="jfx-combo-box" HBox.hgrow="ALWAYS" />
                                  </children>
-                              </VBox>
-                              <HBox prefHeight="25.0" prefWidth="303.0" />
+                              </HBox>
+                              <JFXTextField fx:id="typeLabel" alignment="CENTER" editable="false" text="Type">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXComboBox fx:id="typeOfRequest" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="410.0" promptText="Select Type:" />
+                              <JFXTextField fx:id="noteLabel" alignment="CENTER" editable="false" text="Note">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextArea fx:id="additionalInfo" maxHeight="-Infinity" prefHeight="77.0" prefWidth="410.0" style="-fx-background-color: #dddddd; -fx-border-color: TRANSPARENT TRANSPARENT TRANSPARENT TRANSPARENT;" />
                            </children>
                         </VBox>
                      </children>

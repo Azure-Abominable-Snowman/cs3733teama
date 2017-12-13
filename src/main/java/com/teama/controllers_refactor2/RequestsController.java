@@ -49,6 +49,7 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -82,7 +83,7 @@ public class RequestsController extends StaffToolController {
     private VBox vbxWrapper;
 
     @FXML
-    private JFXButton deleteButton;
+    private JFXButton clearButton;
 
     @FXML
     private JFXButton viewStaffButton;
@@ -203,7 +204,7 @@ public class RequestsController extends StaffToolController {
         //spiritual request
         Religion rel = null;
         SpiritualService service = null;
-        Date d = null;
+        LocalDate d = null;
 
 
         if (staffToFulfill == null) {
@@ -229,141 +230,116 @@ public class RequestsController extends StaffToolController {
         buildingName = intGenController.getBuildingName();
         floorName = intGenController.getFloorName();
         mapNodeName = intGenController.getMapNodeName();
-        requestType = RequestType.INTR;
+        requestType = intGenController.getRequestType();
         additionalInfoMessage = intGenController.getAdditionalInfoMessage();
 
-        switch (requestType) {
-            /*
-            case FOOD:
-                //foodDesired = controller.getFoodDesired();
-                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || additionalInfoMessage.equals("") || foodDesired.equals("")){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error1!");
-                    alert.setHeaderText("Error with Submitting Your Request.");
-                    alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields.");
-                    alert.showAndWait();
-                    break;
-                }
-                */
+        if(interpreterTab.isSelected()) {
+            lang = interpReqController.getLanguage();
 
+            if (buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || lang == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setHeaderText("Error with Submitting Your Request.");
+                alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
+                alert.showAndWait();
+                throw new NullPointerException("Please check ur fields bitch");
+            }
+            viewStaffButton.setText("Assign Staff");
+            curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), lang);
+            InterpreterSubsystem.getInstance().addRequest((InterpreterRequest) curRequest);
 
-            case INTR:
-                lang = interpReqController.getLanguage();
+            System.out.println(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest));
 
-                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  lang == null ){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error!");
-                    alert.setHeaderText("Error with Submitting Your Request.");
-                    alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
-                    alert.showAndWait();
-                    break;
-                }
-                //viewStaffButton.setText("View Staff");
-                curRequest = new InterpreterRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), lang);
-                InterpreterSubsystem.getInstance().addRequest((InterpreterRequest) curRequest);
+            System.out.println("It was successful");
+            Notifications notifications = Notifications.create()
+                    .title("Success!")
+                    .text("Your interpreter request has been added.")
+                    .graphic(new ImageView(check))
+                    .hideAfter(Duration.seconds(4))
+                    .position(Pos.CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications.show();
 
-                System.out.println(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest));
-
-                System.out.println("It was successful");
-                Notifications notifications = Notifications.create()
-                        .title("Success!")
-                        .text("Your interpreter request has been added.")
-                        .graphic(new ImageView(check))
-                        .hideAfter(Duration.seconds(4))
-                        .position(Pos.CENTER)
-                        .onAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                System.out.println("Hi Kent");
-                            }
-                        });
-                notifications.show();
-
-                t.start();
-                intGenController.getListView().getItems().clear();
-                intGenController.getListView().getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
-                break;
-
-            /*
-            case MAIN:
-                PriorityLevel p = maintenanceReqController.getPriority()
-                MaintenanceType m = maintenanceReqController.getMaintenanceType();
-
-                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  p == null || m == null){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error!");
-                    alert.setHeaderText("Error with Submitting Your Request.");
-                    alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
-                    alert.showAndWait();
-                    break;
-                }
-
-                //viewStaffButton.setText("View Staff");
-
-
-                curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p,m, "");
-                //add request to the database here
-
-                Notifications notifications1 = Notifications.create()
-                        .title("Success!")
-                        .text("Your elevator maintenance request has been added.")
-                        .graphic(new ImageView(check))
-                        .hideAfter(Duration.seconds(3))
-                        .position(Pos.CENTER)
-                        .onAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                System.out.println("Hi Kent");
-                            }
-                        });
-                t.start();
-                break;
-
-            case SEC:
-                break;
-            case TRANS:
-                break;
-            case SPIRITUAL:
-                rel = sController.getReligion();
-                service = sController.getSpiritualService();
-                if(buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null ||  rel == null || service == null){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error!");
-                    alert.setHeaderText("Error with Submitting Your Request.");
-                    alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
-                    alert.showAndWait();
-                    break;
-                }
-                viewStaffButton.setText("View Staff");
-                curRequest = new SpiritualCareRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage),rel, service,d);
-                //add request to database
-
-                System.out.println(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest));
-
-                System.out.println("It was successful");
-                Notifications notifications2 = Notifications.create()
-                        .title("Success!")
-                        .text("Your spiritual service request has been added.")
-                        .graphic(new ImageView(check))
-                        .hideAfter(Duration.seconds(3))
-                        .position(Pos.CENTER)
-                        .onAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                System.out.println("Hi Kent");
-                            }
-                        });
-                notifications2.show();
-
-                t.start();
-
-                break;
-            default:
-                break;
+            t.start();
+            intGenController.getListView().getItems().clear();
+            intGenController.getListView().getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
         }
 
-        requestView.getItems().clear();
-        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+        else if(elevatorTab.isSelected()) {
+            PriorityLevel p = maintenanceReqController.getPriority();
+            MaintenanceType m = maintenanceReqController.getMaintenanceType();
+
+            if (buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || p == null || m == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setHeaderText("Error with Submitting Your Request.");
+                alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
+                alert.showAndWait();
+                throw new NullPointerException("Check ur fields bitch");
+            }
+            viewStaffButton.setText("Assign Staff");
+            curRequest = new ElevatorRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), p, m, "");
+            ElevatorSubsystem.getInstance().addRequest((ElevatorRequest) curRequest);
+
+            Notifications notifications1 = Notifications.create()
+                    .title("Success!")
+                    .text("Your elevator maintenance request has been added.")
+                    .graphic(new ImageView(check))
+                    .hideAfter(Duration.seconds(3))
+                    .position(Pos.CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications1.show();
+            t.start();
+            eleGenController.getListView().getItems().clear();
+            eleGenController.getListView().getItems().addAll(ElevatorSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+        }
+        else if(spiritualTab.isSelected()) {
+
+            rel = spiritualCareController.getReligion();
+            service = spiritualCareController.getSpiritualService();
+            d = spiritualCareController.getDate();
+            if (buildingName.equals("") || floorName == null || mapNodeName == null || requestType == null || rel == null || service == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error!");
+                alert.setHeaderText("Error with Submitting Your Request.");
+                alert.setContentText("At least one of the fields is empty.  Please fill in the empty field or fields please.");
+                alert.showAndWait();
+            }
+
+            viewStaffButton.setText("Assign Staff");
+            curRequest = new SpiritualCareRequest(new GenericRequest(mapNodeName.getCoordinate(), staffToFulfill.getStaffID(), requestType, RequestStatus.ASSIGNED, additionalInfoMessage), rel, service, d);
+            //add request to database
+
+            System.out.println(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED).contains(curRequest));
+
+            System.out.println("It was successful");
+            Notifications notifications2 = Notifications.create()
+                    .title("Success!")
+                    .text("Your spiritual service request has been added.")
+                    .graphic(new ImageView(check))
+                    .hideAfter(Duration.seconds(3))
+                    .position(Pos.CENTER)
+                    .onAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Hi Kent");
+                        }
+                    });
+            notifications2.show();
+            t.start();
+            spGenController.getListView().getItems().clear();
+            //spGenController.getListView().getItems().addAll(SpiritualSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+        }
 
         System.out.println(buildingName);
         System.out.println(floorName);
@@ -372,9 +348,7 @@ public class RequestsController extends StaffToolController {
         System.out.println(additionalInfoMessage);
         System.out.println(familySize);
         System.out.println(lang);
-        */
 
-        }
     }
 
     public Message createTextMessage() {
@@ -430,13 +404,20 @@ public class RequestsController extends StaffToolController {
 
 
     @FXML
-    public void deleteRequest(ActionEvent event) {
-        /*
-        InterpreterSubsystem.getInstance().deleteRequest(requestView.getSelectionModel().getSelectedItem().getRequestID());
-        requestView.getItems().clear();
-        requestView.getItems().addAll(InterpreterSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
-        System.out.println("It was deleted");
-        */
+    public void clearRequest(ActionEvent event) {
+        if(interpreterTab.isSelected()){
+            intGenController.clearRequest();
+            interpReqController.clearRequest();
+        }
+        else if(spiritualTab.isSelected()){
+            spGenController.clearRequest();
+            spiritualCareController.clearRequest();
+        }
+        else if(elevatorTab.isSelected()){
+            eleGenController.clearRequest();
+            maintenanceReqController.clearRequest();
+
+        }
     }
 
     @FXML
@@ -451,6 +432,7 @@ public class RequestsController extends StaffToolController {
                     alert.setHeaderText("No language selected.");
                     alert.setContentText("Please choose a language.");
                     alert.showAndWait();
+                    throw new NullPointerException("Please choose a language");
                 }
                 staffPopUp.setTitle("View B&W Staff");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewStaffPopUp.fxml"));
