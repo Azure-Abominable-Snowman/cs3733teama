@@ -5,6 +5,7 @@ import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.pathfinding.Path;
 import com.teama.messages.Message;
+import com.teama.translator.Translator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,6 +25,7 @@ public class Main extends Application{
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/MainScreen.fxml"));
+            loader.setResources(Translator.getInstance().getNewBundle());
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setTitle("Brigham and Women's Hospital Kiosk");

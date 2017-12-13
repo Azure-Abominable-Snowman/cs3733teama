@@ -1,14 +1,20 @@
 package com.teama.controllers_refactor2;
 
-import com.jfoenix.controls.*;
+
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXSlider;
 import com.teama.ProgramSettings;
 import com.teama.controllers.NodeInfoPopUpController;
 import com.teama.controllers.PathfindingController;
 import com.teama.controllers.SearchBarController;
 import com.teama.controllers_refactor.PopOutFactory;
 import com.teama.controllers_refactor.PopOutType;
+
 import com.teama.controllers_refactor.SettingsPopOut;
 import com.teama.login.LoginSubsystem;
+
 import com.teama.mapdrawingsubsystem.ClickedListener;
 import com.teama.mapdrawingsubsystem.MapDisplay;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
@@ -20,6 +26,7 @@ import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.NodeTypeDijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.translator.Translator;
+import foodRequest.FoodRequest;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -47,7 +54,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -316,7 +322,7 @@ public class MainMapScreen implements Initializable {
         }
     }
     @FXML public void onOpenerClick(MouseEvent e){
-        //TODO fix double click breaking this guy
+        //TODO fix double click breaking this guy.. this dang guy though, no ree
         try {
             System.out.println("opening");
             disableSearchPane();
@@ -432,6 +438,7 @@ public class MainMapScreen implements Initializable {
         if(curController!=null) {
             System.out.println(curController.getParentPane().getPrefWidth());
         }
+        //TODO ajdust where the node gets drawn based on the current controller
         MapNode nodeAt = mapDrawing.nodeAt(new Location(event, mapDrawing.getCurrentFloor()));
 
         if (nodeAt != null) {
@@ -513,5 +520,6 @@ public class MainMapScreen implements Initializable {
         }
 
     }
+
 }
 
