@@ -283,7 +283,7 @@ public class DirectionController extends HamburgerController{
             tempBtn.setPrefWidth(70);
             tempBtn.setPrefHeight(30);
             tempBtn.setText(loc.getLevel().toString());
-            tempBtn.getStyleClass().add("hbox_floorBtn");
+            tempBtn.getStyleClass().add("hbox_floorBtn_start");
             hbxFloorButtons.getChildren().add(tempBtn);
         }
     }
