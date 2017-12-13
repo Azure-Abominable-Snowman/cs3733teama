@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public abstract class DijkstrasTemplate implements PathAlgorithm {
     public abstract Path generatePath(MapNode start, MapNode end);
+    public abstract Path generatePath(MapNode start, MapNode end, ArrayList<MapNode> disableNodes);
     protected abstract Path formatOutput(ArrayList<MapNode> finalPath);
 
 }
