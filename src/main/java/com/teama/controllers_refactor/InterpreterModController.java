@@ -1,4 +1,4 @@
-package com.teama.controllers_refactor2;
+package com.teama.controllers_refactor;
 
 
 import com.jfoenix.controls.JFXButton;
@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.teama.controllers.Controller;
+import com.teama.controllers_refactor2.StaffToolController;
 import com.teama.login.AccessType;
 import com.teama.login.LoginSubsystem;
 import com.teama.messages.ContactInfo;
