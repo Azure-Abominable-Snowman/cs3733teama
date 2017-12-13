@@ -87,7 +87,7 @@ public class TextualDirections implements DirectionsGenerator {
                 continue;
             }*/
             if (nextLink.getTurn().equals(TurnType.STRAIGHT)) {
-                addDistance(thisTurn, nextLink); // combine the next one into this.
+                addLink(thisTurn, nextLink); // combine the next one into this.
                 continue;
             }
             // condenced turn and floor change case.
@@ -106,8 +106,9 @@ public class TextualDirections implements DirectionsGenerator {
 
     ///////////////////////  Helpers /////////////////////
 
-    private static RouteLink addDistance(RouteLink turnLink, RouteLink straightLink)
+    private static RouteLink addLink(RouteLink turnLink, RouteLink straightLink)
     {
+        turnLink.setNext(straightLink.getNext());
         turnLink.setDistance(turnLink.getDistance()+ straightLink.getDistance());
         return turnLink;
     }
@@ -153,6 +154,7 @@ public class TextualDirections implements DirectionsGenerator {
     private RouteLink combineFloorChange (RouteLink baseLink, RouteLink nextLink)
     {
         baseLink.setNextFloor(nextLink.getNextFloor());
+        baseLink.setNext(nextLink.getNext());
         return baseLink;
     }
 

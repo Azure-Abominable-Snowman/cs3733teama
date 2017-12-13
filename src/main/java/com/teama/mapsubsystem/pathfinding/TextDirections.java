@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class TextDirections {
     private ArrayList<Direction> directions;
+    private ArrayList<Floor> floorList ;
 
     public TextDirections(ArrayList<Direction> list) {
         directions=list;
@@ -21,18 +22,20 @@ public class TextDirections {
 
     public ArrayList<Floor> getFloorDirections()
     {
-        ArrayList<Floor> result = new ArrayList<>();
-        result.add(directions.get(0).getStart().getLevel()); // add in the starting floor.
+        if(floorList!=null) return floorList;
+        // if the list is never made
+        floorList = new ArrayList<>();
+        floorList.add(directions.get(0).getStart().getLevel()); // add in the starting floor.
         for(int i=1;i<directions.size();++i)
         {
             Direction thisdir = directions.get(i);
             String thisturn = thisdir.getTurn().toString();
             if(thisturn.equals(TurnType.ELEVATOR.toString())
-                    || thisturn.equals(TurnType.STAIR))
+                    || thisturn.equals(TurnType.STAIR.toString()))
             {
-                result.add(thisdir.getEnd().getLevel()); // add the floor of the end once.
+                floorList.add(thisdir.getEnd().getLevel()); // add the floor of the end once.
             }
         }
-        return result;
+        return floorList;
     }
 }
