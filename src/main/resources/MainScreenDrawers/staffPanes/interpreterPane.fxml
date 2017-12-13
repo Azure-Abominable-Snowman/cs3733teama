@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="mainPane" prefHeight="685.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor2.InterStaffController">
+   <children>
+      <VBox fx:id="vbxParent" prefHeight="685.0" prefWidth="417.0" styleClass="popOutPaneStyle">
+         <children>
+            <GridPane alignment="CENTER" prefHeight="305.0" prefWidth="721.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="71.0" minHeight="0.0" prefHeight="52.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="52.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="66.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="91.5" minHeight="10.0" prefHeight="57.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="51.0" vgrow="NEVER" />
+               </rowConstraints>
+               <children>
+                  <JFXTextField fx:id="FirstName" promptText="%firstName" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="5.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="LastName" promptText="%lastName" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="PhoneNo" promptText="%phone" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets right="5.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="%phoneProvider" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
+                     </GridPane.margin>
+                  </JFXComboBox>
+                  <JFXTextField fx:id="Email" promptText="%email" GridPane.rowIndex="3" />
+                  <JFXComboBox fx:id="Certifications" maxWidth="1.7976931348623157E308" promptText="%certificate" GridPane.rowIndex="4" />
+                  <JFXTextField alignment="CENTER" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="378.0" text="%additionalInfo" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </GridPane>
+            <GridPane prefHeight="227.0" prefWidth="621.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+               </rowConstraints>
+               <children>
+                  <JFXCheckBox fx:id="English" maxWidth="1.7976931348623157E308" text="English" GridPane.rowIndex="1" />
+                  <JFXCheckBox fx:id="German" maxWidth="1.7976931348623157E308" text="German" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXCheckBox fx:id="French" maxWidth="1.7976931348623157E308" text="French" GridPane.rowIndex="2" />
+                  <JFXCheckBox fx:id="Spanish" maxWidth="1.7976931348623157E308" text="Spanish" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXCheckBox fx:id="Russian" maxWidth="1.7976931348623157E308" text="Russian" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXCheckBox fx:id="Cantonese" maxWidth="1.7976931348623157E308" text="Cantonese" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <JFXCheckBox fx:id="Luxembourgish" maxWidth="1.7976931348623157E308" text="Luxembourgish" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <JFXCheckBox fx:id="Moldovan" maxWidth="1.7976931348623157E308" text="Moldovan" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <JFXCheckBox fx:id="Ukranian" maxWidth="1.7976931348623157E308" text="Ukranian" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <JFXCheckBox fx:id="ASL" maxWidth="1.7976931348623157E308" text="ASL" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <JFXTextField alignment="CENTER" editable="false" prefWidth="797.0" text="%languagesSelector" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </GridPane>
+            <TableView fx:id="InterpInfoTable" prefHeight="272.0" prefWidth="468.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="firstCol" prefWidth="111.0" text="%listFirstName" />
+                  <TableColumn fx:id="lastCol" prefWidth="98.0" text="%listLastName" />
+                  <TableColumn fx:id="langCol" prefWidth="162.5" text="%listLanguage" />
+                  <TableColumn fx:id="certCol" prefWidth="169.5" text="%listCertification" />
+                  <TableColumn fx:id="phoneCol" prefWidth="131.0" text="%listPhoneNo" />
+                  <TableColumn fx:id="emailCol" editable="false" prefWidth="128.0" text="%listEmail" />
+               </columns>
+            </TableView>
+            <GridPane prefHeight="115.0" prefWidth="817.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
+               </rowConstraints>
+               <children>
+                  <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#cancelStaff" prefHeight="48.0" prefWidth="114.0" styleClass="cancelButton" text="%cancelBtn">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#submitStaff" prefHeight="75.0" prefWidth="90.0" styleClass="confirmButton" text="%addBtn" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#deleteStaff" prefHeight="69.0" prefWidth="107.0" styleClass="resetButton" text="%deleteBtn" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXButton>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </children>
+</Pane>
