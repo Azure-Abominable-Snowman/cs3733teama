@@ -4,8 +4,8 @@ package com.teama.requestsubsystem.elevatorfeature;
  * Created by jakepardue on 12/9/17.
  */
 public enum MaintenanceType {
-    CODECHECK("Code"), REPAIRPARTS("Repairs"), SAFETYCHECKS("Safety Check"),
-    TESTS("Electrical"), PERSONTRAPPED("Trapped Person");
+    CODECHECK("Code check and updates"), REPAIRPARTS("Repair malfunctioning equipment"), SAFETYCHECKS("Check wiring and parts"),
+    TESTS("Test electrical systems"), PERSONTRAPPED("Person is trapped inside");
 
     private String type;
 

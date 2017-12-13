@@ -82,13 +82,13 @@ public class ViewStaffController {
 
         this.type = type;
         staffViewList.getItems().clear();
-        try{
-            /*
+        try {
+
             ArrayList<ElevatorStaff> staff = ElevatorSubsystem.getInstance().findQualified(type);
-            for(ElevatorStaff s: staff){
+            for (ElevatorStaff s : staff) {
                 staffViewList.getItems().add(s);
             }
-            */
+            /*
             Set<ContactInfoTypes> avail = new HashSet<>();
             avail.add(ContactInfoTypes.EMAIL);
             avail.add(ContactInfoTypes.TEXT);
@@ -100,11 +100,14 @@ public class ViewStaffController {
             specializations.add(MaintenanceType.PERSONTRAPPED);
             ElevatorStaff wilson = new ElevatorStaff(g, specializations);
             staffViewList.getItems().add(wilson);
+            */
         }catch(Exception e){
             System.out.println("something is wrong");
             e.printStackTrace();
+
         }
     }
+
 
 
 

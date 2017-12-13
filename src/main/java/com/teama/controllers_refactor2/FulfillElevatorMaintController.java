@@ -94,8 +94,7 @@ public class FulfillElevatorMaintController {
             System.out.println(timeToFulfillVal + " " + descriptionVal);
             reqToFulfill.setServiceTime(Integer.parseInt(timeToFulfillVal));
             ElevatorRequest request = new ElevatorRequest(reqToFulfill.getInfo(), reqToFulfill.getpLevel(), reqToFulfill.getMaintenanceType(), timeToFulfillVal);
-            //InterpreterSubsystem.getInstance().updateRequest(new InterpreterRequest(reqToFulfill.getInfo(), reqToFulfill.getRequiredLanguage(),Integer.parseInt(timeToFulfillVal),serveTime, type));
-            System.out.println("The code is updated");
+
             ElevatorSubsystem.getInstance().fulfillRequest(request);
             submitted.setValue(true);
             Stage thisStage = (Stage) txtDescription.getScene().getWindow();

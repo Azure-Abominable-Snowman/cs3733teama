@@ -20,6 +20,7 @@ import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.Language;
 import com.teama.requestsubsystem.spiritualcarefeature.Religion;
 import com.teama.requestsubsystem.spiritualcarefeature.SpiritualCareRequest;
+import com.teama.requestsubsystem.spiritualcarefeature.SpiritualCareSubsystem;
 import com.teama.requestsubsystem.spiritualcarefeature.SpiritualService;
 import com.teama.translator.Translator;
 import foodRequest.FoodRequest;
@@ -161,12 +162,13 @@ public class RequestsController extends StaffToolController {
         spGenController = loader.getController();
         spGenController.getAddToThis().getChildren().add(spSpecific);
         SPVBox.getChildren().add(spvPane);
+        spGenController.getListView().getItems().clear();
         spGenController.getTypeOfRequest().getSelectionModel().select(RequestType.SPIRITUAL);
 
-        /*
+
         spGenController.getListView().getItems().clear();
         spGenController.getListView().getItems().addAll(SpiritualCareSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
-         */
+
 
 
         //for elevator stuff
@@ -183,9 +185,10 @@ public class RequestsController extends StaffToolController {
         eleGenController = loader.getController();
         eleGenController.getAddToThis().getChildren().add(eleSpecific);
         ELEVBox.getChildren().add(elevBox);
-        eleGenController.getListView().getItems().clear();
-        //eleGenController.getListView().getItems().addAll(ElevatorSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
         eleGenController.getTypeOfRequest().getSelectionModel().select(RequestType.MAIN);
+
+        eleGenController.getListView().getItems().clear();
+        eleGenController.getListView().getItems().addAll(ElevatorSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
     }
 
     public void changeType() throws IOException {
@@ -360,7 +363,7 @@ public class RequestsController extends StaffToolController {
             notifications2.show();
             t.start();
             spGenController.getListView().getItems().clear();
-            //spGenController.getListView().getItems().addAll(SpiritualSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+            spGenController.getListView().getItems().addAll(SpiritualCareSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
         }
 
         System.out.println(buildingName);
