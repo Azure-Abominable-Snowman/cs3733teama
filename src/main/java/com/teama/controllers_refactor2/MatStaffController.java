@@ -149,7 +149,7 @@ public class MatStaffController {
         }
         for(JFXCheckBox box : matTypes){
             for(MaintenanceType t: staffToInsert.getSpecialization()){
-                if(box.getId().equals(t.toString())){
+                if(MaintenanceType.valueOf(box.getId()).equals(t)){
                     box.selectedProperty().set(true);
                 }
             }
@@ -176,7 +176,7 @@ public class MatStaffController {
             String firstName = staffToInsert.getFirstName();
             String lastName = staffToInsert.getLastName();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Delete Interpreter");
+            alert.setTitle("Delete Serviceperson");
             alert.setHeaderText("Remove Interpreter from database");
             alert.setContentText("Are your sure you want to delete \n" + firstName + " "
                     + lastName + " from the database.");
