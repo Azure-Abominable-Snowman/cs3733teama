@@ -5,12 +5,13 @@ import com.jfoenix.controls.JFXListView;
 import com.teama.login.AccessType;
 import com.teama.login.LoginSubsystem;
 import com.jfoenix.controls.JFXTabPane;
-import com.teama.controllers_refactor.SettingsPopOut;
 import com.teama.controllers_refactor2.HamburgerController;
 import com.teama.requestsubsystem.GenericRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
+import com.teama.translator.Translator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,6 +53,7 @@ public class AdminPaneController extends HamburgerController{
 
     @FXML
     private JFXButton setting;
+
 
     @FXML
     private AnchorPane mainPane;
@@ -95,6 +97,8 @@ public class AdminPaneController extends HamburgerController{
     @FXML
     void onSettingsClick(ActionEvent event) {
 
+        loadPane(new SettingsPopOut());
+
     }
 
     @FXML
@@ -112,6 +116,7 @@ public class AdminPaneController extends HamburgerController{
         try {
             apnToLoad.getChildren().clear();
             FXMLLoader mapLoader = new FXMLLoader(getClass().getResource(controller.getFXMLPath()));
+            mapLoader.setResources(Translator.getInstance().getNewBundle());
             mapLoader.setController(controller);
             mapLoader.load();
             apnToLoad.getChildren().add(controller.getParentPane());

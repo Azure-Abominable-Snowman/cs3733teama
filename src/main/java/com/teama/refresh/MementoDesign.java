@@ -1,32 +1,33 @@
 package com.teama.refresh;
 
 
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MementoDesign {
-    public Stage scene = new Stage();
+    private Stage scene;
 
     public void setState(Stage state){
         this.scene = state;
     }
 
     public Memento saveState(){
-        return new Memento(this.scene);
+        return new Memento(scene);
     }
 
-    public void restore(Memento m){
-        this.scene = m.getState();
+    public void restore(Memento m){ scene = m.getState();
     }
 
     public static class Memento{
-        private final Stage scene;
+        private Stage scene;
 
         public Memento(Stage stateToSave){
-            scene = stateToSave;
+            this.scene = stateToSave;
         }
 
-        private Stage getState(){
+        public Stage getState(){
             return scene;
         }
     }
+
 }
