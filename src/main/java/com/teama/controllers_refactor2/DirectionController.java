@@ -277,13 +277,41 @@ public class DirectionController extends HamburgerController{
         hbxFloorButtons.setSpacing(30);
         hbxFloorButtons.setPadding(new Insets(0, 10, 0, 90));
 
+        Location startloc = locs.get(0);
+        JFXButton tempBtn =new JFXButton();
+        tempBtn.setPrefWidth(70);
+        tempBtn.setPrefHeight(30);
+        tempBtn.setText(startloc.getLevel().toString());
+        tempBtn.getStyleClass().add("hbox_floorBtn_start");
 
-        for (Location loc : locs) {
-            JFXButton tempBtn =new JFXButton();
+        tempBtn.setOnAction((event) -> {
+            mapDrawing.setViewportCenter(startloc);});
+        hbxFloorButtons.getChildren().add(tempBtn);
+
+
+        for (int i=1;i<locs.size()-1;++i)
+        {
+            Location location = locs.get(i);
+             tempBtn =new JFXButton();
             tempBtn.setPrefWidth(70);
             tempBtn.setPrefHeight(30);
-            tempBtn.setText(loc.getLevel().toString());
-            tempBtn.getStyleClass().add("hbox_floorBtn_start");
+            tempBtn.setText(location.getLevel().toString());
+            tempBtn.getStyleClass().add("hbox_floorBtn");
+            tempBtn.setOnAction((event) -> {
+                mapDrawing.setViewportCenter(location);});
+            hbxFloorButtons.getChildren().add(tempBtn);
+        }
+        if (locs.size()>1) {
+            Location endloc = locs.get(locs.size() - 1);
+            tempBtn = new JFXButton();
+            tempBtn.setPrefWidth(70);
+            tempBtn.setPrefHeight(30);
+            tempBtn.setText(endloc.getLevel().toString());
+            tempBtn.getStyleClass().add("hbox_floorBtn_end");
+
+            tempBtn.setOnAction((event) -> {
+                mapDrawing.setViewportCenter(endloc);
+            });
             hbxFloorButtons.getChildren().add(tempBtn);
         }
     }
