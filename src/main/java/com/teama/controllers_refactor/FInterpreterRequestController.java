@@ -24,7 +24,7 @@ import org.controlsfx.control.Notifications;
 /**
  * Created by jakepardue on 12/5/17.
  */
-public class FulfillRequestController{
+public class FInterpreterRequestController {
 
 
     @FXML

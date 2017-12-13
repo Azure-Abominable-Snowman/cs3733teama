@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<Pane prefHeight="451.0" prefWidth="640.0" stylesheets="@css/DefaultStyle2.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor.FulfillRequestController">
+<Pane prefHeight="451.0" prefWidth="640.0" stylesheets="@css/DefaultStyle2.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teama.controllers_refactor.FInterpreterRequestController">
    <children>
       <VBox prefHeight="411.0" prefWidth="640.0">
          <children>
@@ -54,7 +54,7 @@
                               <RowConstraints maxHeight="145.0" minHeight="145.0" prefHeight="150.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXTextField fx:id="txtTimeToFulfill" promptText="How long did it take you to complete the request?" />
+                              <JFXTextField fx:id="txtTimeToFulfill" promptText="How long did it take you to complete the request?" text="Time to complete" />
                               <JFXTextArea fx:id="txtDescription" prefHeight="118.0" prefWidth="314.0" promptText="Please describe the encounter below:" GridPane.rowIndex="4" />
                               <JFXTextField fx:id="groupSize" promptText="How many people did you help?" GridPane.rowIndex="1" />
                            </children>
@@ -77,7 +77,7 @@
                   </HBox>
                   <AnchorPane layoutY="-3.0" prefHeight="57.0" prefWidth="640.0">
                      <children>
-                        <Text layoutX="208.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="field" text="Spiritual Guide Request Fulfillment Form" />
+                        <Text layoutX="208.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="field" text="Spiritual Care Request Fulfillment Form" />
                      </children>
                   </AnchorPane>
                </children>

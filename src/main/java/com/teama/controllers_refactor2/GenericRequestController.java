@@ -3,7 +3,7 @@ package com.teama.controllers_refactor2;
 import com.teama.controllers.InterpReqController;
 import com.teama.controllers.MaintenanceReqController;
 import com.teama.controllers.SpiritualCareController;
-import com.teama.controllers_refactor.FulfillRequestController;
+import com.teama.controllers_refactor.FInterpreterRequestController;
 import com.teama.mapdrawingsubsystem.MapDrawingSubsystem;
 import com.teama.mapsubsystem.MapSubsystem;
 import com.teama.mapsubsystem.data.Floor;
@@ -12,12 +12,13 @@ import com.teama.mapsubsystem.data.MapNode;
 import com.teama.mapsubsystem.data.NodeType;
 import com.teama.messages.Message;
 import com.teama.requestsubsystem.*;
+import com.teama.requestsubsystem.elevatorfeature.ElevatorRequest;
+import com.teama.requestsubsystem.elevatorfeature.ElevatorSubsystem;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterRequest;
 import com.teama.requestsubsystem.interpreterfeature.InterpreterSubsystem;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -25,16 +26,12 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
 import java.util.Map;
@@ -169,7 +166,7 @@ public class GenericRequestController {
                 Scene fulfillScene;
                 try {
                     fulfillScene = new Scene(loader.load());
-                    FulfillRequestController fillReqController = loader.getController();
+                    FInterpreterRequestController fillReqController = loader.getController();
                     fillReqController.setReqToFulfill((InterpreterRequest) requestView.getSelectionModel().getSelectedItem());
                     fillReqController.getSubmitted().addListener(((observable, oldValue, submitted) -> {
                         if (submitted) {
@@ -185,8 +182,29 @@ public class GenericRequestController {
                     System.out.println("check file name");
                 }
             } else if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.MAIN) {
+                Stage fulfillStage = new Stage();
+                //TODO change name of that plz
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/MaintenanceFufilForm.fxml"));
+                Scene fulfillScene;
+                try {
+                    fulfillScene = new Scene(loader.load());
+                    FulfillElevatorMaintController controller = loader.getController();
+                    controller.setReqToFulfill((ElevatorRequest) requestView.getSelectionModel().getSelectedItem());
+                    controller.getSubmitted().addListener(((observable, oldValue, submitted) -> {
+                        if (submitted) {
+                            requestView.getItems().clear();
+                            requestView.getItems().addAll(ElevatorSubsystem.getInstance().getAllRequests(RequestStatus.ASSIGNED));
+                        }
+                    }));
 
-            } else if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.SPIRITUAL) {
+                    fulfillStage.setScene(fulfillScene);
+                    fulfillStage.show();
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                    System.out.println("check file name");
+                }
+            }
+            else if (typeOfRequest.getSelectionModel().getSelectedItem() == RequestType.SPIRITUAL) {
 
             }
         }catch (Exception exception){
