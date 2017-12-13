@@ -52,7 +52,7 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </JFXTextField>
-            <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="Phone Provider" GridPane.columnIndex="1">
+            <JFXComboBox fx:id="Providers" maxWidth="1.7976931348623157E308" promptText="Phone Provider" styleClass="text-field" stylesheets="@../../css/ApiStyle.css" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" />
                </GridPane.margin>
@@ -101,17 +101,17 @@
             <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#cancelStaff" prefHeight="54.0" prefWidth="127.0" styleClass="cancel" stylesheets="@../../css/ApiStyle.css" text="Cancel">
+            <JFXButton fx:id="Cancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#cancelStaff" prefHeight="54.0" prefWidth="127.0" styleClass="delete" stylesheets="@../../css/ApiStyle.css" text="Cancel" textFill="WHITE">
                <GridPane.margin>
                   <Insets right="5.0" top="5.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#submitStaff" prefHeight="57.0" prefWidth="134.0" styleClass="submit" stylesheets="@../../css/ApiStyle.css" text="Add" GridPane.columnIndex="1">
+            <JFXButton fx:id="btnSubmit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#submitStaff" prefHeight="57.0" prefWidth="134.0" styleClass="submit" stylesheets="@../../css/ApiStyle.css" text="Add" textFill="WHITE" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" top="5.0" />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#deleteStaff" prefHeight="55.0" prefWidth="126.0" styleClass="delete" stylesheets="@../../css/ApiStyle.css" text="Delete" GridPane.columnIndex="2">
+            <JFXButton fx:id="btnDelete" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onAction="#deleteStaff" prefHeight="55.0" prefWidth="126.0" styleClass="cancel" stylesheets="@../../css/ApiStyle.css" text="Delete" textFill="WHITE" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets right="5.0" top="5.0" />
                </GridPane.margin>

@@ -2,11 +2,8 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,22 +11,31 @@
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <SplitPane dividerPositions="0.3" layoutX="300.0" layoutY="120.0" prefHeight="800.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.5" layoutX="300.0" layoutY="120.0" prefHeight="800.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" prefHeight="160.0" prefWidth="180.0">
                <children>
                   <VBox fillWidth="false" layoutX="47.0" layoutY="64.0" maxWidth="-Infinity" prefHeight="798.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ImageView fitHeight="188.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../adminPaneicons/ic_account_circle_black_24dp/web/ic_account_circle_black_24dp_2x.png" />
-                           </image>
-                        </ImageView>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="322.0" fitWidth="330.0" layoutX="-32.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../21-fine-material.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="61.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="70.0">
+                                 <image>
+                                    <Image url="@../adminPaneicons/ic_account_circle_white_24dp/web/ic_account_circle_white_24dp_2x.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
                         <JFXButton fx:id="request" alignment="BASELINE_LEFT" onAction="#onRequestClick" onMouseClicked="#mouseclick" prefHeight="53.0" prefWidth="180.0" text="Requests">
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_priority_high_black_24dp/web/ic_priority_high_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -38,7 +44,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_storage_black_24dp/web/ic_storage_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -50,7 +56,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_build_black_24dp/web/ic_build_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -59,7 +65,7 @@
                            <graphic>
                               <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
+                                    <Image url="@../adminPaneicons/ic_settings_black_24dp/web/ic_settings_black_24dp_2x.png" />
                                  </image>
                               </ImageView>
                            </graphic>
