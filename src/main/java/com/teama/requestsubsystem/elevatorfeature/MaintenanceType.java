@@ -5,7 +5,7 @@ package com.teama.requestsubsystem.elevatorfeature;
  */
 public enum MaintenanceType {
     CODECHECK("Code check and updates"), REPAIRPARTS("Repair malfunctioning equipment"), SAFETYCHECKS("Check wiring and parts"),
-    TESTS("Test electrical systems"), PERSONTRAPPED("Passenger is trapped inside");
+    TESTS("Test electrical systems"), PERSONTRAPPED("Retrieve trapped Passenger");
 
     private String type;
 

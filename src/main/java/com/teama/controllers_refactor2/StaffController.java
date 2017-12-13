@@ -32,18 +32,15 @@ public class StaffController extends StaffToolController{
 
     public void initialize(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MaintenanceStaffPopOut.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MaintananceStaffPopOut.fxml"));
             loader.load();
-            //IntStaffController myController = loader.getController();
-            intVBox.getChildren().clear();
-            intVBox.getChildren().add(myController.getVbxTest());
-            System.out.println(myController.getVbxTest().getChildren().size());
-            System.out.println(intVBox);
-            FXMLLoader loader2 =new FXMLLoader(getClass().getResource("/MainScreenDrawers/testVbox.fxml"));
-            loader2.load();
-            IntStaffController myController2 = loader2.getController();
-            spirVBox.getChildren().clear();
-            spirVBox.getChildren().addAll(myController2.getVbxTest());
+            MatStaffController myController = loader.getController();
+            if(eleVBox.getChildren()!=null) {
+                eleVBox.getChildren().clear();
+            }
+            eleVBox.getChildren().add(myController.getVbxParentPane());
+            System.out.println(myController.getVbxParentPane().getChildren().size());
+            System.out.println(eleVBox);
 
         }
         catch(IOException error){
