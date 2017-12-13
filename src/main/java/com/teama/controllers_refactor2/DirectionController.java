@@ -25,6 +25,7 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -273,9 +274,16 @@ public class DirectionController extends HamburgerController{
 
     private void addButtonsForFloors(ArrayList<Location> locs) {
         hbxFloorButtons.getChildren().clear(); // clean the box.
+        hbxFloorButtons.setSpacing(30);
+        hbxFloorButtons.setPadding(new Insets(0, 10, 0, 90));
+
+
         for (Location loc : locs) {
             JFXButton tempBtn =new JFXButton();
+            tempBtn.setPrefWidth(70);
+            tempBtn.setPrefHeight(30);
             tempBtn.setText(loc.getLevel().toString());
+            tempBtn.getStyleClass().add("hbox_floorBtn");
             hbxFloorButtons.getChildren().add(tempBtn);
         }
     }

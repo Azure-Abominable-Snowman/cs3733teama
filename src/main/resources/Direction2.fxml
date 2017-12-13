@@ -93,7 +93,7 @@
                   </ImageView>
                </children>
             </StackPane>
-            <TableView fx:id="textDirections" prefHeight="651.0" prefWidth="380.0">
+            <TableView fx:id="textDirections" maxHeight="1.7976931348623157E308" minHeight="200.0" prefHeight="651.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="stepCol" editable="false" prefWidth="60.0" text="C1" />
                 <TableColumn fx:id="directionCol" editable="false" minWidth="0.0" prefWidth="104.47702026367188" text="C2" />
@@ -104,12 +104,12 @@
                   <Insets />
                </VBox.margin>
             </TableView>
-            <ScrollPane hbarPolicy="ALWAYS" vbarPolicy="NEVER">
+            <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="400.0" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <content>
-                  <HBox fx:id="hbxFloorButtons" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="hbox_floorBtn_hbox" />
+                  <HBox fx:id="hbxFloorButtons" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="398.0" prefHeight="70.0" prefWidth="398.0" styleClass="hbox_floorBtn_hbox" />
                </content>
             </ScrollPane>
          </children>
