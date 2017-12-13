@@ -20,6 +20,7 @@ import com.teama.mapsubsystem.data.NodeType;
 import com.teama.mapsubsystem.pathfinding.DijkstrasFamily.Dijkstras.NodeTypeDijkstras;
 import com.teama.mapsubsystem.pathfinding.PathAlgorithm;
 import com.teama.translator.Translator;
+import foodRequest.FoodRequest;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -285,11 +286,14 @@ public class MainMapScreen implements Initializable {
                 drawer.setVisible(true);
                 FXMLLoader openerLoader = new FXMLLoader();
                 curController = new DirectionController();
+                //openerLoader.setResources(Translator.getInstance().getNewBundle());
                 openerLoader.setLocation(getClass().getResource(curController.getFXMLPath()));
                 openerLoader.setController(curController);
                 openerLoader.load();
                 curController.getParentPane().prefHeightProperty().bind(drawer.heightProperty());
                 curController.onOpen();
+                ((DirectionController) curController).setFinder(pathfinding);
+
                 drawer.setDefaultDrawerSize(curController.getParentPane().getPrefWidth());
                 drawer.setSidePane(curController.getParentPane());
                 drawer.open();
@@ -468,7 +472,8 @@ public class MainMapScreen implements Initializable {
 
 
     @FXML private void onEmergencyClick(MouseEvent e){
-        pathfinding.genExitPath();
+        //pathfinding.genExitPath();
+        run_Food();
 
             //TODO double check this.
     }
@@ -513,5 +518,16 @@ public class MainMapScreen implements Initializable {
         }
 
     }
+
+    private void run_Food(){
+        FoodRequest foodRequest = new FoodRequest();
+        try{
+            foodRequest.run(0,0,1900,1000,null,null,null);
+        }catch (Exception e){
+            System.out.println("Failed to run API");
+            e.printStackTrace();
+        }
+    }
+
 }
 

@@ -11,6 +11,7 @@ import com.teama.messages.ContactInfoTypes;
 import com.teama.messages.Provider;
 import com.teama.requestsubsystem.GenericStaff;
 import com.teama.requestsubsystem.interpreterfeature.*;
+import com.teama.translator.Translator;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -122,10 +123,11 @@ public class StaffPopOut extends PopOutController {
         editing.set(false);
         editing.addListener((obs, before, editing) -> {
             if (editing) {
-                btnSubmit.setText("Modify");
+                btnSubmit.setText(Translator.getInstance().getText("modifyBtn"));
+
             }
             else{
-                btnSubmit.setText("Add");
+                btnSubmit.setText(Translator.getInstance().getText("addBtn"));
             }
         });
         System.out.println(cmbStaffType);

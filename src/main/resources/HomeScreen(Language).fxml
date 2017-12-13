@@ -54,7 +54,7 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </JFXButton>
-            <JFXButton fx:id="french1" onAction="#onFrenchClick" prefHeight="60.0" prefWidth="140.0" style="-fx-background-color: #E0E0E0;" text="%buttonPT">
+            <JFXButton fx:id="portuguese" onAction="#onPortugueseClick" prefHeight="60.0" prefWidth="140.0" style="-fx-background-color: #E0E0E0;" text="%buttonPT">
                <font>
                   <Font size="18.0" />
                </font>
